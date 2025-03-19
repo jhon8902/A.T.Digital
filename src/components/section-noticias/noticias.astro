@@ -2,7 +2,13 @@
 import noticias from "../../data/noticias.json";
 ---
 
-<h1 class="noticias-titulo">lanzamientos</h1>
+<h1 class="noticias-titulo">Debut Automotriz</h1>
+<div class="-noticias-subtitulo-container">
+  <h2 class="noticias-subtitulo">
+    son los estrenos mas recientes en latinoamerica.
+  </h2>
+</div>
+
 <section class="noticias-container">
   {
     noticias.map((noticia) => (
@@ -34,38 +40,48 @@ import noticias from "../../data/noticias.json";
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
     padding: 90px;
-
+    border-bottom: 20px solid white;
     position: relative;
   }
 
   /* Título */
   .noticias-titulo {
-    font-size: 40px;
-    border-bottom: 2px solid black;
+    font-size: 50px;
     color: black;
-    font-style: italic;
     text-align: center;
     text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: "Georgia", serif;
+    /* text-shadow: 2px 2px 8px rgb(213, 213, 212); */
+    padding: 10px;
+    font-weight: bold;
+    transition: color 0.9s ease; /* Duración y efecto de transición */
+    background: white;
+  }
+
+  .noticias-titulo:hover {
+    color: #9b7019; /* Cambia "red" por el color que desees */
+  }
+
+  /* subtitulo */
+  .noticias-subtitulo {
+    font-size: 20px;
+    border-bottom: 2px solid black;
+    color: white;
+    background: #2b2b29;
+    text-align: center;
     letter-spacing: 1.1px;
     font-family: "Georgia", serif;
     /* text-shadow: 2px 2px 8px rgb(213, 213, 212); */
-    padding: 30px;
+    padding: 10px;
     font-weight: bold;
-  }
-
-  .noticias-container {
-    background: linear-gradient(#b98f04 30%, #000 70%);
-  }
-
-  .noticias-titulo {
-    background: #b98f04;
   }
 
   /* Tarjeta de Noticias */
   .noticia-container {
-    border-radius: 15px;
+    border-radius: 5px;
     overflow: hidden;
-
+    max-width: 1550px;
     transition:
       transform 0.3s ease,
       box-shadow 0.3s ease;
@@ -115,8 +131,10 @@ import noticias from "../../data/noticias.json";
       height: 180px;
       align-content: center;
     }
+
     .noticia-texto-titulo {
-      font-size: 20px;
+      font-size: 30px;
+      text-align: center;
     }
   }
 </style>

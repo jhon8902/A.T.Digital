@@ -7,11 +7,11 @@
   <div class="top-bar">
     <!-- Redes Sociales a la Izquierda -->
     <div class="social-icons">
-      <a href="#"><img src="img/fbook.png" alt="facebook" class="icon" /></a>
+      <a href="#"><img src="/img/fbook.png" alt="Facebook" class="icon" /></a>
       <a href="#"
-        ><img src="img/instagram.png" alt="instagram" class="icon" /></a
+        ><img src="/img/instagram.png" alt="Instagram" class="icon" /></a
       >
-      <a href="#"><img src="img/x.jpg" alt="twitter" class="icon" /></a>
+      <a href="#"><img src="/img/x.jpg" alt="Twitter" class="icon" /></a>
       <div class="separator"></div>
     </div>
 
@@ -24,27 +24,24 @@
         <li><a href="#test-drive">Test Drive</a></li>
         <li><a href="#revista">Revista</a></li>
         <li><a href="#deportes">Deportes</a></li>
-        <li><a href="#contacto">Contacto</a></li>
       </ul>
     </nav>
-
-    <!-- Botones de Búsqueda y Registro a la Derecha -->
-    <div class="auth-buttons">
-      <button id="search-button" class="search-button">🔍</button>
-      <button class="register-button">Registro</button>
-    </div>
 
     <!-- Añade un id a la sección de inicio -->
     <div id="inicio">
       <!-- Contenido de inicio -->
     </div>
 
-    <!-- Icono de Home -->
     <a href="#inicio" class="scroll-to-top">
-      &#x1F3E0;
-      <!-- Emoji de casa como ejemplo -->
+      &#x2B06;
+      <!-- Emoji de flecha hacia arriba -->
     </a>
 
+    <!-- Botones de Búsqueda y Registro a la Derecha -->
+    <div class="auth-buttons">
+      <button class="register-button">Registro</button>
+      <button id="search-button" class="search-button">🔍</button>
+    </div>
     <!-- icono del menu hamburguesa -->
     <button id="boton-hamburguesa" class="boton-hamburguesa">
       <span>&#9776;</span>
@@ -56,9 +53,10 @@
   /* Estilo principal del header */
   .header {
     position: relative;
-    height: 100%;
+    height: auto;
     width: 100%;
     background: black;
+    border-bottom: 2px solid rgb(76, 53, 7);
   }
 
   .header::after {
@@ -100,17 +98,19 @@
   /* icono casita de regreso */
   .scroll-to-top {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #333; /* Fondo del icono */
-    color: white; /* Color del icono */
-    padding: 10px 15px; /* Espaciado interno */
-    border-radius: 50%; /* Forma circular */
+    bottom: 30px;
+    right: 30px;
+    background-color: #e1a307; /* Fondo del icono */
+    color: black; /* Color del icono */
+    padding: 10px 25px; /* Espaciado interno */
+    border-radius: 100%; /* Forma circular */
     text-align: center; /* Centrar el texto */
-    font-size: 24px; /* Tamaño del icono */
+    font-size: 34px; /* Tamaño del icono */
     z-index: 1000; /* Asegura que esté encima de otros elementos */
     cursor: pointer;
     transition: background-color 0.3s;
+    border-bottom: 3px solid black;
+    font-weight: 600;
   }
 
   .scroll-to-top:hover {
@@ -123,7 +123,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 10px;
+    /* border-bottom: 2px solid rgb(238, 157, 8);*/
   }
 
   /* Redes sociales icono */
@@ -137,7 +138,7 @@
   .social-icons .icon {
     height: 30px;
     width: 30px;
-    margin-right: 10px;
+    margin-right: 5px;
   }
 
   /* linea separador redes de lista nav */
@@ -152,7 +153,7 @@
 
   .boton-hamburguesa {
     color: #b98f04;
-    font-size: 24px;
+    font-size: 30px;
     border: none;
     cursor: pointer;
     display: flex;
@@ -160,37 +161,45 @@
     z-index: 3;
   }
 
-  /* Menú hamburguesa */
-
   .menu-hamburguesa {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas */
+    gap: 10px; /* Espaciado entre elementos */
     width: 100%;
     background: black;
     text-align: center;
     position: absolute;
-    top: 50px;
+    top: 60px;
     left: 0;
     right: 0;
     z-index: 3;
     transition: all 0.6s ease;
+    justify-content: center;
+    padding: 20px;
+    text-transform: uppercase;
   }
 
   .menu-hamburguesa ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: contents; /* Para que los elementos hereden el grid */
   }
 
-  .menu-hamburguesa ul li {
+  .menu-hamburguesa li {
+    list-style: none;
+    color: white;
+    font-size: 20px;
+    text-align: center;
     padding: 10px;
   }
 
   .menu-hamburguesa ul li a {
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     transition: all 0.6s ease;
     padding: 10px;
-    box-shadow: 0 0 10px rgba(248, 191, 3, 0.5);
+    box-shadow: 0 0 10px rgba(249, 191, 1, 0.7);
   }
 
   .menu-hamburguesa ul li a:hover {
@@ -198,7 +207,7 @@
     padding: 10px;
     border-radius: 10px;
     transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(185, 143, 4, 0.5);
+    box-shadow: 0 0 10px rgba(246, 190, 4, 0.5);
   }
 
   /* Responsive */
@@ -231,12 +240,14 @@
     }
 
     .menu-hamburguesa ul li a {
-      font-size: 20px;
+      font-size: 16px;
+      padding: 8px 20px;
     }
 
     /* Mostrar el menú de navegación solo en escritorio */
     .top-bar .menu-hamburguesa {
       display: flex;
+      padding: 5px;
     }
   }
 
@@ -252,30 +263,35 @@
     display: flex;
     align-items: center; /* Asegura que los botones se alineen verticalmente */
     gap: 10px; /* Ajusta el espacio entre botones */
+    font-size: 12px;
   }
 
   .register-button {
-    background-color: #b98f04;
+    background-color: black;
     color: white;
-    padding: 8px 22px;
+    padding: 8px 16px;
     border-radius: 5px;
     cursor: pointer;
+
     transition: background-color 0.3s;
+    border: 2px solid rgb(242, 175, 3); /* Aquí defines el borde amarillo */
   }
 
   .search-button {
-    background-color: #b98f04;
+    background-color: black;
     color: white;
-    padding: 8px 22px;
+    padding: 8px 16px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.6s;
+    border: 2px solid rgb(242, 175, 3); /* Aquí defines el borde amarillo */
   }
 
   .search-button:hover,
   .register-button:hover {
     background-color: #555;
     cursor: pointer;
+    color: white;
   }
 </style>
 
@@ -289,7 +305,7 @@
 
         if (menu) {
           if (menu.style.display === "none" || menu.style.display === "") {
-            menu.style.display = "block";
+            menu.style.display = "grid"; // Mantén 'grid' en lugar de 'block'
             if (icon) {
               icon.innerHTML = "&#10006;"; // Cambia el ícono a "X"
             }

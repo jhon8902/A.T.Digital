@@ -7,7 +7,7 @@ const { title } = Astro.props;
 import Header from "../components/header/Header.astro";
 import "swiper/css";
 import "swiper/css/pagination"; /* Si estás usando paginación */
-import Footer from "../components/footer/footer.astro";
+import Footer from "../components/footer/Footer.astro";
 ---
 
 <!-- noticia-mazda.astro --><!doctype html>
@@ -29,7 +29,7 @@ import Footer from "../components/footer/footer.astro";
       rel="stylesheet"
     />
 
-    <link rel="preload" href="styles.css" as="style" />
+    <link rel="preload" href="/noticias-nacionales/styles.css" as="style" />
 
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -38,8 +38,8 @@ import Footer from "../components/footer/footer.astro";
     <Header />
     <main>
       <slot />
-      <Footer />
     </main>
+    <Footer />
   </body>
 </html>
 

@@ -66,10 +66,6 @@
 </section>
 
 <style>
-  body {
-    background: rgb(220, 220, 220);
-  }
-
   .anunciantes-container {
     height: 400px; /* Ajusta según sea necesario */
     margin: auto;
@@ -77,6 +73,7 @@
     width: 90%;
     display: grid;
     place-items: center;
+    border-bottom: 2px solid white;
   }
 
   .titulo-slider {
@@ -89,6 +86,7 @@
   }
   .titulo-slider h1 {
     font-size: 36px;
+    font-weight: 600;
     margin-bottom: 30px; /* Añade espacio entre el título y el carrusel */
   }
 
@@ -98,6 +96,7 @@
     animation: scroll 60s linear infinite;
     cursor: pointer;
     margin-top: 100px; /* Ajusta este valor según el espacio que desees */
+    background: #f3c008;
   }
 
   .anunciantes-carrusel:hover {
@@ -170,4 +169,14 @@
       ); /* Ancho del carrusel animado */
     }
   }
+<<<<<<< HEAD
+=======
+
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .anunciantes-container {
+      border-bottom: none;
+    }
+  }
+>>>>>>> 2688cea (cambios 19/03/2025)
 </style>

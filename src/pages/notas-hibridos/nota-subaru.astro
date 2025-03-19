@@ -1,149 +1,205 @@
----
-
----
-
 <meta charset="UTF-8" />
 
 <section class="nota-container">
   <div class="nota-header">
-    <h1>Subaru Forester e-Boxer: Innovación y Eficiencia</h1>
-    <p class="subtitulo">
-      Descubre cómo la tecnología híbrida de Subaru transforma la conducción
-      diaria
-    </p>
+    <h1>subaru forester E-Boxer</h1>
+    <p class="subtitulo">explora y conectate con nosotros</p>
   </div>
 
-  <div class="nota-content">
-    <div class="nota-texto">
+  <section
+    class="seccion full-img"
+    style="background-image: url('/img/subaru.jpg');"
+  >
+    <div class="texto-overlay">
+      <h2>Diseño Aerodinámico</h2>
       <p>
-        La Subaru Forester e-Boxer combina lo mejor de dos mundos: un motor de
-        gasolina y uno eléctrico, diseñados para ofrecer una experiencia de
-        conducción suave, eficiente y respetuosa con el medio ambiente. Ideal
-        tanto para la ciudad como para viajes largos, este modelo redefine la
-        eficiencia sin sacrificar el rendimiento.
-      </p>
-
-      <img
-        src="/img/subaru.jpg"
-        alt="Subaru Forester e-Boxer"
-        class="nota-imagen"
-      />
-
-      <h2>Diseño Moderno y Sofisticado</h2>
-      <p>
-        Desde su parrilla aerodinámica hasta su interior espacioso, la Forester
-        e-Boxer está diseñada para impresionar. Los acabados de alta calidad, la
-        tecnología avanzada y la conectividad de última generación hacen de este
-        modelo una opción perfecta para quienes buscan comodidad y estilo.
-      </p>
-
-      <img
-        src="/img/subaru.jpg"
-        alt="Interior Subaru Forester e-Boxer"
-        class="nota-imagen"
-      />
-
-      <h2>Tecnología Inteligente</h2>
-      <p>
-        Este vehículo cuenta con un sistema híbrido avanzado que permite cambiar
-        entre los modos eléctrico y de gasolina automáticamente, maximizando la
-        eficiencia del combustible. Además, incluye funciones como el asistente
-        de manejo autónomo, integración con Apple CarPlay y Android Auto, y un
-        sistema de navegación intuitivo.
-      </p>
-
-      <img
-        src="/img/subaru.jpg"
-        alt="Tecnología Subaru Forester e-Boxer"
-        class="nota-imagen"
-      />
-
-      <h2>Beneficios para el Medio Ambiente</h2>
-      <p>
-        Al reducir las emisiones de carbono y el consumo de gasolina, la Subaru
-        Forester e-Boxer es una elección responsable para quienes desean
-        contribuir a un futuro más sostenible, sin comprometer su estilo de
-        vida.
+        La Ford Escape Híbrida 2025 combina estilo y funcionalidad con un diseño
+        aerodinámico que mejora la eficiencia y la conducción.
       </p>
     </div>
-  </div>
+  </section>
+
+  <section class="seccion texto-izquierda">
+    <div class="texto">
+      <h2>Tecnología de Última Generación</h2>
+      <p>
+        Equipada con el sistema Ford Co-Pilot360™, ofrece asistente de
+        conducción, integración con Apple CarPlay y Android Auto, y un sistema
+        de navegación intuitivo.
+      </p>
+    </div>
+    <img
+      src="/img/ford-scape-trasero.jpg"
+      alt="Tecnología Ford Escape Híbrida 2025"
+    />
+  </section>
+
+  <section
+    class="seccion full-img"
+    style="background-image: url('/img/ford-scape-parqueo.jpg');"
+  >
+    <div class="texto-overlay">
+      <h2>Motor Inteligente</h2>
+      <p>
+        Su sistema híbrido permite cambiar automáticamente entre los modos
+        eléctrico y gasolina, maximizando la eficiencia del combustible.
+      </p>
+    </div>
+  </section>
+
+  <section class="seccion texto-derecha">
+    <img
+      src="/img/ford-scape-trasero.jpg"
+      alt="Ford Escape Híbrida en carretera"
+    />
+    <div class="texto">
+      <h2>Compromiso con el Medio Ambiente</h2>
+      <p>
+        La Ford Escape Híbrida 2025 reduce emisiones de CO₂ y ayuda a preservar
+        el medio ambiente sin comprometer el rendimiento.
+      </p>
+    </div>
+  </section>
 </section>
 
 <style>
-  .nota-container {
-    padding: 20px;
-    width: 100%; /* Ahora ocupa todo el ancho de la página */
-    margin: 0 auto;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
     font-family: "Lora", serif;
-    line-height: 1.6;
+    background: #000;
+    color: black; /* color titulo y subtitulos del background #b98f04 */
+  }
+
+  /* todo el contenedor ocupa el 100% de la pantalla */
+  .nota-container {
+    width: 100%;
+    overflow: hidden;
   }
 
   .nota-header {
     text-align: center;
-    margin-bottom: 30px;
+    padding: 60px 20px;
+    background: #b98f04;
   }
 
   .nota-header h1 {
-    font-size: 3.9rem;
-    font-weight: bold;
-    color: #333;
+    font-size: 4.5rem;
   }
 
   .nota-header .subtitulo {
-    font-size: 2.2rem;
-    color: #555;
+    font-size: 1.5rem;
     margin-top: 10px;
   }
 
-  .nota-content {
+  /* contenido completo de los textos encima de la imagen grande */
+  .seccion {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .nota-imagen {
-    max-width: 100%;
-    height: auto;
-    max-height: 400px; /* Máxima altura para evitar imágenes gigantes */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    object-fit: contain; /* Ajusta la imagen manteniendo proporción */
-  }
-
-  .nota-texto {
-    background: white;
+    align-items: center;
+    justify-content: end;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
     padding: 20px;
+  }
+
+  .full-img {
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+  }
+
+  .full-img::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  /* texto encima de imagenes grandes */
+  .texto-overlay {
+    position: relative;
+    z-index: 2;
+    text-align: start;
+    color: white;
+    max-width: 30%;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .nota-texto h2 {
-    font-size: 2.8rem;
-    color: #333;
-    margin-bottom: 10px;
+  .texto-overlay h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
   }
 
-  .nota-texto p {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 20px;
+  .texto-overlay p {
+    font-size: 1.8rem;
   }
 
-  @media (min-width: 768px) {
-    .nota-content {
-      flex-direction: row;
+  .texto-izquierda,
+  .texto-derecha {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .texto-izquierda .texto,
+  .texto-derecha .texto {
+    flex: 1;
+    padding: 60px;
+    text-align: left;
+    background: #b98f04;
+  }
+
+  .texto-derecha .texto {
+    order: 2;
+  }
+
+  .texto-izquierda img,
+  .texto-derecha img {
+    flex: 1;
+    width: 50%;
+    height: auto;
+  }
+
+  .texto h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+  }
+
+  .texto p {
+    font-size: 1.4rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .texto-overlay {
+      max-width: 90%;
+      padding: 20px;
     }
 
-    .nota-imagen {
-      flex: 1;
-      margin-right: 20px;
+    .texto-izquierda,
+    .texto-derecha {
+      flex-direction: column;
+      text-align: center;
     }
 
-    .nota-texto {
-      flex: 2;
+    .texto-izquierda img,
+    .texto-derecha img {
+      width: 100%;
+    }
+
+    .texto {
+      padding: 40px;
     }
   }
 </style>

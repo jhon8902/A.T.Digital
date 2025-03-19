@@ -3,7 +3,7 @@
     "id": 1,
     "titulo": "KIA EV-9",
     "descripcion": "el SUV eléctrico de KIA ya está en Colombia y esto es lo que se sabe.",
-    "imagen": "/img/ev9.avif",
+    "imagen": "/img/ev9.webp",
     "contenido": [
       {
         "titulo": "Diseño Innovador",
@@ -94,30 +94,7 @@
       }
     ],
     "link": "/noticias-nacionales/noticia-ford-f-150"
-  },
-  {
-    "id": 2,
-    "titulo": "Mazda EZ-6",
-    "descripcion": "Mazda lanza su nuevo SUV híbrido con tecnología avanzada.",
-    "imagen": "/img/mazda ez-6.jpg",
-    "contenido": [
-      {
-        "titulo": "Tecnología Híbrida",
-        "parrafo": "El Mazda EZ-6 combina un motor de combustión interna con un motor eléctrico para ofrecer una eficiencia de combustible excepcional y una conducción suave.",
-        "imagen": "/img/mazda-ez-6-conectado.jpg"
-      },
-      {
-        "titulo": "Diseño Elegante",
-        "parrafo": "Con líneas aerodinámicas y un diseño sofisticado, el Mazda EZ-6 destaca en cualquier camino.",
-        "imagen": "/img/mazda-ez-6-lateral.avif"
-      },
-      {
-        "titulo": "Conectividad Avanzada",
-        "parrafo": "El EZ-6 está equipado con un sistema de infoentretenimiento de última generación, compatible con Apple CarPlay y Android Auto.",
-        "imagen": "/img/Mazda-EZ-6-interior.jpeg"
-      }
-    ],
-    "link": "/noticias-nacionales/noticia-mazda-ez-6"
   }
+  
   
 ]

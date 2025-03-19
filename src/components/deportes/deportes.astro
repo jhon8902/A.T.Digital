@@ -1,0 +1,299 @@
+---
+
+---
+
+<meta charset="UTF-8" />
+
+<section id="deportes" class="nota-container">
+  <div class="nota-header alt-header">
+    <h1>Pasión por el Motor</h1>
+    <p class="subtitulo">Todo en deportes</p>
+  </div>
+
+  <a href="mas-deportes">
+    <section class="highlight-banner">
+      <img
+        src="/img/deporte2.gif"
+        alt="Competencia de automovilismo y motociclismo"
+      />
+
+      <div class="highlight-text">
+        <h2></h2>
+        <p>El automovilismo y motociclismo en su máxima expresión.</p>
+      </div>
+    </section>
+  </a>
+
+  <section class="info-grid">
+    <div class="info-item">
+      <a href="/notas-deportes/nota-deportes1">
+        <img src="/img/deporte1.jpg" alt="Moto GP en acción" />
+        <div class="texto-fecha">
+          <p>Nota: 13-mar</p>
+        </div>
+        <h3>Máquinas de Alto Rendimiento</h3>
+        <p>
+          La ingeniería automotriz avanza con diseños aerodinámicos y motores
+          que desafían los límites de la velocidad, precios colores todo lo que
+          han desarrollado para destacar en el mercado.
+        </p>
+      </a>
+    </div>
+
+    <div class="info-item">
+      <a href="/notas-deportes/nota-deportes2">
+        <img src="/img/deporte3.jpg" alt="F1 Monoplaza" />
+        <div class="texto-fecha">
+          <p>Nota: 13-mar</p>
+        </div>
+        <h3>Tecnología de Última Generación</h3>
+        <p>
+          La combinación de materiales ultraligeros y sistemas inteligentes
+          mejora el rendimiento en cada circuito, precios colores todo lo que
+          han desarrollado para destacar en el mercado.
+        </p>
+      </a>
+    </div>
+  </section>
+
+  <section class="full-width-banner">
+    <a href="/notas-deportes/nota-deportes-motos">
+      <img src="/img/moto-gp.jpg" alt="Superbikes en acción" />
+      <div class="banner-overlay">
+        <h2>Las Carreras Más Emocionantes</h2>
+        <p>Desde MotoGP hasta Fórmula 1, la velocidad lo es todo.</p>
+      </div>
+    </a>
+  </section>
+</section>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Lora", serif;
+    background: whitesmoke;
+    color: white;
+  }
+
+  .nota-container {
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 20px solid white;
+  }
+
+  .nota-header.alt-header {
+    height: 400px;
+    text-align: center;
+    padding: 20px 20px;
+    background:
+      url("img/fondo-deportes.jpg") no-repeat center center,
+      /* Imagen encima */ #390505; /* Color de fondo rojo debajo */
+    background-size: cover;
+    color: white;
+    border-bottom: 20px solid white;
+  }
+
+  .nota-header h1 {
+    font-size: 60px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 2px solid white;
+    display: inline-block; /* Ajusta el ancho al contenido */
+    padding-bottom: 5px; /* Opcional: añade espacio entre el texto y la línea */
+  }
+
+  .nota-header .subtitulo {
+    font-size: 25px;
+    padding: 15px;
+
+    text-transform: uppercase;
+  }
+
+  .highlight-banner {
+    position: relative;
+    width: 100%;
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .highlight-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .highlight-text {
+    position: absolute; /* Posicionar el texto sobre la imagen */
+    top: 0; /* Alinear en la parte superior */
+    width: 100%; /* Que abarque todo el ancho del contenedor */
+    background: black; /* Fondo semitransparente */
+    padding: 20px;
+    color: white;
+    text-align: center;
+    font-size: 35px;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 40px;
+  }
+
+  .info-item {
+    background: #222;
+    padding: 20px;
+    text-align: start;
+    /* border-radius: 10px;*/
+  }
+
+  .info-item img {
+    width: 100%;
+  }
+
+  .info-item h3 {
+    margin-top: 15px;
+    font-size: 2.6rem;
+    color: white;
+  }
+
+  .info-item .p {
+    font-size: 1.8rem;
+  }
+
+  .info-item .texto-fecha {
+    color: red;
+    padding: 10px;
+    background: white;
+    font-size: 15px;
+  }
+
+  .full-width-banner {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+  }
+
+  .full-width-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .banner-overlay {
+    text-align: start;
+    position: absolute;
+    bottom: 20px;
+    left: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 75px;
+    color: white;
+    font-size: 60px;
+    width: 50%;
+  }
+
+  @media (max-width: 1024px) {
+    .nota-header h1 {
+      font-size: 45px;
+    }
+
+    .nota-header .subtitulo {
+      font-size: 20px;
+    }
+
+    .highlight-text {
+      font-size: 25px;
+      padding: 15px;
+    }
+
+    .banner-overlay {
+      font-size: 40px;
+      padding: 40px;
+      width: 70%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nota-header.alt-header {
+      height: 250px;
+      padding: 10px;
+    }
+
+    .nota-header h1 {
+      font-size: 35px;
+    }
+
+    .nota-header .subtitulo {
+      font-size: 18px;
+    }
+
+    .highlight-banner {
+      height: 40vh;
+      flex-direction: column;
+    }
+
+    .highlight-text {
+      font-size: 20px;
+      padding: 10px;
+    }
+
+    .info-grid {
+      grid-template-columns: 1fr;
+      padding: 20px;
+    }
+
+    .info-item h3 {
+      font-size: 2rem;
+    }
+
+    .full-width-banner {
+      height: 40vh;
+    }
+
+    .banner-overlay {
+      font-size: 30px;
+      padding: 20px;
+      width: 80%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .nota-header.alt-header {
+      height: 200px;
+    }
+
+    .nota-header h1 {
+      font-size: 28px;
+    }
+
+    .nota-header .subtitulo {
+      font-size: 16px;
+    }
+
+    .highlight-banner {
+      height: 30vh;
+    }
+
+    .highlight-text {
+      font-size: 18px;
+      padding: 8px;
+    }
+
+    .info-item h3 {
+      font-size: 1.8rem;
+    }
+
+    .banner-overlay {
+      font-size: 24px;
+      padding: 15px;
+      width: 90%;
+    }
+  }
+</style>

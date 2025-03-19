@@ -4,7 +4,8 @@
 
 <section id="hibridos" class="hibridos-container">
   <div class="central-content">
-    <h1>Hibridos</h1>
+    <h1>Movilidad Hibrida</h1>
+    <p>si conoces de hibridos esta informacion te va a interasar</p>
   </div>
   <div class="imagenes-container">
     <div class="hibrido">
@@ -17,6 +18,9 @@
             como uno eléctrico, los híbridos maximizan el rendimiento del
             combustible.
           </p>
+        </div>
+        <div class="texto-fecha">
+          <p>nota: 13-mar</p>
         </div>
       </a>
     </div>
@@ -34,6 +38,9 @@
             a su portafolio, el madelo stonic con el que marcara diferencia.
           </p>
         </div>
+        <div class="texto-fecha">
+          <p>nota: 13-mar</p>
+        </div>
       </a>
     </div>
     <div class="hibrido">
@@ -45,6 +52,9 @@
             Combina un motor bóxer con un propulsor eléctrico, ofreciendo una
             conducción híbrida en el segmento de los SUV.
           </p>
+        </div>
+        <div class="texto-fecha">
+          <p>nota: 13-mar</p>
         </div>
       </a>
     </div>
@@ -65,6 +75,9 @@
             totalmente eléctrico.
           </p>
         </div>
+        <div class="texto-fecha">
+          <p>nota: 13-mar</p>
+        </div>
       </a>
     </div>
     <div class="hibrido">
@@ -81,6 +94,9 @@
             BYD, tiene nuevo integrante que no tendra competencia alguna convina
             diseño, tecnologia, confor etc.
           </p>
+        </div>
+        <div class="texto-fecha">
+          <p>nota: 13-mar</p>
         </div>
       </a>
     </div>
@@ -99,6 +115,9 @@
             que ofrece confor, diseño y tecnologia.
           </p>
         </div>
+        <div class="texto-fecha">
+          <p>nota: 13-mar</p>
+        </div>
       </a>
     </div>
   </div>
@@ -113,12 +132,13 @@
     display: grid;
     place-items: center;
     gap: 10px;
-    background: white;
+    background: linear-gradient(white, #556d7a); /* Gradiente de verde a azul */
     background-position: center; /* Centra la imagen */
     padding: 30px;
     text-align: center;
     font-family: "Georgia", serif;
     box-shadow: 0 8px 8px rgba(0, 0, 0, 0.5);
+    border-bottom: 20px solid;
   }
 
   .central-content {
@@ -127,37 +147,28 @@
 
   .hibridos-container h1 {
     font-weight: 600;
-    font-size: 70px;
-    color: #19354b;
-
-    text-shadow: 2px 2px 6px rgba(246, 246, 246, 0.5);
+    font-size: 50px;
+    color: black;
+    border-bottom: 4px solid rgb(86, 126, 16);
     border-radius: 5px;
-    padding: 15px;
-    letter-spacing: 3.6px; /*espacio entre las letras */
+
+    letter-spacing: 1.6px; /*espacio entre las letras */
     width: 100%;
     margin-top: 10px;
     position: relative;
     text-transform: uppercase;
   }
 
-  /* linea posicion, longitud */
-  .hibridos-container h1::before,
-  .hibridos-container h1::after {
-    content: "";
-    position: absolute;
-    width: 170px; /* Aumentar longitud de la línea */
-    height: 4px;
-    background: #19354b;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .hibridos-container h1::before {
-    left: -200px; /* Colocar fuera del texto */
-  }
-
-  .hibridos-container h1::after {
-    right: -200px; /* Colocar fuera del texto */
+  .hibridos-container p {
+    font-weight: 600;
+    font-size: 20px;
+    color: black;
+    border-radius: 5px;
+    letter-spacing: 1px; /*espacio entre las letras */
+    width: 100%;
+    margin-top: 15px;
+    position: relative;
+    text-transform: uppercase;
   }
 
   .imagenes-container {
@@ -236,4 +247,12 @@
     text-align: center;
     margin-top: 20px;
   }
+<<<<<<< HEAD
+=======
+
+  .hibrido .texto-fecha p {
+    font-size: 15px;
+    padding: 10px;
+  }
+>>>>>>> 2688cea (cambios 19/03/2025)
 </style>
