@@ -1,0 +1,122 @@
+---
+import noticias from "../../data/noticias.json";
+---
+
+<h1 class="noticias-titulo">lanzamientos</h1>
+<section class="noticias-container">
+  {
+    noticias.map((noticia) => (
+      <div class="noticia-container">
+        <a href={noticia.link} class="noticia">
+          <img
+            src={noticia.imagen}
+            alt={noticia.titulo}
+            class="noticia-imagen"
+          />
+        </a>
+        <div class="noticia-texto">
+          <h3 class="noticia-texto-titulo">{noticia.titulo}</h3>
+          <p class="noticia-descripcion">{noticia.descripcion}</p>
+        </div>
+      </div>
+    ))
+  }
+</section>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Contenedor Principal */
+  .noticias-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 90px;
+
+    position: relative;
+  }
+
+  /* Título */
+  .noticias-titulo {
+    font-size: 40px;
+    border-bottom: 2px solid black;
+    color: black;
+    font-style: italic;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1.1px;
+    font-family: "Georgia", serif;
+    /* text-shadow: 2px 2px 8px rgb(213, 213, 212); */
+    padding: 30px;
+    font-weight: bold;
+  }
+
+  .noticias-container {
+    background: linear-gradient(#b98f04 30%, #000 70%);
+  }
+
+  .noticias-titulo {
+    background: #b98f04;
+  }
+
+  /* Tarjeta de Noticias */
+  .noticia-container {
+    border-radius: 15px;
+    overflow: hidden;
+
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .noticia-container:hover {
+    transform: translateY(20px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Imagen */
+  .noticia-imagen {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    align-items: center;
+  }
+
+  /* Texto */
+  .noticia-texto {
+    padding: 26px;
+    text-align: start;
+    background: whitesmoke;
+  }
+
+  .noticia-texto-titulo {
+    font-size: 34px;
+    margin-bottom: 12px;
+    color: #19354b;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px white;
+  }
+
+  .noticia-descripcion {
+    font-size: 20px;
+    color: rgb(18, 18, 18);
+    line-height: 1.6;
+    font-weight: 600;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .noticias-container {
+      padding: 20px;
+    }
+    .noticia-imagen {
+      height: 180px;
+      align-content: center;
+    }
+    .noticia-texto-titulo {
+      font-size: 20px;
+    }
+  }
+</style>

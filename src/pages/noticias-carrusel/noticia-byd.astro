@@ -1,0 +1,133 @@
+---
+
+---
+
+<meta charset="UTF-8" />
+<section class="section-noticias">
+  <!-- Título -->
+  <div class="header">
+    <h1></h1>
+  </div>
+  <div class="container">
+    <!-- Tarjeta 1 -->
+    <div class="card">
+      <h2>Diseño</h2>
+      <img src="../img/ford-1bronco.jpg" alt="bronco diseño" />
+      <div class="text-content">
+        <p>
+          La Ford Bronco tiene un diseño robusto y cuadrado que evoca la
+          nostalgia de los todoterrenos clásicos.
+        </p>
+      </div>
+    </div>
+    <!-- Tarjeta 2 -->
+    <div class="card">
+      <h2>Tecnología</h2>
+      <img src="../img/ford-2bronco.jpg" alt="bronco tecnologia" />
+      <div class="text-content">
+        <p>
+          Equipada con la última tecnología, la Ford Bronco ofrece un sistema de
+          infoentretenimiento de vanguardia.
+        </p>
+      </div>
+    </div>
+    <!-- Tarjeta 3 -->
+    <div class="card">
+      <h2>Motor</h2>
+      <img src="../img/ford-3bronco.jpg" alt="bronco motor" />
+      <div class="text-content">
+        <p>
+          Cuenta con motores potentes, incluyendo un EcoBoost de 2.3 litros
+          ideal para aventuras extremas.
+        </p>
+      </div>
+    </div>
+    <!-- Tarjeta 4 -->
+    <div class="card">
+      <h2>Interior</h2>
+      <img src="../img/ford-interior.jpg" alt="bronco interior" />
+      <div class="text-content">
+        <p>
+          El interior combina comodidad y funcionalidad con asientos de cuero
+          opcionales y materiales duraderos.
+        </p>
+      </div>
+    </div>
+    <!-- Tarjeta 5 -->
+    <div class="card">
+      <h2>Suspensión</h2>
+      <img src="../img/ford-suspension.jpg" alt="bronco suspension" />
+      <div class="text-content">
+        <p>
+          La suspensión avanzada con amortiguadores Bilstein asegura una
+          conducción estable en terrenos difíciles.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Merriweather:wght@400;700&display=swap");
+  body {
+    font-family: "Lora", serif;
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
+  .section-noticias {
+    background: white;
+    padding: 60px;
+    text-align: center;
+  }
+
+  /* header */
+  .header h1 {
+    font-size: 26px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 30px;
+  }
+
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    max-width: 100%;
+    margin: auto;
+  }
+  .card {
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.6s ease-in-out;
+  }
+  .card:hover {
+    transform: scale(1.02);
+  }
+  .card h2 {
+    background: #19354b;
+    padding: 35px;
+    margin: 0;
+    font-size: 64px;
+    color: white;
+  }
+  .card img {
+    width: 100%;
+    height: 800px;
+    object-fit: cover;
+  }
+  .text-content {
+    padding: 25px;
+  }
+  .text-content p {
+    color: black;
+    font-size: 28px;
+    line-height: 1.6;
+    text-align: center;
+  }
+</style>

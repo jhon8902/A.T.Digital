@@ -1,0 +1,173 @@
+---
+
+---
+
+<section class="anunciantes-container">
+  <div class="titulo-slider">
+    <h1>Anunciantes Destacados</h1>
+  </div>
+  <div class="anunciantes-carrusel">
+    <div class="anunciante">
+      <img src="/img/logo-bmw.jpg" alt="Logo Marca 1" />
+    </div>
+    <div class="anunciante">
+      <img src="/../img/logo-audi.jpg" alt="Logo audi" />
+    </div>
+    <div class="anunciante">
+      <img src="/img/logo-mercedes.jpg" alt="Logo Marca 3" />
+    </div>
+    <div class="anunciante">
+      <img src="/img/logo-nissan.jpg" alt="Logo Marca 1" />
+    </div>
+    <div class="anunciante">
+      <img src="/img/logo-opel.jpg" alt="Logo Marca 2" />
+    </div>
+    <div class="anunciante">
+      <img src="/img/logo-porsche.jpg" alt="Logo Marca 3" />
+    </div>
+    <div class="anunciante">
+      <img src="/img/logo-bmw.jpg" alt="Logo Marca 1" />
+    </div>
+    <div class="anunciante">
+      <img src="/../img/logo-audi.jpg" alt="Logo audi" />
+    </div>
+    <div class="anunciante">
+      <img src="/img/logo-mercedes.jpg" alt="Logo Marca 3" />
+    </div>
+    <div class="anunciante">
+      <img src="/img/logo-nissan.jpg" alt="Logo Marca 1" />
+    </div>
+    <div class="anunciante">
+      <img src="/img/logo-opel.jpg" alt="Logo Marca 2" />
+    </div>
+    <div class="anunciante">
+      <img src="/img/logo-porsche.jpg" alt="Logo Marca 3" />
+    </div>
+    <div class="anunciante">
+      <img src="/img/logo-bmw.jpg" alt="Logo Marca 1" />
+    </div>
+    <div class="anunciante">
+      <img src="/../img/logo-audi.jpg" alt="Logo audi" />
+    </div>
+    <div class="anunciante">
+      <img src="/img/logo-mercedes.jpg" alt="Logo Marca 3" />
+    </div>
+    <div class="anunciante">
+      <img src="/img/logo-nissan.jpg" alt="Logo Marca 1" />
+    </div>
+    <div class="anunciante">
+      <img src="/img/logo-opel.jpg" alt="Logo Marca 2" />
+    </div>
+    <div class="anunciante">
+      <img src="/img/logo-porsche.jpg" alt="Logo Marca 3" />
+    </div>
+    <!-- Agrega más logos según sea necesario -->
+  </div>
+</section>
+
+<style>
+  body {
+    background: rgb(220, 220, 220);
+  }
+
+  .anunciantes-container {
+    height: 400px; /* Ajusta según sea necesario */
+    margin: auto;
+    position: relative;
+    width: 90%;
+    display: grid;
+    place-items: center;
+  }
+
+  .titulo-slider {
+    position: absolute;
+    top: 25px; /* Ajusta según la altura deseada */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: black;
+  }
+  .titulo-slider h1 {
+    font-size: 36px;
+    margin-bottom: 30px; /* Añade espacio entre el título y el carrusel */
+  }
+
+  .anunciantes-carrusel {
+    display: flex;
+    width: calc(250px * 18);
+    animation: scroll 60s linear infinite;
+    cursor: pointer;
+    margin-top: 100px; /* Ajusta este valor según el espacio que desees */
+  }
+
+  .anunciantes-carrusel:hover {
+    animation-play-state: paused;
+  }
+
+  /* Animation imagenes carrusel */
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-250px * 9));
+    }
+  }
+
+  .anunciante {
+    height: 200px;
+    width: 250px;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    perspective: 100px;
+  }
+
+  .anunciante img {
+    transition: transform 0.5s ease-in-out; /* Suaviza la animación */
+    width: 130px;
+    height: 130px;
+    border-radius: 10px;
+  }
+
+  .anunciante img:hover {
+    transform: scale(1.1);
+  }
+
+  .anunciantes-carrusel::before,
+  .anunciantes-carrusel::after {
+    content: "";
+    position: absolute;
+    width: 15%;
+    height: 100%;
+    z-index: 2;
+    /* background: linear-gradient(
+      to right,
+      rgba(244, 244, 244, 1) 0%,
+      rgba(244, 244, 244, 0) 100%
+    );*/
+  }
+
+  .anunciantes-carrusel::before {
+    left: 0;
+    top: 0;
+  }
+
+  .anunciantes-carrusel::after {
+    right: 0;
+    top: 0;
+    transform: rotatez(180deg);
+  }
+
+  /* Animación infinita */
+  @keyframes carrusel {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(
+        calc(-150px * 6 - 20px * 6)
+      ); /* Ancho del carrusel animado */
+    }
+  }
+</style>

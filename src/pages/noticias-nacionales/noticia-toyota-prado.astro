@@ -1,0 +1,182 @@
+---
+// src/pages/noticias-nacionales/noticia-mazda-ez-6.astro
+import Layout from "../../layouts/Layout.astro";
+import noticiaData from "../../data/noticias.json";
+const noticia = noticiaData.find((item) => item.id === 3);
+---
+
+{
+  noticia ? (
+    <Layout title={noticia.titulo}>
+      <section class="noticia-detalle">
+        <p class="noticia-descripcion">{noticia.descripcion}</p>
+
+        <img
+          src={noticia.imagen}
+          alt={noticia.titulo}
+          class="noticia-portada"
+        />
+        <h1>{noticia.titulo}</h1>
+        <article>
+          {noticia.contenido ? (
+            noticia.contenido.map((seccion, index) => (
+              <div
+                class={`noticia-bloque ${index % 2 === 0 ? "noticia-imagen-izquierda" : "noticia-imagen-derecha"}`}
+              >
+                <div class="noticia-texto">
+                  <h3 class="noticia-titulo">{seccion.titulo}</h3>
+                  <p class="noticia-parrafo">{seccion.parrafo}</p>
+                </div>
+                <img
+                  src={seccion.imagen}
+                  alt={noticia.titulo}
+                  class="noticia-imagen"
+                />
+              </div>
+            ))
+          ) : (
+            <p>Contenido no disponible</p>
+          )}
+        </article>
+      </section>
+    </Layout>
+  ) : (
+    <p>Noticia no encontrada</p>
+  )
+}
+
+<style>
+  /* Contenedor principal */
+  .noticia-detalle {
+    width: 100%;
+    margin: 0;
+    padding: 40px 0;
+    font-family: "Lora", serif; /* Fuente para el texto principal */
+    position: relative;
+  }
+
+  /* Título flotante */
+  .noticia-detalle h1 {
+    font-size: 75px;
+    text-align: center;
+    color: black;
+    font-family: "Lora", serif; /* Fuente para el texto principal */
+    margin: 0 auto 5px;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid black;
+    padding: 15px;
+  }
+
+  .noticia-descripcion {
+    font-size: 55px;
+    font-weight: 400;
+    text-align: start;
+    padding: 30px;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Imagen de portada */
+  .noticia-portada {
+    width: 100%;
+    height: 1024px;
+    object-fit: cover;
+  }
+
+  /* Bloques alternados */
+  .noticia-bloque {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin: 30px auto;
+  }
+
+  .noticia-bloque img {
+    width: 50%;
+    height: auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+    transition: transform 0.9s ease; /*efecto alejamiento zoom*/
+  }
+
+  /*efecto alejamiento zoom*/
+  .noticia-bloque img:hover {
+    transform: scale(0.9); /* Reduce el tamaño de la imagen al 80% */
+  }
+
+  .noticia-bloque .noticia-texto {
+    flex: 1;
+    text-align: center;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .noticia-titulo {
+    font-size: 34px;
+    font-weight: 600;
+    color: black;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .noticia-bloque .noticia-parrafo {
+    font-size: 25px;
+    color: #333;
+  }
+
+  /* Alternar posiciones */
+  .noticia-imagen-izquierda {
+    flex-direction: row;
+  }
+
+  .noticia-imagen-derecha {
+    flex-direction: row-reverse;
+  }
+
+  /* Responsividad */
+  @media (max-width: 768px) {
+    .noticia-bloque {
+      flex-direction: column;
+    }
+    .noticia-detalle h1 {
+      font-size: 40px;
+      background: none;
+      color: black;
+    }
+
+    .noticia-bloque img {
+      width: 100%;
+    }
+
+    .noticia-bloque .noticia-texto {
+      font-size: 20px;
+    }
+
+    .noticia-descripcion {
+      font-size: 30px;
+      font-weight: 600;
+      padding: 15px;
+    }
+
+    .noticia-bloque .noticia-parrafo {
+      font-size: 22px;
+      color: #333;
+    }
+
+    .noticia-bloque .noticia-texto {
+      width: 100%;
+    }
+
+    .noticia-portada {
+      border-bottom: none;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+  }
+</style>

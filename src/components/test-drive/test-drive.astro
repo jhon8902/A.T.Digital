@@ -1,0 +1,184 @@
+---
+
+---
+
+<section id="test-drive" class="test-drive-container">
+  <div class="central-content">
+    <h1>TEST DRIVE videos</h1>
+  </div>
+  <div class="video video-grande">
+    <video controls class="video-element video-grande-element">
+      <source src="../img/ford f-150.mp4" type="video/mp4" />
+      Tu navegador no soporta el elemento de video.
+    </video>
+    <div class="video-texto">
+      <h2>Modelo Destacado</h2>
+      <p>Descubre la emoción de nuestro modelo estrella.</p>
+    </div>
+  </div>
+  <div class="videos-container">
+    <div class="video">
+      <video controls class="video-element">
+        <source src="../img/prueba-mazda.mp4" type="video/mp4" />
+        Tu navegador no soporta el elemento de video.
+      </video>
+      <div class="video-texto">
+        <h2>Ford Scape</h2>
+        <p>Conduce con estilo y eficiencia.</p>
+      </div>
+    </div>
+    <div class="video">
+      <video controls class="video-element">
+        <source src="../img/ford f-150.mp4" type="video/mp4" />
+        Tu navegador no soporta el elemento de video.
+      </video>
+      <div class="video-texto">
+        <h2>KIA Stonic</h2>
+        <p>Innovación en cada recorrido descubrelo.</p>
+      </div>
+    </div>
+    <div class="video">
+      <video controls class="video-element">
+        <source src="../img/deportivo blanco.mp4" type="video/mp4" />
+        Tu navegador no soporta el elemento de video.
+      </video>
+      <div class="video-texto">
+        <h2>Volkswagen</h2>
+        <p>Diseño y tecnología en armonía.</p>
+      </div>
+    </div>
+  </div>
+  <div class="ver-mas-container">
+    <button class="ver-mas">Ver más</button>
+  </div>
+</section>
+
+<style>
+  .test-drive-container {
+    display: grid;
+    place-items: center;
+    grid-template-columns: 1fr;
+    gap: 50px;
+    background: #b98f04;
+    padding: 80px;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .central-content {
+    grid-row: 1;
+  }
+
+  .test-drive-container h1 {
+    text-align: center;
+    font-weight: 600;
+    font-size: 40px;
+    color: black;
+    margin-bottom: 35px;
+    padding: 10px;
+    border-bottom: 2px solid black; /* Línea inferior */
+  }
+
+  .test-drive-container p {
+    font-size: 20px;
+    color: black;
+    margin-bottom: 20px;
+  }
+
+  .video-grande {
+    width: 100%;
+    max-width: 1200px;
+    height: 500px;
+  }
+
+  .videos-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .video {
+    position: relative;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    transition: transform 0.6s ease;
+    flex: 1;
+    margin: 10px;
+    max-width: 100%;
+  }
+
+  .video:hover {
+    transform: translateY(-10px);
+  }
+
+  .video-element {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+  .video-grande-element {
+    height: 100%;
+  }
+
+  .video-texto {
+    background: white;
+    color: black;
+    padding: 20px;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .video-texto h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+    color: black;
+  }
+
+  .video-texto p {
+    font-size: 18px;
+    color: black;
+  }
+
+  .ver-mas-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .ver-mas {
+    padding: 10px 20px;
+    font-size: 18px;
+    color: white;
+    background-color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .ver-mas:hover {
+    background-color: #ae7906;
+    color: black;
+    transform: scale(1.1);
+  }
+
+  /* Estilos responsivos */
+  @media (max-width: 768px) {
+    .videos-container {
+      flex-direction: column;
+    }
+
+    .video {
+      margin: 10px 0;
+    }
+
+    .video-element {
+      height: auto;
+    }
+  }
+</style>

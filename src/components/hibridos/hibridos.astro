@@ -1,0 +1,239 @@
+---
+
+---
+
+<section id="hibridos" class="hibridos-container">
+  <div class="central-content">
+    <h1>Hibridos</h1>
+  </div>
+  <div class="imagenes-container">
+    <div class="hibrido">
+      <a href="/notas-hibridos/nota-scape">
+        <img src="../img/ford-s.jpg" alt="ford-scape" class="hibrido-imagen" />
+        <div class="hibrido-texto">
+          <h2>Ford Escape</h2>
+          <p>
+            Eficiencia de Combustible. Al utilizar tanto un motor de gasolina
+            como uno eléctrico, los híbridos maximizan el rendimiento del
+            combustible.
+          </p>
+        </div>
+      </a>
+    </div>
+    <div class="hibrido">
+      <a href="/notas-hibridos/nota-stonic">
+        <img
+          src="../img/kia-stonic-principal.jpg"
+          alt="Stonic"
+          class="hibrido-imagen"
+        />
+        <div class="hibrido-texto">
+          <h2>Kia Stonic</h2>
+          <p>
+            el segmento de los suv esta cambiando y kia lo sabe, por eso agrega
+            a su portafolio, el madelo stonic con el que marcara diferencia.
+          </p>
+        </div>
+      </a>
+    </div>
+    <div class="hibrido">
+      <a href="/notas-hibridos/nota-subaru">
+        <img src="../img/subaru.jpg" alt="Volkswagen" class="hibrido-imagen" />
+        <div class="hibrido-texto">
+          <h2>Subaru Forester E-Boxer</h2>
+          <p>
+            Combina un motor bóxer con un propulsor eléctrico, ofreciendo una
+            conducción híbrida en el segmento de los SUV.
+          </p>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="imagenes-container nuevas-imagenes">
+    <div class="hibrido">
+      <a href="/notas-hibridos/nota-bmw-x5">
+        <img
+          src="../img/bmw-x5.jpg"
+          alt="Nueva Imagen 1"
+          class="hibrido-imagen"
+        />
+        <div class="hibrido-texto">
+          <h2>Bmw X5</h2>
+          <p>
+            Este SUV híbrido enchufable, ofrece una potencia combinada de 394 hp
+            y la capacidad de recorrer aproximadamente 80 kilómetros en modo
+            totalmente eléctrico.
+          </p>
+        </div>
+      </a>
+    </div>
+    <div class="hibrido">
+      <a href="/notas-hibridos/nota-byd">
+        <img
+          src="../img/byd.jpeg"
+          alt="Nueva Imagen 2"
+          class="hibrido-imagen"
+        />
+        <div class="hibrido-texto">
+          <h2>Byd yuan</h2>
+          <p>
+            la marca que actualmente lidera ventas en todo el mundo, llamada
+            BYD, tiene nuevo integrante que no tendra competencia alguna convina
+            diseño, tecnologia, confor etc.
+          </p>
+        </div>
+      </a>
+    </div>
+    <div class="hibrido">
+      <a href="/notas-hibridos/nota-nissan">
+        <img
+          src="../img/nissan-x-trail.webp"
+          alt="Nueva Imagen 3"
+          class="hibrido-imagen"
+        />
+        <div class="hibrido-texto">
+          <h2>Nissan x-trail</h2>
+          <p>
+            Nissan como ya saben, nos acostumbra a buenos productos asi que
+            llega con su nueva totalmente nueva x-trail, una camioneta hibrida
+            que ofrece confor, diseño y tecnologia.
+          </p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .hibridos-container {
+    display: grid;
+    place-items: center;
+    gap: 10px;
+    background: white;
+    background-position: center; /* Centra la imagen */
+    padding: 30px;
+    text-align: center;
+    font-family: "Georgia", serif;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  .central-content {
+    grid-row: 1;
+  }
+
+  .hibridos-container h1 {
+    font-weight: 600;
+    font-size: 70px;
+    color: #19354b;
+
+    text-shadow: 2px 2px 6px rgba(246, 246, 246, 0.5);
+    border-radius: 5px;
+    padding: 15px;
+    letter-spacing: 3.6px; /*espacio entre las letras */
+    width: 100%;
+    margin-top: 10px;
+    position: relative;
+    text-transform: uppercase;
+  }
+
+  /* linea posicion, longitud */
+  .hibridos-container h1::before,
+  .hibridos-container h1::after {
+    content: "";
+    position: absolute;
+    width: 170px; /* Aumentar longitud de la línea */
+    height: 4px;
+    background: #19354b;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .hibridos-container h1::before {
+    left: -200px; /* Colocar fuera del texto */
+  }
+
+  .hibridos-container h1::after {
+    right: -200px; /* Colocar fuera del texto */
+  }
+
+  .imagenes-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 30px;
+  }
+
+  @media (min-width: 768px) {
+    .imagenes-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .imagenes-container {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .imagenes-container.nuevas-imagenes {
+    margin-top: 20px;
+  }
+
+  .hibrido {
+    position: relative;
+    background-color: #f9f9f9;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: transform 0.6s ease;
+  }
+
+  /* desplazamiento de imagen y textos hacia arriba */
+  .hibrido:hover {
+    transform: translateY(-10px);
+  }
+
+  .hibrido-imagen {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  }
+
+  .hibrido-texto {
+    position: absolute;
+    bottom: -100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 40px;
+    text-align: center;
+    transition: bottom 0.8s ease;
+    height: 100%;
+  }
+
+  .hibrido:hover .hibrido-texto {
+    bottom: 0;
+  }
+
+  .hibrido-texto h2 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+
+  .hibrido-texto p {
+    font-size: 1.2rem;
+    color: #fff;
+  }
+
+  .ver-mas-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+</style>

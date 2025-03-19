@@ -1,0 +1,445 @@
+---
+
+---
+
+<section class="section-info w-full py-30">
+  <div class="sticky-container">
+    <div class="titulo-con-lineas sticky-titulo">
+      <div class="linea"></div>
+      <h2>Actualidad</h2>
+      <div class="linea"></div>
+    </div>
+
+    <div class="container mx-auto px-2">
+      <div id="carousel" class="relative flex overflow-hidden">
+        <!-- Imagen 1 -->
+        <a
+          href="/noticias-carrusel/noticia-ford"
+          class="carousel-item relative w-full transition-opacity duration-600 hover:opacity-75"
+        >
+          <h1 class="ford">FORD BRONCO</h1>
+          <img
+            src="../img/ford-1bronco.jpg"
+            alt="Ford Bronco"
+            class="w-full h-full object-cover"
+          />
+          <div class="carousel-caption">
+            Ford Bronco: la última apuesta todo terreno de la marca.
+          </div>
+        </a>
+
+        <!-- Imagen 2 -->
+        <a
+          href="/noticias-carrusel/noticia-mazda"
+          class="carousel-item relative w-full transition-transform duration-600 hover:scale-95"
+        >
+          <h1 class="mazda">MAZDA CX-30</h1>
+          <img
+            src="../img/mazda-cx30.jpg"
+            alt="Mazda CX-30"
+            class="w-full h-full object-cover"
+          />
+          <div class="carousel-caption">
+            Mazda CX-30: sigue rompiendo récords como el carro más vendido.
+          </div>
+        </a>
+
+        <!-- Imagen 3 -->
+        <a
+          href="/noticias-carrusel/noticia-bmw"
+          class="carousel-item relative w-full transition-transform duration-600 hover:scale-95"
+        >
+          <h1 class="bmw">BMW</h1>
+          <img
+            src="../img/bmw.gif"
+            alt="BMW"
+            class="w-full h-full object-cover"
+          />
+          <div class="carousel-caption">
+            BMW Serie 5: poderoso, tecnológico y entra a la electrificación.
+          </div>
+        </a>
+
+        <!-- Imagen 4 -->
+        <a
+          href="/noticias-carrusel/noticia-audi"
+          class="carousel-item relative w-full transition-transform duration-600 hover:scale-95"
+        >
+          <h1 class="audi">AUDI E-TRON</h1>
+          <img
+            src="../img/Audi.jpg"
+            alt="Audi"
+            class="w-full h-full object-cover"
+          />
+          <div class="carousel-caption">
+            Audi E-TRON: el SUV más bonito de la marca, 100% eléctrico.
+          </div>
+        </a>
+
+        <!-- Imagen 5 -->
+        <a
+          href="/noticias-carrusel/noticia-byd"
+          class="carousel-item relative w-full transition-transform duration-600 hover:scale-105"
+        >
+          <h1 class="byd">BYD</h1>
+          <img
+            src="../img/byd.jpeg"
+            alt="BYD"
+            class="w-full h-full object-cover"
+          />
+          <div class="carousel-caption">
+            BYD Yuan Plus: sin duda, BYD es uno de los más fuertes en lo
+            eléctrico.
+          </div>
+        </a>
+      </div>
+
+      <!-- Botones de navegación -->
+      <button id="prevBtn" class="carousel-control-prev">❮</button>
+      <button id="nextBtn" class="carousel-control-next">❯</button>
+    </div>
+  </div>
+</section>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Merriweather:wght@400;700&display=swap");
+
+  body {
+    font-family: "Lora", serif; /* Fuente para el texto principal */
+  }
+
+  h2 {
+    max-width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 70px;
+    color: black; /* Color del texto */
+    margin-bottom: 35px;
+    padding: 45px;
+    letter-spacing: 4.6px;
+    text-shadow: 2px 2px 6px rgba(246, 246, 246, 0.5);
+    text-transform: uppercase;
+    opacity: 0; /* Comienza transparente */
+    transform: translateY(20px); /* Comienza un poco más abajo */
+    animation: fadeIn 6s forwards; /* Aplica la animación */
+    font-family: "Georgia", serif;
+    position: relative; /* Necesario para los pseudoelementos */
+  }
+
+  h2::before,
+  h2::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 190px; /* Ajusta la longitud de las líneas según tus necesidades */
+    height: 4px;
+    background-color: black;
+    transform: translateY(-50%);
+  }
+
+  h2::before {
+    left: 300px; /* Colocar fuera del texto */
+  }
+
+  h2::after {
+    right: 300px; /* Colocar fuera del texto */
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1; /* Aparece gradualmente */
+      transform: translateY(0); /* Se mueve a su posición original */
+    }
+  }
+
+  /* Contenedor del carrusel */
+  #carousel {
+    align-items: center;
+    display: flex;
+    overflow: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+
+  /* Elementos del carrusel */
+  .carousel-item {
+    flex: 0 0 auto; /* Cada item ocupa el 100% del ancho del contenedor */
+    scroll-snap-align: center;
+    position: relative;
+    margin: 10px 10px;
+    max-width: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Fondo negro con 70% de opacidad */
+    opacity: 1; /* Ocultar inicialmente */
+    transition: opacity 9s ease-in-out; /* Transición suave */
+  }
+
+  /* Mostrar el elemento actual */
+  .carousel-item.active {
+    opacity: 1; /* Mostrar el elemento activo */
+  }
+
+  /* Texto del carrusel */
+  .ford,
+  .mazda,
+  .bmw,
+  .audi,
+  .byd {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 10px;
+  }
+
+  /* Imagen del carrusel */
+  .carousel-item img {
+    width: 100%; /* Asegurarse de que ocupe todo el ancho */
+    height: 530px; /* Mantener la proporción de la imagen */
+    object-fit: cover; /* Llenar el contenedor manteniendo el aspecto, pero sin deformar */
+    display: block; /* Asegura que no haya espacios en blanco debajo de la imagen */
+    transition: transform 1.9s ease; /* Suavidad en la transición */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  /* Efecto de desplazamiento hacia arriba al pasar el cursor */
+  .carousel-item:hover img {
+    transform: scale(1.1) translateY(-10px); /* Desplazamiento hacia arriba al hacer hover para la imagen */
+  }
+
+  /* Estilos adicionales para la sección */
+  .section-info {
+    padding: 20px;
+    background: linear-gradient(#b98f04 30%, #000 70%);
+  }
+
+  /* Estilos para el contenedor sticky */
+  .sticky-container {
+    position: relative;
+  }
+
+  .sticky-titulo {
+    position: relative;
+    top: 0;
+    z-index: 100;
+  }
+
+  .carousel-caption {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-weight: 500;
+    font-size: 38px;
+    color: rgb(203, 202, 202);
+    padding: 30px;
+    transform: translateY(10px); /* Ajuste de la posición */
+    transition: transform 0.4s ease;
+    font-family: "Playfair Display", serif;
+  }
+
+  /* Efecto de aparición del texto */
+  .carousel-item:hover .carousel-caption {
+    transform: translateY(8);
+  }
+
+  /* Botón "Ver Más" ajustado */
+  .carousel-item a {
+    display: flex; /* Ajusta el ancho al contenido */
+    position: absolute; /* Mantiene el flujo del documento */
+    text-align: center;
+    margin: 25px auto; /* Márgenes superior e inferior con auto para centrar */
+    background-color: #19354b;
+    color: white;
+    font-size: 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    bottom: -25px;
+    width: auto; /* Ajusta el ancho automáticamente */
+    max-width: fit-content; /* Ajusta el ancho al contenido */
+    box-sizing: border-box; /* Incluye el padding en el cálculo del ancho */
+  }
+
+  .carousel-item a:hover {
+    transform: scale(1.07);
+    background-color: rgb(154, 117, 8);
+    color: white;
+    transition: background-color 0.6s ease;
+  }
+
+  /* Botones de navegación */
+  .carousel-control-prev,
+  .carousel-control-next {
+    position: absolute;
+    top: 50%; /* Centrado verticalmente */
+    transform: translateY(-50%); /* Ajuste para mantener centrado */
+
+    color: whitesmoke;
+    border: none;
+    font-size: 55px;
+
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.3s ease;
+    border-radius: 100%;
+  }
+
+  .carousel-control-prev {
+    left: 10px; /* Más cerca del borde izquierdo */
+  }
+
+  .carousel-control-next {
+    right: 10px; /* Más cerca del borde derecho */
+  }
+
+  .carousel-control-prev:hover,
+  .carousel-control-next:hover {
+    border-radius: 100%;
+    color: black;
+  }
+
+  @media (max-width: 768px) {
+    /* Ajustes para pantallas pequeñas */
+    .carousel-caption {
+      font-size: 36px;
+      padding: 8px;
+    }
+
+    .carousel-item a {
+      padding: 6px 20px;
+      font-size: 16px;
+    }
+
+    .carousel-control-prev {
+      left: 10px;
+    }
+
+    .carousel-control-next {
+      right: 10px;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      /* top: 110%; Centrado vertical */
+    }
+  }
+
+  @media (max-width: 480px) {
+    /* Ajustes para dispositivos móviles */
+    .carousel-caption {
+      font-size: 22px;
+      padding: 8px;
+      color: black;
+    }
+
+    .section-info,
+    .carousel-item {
+      background: white;
+    }
+
+    .carousel-item a {
+      padding: 8px 20px;
+      font-size: 16px;
+    }
+
+    .carousel-item img {
+      height: 300px; /* Mantiene la relación de aspecto */
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      top: 45%; /* Centrado vertical */
+      font-size: 30px;
+    }
+
+    h2 {
+      font-size: 20px;
+      color: black;
+    }
+
+    .ford,
+    .mazda,
+    .bmw,
+    .audi,
+    .byd {
+      font-size: 20px;
+    }
+  }
+</style>
+
+<script>
+  // Variables iniciales
+  const carousel = document.getElementById("carousel");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const items = Array.from(carousel.children);
+  let isPaused = false;
+  let currentIndex = 0;
+
+  // Clonar los primeros y últimos elementos para un efecto infinito
+  carousel.appendChild(items[0].cloneNode(true));
+  carousel.insertBefore(items[items.length - 1].cloneNode(true), items[0]);
+
+  // Función de auto deslizamiento
+  function autoSlide() {
+    if (!isPaused) {
+      currentIndex++;
+      if (currentIndex >= items.length + 1) {
+        currentIndex = 1;
+        carousel.scrollTo({ left: 0, behavior: "auto" });
+      }
+      carousel.scrollBy({ left: carousel.clientWidth, behavior: "smooth" });
+    }
+  }
+
+  // Intervalo automático para deslizar el carrusel
+  let slideInterval = setInterval(autoSlide, 3000);
+
+  // Pausar auto deslizamiento al pasar el mouse sobre el carrusel
+  carousel.addEventListener("mouseover", () => {
+    isPaused = true;
+    clearInterval(slideInterval);
+  });
+
+  // Reanudar auto deslizamiento al salir el mouse del carrusel
+  carousel.addEventListener("mouseout", () => {
+    isPaused = false;
+    slideInterval = setInterval(autoSlide, 6000);
+  });
+
+  // Botón de navegación "anterior"
+  prevBtn.addEventListener("click", () => {
+    isPaused = true;
+    currentIndex--;
+    if (currentIndex < 0) {
+      // Corrección aquí
+      currentIndex = items.length - 1;
+      carousel.scrollTo({ left: carousel.scrollWidth, behavior: "auto" });
+    }
+    carousel.scrollBy({ left: -carousel.clientWidth, behavior: "smooth" });
+    isPaused = false;
+    clearInterval(slideInterval);
+    slideInterval = setInterval(autoSlide, 3000);
+  });
+
+  // Botón de navegación "siguiente"
+  nextBtn.addEventListener("click", () => {
+    isPaused = true;
+    currentIndex++;
+    if (currentIndex >= items.length + 1) {
+      currentIndex = 1;
+      carousel.scrollTo({ left: 0, behavior: "auto" });
+    }
+    carousel.scrollBy({ left: carousel.clientWidth, behavior: "smooth" });
+    isPaused = false;
+    clearInterval(slideInterval);
+    slideInterval = setInterval(autoSlide, 3000);
+  });
+</script>

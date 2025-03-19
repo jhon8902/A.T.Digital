@@ -1,0 +1,123 @@
+[
+  {
+    "id": 1,
+    "titulo": "KIA EV-9",
+    "descripcion": "el SUV eléctrico de KIA ya está en Colombia y esto es lo que se sabe.",
+    "imagen": "/img/ev9.avif",
+    "contenido": [
+      {
+        "titulo": "Diseño Innovador",
+        "parrafo": "El KIA EV9 es un SUV completamente eléctrico que representa el futuro de la movilidad. Con un diseño innovador y tecnología de punta, el EV9 ofrece una experiencia de conducción inigualable.",
+        "imagen": "/img/ev91.jpg"
+      },
+      {
+        "titulo": "Baterías de Última Generación",
+        "parrafo": "Equipado con baterías de última generación, el KIA EV9 tiene una autonomía de hasta 500 km con una sola carga. Además, su capacidad de carga rápida permite recuperar el 80% de la batería en solo 30 minutos.",
+        "imagen": "/img/ev92.jpg"
+      },
+      {
+        "titulo": "Interior Sostenible",
+        "parrafo": "El interior del EV9 está diseñado pensando en la comodidad y la sostenibilidad. Los materiales utilizados son eco-amigables, y el sistema de infoentretenimiento es de los más avanzados del mercado.",
+        "imagen": "/img/ev93.jpg"
+      }
+    ],
+    "link": "/noticias-nacionales/noticia-kia-ev9"
+  },
+  {
+    "id": 2,
+    "titulo": "Mazda EZ-6",
+    "descripcion": "Mazda lanza su nuevo SUV híbrido con tecnología avanzada.",
+    "imagen": "/img/mazda-ez-6-portada.jpg",
+    "contenido": [
+      {
+        "titulo": "Tecnología Híbrida",
+        "parrafo": "El Mazda EZ-6 combina un motor de combustión interna con un motor eléctrico para ofrecer una eficiencia de combustible excepcional y una conducción suave.",
+        "imagen": "/img/mazda-ez-6-conectado.jpg"
+      },
+      {
+        "titulo": "Diseño Elegante",
+        "parrafo": "Con líneas aerodinámicas y un diseño sofisticado, el Mazda EZ-6 destaca en cualquier camino.",
+        "imagen": "/img/mazda-ez-6-lateral.avif"
+      },
+      {
+        "titulo": "Conectividad Avanzada",
+        "parrafo": "El EZ-6 está equipado con un sistema de infoentretenimiento de última generación, compatible con Apple CarPlay y Android Auto.",
+        "imagen": "/img/Mazda-EZ-6-interior.jpeg"
+      }
+    ],
+    "link": "/noticias-nacionales/noticia-mazda-ez-6"
+  },
+  {
+    "id": 3,
+    "titulo": "Toyota Prado",
+    "descripcion": "El híbrido más popular de Toyota renueva su diseño y eficiencia.",
+    "imagen": "/img/toyota-prado.jpg",
+    "contenido": [
+      {
+        "titulo": "Diseño Robusto",
+        "parrafo": "La Toyota Prado 2025 llega con un diseño renovado, combinando robustez y elegancia para destacar en cualquier terreno.",
+        "imagen": "/img/toyota-prado1.jpg"
+      },
+      {
+        "titulo": "Eficiencia Híbrida",
+        "parrafo": "Gracias a su sistema híbrido avanzado, la Toyota Prado 2025 ofrece un menor consumo de combustible y una reducción en emisiones sin sacrificar potencia.",
+        "imagen": "/img/toyota-prado2.jpg"
+      },
+      {
+        "titulo": "Tecnología de Vanguardia",
+        "parrafo": "Equipada con un sistema de infoentretenimiento moderno y avanzados asistentes de conducción, la nueva Prado garantiza seguridad y comodidad en cada viaje.",
+        "imagen": "/img/toyota-prado3.jpg"
+      }
+    ],
+    "link": "/noticias-nacionales/noticia-toyota-prado"
+  },
+  {
+    "id": 4,
+    "titulo": "Ford F-150 ",
+    "descripcion": "La versión eléctrica de la icónica pickup de Ford, conocela.",
+    "imagen": "/img/ford-f150-3.jpg",
+    "contenido": [
+      {
+        "titulo": "Potencia Eléctrica",
+        "parrafo": "La Ford F-150 Lightning redefine la potencia con su tren motriz 100% eléctrico, ofreciendo hasta 563 caballos de fuerza y un torque impresionante.",
+        "imagen": "/img/ford-f150-2.jpg"
+      },
+      {
+        "titulo": "Autonomía y Carga",
+        "parrafo": "Con una autonomía de hasta 480 km y capacidad de carga rápida, la F-150 Lightning está diseñada para el trabajo y la aventura.",
+        "imagen": "/img/ford-f150-4.webp"
+      },
+      {
+        "titulo": "Innovación y Tecnología",
+        "parrafo": "Cuenta con una pantalla táctil de última generación, actualizaciones inalámbricas y un sistema de conducción asistida para mayor seguridad y confort.",
+        "imagen": "/img/ford-f150-interior.jpg"
+      }
+    ],
+    "link": "/noticias-nacionales/noticia-ford-f-150"
+  },
+  {
+    "id": 2,
+    "titulo": "Mazda EZ-6",
+    "descripcion": "Mazda lanza su nuevo SUV híbrido con tecnología avanzada.",
+    "imagen": "/img/mazda ez-6.jpg",
+    "contenido": [
+      {
+        "titulo": "Tecnología Híbrida",
+        "parrafo": "El Mazda EZ-6 combina un motor de combustión interna con un motor eléctrico para ofrecer una eficiencia de combustible excepcional y una conducción suave.",
+        "imagen": "/img/mazda-ez-6-conectado.jpg"
+      },
+      {
+        "titulo": "Diseño Elegante",
+        "parrafo": "Con líneas aerodinámicas y un diseño sofisticado, el Mazda EZ-6 destaca en cualquier camino.",
+        "imagen": "/img/mazda-ez-6-lateral.avif"
+      },
+      {
+        "titulo": "Conectividad Avanzada",
+        "parrafo": "El EZ-6 está equipado con un sistema de infoentretenimiento de última generación, compatible con Apple CarPlay y Android Auto.",
+        "imagen": "/img/Mazda-EZ-6-interior.jpeg"
+      }
+    ],
+    "link": "/noticias-nacionales/noticia-mazda-ez-6"
+  }
+  
+]

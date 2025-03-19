@@ -1,0 +1,186 @@
+---
+
+---
+
+<meta charset="UTF-8" />
+
+<section class="nota-container">
+  <div class="nota-header">
+    <h1>Ford Escape Híbrida: Innovación y Eficiencia</h1>
+    <p class="subtitulo">
+      Descubre cómo la tecnología híbrida transforma la conducción diaria
+    </p>
+  </div>
+
+  <div class="nota-content">
+    <div class="nota-texto">
+      <p>
+        La Ford Escape Híbrida combina lo mejor de dos mundos: un motor de
+        gasolina y uno eléctrico, diseñados para ofrecer una experiencia de
+        conducción suave, eficiente y respetuosa con el medio ambiente. Ideal
+        tanto para la ciudad como para viajes largos, este modelo redefine la
+        eficiencia sin sacrificar el rendimiento.
+      </p>
+
+      <img
+        src="/img/scape-hibrida.png"
+        alt="Ford Escape Híbrida"
+        class="nota-imagen"
+      />
+
+      <h2>Diseño Moderno y Sofisticado</h2>
+      <p>
+        Desde su parrilla aerodinámica hasta su interior espacioso, la Escape
+        Híbrida está diseñada para impresionar. Los acabados de alta calidad, la
+        tecnología avanzada y la conectividad de última generación hacen de este
+        modelo una opción perfecta para quienes buscan comodidad y estilo.
+      </p>
+      <img
+        src="/img/scape-hibrida.png"
+        alt="Ford Escape Híbrida"
+        class="nota-imagen"
+      />
+      <h2>Tecnología Inteligente</h2>
+      <p>
+        Este vehículo cuenta con un sistema híbrido avanzado que permite cambiar
+        entre los modos eléctrico y de gasolina automáticamente, maximizando la
+        eficiencia del combustible. Además, incluye funciones como el asistente
+        de manejo autónomo, integración con Apple CarPlay y Android Auto, y un
+        sistema de navegación intuitivo.
+      </p>
+
+      <img
+        src="/img/scape-hibrida.png"
+        alt="Ford Escape Híbrida"
+        class="nota-imagen"
+      />
+
+      <h2>Beneficios para el Medio Ambiente</h2>
+      <p>
+        Al reducir las emisiones de carbono y el consumo de gasolina, la Ford
+        Escape Híbrida es una elección responsable para quienes desean
+        contribuir a un futuro más sostenible, sin comprometer su estilo de
+        vida.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .nota-container {
+    padding: 20px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: "Lora", serif;
+    line-height: 1.6;
+  }
+
+  .nota-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .nota-header h1 {
+    font-size: 2.8rem;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 2s ease-in-out;
+    background: #19354b;
+    text-transform: uppercase;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .nota-header .subtitulo {
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 10px;
+  }
+
+  .nota-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .nota-imagen {
+    width: 100%;
+    padding: 20px;
+    height: 600px;
+    border-radius: 10px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .nota-imagen:hover {
+    transform: scale(1.05);
+  }
+
+  .nota-texto {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .nota-texto h2 {
+    font-size: 2.8rem;
+    color: white;
+    margin-bottom: 10px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: #19354b;
+  }
+
+  .nota-texto p {
+    font-size: 1.8rem;
+    color: black;
+    margin-bottom: 20px;
+  }
+
+  @media (min-width: 768px) {
+    .nota-content {
+      flex-direction: row;
+    }
+
+    .nota-imagen {
+      flex: 1;
+      margin-right: 20px;
+    }
+
+    .nota-texto {
+      flex: 2;
+    }
+  }
+
+  .btn-more-info {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .btn-more-info:hover {
+    background-color: #0056b3;
+  }
+
+  .more-info {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #333;
+  }
+</style>

@@ -1,0 +1,61 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+import Header from "../components/header/Header.astro";
+import "swiper/css";
+import "swiper/css/pagination"; /* Si estás usando paginación */
+import Footer from "../components/footer/footer.astro";
+---
+
+<!-- noticia-mazda.astro --><!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="description" content="Auto-Tech-Digital" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Merriweather:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="preload" href="styles.css" as="style" />
+
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+      <Footer />
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  html {
+    background: #f6f6f6;
+    background-size: 224px;
+    color-scheme: dark light;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden; /* Evita desbordamiento horizontal */
+  }
+</style>
