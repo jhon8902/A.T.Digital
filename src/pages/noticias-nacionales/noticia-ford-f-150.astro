@@ -7,7 +7,7 @@ const noticia = noticiaData.find((item) => item.id === 4);
 
 {
   noticia ? (
-    <Layout title={noticia.titulo}>
+    <Layout title={noticia.titulo} bodyClass="otras-page">
       <section class="noticia-detalle">
         <p class="noticia-descripcion">{noticia.descripcion}</p>
 
@@ -69,12 +69,15 @@ const noticia = noticiaData.find((item) => item.id === 4);
   }
 
   .noticia-descripcion {
-    font-size: 55px;
-    font-weight: 400;
-    text-align: start;
-    padding: 30px;
-    text-transform: uppercase;
+    position: relative; /* Necesario para posicionar el pseudo-elemento */
+    font-size: 75px;
+    text-align: center;
+    color: black;
+    font-family: "Lora", serif; /* Fuente para el texto principal */
+    margin: 0 auto 5px;
     text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+
+    padding: 15px;
   }
 
   /* Imagen de portada */

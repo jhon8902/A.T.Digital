@@ -7,7 +7,7 @@ const noticia = noticiaData.find((item) => item.id === 2);
 
 {
   noticia ? (
-    <Layout title={noticia.titulo}>
+    <Layout title={noticia.titulo} bodyClass="otras-page">
       <section class="noticia-detalle">
         <p class="noticia-descripcion">{noticia.descripcion}</p>
 
@@ -51,9 +51,10 @@ const noticia = noticiaData.find((item) => item.id === 2);
   .noticia-detalle {
     width: 100%;
     margin: 0;
-    padding: 40px 0;
+    padding: 10px 0;
     font-family: "Lora", serif; /* Fuente para el texto principal */
     position: relative;
+    background: #b39898;
   }
 
   /* Título flotante */
@@ -61,20 +62,24 @@ const noticia = noticiaData.find((item) => item.id === 2);
     font-size: 75px;
     text-align: center;
     color: black;
+    background: white;
     font-family: "Lora", serif; /* Fuente para el texto principal */
     margin: 0 auto 5px;
     text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
-    border-bottom: 2px solid black;
+
     padding: 15px;
   }
 
   .noticia-descripcion {
-    font-size: 55px;
-    font-weight: 400;
-    text-align: start;
+    font-size: 45px;
+    font-weight: bolder;
+    text-align: center;
     padding: 30px;
     text-transform: uppercase;
     text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+    color: black;
+
+    background: #ffffff;
   }
 
   /* Imagen de portada */
@@ -82,6 +87,7 @@ const noticia = noticiaData.find((item) => item.id === 2);
     width: 100%;
     height: 1024px;
     object-fit: cover;
+    padding: 10px;
   }
 
   /* Bloques alternados */
@@ -98,6 +104,7 @@ const noticia = noticiaData.find((item) => item.id === 2);
     height: auto;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
     transition: transform 0.9s ease; /*efecto alejamiento zoom*/
+    padding: 5px;
   }
 
   /*efecto alejamiento zoom*/
@@ -111,10 +118,11 @@ const noticia = noticiaData.find((item) => item.id === 2);
     background: #ffffff;
     padding: 20px;
     border-radius: 12px;
-    width: 50%;
+    width: 80%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-bottom: 40px;
   }
 
   .noticia-titulo {

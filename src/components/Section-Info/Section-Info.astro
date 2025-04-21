@@ -6,21 +6,39 @@
   <div class="sticky-container">
     <div class="titulo-con-lineas sticky-titulo">
       <div class="linea"></div>
-      <h2>Actualidad</h2>
+      <h1>Noticias sobre ruedas</h1>
+      <!-- Cambiado a <h1> para el título principal -->
+      <p>Avances y reportes del mundo automotor</p>
       <div class="linea"></div>
     </div>
 
     <div class="container mx-auto px-2">
       <div id="carousel" class="relative flex overflow-hidden">
+        <!-- Imagen 3 -->
+        <a
+          href="/noticias-carrusel/noticia-bmw"
+          class="carousel-item relative w-full transition-transform duration-600 hover:scale-95"
+        >
+          <!-- Cambiado a <h2> -->
+          <img
+            src="../img/bmw.gif"
+            alt="BMW Serie 5 eléctrico y potente"
+            class="w-full h-full object-cover"
+          />
+          <div class="carousel-caption">
+            BMW Serie 5: poderoso, tecnológico y ahora electrificado.
+          </div>
+        </a>
+
         <!-- Imagen 1 -->
         <a
           href="/noticias-carrusel/noticia-ford"
-          class="carousel-item relative w-full transition-opacity duration-600 hover:opacity-75"
+          class="carousel-item relative w-full transition-opacity duration-[1400ms] hover:opacity-75"
         >
-          <h1 class="ford">FORD BRONCO</h1>
+          <!-- Cambiado a <h2> -->
           <img
             src="../img/ford-1bronco.jpg"
-            alt="Ford Bronco"
+            alt="Ford Bronco, SUV todo terreno"
             class="w-full h-full object-cover"
           />
           <div class="carousel-caption">
@@ -30,33 +48,18 @@
 
         <!-- Imagen 2 -->
         <a
-          href="/noticias-carrusel/noticia-mazda"
+          href="/noticias-carrusel/noticia-dfsk"
           class="carousel-item relative w-full transition-transform duration-600 hover:scale-95"
         >
-          <h1 class="mazda">MAZDA CX-30</h1>
+          <!-- Cambiado a <h2> -->
           <img
-            src="../img/mazda-cx30.jpg"
-            alt="Mazda CX-30"
+            src="../img/suspension-dfsk.jpeg"
+            alt="DFSK E5: híbrida para 7 pasajeros"
             class="w-full h-full object-cover"
           />
           <div class="carousel-caption">
-            Mazda CX-30: sigue rompiendo récords como el carro más vendido.
-          </div>
-        </a>
-
-        <!-- Imagen 3 -->
-        <a
-          href="/noticias-carrusel/noticia-bmw"
-          class="carousel-item relative w-full transition-transform duration-600 hover:scale-95"
-        >
-          <h1 class="bmw">BMW</h1>
-          <img
-            src="../img/bmw.gif"
-            alt="BMW"
-            class="w-full h-full object-cover"
-          />
-          <div class="carousel-caption">
-            BMW Serie 5: poderoso, tecnológico y entra a la electrificación.
+            Changan DFSK E5: híbrida para 7 pasajeros, descubre sus
+            características.
           </div>
         </a>
 
@@ -65,14 +68,14 @@
           href="/noticias-carrusel/noticia-audi"
           class="carousel-item relative w-full transition-transform duration-600 hover:scale-95"
         >
-          <h1 class="audi">AUDI E-TRON</h1>
+          <!-- Cambiado a <h2> -->
           <img
             src="../img/Audi.jpg"
-            alt="Audi"
+            alt="Audi E-TRON: SUV eléctrico de lujo"
             class="w-full h-full object-cover"
           />
           <div class="carousel-caption">
-            Audi E-TRON: el SUV más bonito de la marca, 100% eléctrico.
+            Audi E-TRON: el SUV eléctrico más elegante de la marca.
           </div>
         </a>
 
@@ -81,22 +84,28 @@
           href="/noticias-carrusel/noticia-byd"
           class="carousel-item relative w-full transition-transform duration-600 hover:scale-105"
         >
-          <h1 class="byd">BYD</h1>
+          <!-- Cambiado a <h2> -->
           <img
-            src="../img/byd.jpeg"
-            alt="BYD"
+            src="../img/planta1.avif"
+            alt="BYD Yuan Plus fuerte en electrificación"
             class="w-full h-full object-cover"
           />
           <div class="carousel-caption">
-            BYD Yuan Plus: sin duda, BYD es uno de los más fuertes en lo
-            eléctrico.
+            <div class="carousel-caption">
+              Trump Impone Aranceles, GM Responde Aumentando la Producción en
+              Indiana.
+            </div>
           </div>
         </a>
       </div>
 
       <!-- Botones de navegación -->
-      <button id="prevBtn" class="carousel-control-prev">❮</button>
-      <button id="nextBtn" class="carousel-control-next">❯</button>
+      <button id="prevBtn" class="carousel-control-prev" aria-label="Anterior"
+        >❮</button
+      >
+      <button id="nextBtn" class="carousel-control-next" aria-label="Siguiente"
+        >❯</button
+      >
     </div>
   </div>
 </section>
@@ -108,16 +117,14 @@
     font-family: "Lora", serif; /* Fuente para el texto principal */
   }
 
-  h2 {
+  h1 {
     max-width: 100%;
     text-align: center;
     font-weight: bold;
-    font-size: 70px;
+    font-size: 60px;
     color: black; /* Color del texto */
-    margin-bottom: 35px;
-    padding: 45px;
-    letter-spacing: 4.6px;
-    text-shadow: 2px 2px 6px rgba(246, 246, 246, 0.5);
+    letter-spacing: 2.6px;
+
     text-transform: uppercase;
     opacity: 0; /* Comienza transparente */
     transform: translateY(20px); /* Comienza un poco más abajo */
@@ -126,23 +133,22 @@
     position: relative; /* Necesario para los pseudoelementos */
   }
 
-  h2::before,
-  h2::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 190px; /* Ajusta la longitud de las líneas según tus necesidades */
-    height: 4px;
-    background-color: black;
-    transform: translateY(-50%);
-  }
+  p {
+    max-width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    color: black; /* Color del texto */
+    margin-bottom: 15px;
+    padding: 10px;
+    letter-spacing: 2.2px;
 
-  h2::before {
-    left: 300px; /* Colocar fuera del texto */
-  }
-
-  h2::after {
-    right: 300px; /* Colocar fuera del texto */
+    text-transform: uppercase;
+    opacity: 0; /* Comienza transparente */
+    transform: translateY(20px); /* Comienza un poco más abajo */
+    animation: fadeIn 6s forwards; /* Aplica la animación */
+    font-family: "Georgia", serif;
+    position: relative; /* Necesario para los pseudoelementos */
   }
 
   @keyframes fadeIn {
@@ -160,6 +166,7 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     position: relative;
+    border-bottom: 6px solid black;
   }
 
   /* Elementos del carrusel */
@@ -171,7 +178,7 @@
     max-width: 100%;
     background: rgba(0, 0, 0, 0.7); /* Fondo negro con 70% de opacidad */
     opacity: 1; /* Ocultar inicialmente */
-    transition: opacity 9s ease-in-out; /* Transición suave */
+    transition: opacity 12s ease-in-out; /* Transición suave */
   }
 
   /* Mostrar el elemento actual */
@@ -179,33 +186,15 @@
     opacity: 1; /* Mostrar el elemento activo */
   }
 
-  /* Texto del carrusel */
-  .ford,
-  .mazda,
-  .bmw,
-  .audi,
-  .byd {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    background: rgba(0, 0, 0, 0.5);
-    padding: 10px 20px;
-    border-radius: 10px;
-  }
-
   /* Imagen del carrusel */
   .carousel-item img {
     width: 100%; /* Asegurarse de que ocupe todo el ancho */
-    height: 530px; /* Mantener la proporción de la imagen */
+    height: 580px; /* Mantener la proporción de la imagen */
     object-fit: cover; /* Llenar el contenedor manteniendo el aspecto, pero sin deformar */
     display: block; /* Asegura que no haya espacios en blanco debajo de la imagen */
-    transition: transform 1.9s ease; /* Suavidad en la transición */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    background: rgba(0, 0, 0, 0.5);
+    transition: transform 2.9s ease; /* Suavidad en la transición */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.8);
   }
 
   /* Efecto de desplazamiento hacia arriba al pasar el cursor */
@@ -235,13 +224,13 @@
     bottom: 0;
     width: 100%;
     text-align: center;
-    font-weight: 500;
-    font-size: 38px;
-    color: rgb(203, 202, 202);
+    font-weight: bolder;
+    font-size: 36px;
+    color: rgb(228, 227, 227);
     padding: 30px;
     transform: translateY(10px); /* Ajuste de la posición */
     transition: transform 0.4s ease;
-    font-family: "Playfair Display", serif;
+    text-transform: uppercase;
   }
 
   /* Efecto de aparición del texto */
@@ -307,6 +296,10 @@
 
   @media (max-width: 768px) {
     /* Ajustes para pantallas pequeñas */
+
+    h1 {
+      font-size: 32px;
+    }
     .carousel-caption {
       font-size: 36px;
       padding: 8px;
@@ -355,13 +348,17 @@
 
     .carousel-control-prev,
     .carousel-control-next {
-      top: 45%; /* Centrado vertical */
+      top: 55%; /* Centrado vertical */
       font-size: 30px;
     }
 
     h2 {
-      font-size: 20px;
+      font-size: 30px;
       color: black;
+    }
+
+    p {
+      font-size: 15px;
     }
 
     .ford,

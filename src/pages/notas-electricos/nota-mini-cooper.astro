@@ -1,146 +1,256 @@
 ---
-
+import Layout from "../../layouts/Layout.astro";
 ---
 
 <meta charset="UTF-8" />
-
-<section class="nota-container">
-  <div class="nota-header">
-    <h1>Ford Escape Híbrida: Innovación y Eficiencia</h1>
-    <p class="subtitulo">
-      Descubre cómo la tecnología híbrida transforma la conducción diaria
-    </p>
-  </div>
-
-  <div class="nota-content">
-    <div class="nota-texto">
-      <p>
-        La Ford Escape Híbrida combina lo mejor de dos mundos: un motor de
-        gasolina y uno eléctrico, diseñados para ofrecer una experiencia de
-        conducción suave, eficiente y respetuosa con el medio ambiente. Ideal
-        tanto para la ciudad como para viajes largos, este modelo redefine la
-        eficiencia sin sacrificar el rendimiento.
-      </p>
-
-      <img
-        src="/img/scape-hibrida.png"
-        alt="Ford Escape Híbrida"
-        class="nota-imagen"
-      />
-
-      <h2>Diseño Moderno y Sofisticado</h2>
-      <p>
-        Desde su parrilla aerodinámica hasta su interior espacioso, la Escape
-        Híbrida está diseñada para impresionar. Los acabados de alta calidad, la
-        tecnología avanzada y la conectividad de última generación hacen de este
-        modelo una opción perfecta para quienes buscan comodidad y estilo.
-      </p>
-      <img
-        src="/img/scape-hibrida.png"
-        alt="Ford Escape Híbrida"
-        class="nota-imagen"
-      />
-      <h2>Tecnología Inteligente</h2>
-      <p>
-        Este vehículo cuenta con un sistema híbrido avanzado que permite cambiar
-        entre los modos eléctrico y de gasolina automáticamente, maximizando la
-        eficiencia del combustible. Además, incluye funciones como el asistente
-        de manejo autónomo, integración con Apple CarPlay y Android Auto, y un
-        sistema de navegación intuitivo.
-      </p>
-
-      <img
-        src="/img/scape-hibrida.png"
-        alt="Ford Escape Híbrida"
-        class="nota-imagen"
-      />
-
-      <h2>Beneficios para el Medio Ambiente</h2>
-      <p>
-        Al reducir las emisiones de carbono y el consumo de gasolina, la Ford
-        Escape Híbrida es una elección responsable para quienes desean
-        contribuir a un futuro más sostenible, sin comprometer su estilo de
-        vida.
-      </p>
+<Layout title="nota-mini-cooper" bodyClass="otras-page">
+  <section class="nota-container">
+    <div class="nota-header">
+      <h1>Mini Cooper Eléctrico</h1>
+      <p class="subtitulo">Electromovilidad con estilo icónico</p>
     </div>
-  </div>
-</section>
+
+    <section class="feature-banner-1">
+      <div class="feature-text-1">
+        <h2 class="feature-title-1">movimiento con Estilo.</h2>
+      </div>
+      <img
+        src="/img/mini-cooper5.jpg"
+        alt="Vista lateral Mini Cooper Eléctrico"
+      />
+    </section>
+
+    <section class="dynamic-layout reverse">
+      <div class="dynamic-item text-box">
+        <h2>Diseño Clásico, Tecnología Moderna</h2>
+        <p>
+          Manteniendo su icónica silueta, el Mini Cooper Eléctrico incorpora
+          detalles innovadores y aerodinámicos para una experiencia única.
+        </p>
+      </div>
+      <div class="dynamic-item">
+        <img src="/img/mini-cooper4.jpg" alt="Diseño Mini Cooper" />
+      </div>
+    </section>
+
+    <section class="dynamic-layout">
+      <div class="dynamic-item">
+        <img src="/img/mini-cooper2.jpg" alt="Interior Mini Cooper Eléctrico" />
+      </div>
+      <div class="dynamic-item text-box">
+        <h2>Conectividad y Confort</h2>
+        <p>
+          Equipado con una pantalla digital central, materiales premium y
+          tecnología de asistencia, ofrece una conducción placentera y segura.
+        </p>
+      </div>
+    </section>
+
+    <section class="feature-banner-container">
+      <div class="feature-banner">
+        <img src="/img/mini-cooper3.jpg" alt="Carga Rápida Mini Cooper" />
+      </div>
+      <div class="feature-text">
+        <h2 class="feature-title">Carga Rápida y Autonomía</h2>
+        <p class="feature-paragraph">
+          Con una autonomía de hasta 270 km y capacidad de carga rápida al 80%
+          en solo 35 minutos, el Mini Cooper Eléctrico está listo para cualquier
+          aventura urbana.
+        </p>
+      </div>
+    </section>
+  </section>
+</Layout>
 
 <style>
-  .nota-container {
-    padding: 20px;
-    width: 100%; /* Ahora ocupa todo el ancho de la página */
-    margin: 0 auto;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
     font-family: "Lora", serif;
-    line-height: 1.6;
+    background: #000;
+    color: white;
+  }
+
+  .nota-container {
+    width: 100%;
+    overflow: hidden;
   }
 
   .nota-header {
     text-align: center;
-    margin-bottom: 30px;
+    padding: 60px 20px;
+    background: #b98f04;
+    color: black;
   }
 
   .nota-header h1 {
-    font-size: 3.9rem;
-    font-weight: bold;
-    color: #333;
+    font-size: 4rem;
+    border-bottom: 2px solid black;
+    text-transform: uppercase;
+    font-weight: bolder;
   }
 
   .nota-header .subtitulo {
-    font-size: 1.2rem;
-    color: #555;
+    font-size: 1.5rem;
     margin-top: 10px;
   }
 
-  .nota-content {
+  .dynamic-layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 60vh;
+    padding: 20px;
+  }
+
+  .dynamic-item {
+    flex: 1;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dynamic-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .text-box {
+    padding: 100px;
+    background: #b98f04;
+    color: black;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    justify-content: center;
   }
 
-  .nota-imagen {
-    max-width: 100%;
-    height: auto;
-    max-height: 400px; /* Máxima altura para evitar imágenes gigantes */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    object-fit: contain; /* Ajusta la imagen manteniendo proporción */
+  .text-box h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-align: start;
+    text-transform: uppercase;
+    font-weight: 600;
   }
 
-  .nota-texto {
-    background: white;
+  .text-box p {
+    font-size: 1.4rem;
+    text-align: start;
     padding: 20px;
+  }
+
+  .feature-banner-1 {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    /*background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));*/
+    z-index: 1;
+  }
+
+  .feature-banner-1 img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    position: absolute;
+    z-index: 3;
+  }
+
+  .feature-text-1 {
+    position: absolute;
+    bottom: 0; /* Posiciona el contenedor en la parte inferior */
+    right: 0; /* Alinea el contenedor a la derecha */
+    width: 50%;
+    padding: 3%;
+    text-align: end;
+    /*background: rgba(186, 186, 186, 0.3);*/
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .nota-texto h2 {
-    font-size: 1.8rem;
-    color: #333;
-    margin-bottom: 10px;
+  .feature-title-1 {
+    font-size: 4rem;
+    font-weight: 200;
+    margin-bottom: 5px;
+    color: #faf8f8;
+    /* text-shadow: 2px 2px 4px rgba(231, 229, 229, 0.4); Sombra al texto */
   }
 
-  .nota-texto p {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 20px;
+  .feature-banner-container {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column; /* Para alinear los elementos en columna */
+    justify-content: center; /* Para alinear el contenido al final del contenedor */
   }
 
-  @media (min-width: 768px) {
-    .nota-content {
-      flex-direction: row;
+  .feature-banner {
+    width: 100%;
+    height: auto;
+  }
+
+  .feature-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative; /* No es necesario absolute */
+    z-index: 3;
+  }
+
+  .feature-text {
+    width: 80%;
+    text-align: center;
+    padding: 5%;
+    background: rgba(0, 0, 0, 0.6);
+    margin-top: 20px; /* Agrega margen para separarlo de la imagen */
+  }
+
+  .feature-title {
+    font-size: 4rem;
+    color: #d5ac24;
+    font-weight: bold;
+    border-bottom: 2px solid rgb(91, 91, 91);
+  }
+
+  .feature-paragraph {
+    font-size: 2rem;
+    color: rgb(186, 186, 186);
+  }
+
+  @media (max-width: 768px) {
+    .dynamic-layout {
+      flex-direction: column;
     }
 
-    .nota-imagen {
-      flex: 1;
-      margin-right: 20px;
+    .dynamic-layout.reverse {
+      flex-direction: column-reverse;
     }
 
-    .nota-texto {
-      flex: 2;
+    .feature-text {
+      width: 90%;
+      padding: 10%;
+    }
+
+    .feature-title {
+      font-size: 3rem;
+    }
+
+    .feature-paragraph {
+      font-size: 1.5rem;
+    }
+
+    .text-box {
+      padding: 50px;
+      text-align: center;
+    }
+
+    .text-box h2 {
+      text-align: center;
     }
   }
 </style>

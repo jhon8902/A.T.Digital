@@ -1,106 +1,61 @@
----
-
----
-
 <div id="electricos" class="electrico-container">
   <div class="central-content">
-    <h1>ELECTRICOS</h1>
+    <h1>Carros Eléctricos</h1>
   </div>
 
-  <div class="imagenes-grandes">
-    <div class="imagen-grande">
-      <a href="/notas-electricos/nota-volvo-cx40">
-        <div class="electrico">
+  <div class="grid-container">
+    <div class="imagen-destacada nueva-destacada">
+      <a href="/notas-electricos/nota-volvo-cx40" class="destacada-link">
+        <div class="texto-destacado">
+          <p class="texto-f">nota: 10-feb</p>
+          <h2>Volvo CX40 RECHARGE</h2>
+          <p>
+            No solo ofrece una autonomía de 500km sino que además llega con
+            nuevo diseño vanguardista.
+          </p>
+        </div>
+        <div class="imagen-destacada-img">
           <img
             src="../img/volvo-cx40-portada.jpg"
-            alt="volvo cx40"
+            alt="Volvo CX40"
             class="electrico-imagen"
           />
-
-          <div class="electrico-texto">
-            <h2>volvo cx40</h2>
-            <p>
-              volvo presenta este diseño agregando a su portafolio, siendo una
-              de las marcas que más resultados ofrece a los compradores.
-            </p>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    <div class="imagen-grande">
-      <a href="/notas-electricos/nota-mini-cooper">
-        <div class="electrico">
-          <img
-            src="../img/mini-cooper1.jpg"
-            alt="stonic"
-            class="electrico-imagen"
-          />
-          <div class="electrico-texto">
-            <h2>Mini Cooper</h2>
-            <p>
-              BMW destaca por su innovación y calidad, ofreciendo vehículos que
-              combinan lujo y tecnología.
-            </p>
-          </div>
         </div>
       </a>
     </div>
   </div>
 
-  <div class="imagenes-pequenas-container">
-    <div class="imagen-pequena">
-      <a href="/notas-electricos/chevrolet-tahoe">
-        <img
-          src="../img/chevrolet-tahoe-portada.jpg"
-          alt="mini suv 1"
-          class="imagen-pequena-imagen"
-        />
-        <p class="texto-pequeno">
-          Auteco Blue lanza la primera tractomula eléctrica en Colombia,
-          transformando el transporte de carga.
-        </p>
+  <div class="imagenes-grid">
+    <div class="imagen-card">
+      <a href="/notas-electricos/nota-mini-cooper">
+        <img src="../img/mini-cooper1.jpg" alt="Mini Cooper" />
+        <h2>Mini Cooper</h2>
+        <p>Lujo y tecnología en un compacto electrico.</p>
+        <p class="texto-f">nota: 13-mar</p>
       </a>
     </div>
-    <div class="imagen-pequena">
-      <a href="/notas-electricos/ford-mustang">
-        <img
-          src="../img/ford-mustang.jpg"
-          alt="mini suv 2"
-          class="imagen-pequena-imagen"
-        />
-        <p class="texto-pequeno">
-          San Andrés estrena su primera ambulancia 100% eléctrica para un
-          servicio más sostenible.
-        </p>
+    <div class="imagen-card">
+      <a href="/notas-electricos/peugeot-e3008">
+        <img src="../img/principal-peugeot.jpg" alt="peugeot e3008" />
+        <h2>peugeot e3008</h2>
+        <p>Eléctrico y potente para la nueva era.</p>
+        <p class="texto-f">nota: 24-mar</p>
       </a>
     </div>
-
-    <div class="imagen-pequena">
-      <a href="/notas-electricos/changan-lumin">
-        <img
-          src="../img/exterior-lumin.jpg"
-          alt="mini suv 3"
-          class="imagen-pequena-imagen"
-        />
-        <p class="texto-pequeno">
-          Auteco Blue expande la infraestructura de carga para vehículos
-          eléctricos en Colombia.
-        </p>
+    <div class="imagen-card">
+      <a href="/notas-electricos/byd-sealion-7">
+        <img src="../img/byd-sealion-7-3.jpg" alt="Ford Mustang" />
+        <h2>byd Sealion 7</h2>
+        <p>Deportivo y sostenible sin perder su esencia.</p>
+        <p class="texto-f">nota: 13-mar</p>
       </a>
     </div>
-
-    <div class="imagen-pequena">
-      <a href="/notas-electricos/toyota-cross">
-        <img
-          src="../img/kia-s4.jpg"
-          alt="mini suv 4"
-          class="imagen-pequena-imagen"
-        />
-        <p class="texto-pequeno">
-          JAC E40X, la nueva camioneta eléctrica de Auteco Blue, llega al
-          mercado colombiano.
-        </p>
+    <div class="imagen-card">
+      <a href="/notas-electricos/nota-megane">
+        <img src="../img/foto-principal-megane.gif" alt="renault megane" />
+        <h2>Changan Lumin</h2>
+        <p>Compacto y eficiente para la movilidad urbana.</p>
+        <p class="texto-f">nota: 13-mar</p>
       </a>
     </div>
   </div>
@@ -108,215 +63,246 @@
 
 <style>
   .electrico-container {
-    display: grid;
-    place-items: center;
-    grid-template-columns: 1fr;
-    gap: 10px;
-    background-color: #f9f9f9;
-    padding: 30px;
-    text-align: center;
-    text-transform: uppercase;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-    font-family: "Georgia", serif;
-  }
-
-  .central-content {
-    grid-row: 1;
-  }
-
-  .electrico-container h1 {
-    font-weight: 600;
-    font-size: 60px;
-    color: #19354b;
-
-    text-shadow: 2px 2px 6px rgba(246, 246, 246, 0.5);
-    border-radius: 5px;
-    padding: 15px;
-    letter-spacing: 1px; /* espacio entre letras */
-    width: 100%;
-    margin-top: 20px;
-    position: relative;
-    text-transform: uppercase;
-    margin: 5px;
-  }
-
-  .electrico-container h1::before,
-  .electrico-container h1::after {
-    content: "";
-    position: absolute;
-    width: 190px; /* Aumentar longitud de la línea */
-    height: 4px;
-    background: #19354b;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .electrico-container h1::before {
-    left: -200px; /* Colocar fuera del texto */
-  }
-
-  .electrico-container h1::after {
-    right: -200px; /* Colocar fuera del texto */
-  }
-
-  /* fondo verde para texto encima de la imagen */
-  .electrico-texto {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 8, 0, 0.8);
-    padding: 20px;
-    text-align: center;
-    display: flex;
-    flex-direction: column; /* Alinear verticalmente */
-    align-items: center; /* Centrar horizontalmente */
-    justify-content: center; /* Centrar verticalmente */
-    opacity: 0; /* Inicialmente oculto */
-    transition: opacity 0.6s ease;
-    text-transform: uppercase;
-  }
-
-  .imagen-grande:hover .electrico-texto {
-    opacity: 1; /* Mostrar al hacer hover */
-  }
-
-  /* espacio entre el titulo y texto imagen grande */
-  .electrico-texto h2,
-  .electrico-texto p {
-    margin: 0;
-    padding: 10px;
-    color: white;
-  }
-
-  /* control titulo imagenes grandes al hacer hover */
-  .electrico-texto h2 {
-    font-size: 52px;
-    margin-bottom: 10px;
-    font-weight: 400;
-  }
-
-  /* control texto imagenes responsive */
-  .electrico-texto p {
-    font-size: 20px;
-    text-transform: none;
-    font-weight: 400;
-    font-family: Arial, sans-serif;
-  }
-
-  .imagenes-grandes {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    width: 100%;
-    padding: 10px;
-    margin-top: 30px;
-  }
-
-  .imagen-grande {
-    position: relative;
-    background-color: #f9f9f9;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-    transition: transform 0.6s ease;
-  }
-
-  .imagen-grande:hover {
-    transform: translateY(-10px);
-  }
-
-  .electrico-imagen {
-    width: 100%;
-    height: 480px;
-    object-fit: cover;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-  }
-
-  .imagenes-pequenas-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    width: 100%;
-  }
-
-  .imagen-pequena {
-    position: relative;
-
-    overflow: hidden;
-
-    transition: transform 0.6s ease;
-    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-
-  .imagen-pequena:hover {
-    transform: translateY(-10px);
-  }
-
-  .imagen-pequena-imagen {
+    background: black;
+    border-bottom: 20px solid black;
+    padding: 10px 20px;
+    text-align: center;
     width: 100%;
-    height: 250px;
-    object-fit: cover;
+    font-family: "Georgia", serif;
   }
 
-  .texto-pequeno {
-    color: black;
-    font-size: 20px;
-    font-weight: 600;
-    margin-top: 20px;
-    text-align: start;
+  .texto-fecha {
+    font-size: 15px;
     padding: 10px;
   }
 
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    .electrico-container {
-      padding: 20px;
-    }
+  .central-content {
+    position: relative;
+  }
 
-    .electrico-container h1 {
-      font-style: normal;
-    }
+  .central-content h1 {
+    color: white;
+    font-size: 60px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: color 0.9s ease;
+    position: absolute;
+    top: 20px;
+    right: 0;
 
-    .imagenes-grandes {
-      grid-template-columns: 1fr;
-    }
+    transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    z-index: 3;
+    text-shadow: 2px 2px 6px rgba(16, 16, 16, 0.8);
+    padding: 20px;
+  }
 
-    .electrico-imagen {
-      width: 100%;
-      height: auto;
-    }
+  .central-content h1:hover {
+    color: rgb(216, 232, 244);
+  }
 
-    .imagenes-pequenas-container {
+  .grid-container {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .nueva-destacada {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    background-color: #0e0e0e;
+    margin-top: 50px;
+    width: 100%;
+    max-width: 1680px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+  }
+
+  .destacada-link {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+  }
+
+  .texto-destacado {
+    flex: 1;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #101010;
+    color: white;
+    text-align: left;
+  }
+
+  .texto-destacado h2 {
+    font-size: 44px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #f4bd07;
+  }
+
+  .texto-destacado p {
+    font-size: 24px;
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+
+  .texto-destacado .texto-f {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #cccccc;
+    border-bottom: 1px solid #f4bd07;
+    width: 72%;
+    display: inline-block;
+    padding: 5px;
+  }
+
+  .imagen-destacada-img {
+    flex: 1;
+    min-width: 300px;
+    max-height: 100%;
+    overflow: hidden;
+  }
+
+  .imagen-destacada-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 1.9s ease;
+  }
+
+  .imagen-destacada-img:hover img {
+    transform: scale(1.2); /* Hace zoom al 110% */
+  }
+
+  .imagenes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 10px;
+    width: 100%;
+    max-width: 1680px;
+    margin-top: 40px;
+    text-transform: uppercase;
+  }
+
+  .imagen-card {
+    overflow: hidden;
+    transition: transform 0.3s;
+    text-align: center;
+    position: relative;
+  }
+
+  .imagen-card:hover {
+    transform: translateY(-15px);
+  }
+
+  .imagen-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+  }
+
+  .imagen-card h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    padding: 5px;
+    text-align: start;
+    position: relative;
+    display: block;
+    width: 100%;
+  }
+
+  .imagen-card p {
+    font-size: 20px;
+    padding: 5px;
+    font-weight: 600;
+    color: rgb(181, 180, 180);
+    text-align: start;
+  }
+
+  .imagen-card .texto-f {
+    font-size: 18px;
+    color: rgb(247, 246, 246);
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    z-index: 2;
+    text-align: left;
+    text-transform: none;
+    border-bottom: 1px solid #f4bd07;
+    display: inline-block;
+  }
+
+  @media (max-width: 900px) {
+    .nueva-destacada {
       flex-direction: column;
     }
 
-    .imagen-pequena {
-      width: 100%;
-    }
-
-    .electrico-texto {
+    .texto-destacado {
       padding: 10px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .electrico-container {
-      gap: 20px;
+      text-align: center;
     }
 
-    .electrico-texto h2 {
+    .texto-destacado h2 {
       font-size: 28px;
     }
 
-    .electrico-texto p {
-      font-size: 18px;
-      color: black;
+    .texto-destacado p {
+      font-size: 16px;
+      color: white;
+    }
+
+    .texto-destacado .texto-f {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .electrico-container {
+      border-bottom: none;
+      font-family: none;
+    }
+
+    .imagenes-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .imagen-card:hover {
+      transform: none;
+    }
+
+    .central-content h1 {
+      position: static; /* o 'relative' */
+      font-size: 44px;
+      text-align: center;
+      display: block;
+      margin: 0 auto;
+      white-space: normal; /* permite que el texto se ajuste en varias líneas si es necesario */
+      padding: 10px 20px;
+      color: #4e93fb;
+    }
+
+    .imagen-card .texto-f {
+      font-size: 10px;
+      padding: 15px;
+      color: rgb(233, 199, 74);
     }
   }
 </style>

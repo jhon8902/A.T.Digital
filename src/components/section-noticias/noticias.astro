@@ -2,7 +2,13 @@
 import noticias from "../../data/noticias.json";
 ---
 
-<h1 class="noticias-titulo">lanzamientos</h1>
+<h1 class="noticias-titulo">Lanzamiento Automotriz</h1>
+<div class="-noticias-subtitulo-container">
+  <h2 class="noticias-subtitulo">
+    los mas recientes lanzamientos en colombia.
+  </h2>
+</div>
+
 <section class="noticias-container">
   {
     noticias.map((noticia) => (
@@ -33,39 +39,49 @@ import noticias from "../../data/noticias.json";
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
-    padding: 90px;
-
+    padding: 50px;
+    border-bottom: 20px solid black;
     position: relative;
+    background: linear-gradient(#b98f04 70%, #000 70%);
   }
 
   /* Título */
   .noticias-titulo {
-    font-size: 40px;
-    border-bottom: 2px solid black;
+    font-size: 55px;
     color: black;
-    font-style: italic;
     text-align: center;
     text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: "Georgia", serif;
+    /* text-shadow: 2px 2px 8px rgb(213, 213, 212); */
+    padding: 0;
+    font-weight: bold;
+    transition: color 0.9s ease; /* Duración y efecto de transición */
+    background-color: #b98f04;
+    padding-top: 30px;
+    text-shadow: 2px 2px 6px rgba(228, 158, 5, 0.3);
+  }
+
+  /* subtitulo */
+  .noticias-subtitulo {
+    font-size: 24px;
+    text-shadow: 2px 2px 6px rgba(228, 158, 5, 0.3);
+    color: black;
+    background: #b98f04;
+    text-align: center;
     letter-spacing: 1.1px;
     font-family: "Georgia", serif;
     /* text-shadow: 2px 2px 8px rgb(213, 213, 212); */
     padding: 30px;
-    font-weight: bold;
-  }
-
-  .noticias-container {
-    background: linear-gradient(#b98f04 30%, #000 70%);
-  }
-
-  .noticias-titulo {
-    background: #b98f04;
+    font-weight: 600;
+    padding-top: 0;
   }
 
   /* Tarjeta de Noticias */
   .noticia-container {
-    border-radius: 15px;
+    border-radius: 5px;
     overflow: hidden;
-
+    max-width: 1550px;
     transition:
       transform 0.3s ease,
       box-shadow 0.3s ease;
@@ -86,13 +102,14 @@ import noticias from "../../data/noticias.json";
 
   /* Texto */
   .noticia-texto {
-    padding: 26px;
+    padding: 15px;
     text-align: start;
     background: whitesmoke;
+    text-transform: uppercase;
   }
 
   .noticia-texto-titulo {
-    font-size: 34px;
+    font-size: 26px;
     margin-bottom: 12px;
     color: #19354b;
     font-weight: 600;
@@ -100,7 +117,7 @@ import noticias from "../../data/noticias.json";
   }
 
   .noticia-descripcion {
-    font-size: 20px;
+    font-size: 16px;
     color: rgb(18, 18, 18);
     line-height: 1.6;
     font-weight: 600;
@@ -109,14 +126,29 @@ import noticias from "../../data/noticias.json";
   /* Responsive */
   @media (max-width: 768px) {
     .noticias-container {
-      padding: 20px;
+      padding: 0;
     }
     .noticia-imagen {
       height: 180px;
       align-content: center;
     }
+
+    .noticias-titulo {
+      font-size: 35px;
+    }
+
+    .noticias-subtitulo {
+      font-size: 14px;
+    }
+
     .noticia-texto-titulo {
-      font-size: 20px;
+      font-size: 28px;
+      text-align: center;
+    }
+
+    .noticia-descripcion {
+      font-size: 16px;
+      text-align: center;
     }
   }
 </style>

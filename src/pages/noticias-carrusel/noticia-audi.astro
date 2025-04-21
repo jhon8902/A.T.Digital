@@ -1,133 +1,234 @@
 ---
-
+import Layout from "../../layouts/Layout.astro";
 ---
 
-<meta charset="UTF-8" />
-<section class="section-noticias">
-  <!-- Título -->
-  <div class="header">
-    <h1></h1>
-  </div>
-  <div class="container">
-    <!-- Tarjeta 1 -->
-    <div class="card">
-      <h2>Diseño</h2>
-      <img src="../img/ford-1bronco.jpg" alt="bronco diseño" />
-      <div class="text-content">
-        <p>
-          La Ford Bronco tiene un diseño robusto y cuadrado que evoca la
-          nostalgia de los todoterrenos clásicos.
-        </p>
+<Layout title="nota-audi" bodyClass="otras-page">
+  <section class="section-noticias">
+    <!-- Título -->
+    <div class="header-titulo">
+      <h1>
+        Audi e-tron 2025 en Colombia: Innovación Eléctrica y Prestaciones
+        Premium
+      </h1>
+    </div>
+    <div class="container">
+      <!-- Tarjeta 1 -->
+      <div class="card">
+        <div class="card-image">
+          <img src="../img/audi-portada.jpg" alt="audi e-tron 2025 diseño" />
+        </div>
+        <div class="card-text">
+          <h2>Diseño</h2>
+          <p>
+            El Audi e-tron 2025 presenta un diseño elegante y aerodinámico que
+            refleja el lenguaje de diseño moderno de la marca. Con una parrilla
+            cerrada característica, luces LED afiladas y una silueta robusta, el
+            e-tron combina lujo y deportividad.
+          </p>
+          <p>
+            En Colombia, estará disponible en versiones SUV y Sportback, ambas
+            con opciones de personalización en color, rines y acabados
+            interiores.
+          </p>
+        </div>
+      </div>
+      <!-- Tarjeta 2 -->
+      <div class="card reverse">
+        <div class="card-image">
+          <img
+            src="../img/audi-lateral.jpg"
+            alt="audi e-tron 2025 tecnología"
+          />
+        </div>
+        <div class="card-text">
+          <h2>Tecnología</h2>
+          <p>
+            El e-tron 2025 está equipado con el sistema MMI touch response con
+            dos pantallas táctiles, compatibilidad con Apple CarPlay, Android
+            Auto y actualizaciones remotas vía software (OTA).
+          </p>
+          <p>
+            <strong>Seguridad:</strong> Incorpora asistentes avanzados como el Audi
+            pre sense, cámaras de visión 360°, control de crucero adaptativo y mantenimiento
+            de carril, ideal para condiciones urbanas y carreteras colombianas.
+          </p>
+        </div>
+      </div>
+      <!-- Tarjeta 3 -->
+      <div class="card">
+        <div class="card-image">
+          <img
+            src="../img/audi-frente.jpg"
+            alt="audi e-tron 2025 motorización"
+          />
+        </div>
+        <div class="card-text">
+          <h2>Motorización y Autonomía</h2>
+          <p>
+            El Audi e-tron 2025 cuenta con dos motores eléctricos que ofrecen
+            tracción quattro y hasta 408 caballos de potencia en modo boost.
+          </p>
+          <p>
+            Ofrece una autonomía estimada de hasta 550 km (ciclo WLTP), ideal
+            para trayectos urbanos e interurbanos en Colombia. Soporta carga
+            rápida de hasta 170 kW, logrando 80% de batería en 30 minutos.
+          </p>
+        </div>
+      </div>
+      <!-- Tarjeta 4 -->
+      <div class="card reverse">
+        <div class="card-image">
+          <img src="../img/audi-interior.jpg" alt="audi e-tron 2025 interior" />
+        </div>
+        <div class="card-text">
+          <h2>Interior</h2>
+          <p>
+            El interior del e-tron 2025 destaca por su calidad premium, con
+            materiales sostenibles, acabados en aluminio y cuero ecológico.
+          </p>
+          <p>
+            El habitáculo es amplio y silencioso, ideal para la experiencia de
+            conducción eléctrica. Incorpora iluminación ambiental y asientos
+            eléctricos con memoria y ventilación.
+          </p>
+        </div>
+      </div>
+      <!-- Tarjeta 5 -->
+      <div class="card">
+        <div class="card-image">
+          <img
+            src="../img/audi-suspencion.jpg"
+            alt="audi e-tron 2025 suspensión"
+          />
+        </div>
+        <div class="card-text">
+          <h2>Suspensión y Manejo</h2>
+          <p>
+            El Audi e-tron integra una suspensión neumática adaptativa que
+            ajusta la altura y rigidez según el terreno o la velocidad,
+            ofreciendo confort total incluso en carreteras irregulares.
+          </p>
+          <p>
+            El sistema de recuperación de energía y la distribución electrónica
+            de par mejoran la eficiencia y la estabilidad en curvas,
+            garantizando un manejo ágil y seguro.
+          </p>
+        </div>
       </div>
     </div>
-    <!-- Tarjeta 2 -->
-    <div class="card">
-      <h2>Tecnología</h2>
-      <img src="../img/ford-2bronco.jpg" alt="bronco tecnologia" />
-      <div class="text-content">
-        <p>
-          Equipada con la última tecnología, la Ford Bronco ofrece un sistema de
-          infoentretenimiento de vanguardia.
-        </p>
-      </div>
-    </div>
-    <!-- Tarjeta 3 -->
-    <div class="card">
-      <h2>Motor</h2>
-      <img src="../img/ford-3bronco.jpg" alt="bronco motor" />
-      <div class="text-content">
-        <p>
-          Cuenta con motores potentes, incluyendo un EcoBoost de 2.3 litros
-          ideal para aventuras extremas.
-        </p>
-      </div>
-    </div>
-    <!-- Tarjeta 4 -->
-    <div class="card">
-      <h2>Interior</h2>
-      <img src="../img/ford-interior.jpg" alt="bronco interior" />
-      <div class="text-content">
-        <p>
-          El interior combina comodidad y funcionalidad con asientos de cuero
-          opcionales y materiales duraderos.
-        </p>
-      </div>
-    </div>
-    <!-- Tarjeta 5 -->
-    <div class="card">
-      <h2>Suspensión</h2>
-      <img src="../img/ford-suspension.jpg" alt="bronco suspension" />
-      <div class="text-content">
-        <p>
-          La suspensión avanzada con amortiguadores Bilstein asegura una
-          conducción estable en terrenos difíciles.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
+</Layout>
 
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Merriweather:wght@400;700&display=swap");
   body {
-    font-family: "Lora", serif;
     margin: 0;
     padding: 0;
-    background: white;
+    background: #f4f4f4;
+    color: #333;
   }
+
   .section-noticias {
-    background: white;
-    padding: 60px;
+    padding: 10px 10px;
     text-align: center;
+    max-width: 100%;
+    margin: auto;
+    font-family: "Georgia", serif;
   }
 
   /* header */
-  .header h1 {
-    font-size: 26px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 30px;
+  .header-titulo h1 {
+    text-align: center;
+    padding: 10px;
+    font-size: 42px;
+    font-weight: bolder;
+    color: black;
+    margin-bottom: 10px;
+    background: #b98f04;
+    text-transform: uppercase;
   }
 
   .container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
     gap: 40px;
-    max-width: 100%;
-    margin: auto;
   }
+
   .card {
-    background: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 15px;
     overflow: hidden;
-    width: 100%;
-    text-align: center;
-    transition: transform 0.6s ease-in-out;
+
+    transition:
+      transform 0.3s ease-in-out,
+      box-shadow 0.3s ease-in-out;
   }
+
   .card:hover {
-    transform: scale(1.02);
+    transform: translateY(-8px);
   }
-  .card h2 {
-    background: #19354b;
-    padding: 35px;
-    margin: 0;
-    font-size: 64px;
-    color: white;
+
+  .card.reverse {
+    flex-direction: row-reverse;
   }
-  .card img {
+
+  .card-image {
+    width: 60%;
+    height: 100%;
+  }
+
+  .card-image img {
     width: 100%;
-    height: 800px;
+    height: 100%;
     object-fit: cover;
   }
-  .text-content {
-    padding: 25px;
+
+  .card-text {
+    width: 50%;
+    padding: 70px;
+    text-align: start;
   }
-  .text-content p {
+
+  .card-text h2 {
+    font-size: 44px;
     color: black;
-    font-size: 28px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid black;
+    /*display: inline-block;  Esto hace que el ancho de la línea sea igual al del texto */
+    text-transform: uppercase;
+    font-weight: bolder;
+  }
+
+  .card-text p {
+    font-size: 22px;
     line-height: 1.6;
-    text-align: center;
+    color: #444;
+    text-align: start;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .card {
+      flex-direction: column;
+    }
+
+    .header h1 {
+      font-size: 32px;
+    }
+
+    .card.reverse {
+      flex-direction: column;
+    }
+
+    .card-image,
+    .card-text {
+      width: 100%;
+    }
+
+    .card-text {
+      text-align: center;
+      padding: 20px;
+    }
   }
 </style>
