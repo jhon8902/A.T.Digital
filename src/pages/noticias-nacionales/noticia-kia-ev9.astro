@@ -8,7 +8,7 @@ const noticia = noticiaData.find((item) => item.id === 1);
 
 {
   noticia ? (
-    <Layout title={noticia.titulo}>
+    <Layout title={noticia.titulo} bodyClass="otras-page">
       <section class="noticia-detalle">
         <p class="noticia-descripcion">{noticia.descripcion}</p>
 
@@ -51,17 +51,19 @@ const noticia = noticiaData.find((item) => item.id === 1);
   .noticia-detalle {
     width: 100%;
     margin: 0;
-    padding: 40px 0;
+    padding: 20px 0;
     font-family: "Lora", serif; /* Fuente para el texto principal */
     position: relative;
+    background: #c8c9c9;
   }
 
   /* Título flotante */
   .noticia-detalle h1 {
     font-size: 75px;
     text-align: center;
-    color: black;
-    font-family: "Lora", serif; /* Fuente para el texto principal */
+    color: #b98f04;
+    background: black;
+    font-weight: 400;
     margin: 0 auto 5px;
     text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
     border-bottom: 2px solid black;
@@ -70,6 +72,7 @@ const noticia = noticiaData.find((item) => item.id === 1);
 
   .noticia-descripcion {
     font-size: 45px;
+    font-weight: bolder;
     text-align: center;
     padding: 30px;
     text-transform: uppercase;
@@ -78,14 +81,14 @@ const noticia = noticiaData.find((item) => item.id === 1);
   /* Imagen de portada */
   .noticia-portada {
     width: 100%;
-    height: 600px;
+    height: auto;
     object-fit: cover;
-
-    transition: transform 0.9s ease; /*efecto alejamiento zoom*/
+    padding: 20px;
+    transition: box-shadow 0.4s ease;
   }
 
   .noticia-portada:hover {
-    transform: scale(0.9); /* Reduce el tamaño de la imagen al 80% */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
   }
 
   /* Bloques alternados */
@@ -112,7 +115,7 @@ const noticia = noticiaData.find((item) => item.id === 1);
   .noticia-bloque .noticia-texto {
     flex: 1;
     text-align: center;
-    background: #ffffff;
+    background: black;
     padding: 20px;
     border-radius: 12px;
     width: 50%;
@@ -124,14 +127,14 @@ const noticia = noticiaData.find((item) => item.id === 1);
   .noticia-titulo {
     font-size: 34px;
     font-weight: 600;
-    color: black;
+    color: #b98f04;
     margin-bottom: 10px;
     text-transform: uppercase;
   }
 
   .noticia-bloque .noticia-parrafo {
     font-size: 25px;
-    color: #333;
+    color: #c5c4c4;
   }
 
   /* Alternar posiciones */
@@ -164,17 +167,21 @@ const noticia = noticiaData.find((item) => item.id === 1);
 
     .noticia-descripcion {
       font-size: 30px;
-      font-weight: 600;
+      font-weight: bolder;
       padding: 15px;
     }
 
     .noticia-bloque .noticia-parrafo {
-      font-size: 22px;
-      color: #333;
+      font-size: 18px;
+      color: #c8c7c7;
     }
 
     .noticia-bloque .noticia-texto {
       width: 100%;
+    }
+
+    .noticia-titulo {
+      font-size: 30px;
     }
 
     .noticia-portada {

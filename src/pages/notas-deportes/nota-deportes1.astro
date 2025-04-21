@@ -1,53 +1,61 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
 <meta charset="UTF-8" />
-
-<section class="moto-container">
-  <div class="moto-header">
-    <h1>Adrenalina sobre dos ruedas</h1>
-    <p class="subtitulo">Explora el mundo del motociclismo extremo</p>
-  </div>
-
-  <section class="split-screen">
-    <div class="split-item text-box">
-      <h2>Velocidad y Precisión</h2>
-      <p>
-        Descubre cómo las motocicletas deportivas combinan ingeniería avanzada
-        con aerodinámica para alcanzar velocidades impresionantes.
-      </p>
+<Layout title="nota-deportes1" bodyClass="otras-page">
+  <section class="moto-container">
+    <div class="moto-header">
+      <h1>Adrenalina sobre dos ruedas</h1>
+      <p class="subtitulo">Explora el mundo del motociclismo extremo</p>
     </div>
-    <div class="split-item">
-      <img src="/img/moto-velocidad.jpg" alt="Motocicleta en carrera" />
-    </div>
+
+    <section class="split-screen">
+      <div class="split-item text-box">
+        <h2>Velocidad y Precisión</h2>
+        <p>
+          Descubre cómo las motocicletas deportivas combinan ingeniería avanzada
+          con aerodinámica para alcanzar velocidades impresionantes.
+        </p>
+      </div>
+      <div class="split-item">
+        <img src="/img/moto-velocidad.jpg" alt="Motocicleta en carrera" />
+      </div>
+    </section>
+
+    <section class="split-screen reverse">
+      <div class="split-item">
+        <img
+          src="/img/moto-acrobacia.jpg"
+          alt="Motociclista realizando acrobacia"
+        />
+      </div>
+      <div class="split-item text-box">
+        <h2>Acrobacias y Freestyle</h2>
+        <p>
+          La destreza y el control son esenciales en el motocross freestyle,
+          donde los pilotos desafían la gravedad con maniobras espectaculares.
+        </p>
+      </div>
+    </section>
+
+    <section class="split-screen">
+      <div class="split-item text-box">
+        <h2>Aventura Off-Road</h2>
+        <p>
+          Recorre terrenos extremos con motocicletas diseñadas para el enduro y
+          el motocross, con suspensiones y neumáticos especializados.
+        </p>
+      </div>
+      <div class="split-item">
+        <img
+          src="/img/moto-offroad.jpg"
+          alt="Motociclista en terreno off-road"
+        />
+      </div>
+    </section>
   </section>
-
-  <section class="split-screen reverse">
-    <div class="split-item">
-      <img
-        src="/img/moto-acrobacia.jpg"
-        alt="Motociclista realizando acrobacia"
-      />
-    </div>
-    <div class="split-item text-box">
-      <h2>Acrobacias y Freestyle</h2>
-      <p>
-        La destreza y el control son esenciales en el motocross freestyle, donde
-        los pilotos desafían la gravedad con maniobras espectaculares.
-      </p>
-    </div>
-  </section>
-
-  <section class="split-screen">
-    <div class="split-item text-box">
-      <h2>Aventura Off-Road</h2>
-      <p>
-        Recorre terrenos extremos con motocicletas diseñadas para el enduro y el
-        motocross, con suspensiones y neumáticos especializados.
-      </p>
-    </div>
-    <div class="split-item">
-      <img src="/img/moto-offroad.jpg" alt="Motociclista en terreno off-road" />
-    </div>
-  </section>
-</section>
+</Layout>
 
 <style>
   body {

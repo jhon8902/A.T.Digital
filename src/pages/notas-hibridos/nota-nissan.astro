@@ -1,66 +1,74 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
 <meta charset="UTF-8" />
-
-<section class="nota-container">
-  <div class="nota-header">
-    <h1>Ford Escape Híbrida 2025</h1>
-    <p class="subtitulo">Innovación, eficiencia y tecnología para el futuro</p>
-  </div>
-
-  <section
-    class="seccion full-img"
-    style="background-image: url('/img/ford-scape-trasero.jpg');"
-  >
-    <div class="texto-overlay">
-      <h2>Diseño Elegante y Aerodinámico</h2>
-      <p>
-        La Ford Escape Híbrida 2025 combina estilo y funcionalidad con un diseño
-        aerodinámico que mejora la eficiencia y la conducción.
-      </p>
+<Layout title="nota-xtrail-epower" bodyClass="otras-page">
+  <section class="nota-container">
+    <div class="nota-header">
+      <h1>Nissan X-Trail e-POWER</h1>
+      <p class="subtitulo">Tecnología eléctrica sin enchufes</p>
     </div>
-  </section>
 
-  <section class="seccion texto-izquierda">
-    <div class="texto">
-      <h2>Tecnología de Última Generación</h2>
-      <p>
-        Equipada con el sistema Ford Co-Pilot360™, ofrece asistente de
-        conducción, integración con Apple CarPlay y Android Auto, y un sistema
-        de navegación intuitivo.
-      </p>
-    </div>
-    <img
-      src="/img/ford-scape-trasero.jpg"
-      alt="Tecnología Ford Escape Híbrida 2025"
-    />
-  </section>
+    <section
+      class="seccion full-img"
+      style="background-image: url('/img/nissan-x-trail.jpg');"
+    >
+      <div class="texto-overlay">
+        <h2>Diseño Robusto y Elegante</h2>
+        <p>
+          La nueva Nissan X-Trail e-POWER combina fuerza y sofisticación con
+          líneas modernas y detalles aerodinámicos. Un SUV listo para cualquier
+          terreno con un look que impone.
+        </p>
+      </div>
+    </section>
 
-  <section
-    class="seccion full-img"
-    style="background-image: url('/img/ford-scape-trasero.jpg');"
-  >
-    <div class="texto-overlay">
-      <h2>Motor Híbrido Inteligente</h2>
-      <p>
-        Su sistema híbrido permite cambiar automáticamente entre los modos
-        eléctrico y gasolina, maximizando la eficiencia del combustible.
-      </p>
-    </div>
-  </section>
+    <section class="seccion texto-izquierda">
+      <div class="texto">
+        <h2>Conectividad e Innovación</h2>
+        <p>
+          Equipada con pantalla táctil de 12.3", sistema NissanConnect®,
+          integración con Apple CarPlay y Android Auto, y un clúster digital que
+          mejora tu experiencia de conducción.
+        </p>
+      </div>
+      <img
+        src="/img/nissan-x-trail-interior.jpg"
+        alt="Interior Nissan X-Trail e-POWER"
+      />
+    </section>
 
-  <section class="seccion texto-derecha">
-    <img
-      src="/img/ford-scape-trasero.jpg"
-      alt="Ford Escape Híbrida en carretera"
-    />
-    <div class="texto">
-      <h2>Compromiso con el Medio Ambiente</h2>
-      <p>
-        La Ford Escape Híbrida 2025 reduce emisiones de CO₂ y ayuda a preservar
-        el medio ambiente sin comprometer el rendimiento.
-      </p>
-    </div>
+    <section
+      class="seccion full-img"
+      style="background-image: url('/img/nissan-motor.jpg');"
+    >
+      <div class="texto-overlay">
+        <h2>Tecnología e-POWER</h2>
+        <p>
+          A diferencia de los híbridos tradicionales, la X-Trail e-POWER
+          funciona 100% con motor eléctrico. El motor a gasolina solo actúa como
+          generador, brindando aceleración instantánea y eficiencia mejorada.
+        </p>
+      </div>
+    </section>
+
+    <section class="seccion texto-derecha">
+      <img
+        src="/img/nissan-x-trail-trasero.jpg"
+        alt="Nissan X-Trail e-POWER en movimiento"
+      />
+      <div class="texto">
+        <h2>Eficiencia y Versatilidad</h2>
+        <p>
+          Con tracción inteligente e-4ORCE y hasta 7 plazas, la X-Trail e-POWER
+          ofrece control, comodidad y bajas emisiones, ideal para familias que
+          buscan rendimiento y responsabilidad ambiental.
+        </p>
+      </div>
+    </section>
   </section>
-</section>
+</Layout>
 
 <style>
   * {
@@ -72,7 +80,6 @@
   body {
     font-family: "Lora", serif;
     background: #000;
-    color: #fff;
   }
 
   .nota-container {
@@ -83,11 +90,15 @@
   .nota-header {
     text-align: center;
     padding: 60px 20px;
-    background: #19354b;
+    background: white;
+    padding-top: 40px;
   }
 
   .nota-header h1 {
     font-size: 3.5rem;
+    color: black;
+    text-transform: uppercase;
+    font-weight: bolder;
   }
 
   .nota-header .subtitulo {
@@ -118,7 +129,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.3);
   }
 
   .texto-overlay {
@@ -127,7 +138,7 @@
     text-align: center;
     color: white;
     max-width: 70%;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.3);
     padding: 30px;
     border-radius: 10px;
   }
@@ -135,6 +146,8 @@
   .texto-overlay h2 {
     font-size: 2.5rem;
     margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: bolder;
   }
 
   .texto-overlay p {
@@ -153,7 +166,7 @@
     flex: 1;
     padding: 60px;
     text-align: left;
-    background: #19354b;
+    background: white;
   }
 
   .texto-derecha .texto {
@@ -170,6 +183,8 @@
   .texto h2 {
     font-size: 2.5rem;
     margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: bolder;
   }
 
   .texto p {

@@ -4,62 +4,83 @@
 
 <section class="anunciantes-container">
   <div class="titulo-slider">
-    <h1>Anunciantes Destacados</h1>
+    <h1>Registro matriculados</h1>
   </div>
   <div class="anunciantes-carrusel">
     <div class="anunciante">
       <img src="/img/logo-bmw.jpg" alt="Logo Marca 1" />
+      <p>31 unidades</p>
     </div>
     <div class="anunciante">
       <img src="/../img/logo-audi.jpg" alt="Logo audi" />
+      <p>60 unidades</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-mercedes.jpg" alt="Logo Marca 3" />
+      <p>75 unidades</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-nissan.jpg" alt="Logo Marca 1" />
+      <p>90 unidades</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-opel.jpg" alt="Logo Marca 2" />
+      <p>106 unidades</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-porsche.jpg" alt="Logo Marca 3" />
+      <p>20 unidades</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-bmw.jpg" alt="Logo Marca 1" />
+      <p>31 unidades</p>
     </div>
     <div class="anunciante">
       <img src="/../img/logo-audi.jpg" alt="Logo audi" />
+      <p>669 registros</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-mercedes.jpg" alt="Logo Marca 3" />
+      <p>669 registros</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-nissan.jpg" alt="Logo Marca 1" />
+      <p>669 registros</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-opel.jpg" alt="Logo Marca 2" />
+      <p>669 registros</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-porsche.jpg" alt="Logo Marca 3" />
+      <p>669 registros</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-bmw.jpg" alt="Logo Marca 1" />
+      <p>31 unidades</p>
     </div>
     <div class="anunciante">
       <img src="/../img/logo-audi.jpg" alt="Logo audi" />
+      <p>669 registros</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-mercedes.jpg" alt="Logo Marca 3" />
+      <p>669 registros</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-nissan.jpg" alt="Logo Marca 1" />
+      <p>669 registros</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-opel.jpg" alt="Logo Marca 2" />
+      <p>669 registros</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-porsche.jpg" alt="Logo Marca 3" />
+      <p>669 registros</p>
+    </div>
+    <div class="anunciante-p">
+      <p>segundo semestre 2025</p>
     </div>
     <!-- Agrega más logos según sea necesario -->
   </div>
@@ -70,24 +91,27 @@
     height: 400px; /* Ajusta según sea necesario */
     margin: auto;
     position: relative;
-    width: 90%;
+    max-width: 100%;
     display: grid;
     place-items: center;
-    border-bottom: 2px solid white;
+    background: black;
+    border-bottom: 20px solid black;
   }
 
   .titulo-slider {
     position: absolute;
-    top: 25px; /* Ajusta según la altura deseada */
+    top: 30px; /* Ajusta según la altura deseada */
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    color: black;
+    color: rgb(235, 182, 23);
+    text-transform: uppercase;
   }
   .titulo-slider h1 {
-    font-size: 36px;
-    font-weight: 600;
-    margin-bottom: 30px; /* Añade espacio entre el título y el carrusel */
+    font-size: 44px;
+    font-weight: bolder;
+    margin-bottom: 40px; /* Añade espacio entre el título y el carrusel */
+    font-family: "Georgia", serif;
   }
 
   .anunciantes-carrusel {
@@ -96,7 +120,7 @@
     animation: scroll 60s linear infinite;
     cursor: pointer;
     margin-top: 100px; /* Ajusta este valor según el espacio que desees */
-    background: #f3c008;
+    background: #b98f04;
   }
 
   .anunciantes-carrusel:hover {
@@ -115,22 +139,39 @@
 
   .anunciante {
     height: 200px;
-    width: 250px;
+    width: 190px;
     display: flex;
+    flex-direction: column; /* Cambiado para apilar imagen y texto verticalmente */
     align-items: center;
-    padding: 15px;
-    perspective: 100px;
+    padding: 22px;
   }
 
   .anunciante img {
-    transition: transform 0.5s ease-in-out; /* Suaviza la animación */
-    width: 130px;
-    height: 130px;
+    transition: transform 0.9s ease-in-out; /* Suaviza la animación */
+    width: 105px;
+    height: 105px;
     border-radius: 10px;
+    padding-top: 15px;
   }
 
   .anunciante img:hover {
     transform: scale(1.1);
+  }
+
+  .anunciante p {
+    margin-top: 10px; /* Espacio entre la imagen y el texto */
+    color: black;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .anunciante-p {
+    margin-top: 60px; /* Espacio entre la imagen y el texto */
+    color: black;
+    text-align: center;
+    font-size: 34px;
+    font-weight: 600;
   }
 
   .anunciantes-carrusel::before,
@@ -169,14 +210,29 @@
       ); /* Ancho del carrusel animado */
     }
   }
-<<<<<<< HEAD
-=======
 
   /* Responsive Styles */
   @media (max-width: 768px) {
     .anunciantes-container {
       border-bottom: none;
     }
+
+    .anunciante {
+      width: 150px;
+      height: auto;
+    }
+
+    .titulo-slider h1 {
+      font-size: 32px;
+      width: 100%; /* Ocupa el 100% del ancho */
+      text-align: center; /* Centra el texto */
+      margin: 0; /* Elimina los márgenes */
+      padding: 0; /* Elimina el espacio interior */
+    }
+
+    .anunciante img {
+      width: 100px;
+      height: 100px;
+    }
   }
->>>>>>> 2688cea (cambios 19/03/2025)
 </style>

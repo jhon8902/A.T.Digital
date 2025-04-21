@@ -1,40 +1,47 @@
 ---
 interface Props {
-  title: string;
+  title: string; // Título de la página
+  bodyClass?: string; // Clase dinámica para el <body>, opcional
 }
 
-const { title } = Astro.props;
+// Extraemos las props necesarias
+const { title, bodyClass } = Astro.props;
+
+// Importamos componentes y estilos necesarios
 import Header from "../components/header/Header.astro";
+import Footer from "../components/footer/Footer.astro";
 import "swiper/css";
 import "swiper/css/pagination"; /* Si estás usando paginación */
-import Footer from "../components/footer/Footer.astro";
 ---
 
-<!-- noticia-mazda.astro --><!doctype html>
+<!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-
     <meta name="description" content="Auto-Tech-Digital" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="stylesheet" href="style.css" />
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
     />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Merriweather:wght@400;700&display=swap"
       rel="stylesheet"
     />
 
+    <link rel="stylesheet" href="style.css" />
     <link rel="preload" href="/noticias-nacionales/styles.css" as="style" />
 
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+
+    <script
+      src="https://kit.fontawesome.com/9dde373998.js"
+      crossorigin="anonymous"
+      is:inline></script>
   </head>
-  <body>
+  <body class={bodyClass}>
     <Header />
     <main>
       <slot />
@@ -44,6 +51,8 @@ import Footer from "../components/footer/Footer.astro";
 </html>
 
 <style is:global>
+  /* Estilos globales */
+
   html {
     background: #f6f6f6;
     background-size: 224px;
@@ -57,5 +66,19 @@ import Footer from "../components/footer/Footer.astro";
     width: 100%;
     box-sizing: border-box;
     overflow-x: hidden; /* Evita desbordamiento horizontal */
+  }
+
+  body.otras-page .top-bar {
+    position: fixed; /* Ahora el contenedor será fijo */
+    top: 0; /* Fijado en la parte superior */
+    left: 0;
+    width: 100%; /* Asegúrate de que ocupe todo el ancho */
+    background: black; /* Fondo necesario si el contenido pasa sobre él */
+    z-index: 10; /* Colócalo encima de otros elementos */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Opcional: añade sombra para destacar */
+  }
+
+  body.otras-page .header {
+    position: relative; /* Deja el resto del header intacto */
   }
 </style>

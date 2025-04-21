@@ -1,0 +1,234 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="noticia-dfsk-e5" bodyClass="otras-page">
+  <meta charset="UTF-8" />
+  <section class="section-noticias">
+    <!-- Título -->
+    <div class="header">
+      <h1>
+        DFSK E5, la SUV Híbrida y Eléctrica que Redefine el Viaje Familiar para
+        7 Pasajeros
+      </h1>
+    </div>
+    <div class="container">
+      <!-- Tarjeta 1 -->
+      <div class="card">
+        <div class="card-image">
+          <img src="../img/portada1-dfsk.jpeg" alt="dfsk e5 diseño" />
+        </div>
+        <div class="card-text">
+          <h2>Diseño</h2>
+          <p>
+            El DFSK E5 destaca por su diseño moderno y aerodinámico, que ofrece
+            una gran amplitud y confort para toda la familia. Con un estilo
+            robusto y elegante, esta SUV está diseñada para ofrecer una
+            experiencia de conducción cómoda y eficiente.
+          </p>
+        </div>
+      </div>
+      <!-- Tarjeta 2 -->
+      <div class="card reverse">
+        <div class="card-image">
+          <img src="../img/cola-lateral-dfsk.jpeg" alt="dfsk e5 tecnología" />
+        </div>
+        <div class="card-text">
+          <h2>Tecnología</h2>
+          <p>
+            El DFSK E5 está equipado con tecnología de vanguardia, que incluye
+            un sistema de infoentretenimiento avanzado y una serie de
+            características que mejoran la seguridad y la comodidad de los
+            pasajeros. Además, cuenta con conectividad para smartphones y una
+            pantalla táctil intuitiva.
+          </p>
+          <p>
+            <strong>Seguridad:</strong> El E5 ofrece avanzados sistemas de seguridad,
+            como cámaras de 360 grados, control de crucero adaptativo y asistente
+            de mantenimiento de carril, lo que garantiza una experiencia de conducción
+            más segura y relajada.
+          </p>
+        </div>
+      </div>
+      <!-- Tarjeta 3 -->
+      <div class="card">
+        <div class="card-image">
+          <img src="../img/cola1-dfsk.jpeg" alt="dfsk e5 autonomía" />
+        </div>
+        <div class="card-text">
+          <h2>Autonomía</h2>
+          <p>
+            El DFSK E5 combina lo mejor de la tecnología híbrida y eléctrica,
+            ofreciendo una autonomía impresionante tanto en modo eléctrico como
+            híbrido. Gracias a su motor eléctrico de alto rendimiento, puede
+            recorrer una distancia significativa con cero emisiones antes de
+            necesitar recargar, mientras que el sistema híbrido extiende la
+            autonomía total del vehículo, brindando una experiencia de
+            conducción sin preocupaciones.
+          </p>
+          <p>
+            Esta SUV está diseñada para maximizar la eficiencia energética,
+            permitiendo a los usuarios disfrutar de una conducción ecológica y
+            económica, con la flexibilidad de adaptarse a diferentes necesidades
+            de desplazamiento.
+          </p>
+        </div>
+      </div>
+      <!-- Tarjeta 4 -->
+      <div class="card reverse">
+        <div class="card-image">
+          <img src="../img/interior-dfsk.jpeg" alt="dfsk e5 interior" />
+        </div>
+        <div class="card-text">
+          <h2>Interior</h2>
+          <p>
+            El interior del DFSK E5 ha sido cuidadosamente diseñado para ofrecer
+            comodidad y funcionalidad. Con materiales de alta calidad y asientos
+            amplios, es el espacio perfecto para largas travesías. Además, el
+            sistema de climatización y el almacenamiento inteligente garantizan
+            que cada viaje sea placentero para todos los pasajeros.
+          </p>
+        </div>
+      </div>
+      <!-- Tarjeta 5 -->
+      <div class="card">
+        <div class="card-image">
+          <img src="../img/suspension-dfsk.jpeg" alt="dfsk e5 suspensión" />
+        </div>
+        <div class="card-text">
+          <h2>Suspensión</h2>
+          <p>
+            La suspensión del DFSK E5 asegura una conducción suave y estable,
+            incluso en terrenos más irregulares. Gracias a sus sistemas
+            avanzados de amortiguación, los pasajeros disfrutarán de un viaje
+            cómodo y sin sobresaltos, independientemente del tipo de carretera.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap");
+
+  body {
+    font-family: "Lora", serif;
+    margin: 0;
+    padding: 0;
+    background: black;
+  }
+
+  .section-noticias {
+    padding: 10px 10px;
+    text-align: center;
+    max-width: 100%;
+    margin: auto;
+  }
+
+  /* header */
+  .header h1 {
+    text-align: center;
+    padding: 10px;
+    font-size: 52px;
+    font-weight: bolder;
+    color: black;
+    margin-bottom: 30px;
+    background: #b98f04;
+    text-transform: uppercase;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 15px;
+    overflow: hidden;
+    transition:
+      transform 0.3s ease-in-out,
+      box-shadow 0.3s ease-in-out;
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+  }
+
+  .card.reverse {
+    flex-direction: row-reverse;
+  }
+
+  .card-image {
+    width: 60%;
+    height: 100%;
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9); /* Añade sombra */
+  }
+
+  .card-text {
+    width: 50%;
+    padding: 70px;
+    text-align: start;
+  }
+
+  .card-text h2 {
+    font-size: 38px;
+    font-weight: 600;
+    color: #b98f04;
+    margin-bottom: 15px;
+    border-bottom: 2px solid rgb(180, 140, 39);
+    /*display: inline-block;  Esto hace que el ancho de la línea sea igual al del texto */
+    text-transform: uppercase;
+    font-weight: bolder;
+  }
+
+  .card-text p {
+    font-size: 20px;
+    line-height: 1.6;
+    color: rgb(206, 206, 206);
+    text-align: start;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .card {
+      flex-direction: column;
+    }
+
+    .header h1 {
+      font-size: 22px;
+    }
+
+    .card.reverse {
+      flex-direction: column;
+    }
+
+    .card-image,
+    .card-text {
+      width: 100%;
+    }
+
+    .card-text {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .card-text h2 {
+      font-size: 30px;
+    }
+
+    .card-text p {
+      font-size: 18px;
+    }
+  }
+</style>

@@ -7,23 +7,23 @@
   <div class="top-bar">
     <!-- Redes Sociales a la Izquierda -->
     <div class="social-icons">
-      <a href="#"><img src="/img/fbook.png" alt="Facebook" class="icon" /></a>
-      <a href="#"
-        ><img src="/img/instagram.png" alt="Instagram" class="icon" /></a
-      >
-      <a href="#"><img src="/img/x.jpg" alt="Twitter" class="icon" /></a>
-      <div class="separator"></div>
+      <a href="https://web.whatsapp.com/" class="fa-brands fa-whatsapp"></a>
+      <a href="https://es-la.facebook.com/" class="fa-brands fa-facebook"></a>
+      <a
+        href="https://www.instagram.com/autotechdigital/"
+        class="fa-brands fa-instagram"></a>
+      <!--<a href="https://www.tiktok.com/es/" class="fa-brands fa-tiktok"></a>-->
     </div>
 
     <!-- contenido del menu hamburguesa -->
     <nav id="menu-hamburguesa" class="menu-hamburguesa">
       <ul>
-        <li><a href="#inicio">Inicio</a></li>
-        <li><a href="#hibridos">Hibridos</a></li>
-        <li><a href="#electricos">Electricos</a></li>
-        <li><a href="#test-drive">Test Drive</a></li>
-        <li><a href="#revista">Revista</a></li>
-        <li><a href="#deportes">Deportes</a></li>
+        <li><a href="/#inicio">Inicio</a></li>
+        <li><a href="/#hibridos">Hibridos</a></li>
+        <li><a href="/#electricos">Electricos</a></li>
+        <li><a href="/#test-drive">pruevas</a></li>
+        <li><a href="/#revista">Revista</a></li>
+        <li><a href="/#deportes">Deportes</a></li>
       </ul>
     </nav>
 
@@ -32,15 +32,20 @@
       <!-- Contenido de inicio -->
     </div>
 
-    <a href="#inicio" class="scroll-to-top">
-      &#x2B06;
+    <a href="#inicio" class="fa-solid fa-arrow-up-from-bracket">
       <!-- Emoji de flecha hacia arriba -->
     </a>
-
     <!-- Botones de Búsqueda y Registro a la Derecha -->
     <div class="auth-buttons">
+      <button id="search-button" class="fa-brands fa-sistrix"></button>
+      <input
+        type="text"
+        id="search-input"
+        class="search-input"
+        placeholder="Buscar..."
+      />
+
       <button class="register-button">Registro</button>
-      <button id="search-button" class="search-button">🔍</button>
     </div>
     <!-- icono del menu hamburguesa -->
     <button id="boton-hamburguesa" class="boton-hamburguesa">
@@ -56,7 +61,6 @@
     height: auto;
     width: 100%;
     background: black;
-    border-bottom: 2px solid rgb(76, 53, 7);
   }
 
   .header::after {
@@ -73,48 +77,27 @@
     height: 100%;
   }
 
-  /* Media query para pantallas pequeñas */
-  @media (max-width: 600px) {
-    .header {
-      height: 220px; /* Ajusta la altura del header en pantallas pequeñas */
-    }
-
-    .header::after {
-      background-size: 300px; /* Reduce el tamaño de la imagen en pantallas pequeñas */
-    }
-  }
-
-  /* Media query para pantallas medianas */
-  @media (min-width: 601px) and (max-width: 1024px) {
-    .header {
-      height: 250px; /* Ajusta la altura del header en pantallas medianas */
-    }
-
-    .header::after {
-      background-size: 400px; /* Ajusta el tamaño de la imagen para pantallas medianas */
-    }
-  }
-
   /* icono casita de regreso */
-  .scroll-to-top {
+  .fa-solid {
     position: fixed;
     bottom: 30px;
     right: 30px;
     background-color: #e1a307; /* Fondo del icono */
     color: black; /* Color del icono */
-    padding: 10px 25px; /* Espaciado interno */
+    padding: 10px 15px; /* Espaciado interno */
     border-radius: 100%; /* Forma circular */
     text-align: center; /* Centrar el texto */
     font-size: 34px; /* Tamaño del icono */
     z-index: 1000; /* Asegura que esté encima de otros elementos */
     cursor: pointer;
     transition: background-color 0.3s;
-    border-bottom: 3px solid black;
+
     font-weight: 600;
   }
 
-  .scroll-to-top:hover {
+  .fa-solid:hover {
     background-color: #555; /* Cambio de color en hover */
+    color: white;
   }
 
   /* clase para redes sociales contenedor */
@@ -124,7 +107,6 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    /* border-bottom: 2px solid rgb(238, 157, 8);*/
   }
 
   /* Redes sociales icono */
@@ -133,22 +115,65 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    font-size: 26px;
   }
 
-  .social-icons .icon {
-    height: 30px;
-    width: 30px;
-    margin-right: 5px;
+  /* Espacio interno y tamaño de los iconos */
+  .social-icons a {
+    display: inline-block;
+    height: 36px;
+    width: 36px;
+    padding: 5px; /* Ampliamos el espacio interno */
+    padding-top: 10px;
+    border-radius: 10px; /* Si deseas bordes redondeados */
+    text-align: center;
+    line-height: 15px; /* Centra el icono verticalmente */
   }
 
-  /* linea separador redes de lista nav */
-
-  .separator {
-    border-left: 1px solid gray;
-    height: 24px;
-    margin-left: 10px;
+  /* WhatsApp */
+  .social-icons a.fa-whatsapp {
+    text-decoration: none;
+    background-color: #25d366; /* Verde de WhatsApp */
+    transition: transform 0.3s ease;
+  }
+  .social-icons a.fa-whatsapp:hover {
+    transform: scale(1.2); /* Efecto de pulso */
   }
 
+  /* Facebook */
+  .social-icons a.fa-facebook {
+    background-color: #1877f2; /* Azul de Facebook */
+    transition: transform 0.3s ease;
+  }
+  .social-icons a.fa-facebook:hover {
+    transform: scale(1.2); /* Efecto de pulso */
+  }
+
+  /* Instagram */
+  .social-icons a.fa-instagram {
+    background: radial-gradient(
+      circle at 30% 30%,
+      #feda77,
+      #f58529,
+      #dd2a7b,
+      #8134af,
+      #515bd4
+    ); /* Gradiente de Instagram */
+    transition: transform 0.3s ease;
+  }
+  .social-icons a.fa-instagram:hover {
+    transform: scale(1.2); /* Efecto de pulso */
+  }
+
+  /* TikTok */
+  .social-icons a.fa-tiktok {
+    background-color: #343333; /* Negro de TikTok */
+    transition: transform 0.3s ease;
+    color: white;
+  }
+  .social-icons a.fa-tiktok:hover {
+    transform: scale(1.2); /* Efecto de pulso */
+  }
   /* Botón hamburguesa */
 
   .boton-hamburguesa {
@@ -199,15 +224,39 @@
     font-size: 14px;
     transition: all 0.6s ease;
     padding: 10px;
-    box-shadow: 0 0 10px rgba(249, 191, 1, 0.7);
+    border: 2px solid rgb(124, 94, 4); /* Aquí defines el borde amarillo */
+    border-radius: 10px;
   }
 
   .menu-hamburguesa ul li a:hover {
-    background: #555;
+    background: white;
     padding: 10px;
     border-radius: 10px;
     transform: scale(1.05);
     box-shadow: 0 0 10px rgba(246, 190, 4, 0.5);
+    color: black;
+  }
+
+  /* Media query para pantallas pequeñas */
+  @media (max-width: 600px) {
+    .header {
+      height: 210px; /* Ajusta la altura del header en pantallas pequeñas */
+    }
+
+    .header::after {
+      background-size: 300px; /* Reduce el tamaño de la imagen en pantallas pequeñas */
+    }
+  }
+
+  /* Media query para pantallas medianas */
+  @media (min-width: 601px) and (max-width: 1024px) {
+    .header {
+      height: 250px; /* Ajusta la altura del header en pantallas medianas */
+    }
+
+    .header::after {
+      background-size: 400px; /* Ajusta el tamaño de la imagen para pantallas medianas */
+    }
   }
 
   /* Responsive */
@@ -217,7 +266,11 @@
     }
 
     .header::after {
-      background-size: 600px; /* Ajusta el tamaño de la imagen a 600px */
+      background-size: 700px; /* Ajusta el tamaño de la imagen a 600px pantallas grandes */
+    }
+
+    .social-icons {
+      gap: 10px;
     }
 
     .boton-hamburguesa {
@@ -256,6 +309,23 @@
     .top-bar .menu-hamburguesa {
       display: none;
     }
+
+    .social-icons {
+      gap: 5px;
+      font-size: 22px;
+    }
+
+    /* Espacio interno y tamaño de los iconos */
+    .social-icons a {
+      display: inline-block;
+      height: 30px;
+      width: 30px;
+      padding: 5px; /* Ampliamos el espacio interno */
+      padding-top: 7px;
+      border-radius: 10px; /* Si deseas bordes redondeados */
+      text-align: center;
+      line-height: 15px; /* Centra el icono verticalmente */
+    }
   }
 
   /* Botones de búsqueda y registro */
@@ -274,28 +344,54 @@
     cursor: pointer;
 
     transition: background-color 0.3s;
-    border: 2px solid rgb(242, 175, 3); /* Aquí defines el borde amarillo */
+    border: 1px solid rgb(171, 129, 4); /* Aquí defines el borde amarillo */
   }
 
-  .search-button {
+  /* Estilos para el botón de búsqueda */
+  #search-button {
     background-color: black;
     color: white;
     padding: 8px 16px;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 30px;
     transition: background-color 0.6s;
-    border: 2px solid rgb(242, 175, 3); /* Aquí defines el borde amarillo */
+    border: 1px solid rgb(26, 26, 26); /* Aquí defines el borde amarillo */
   }
 
-  .search-button:hover,
-  .register-button:hover {
+  #search-button:hover {
     background-color: #555;
-    cursor: pointer;
     color: white;
+  }
+
+  /* Estilo específico para el icono de búsqueda */
+  .fa-sistrix {
+    font-size: 10px;
+  }
+
+  /* Estilos para el input de búsqueda */
+  .search-input {
+    display: none; /* Inicialmente oculto */
+    padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid rgb(171, 129, 4);
+    margin-left: 10px;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  /* Estilo opcional para que el campo de búsqueda se vea mejor cuando está visible */
+  .search-input.show {
+    display: inline-block; /* Aparece cuando se le agrega la clase .show */
+    opacity: 1;
   }
 </style>
 
 <script>
+  //
+  //boton de hamburguesa
+  //
+
   document.addEventListener("DOMContentLoaded", function () {
     var botonHamburguesa = document.getElementById("boton-hamburguesa");
     if (botonHamburguesa) {
@@ -320,13 +416,37 @@
     }
   });
 
+  //
+  //boton de busqueda y input
+  //
+
   document.addEventListener("DOMContentLoaded", function () {
-    var searchButton = document.getElementById("search-button");
-    if (searchButton) {
+    // Obtener el botón de búsqueda y el input de búsqueda
+    const searchButton = document.getElementById("search-button");
+    const searchInput = document.getElementById("search-input");
+
+    // Verificar si los elementos existen en el DOM
+    if (searchButton && searchInput) {
+      // Inicializar el estilo del campo de entrada como "none" para comenzar oculto
+      searchInput.style.display = "none";
+
+      // Escuchar el clic en el botón de búsqueda
       searchButton.addEventListener("click", function () {
-        alert("Búsqueda activada.");
+        // Alternar visibilidad del input de búsqueda
+        if (searchInput.style.display === "none") {
+          searchInput.style.display = "inline-block"; // Mostrar el campo de texto
+          searchInput.focus(); // Poner el foco en el campo para que el usuario pueda escribir
+        } else {
+          searchInput.style.display = "none"; // Ocultar el campo de texto
+        }
       });
+    } else {
+      console.error("Los elementos de búsqueda no se encuentran en el DOM.");
     }
+
+    //
+    //boton de registro y input
+    //
 
     var registerButton = document.querySelector(".register-button");
     if (registerButton) {

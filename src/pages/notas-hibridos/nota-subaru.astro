@@ -1,66 +1,74 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
 <meta charset="UTF-8" />
-
-<section class="nota-container">
-  <div class="nota-header">
-    <h1>subaru forester E-Boxer</h1>
-    <p class="subtitulo">explora y conectate con nosotros</p>
-  </div>
-
-  <section
-    class="seccion full-img"
-    style="background-image: url('/img/subaru.jpg');"
-  >
-    <div class="texto-overlay">
-      <h2>Diseño Aerodinámico</h2>
-      <p>
-        La Ford Escape Híbrida 2025 combina estilo y funcionalidad con un diseño
-        aerodinámico que mejora la eficiencia y la conducción.
-      </p>
+<Layout title="nota-subaru" bodyClass="otras-page">
+  <section class="nota-container">
+    <div class="nota-header">
+      <h1>Subaru Forester E-Boxer</h1>
+      <p class="subtitulo">Explora y conéctate con nosotros</p>
     </div>
-  </section>
 
-  <section class="seccion texto-izquierda">
-    <div class="texto">
-      <h2>Tecnología de Última Generación</h2>
-      <p>
-        Equipada con el sistema Ford Co-Pilot360™, ofrece asistente de
-        conducción, integración con Apple CarPlay y Android Auto, y un sistema
-        de navegación intuitivo.
-      </p>
-    </div>
-    <img
-      src="/img/ford-scape-trasero.jpg"
-      alt="Tecnología Ford Escape Híbrida 2025"
-    />
-  </section>
+    <section
+      class="seccion full-img"
+      style="background-image: url('/img/subaru.jpg');"
+    >
+      <div class="texto-overlay">
+        <h2>Diseño Robusto y Funcional</h2>
+        <p>
+          La Subaru Forester E-Boxer combina un diseño SUV elegante con una
+          estructura sólida y aerodinámica ideal para aventuras dentro y fuera
+          de la ciudad.
+        </p>
+      </div>
+    </section>
 
-  <section
-    class="seccion full-img"
-    style="background-image: url('/img/ford-scape-parqueo.jpg');"
-  >
-    <div class="texto-overlay">
-      <h2>Motor Inteligente</h2>
-      <p>
-        Su sistema híbrido permite cambiar automáticamente entre los modos
-        eléctrico y gasolina, maximizando la eficiencia del combustible.
-      </p>
-    </div>
-  </section>
+    <section class="seccion texto-izquierda">
+      <div class="texto">
+        <h2>Tecnología y Conectividad</h2>
+        <p>
+          Incorpora el sistema Subaru Starlink®, compatible con Apple CarPlay y
+          Android Auto, junto con tecnologías de asistencia como el EyeSight®
+          Driver Assist.
+        </p>
+      </div>
+      <img
+        src="/img/subaru-interior.jpg"
+        alt="Tecnología Subaru Forester E-Boxer"
+      />
+    </section>
 
-  <section class="seccion texto-derecha">
-    <img
-      src="/img/ford-scape-trasero.jpg"
-      alt="Ford Escape Híbrida en carretera"
-    />
-    <div class="texto">
-      <h2>Compromiso con el Medio Ambiente</h2>
-      <p>
-        La Ford Escape Híbrida 2025 reduce emisiones de CO₂ y ayuda a preservar
-        el medio ambiente sin comprometer el rendimiento.
-      </p>
-    </div>
+    <section
+      class="seccion full-img"
+      style="background-image: url('/img/subaru-frente.jpg');"
+    >
+      <div class="texto-overlay">
+        <h2>Motor Híbrido E-Boxer</h2>
+        <p>
+          Su motor híbrido combina eficiencia y potencia, con un sistema que
+          ajusta inteligentemente entre el motor eléctrico y el de combustión
+          según el terreno.
+        </p>
+      </div>
+    </section>
+
+    <section class="seccion texto-derecha">
+      <img
+        src="/img/subaru-rendimiento.jpg"
+        alt="Subaru Forester E-Boxer en carretera"
+      />
+      <div class="texto">
+        <h2>Compromiso Ecológico</h2>
+        <p>
+          Diseñada para reducir el impacto ambiental, la Forester E-Boxer
+          presenta menores emisiones y un consumo más eficiente, sin perder el
+          espíritu aventurero de Subaru.
+        </p>
+      </div>
+    </section>
   </section>
-</section>
+</Layout>
 
 <style>
   * {
@@ -84,11 +92,13 @@
   .nota-header {
     text-align: center;
     padding: 60px 20px;
-    background: #b98f04;
+    background: white;
   }
 
   .nota-header h1 {
     font-size: 4.5rem;
+    font-weight: bolder;
+    text-transform: uppercase;
   }
 
   .nota-header .subtitulo {
@@ -130,7 +140,7 @@
     z-index: 2;
     text-align: start;
     color: white;
-    max-width: 30%;
+    max-width: 100%;
     background: rgba(0, 0, 0, 0.4);
     padding: 30px;
     border-radius: 10px;
@@ -139,6 +149,8 @@
   .texto-overlay h2 {
     font-size: 2.5rem;
     margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: bolder;
   }
 
   .texto-overlay p {
@@ -157,7 +169,7 @@
     flex: 1;
     padding: 60px;
     text-align: left;
-    background: #b98f04;
+    background: white;
   }
 
   .texto-derecha .texto {
@@ -174,6 +186,8 @@
   .texto h2 {
     font-size: 2.5rem;
     margin-bottom: 15px;
+    font-weight: bolder;
+    text-transform: uppercase;
   }
 
   .texto p {
