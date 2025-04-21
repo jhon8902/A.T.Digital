@@ -1,0 +1,233 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="nota-deportes-motos-autos" bodyClass="otras-page">
+  <section class="seccion-container">
+    <!-- Cabecera principal -->
+    <div class="header-deporte">
+      <h1>
+        <span class="icon">🏁</span>
+        Motores que rugen sin límites
+        <span class="icon">🏁</span>
+      </h1>
+
+      <p class="subtitulo">
+        Desde las pistas de MotoGP hasta la adrenalina del Rally
+      </p>
+    </div>
+
+    <!-- MOTOS -->
+    <section class="split">
+      <div class="split-text">
+        <h2>Velocidad y Precisión 🏁</h2>
+        <p>
+          Descubre cómo las motocicletas deportivas combinan ingeniería avanzada
+          con aerodinámica para alcanzar velocidades impresionantes.
+        </p>
+      </div>
+      <div
+        class="split-img"
+        style="background-image: url('/img/moto-carretera.jpeg')"
+      >
+      </div>
+    </section>
+
+    <section class="split reverse">
+      <div class="split-text">
+        <h2>Acrobacias y Freestyle 🏁</h2>
+        <p>
+          La destreza y el control son esenciales en el motocross freestyle,
+          donde los pilotos desafían la gravedad con maniobras espectaculares.
+        </p>
+      </div>
+      <div
+        class="split-img"
+        style="background-image: url('/img/moto-acrovacia.jpeg')"
+      >
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="split-text">
+        <h2>Aventura Off-Road 🏁</h2>
+        <p>
+          Recorre terrenos extremos con motocicletas diseñadas para el enduro y
+          el motocross, con suspensiones y neumáticos especializados.
+        </p>
+      </div>
+      <div
+        class="split-img"
+        style="background-image: url('/img/moto-offroad.jpeg')"
+      >
+      </div>
+    </section>
+
+    <!-- AUTOS -->
+    <section class="split">
+      <div class="split-text">
+        <h2>Fórmula 1 🏁</h2>
+        <p>
+          La cúspide del automovilismo combina ingeniería, velocidad y
+          estrategia en cada carrera. Los monoplazas más veloces del planeta
+          desafían la física.
+        </p>
+      </div>
+      <div class="split-img" style="background-image: url('/img/deporte2.gif')">
+      </div>
+    </section>
+
+    <section class="split reverse">
+      <div class="split-text">
+        <h2>Rally Extremo 🏁</h2>
+        <p>
+          Competencias en terrenos salvajes, donde la precisión del piloto y la
+          resistencia del auto son claves para conquistar cada curva y salto.
+        </p>
+      </div>
+      <div class="split-img" style="background-image: url('/img/deporte2.gif')">
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="split-text">
+        <h2>Autos de Pista 🏁</h2>
+        <p>
+          La velocidad pura se siente en cada recta. Desde GT hasta turismos,
+          estos autos están diseñados para dejarlo todo en la pista.
+        </p>
+      </div>
+      <div class="split-img" style="background-image: url('/img/deporte2.gif')">
+      </div>
+    </section>
+  </section>
+</Layout>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap");
+  body {
+    margin: 0;
+    font-family: "Lora", serif;
+    background-color: white;
+    color: #f1f1f1;
+  }
+
+  .seccion-container {
+    max-width: 100%;
+    margin: auto;
+    padding: 30px 20px;
+  }
+
+  .header-deporte {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .icon {
+    font-size: 2.8rem; /* Ajusta este valor al tamaño deseado */
+    vertical-align: middle; /* Centra el icono con el texto */
+    margin: 0 5px; /* Espacio entre icono y texto */
+  }
+
+  h1 {
+    font-family: "Orbitron", sans-serif;
+    font-size: 4.4rem;
+    color: #1e1e1e;
+    text-shadow:
+      0 0 5px #efb411,
+      0 0 10px #efb411,
+      0 0 20px #efb411,
+      0 0 40px #efb411;
+    animation: pulse 6s infinite ease-in-out;
+    text-align: center;
+  }
+
+  /*animacion para el titulo h1 */
+  @keyframes pulse {
+    0%,
+    100% {
+      text-shadow:
+        0 0 5px #efb411,
+        0 0 10px #efb411,
+        0 0 20px #efb411,
+        0 0 40px #efb411;
+    }
+    50% {
+      text-shadow:
+        0 0 10px #efb411,
+        0 0 20px #efb411,
+        0 0 30px #efb411,
+        0 0 60px #efb411;
+    }
+  }
+  .subtitulo {
+    font-size: 1.2rem;
+    color: black;
+    margin-top: 10px;
+  }
+
+  .split {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 400px;
+    margin-bottom: 50px;
+  }
+
+  .split.reverse {
+    flex-direction: row-reverse;
+  }
+
+  .split-text {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #1a1a1a;
+  }
+
+  .split-text h2 {
+    font-size: 1.6rem;
+    color: #efb411;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: bolder;
+    border-left: 5px solid red;
+    padding: 10px;
+  }
+
+  .split-text p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #ddd;
+  }
+
+  .split-img {
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+    min-height: 400px;
+    filter: brightness(0.85);
+    transition: transform 0.5s ease;
+  }
+
+  .split-img:hover {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    .split {
+      flex-direction: column;
+    }
+
+    .split.reverse {
+      flex-direction: column;
+    }
+
+    .split-text {
+      border: none;
+      border-top: 5px solid #ffd000;
+      border-bottom: 5px solid #ff0000;
+    }
+  }
+</style>

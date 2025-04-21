@@ -1,0 +1,215 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<meta charset="UTF-8" />
+<Layout title="nota-kona" bodyClass="otras-page">
+  <section class="nota-container">
+    <div class="nota-header">
+      <h1>Hyundai Kona Híbrido</h1>
+      <p class="subtitulo">Diseño audaz con eficiencia inteligente</p>
+    </div>
+
+    <section
+      class="seccion full-img"
+      style="background-image: url('/img/kona-subportada.jpg');"
+    >
+      <div class="texto-overlay">
+        <h2>Estilo Moderno y Funcional</h2>
+        <p>
+          El Hyundai Kona Híbrido fusiona una estética vanguardista con un
+          diseño compacto y versátil, perfecto para la vida urbana y aventuras
+          espontáneas.
+        </p>
+      </div>
+    </section>
+
+    <section class="seccion texto-izquierda">
+      <div class="texto">
+        <h2>Conectividad Total</h2>
+        <p>
+          Cuenta con pantalla táctil de 12.3”, compatibilidad con Apple CarPlay
+          y Android Auto, y cargador inalámbrico, manteniéndote siempre
+          conectado con estilo y comodidad.
+        </p>
+      </div>
+      <img
+        src="/img/kona-interior.jpg"
+        alt="Interior del Hyundai Kona híbrido"
+      />
+    </section>
+
+    <section
+      class="seccion full-img"
+      style="background-image: url('/img/kona-motor.jpg');"
+    >
+      <div class="texto-overlay">
+        <h2>Motor Híbrido Eficiente</h2>
+        <p>
+          Su sistema híbrido combina un motor 1.6L a gasolina con uno eléctrico,
+          ofreciendo 139 hp de potencia y un consumo optimizado, ideal para
+          recorrer la ciudad sin preocupaciones.
+        </p>
+      </div>
+    </section>
+
+    <section class="seccion texto-derecha">
+      <img
+        src="/img/kona-hambiente.jpg"
+        alt="Hyundai Kona híbrido en carretera"
+      />
+      <div class="texto">
+        <h2>Compromiso Ambiental</h2>
+        <p>
+          El Kona Híbrido reduce las emisiones y mejora la eficiencia sin
+          sacrificar rendimiento, siendo una excelente opción para una movilidad
+          más sostenible y libre de pico y placa en varias ciudades.
+        </p>
+      </div>
+    </section>
+  </section>
+</Layout>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Lora", serif;
+    background: #000;
+    color: #fff;
+  }
+
+  .nota-container {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .nota-header {
+    text-align: center;
+    padding: 60px 20px;
+    background: #49644b;
+  }
+
+  .nota-header h1 {
+    font-size: 3.5rem;
+    text-transform: uppercase;
+    font-weight: bolder;
+  }
+
+  .nota-header .subtitulo {
+    font-size: 1.5rem;
+    margin-top: 10px;
+  }
+
+  .seccion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+  }
+
+  .full-img {
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+  }
+
+  .full-img::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .texto-overlay {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    max-width: 70%;
+    background: rgba(35, 35, 35, 0.3);
+    padding: 30px;
+    border-radius: 10px;
+  }
+
+  .texto-overlay h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: bolder;
+  }
+
+  .texto-overlay p {
+    font-size: 1.4rem;
+  }
+
+  .texto-izquierda,
+  .texto-derecha {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .texto-izquierda .texto,
+  .texto-derecha .texto {
+    flex: 1;
+    padding: 60px;
+    text-align: left;
+    background: #49644b;
+  }
+
+  .texto-derecha .texto {
+    order: 2;
+  }
+
+  .texto-izquierda img,
+  .texto-derecha img {
+    flex: 1;
+    width: 50%;
+    height: auto;
+  }
+
+  .texto h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: bolder;
+  }
+
+  .texto p {
+    font-size: 1.8rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .texto-overlay {
+      max-width: 90%;
+      padding: 20px;
+    }
+
+    .texto-izquierda,
+    .texto-derecha {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .texto-izquierda img,
+    .texto-derecha img {
+      width: 100%;
+    }
+
+    .texto {
+      padding: 40px;
+    }
+  }
+</style>

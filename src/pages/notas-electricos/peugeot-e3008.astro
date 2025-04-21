@@ -1,0 +1,380 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<meta charset="UTF-8" />
+<Layout title="nota-peugeot-e3008" bodyClass="otras-page">
+  <section class="nota-container">
+    <div class="nota-header">
+      <h1>Peugeot E-3008</h1>
+      <p class="subtitulo">
+        Innovación eléctrica con diseño moderno y autonomía líder
+      </p>
+    </div>
+
+    <section class="feature-banner-1">
+      <img
+        src="/img/portada-peugeot.jpg"
+        alt="Vista frontal del Peugeot E-3008"
+      />
+      <div class="feature-text-1">
+        <h2 class="feature-title-1">SUV 100% Eléctrico</h2>
+      </div>
+    </section>
+
+    <section class="dynamic-layout">
+      <div class="dynamic-item">
+        <img src="/img/cola-peugeot.avif" alt="Diseño del Peugeot E-3008" />
+      </div>
+      <div class="dynamic-item text-box">
+        <h2>Diseño Vanguardista</h2>
+        <p>
+          El Peugeot E-3008 combina un diseño aerodinámico con una estética
+          elegante. Su carrocería moderna y detalles futuristas reflejan una
+          nueva era de movilidad.
+        </p>
+        <p>
+          Construido sobre la plataforma STLA Medium de Stellantis, este SUV
+          ofrece una experiencia visual impactante con una presencia imponente
+          en carretera.
+        </p>
+      </div>
+    </section>
+
+    <section class="dynamic-layout reverse">
+      <div class="dynamic-item text-box">
+        <h2>Interiores Conectados</h2>
+        <p>
+          Equipado con el sistema i-Cockpit de Peugeot, el E-3008 ofrece una
+          experiencia de conducción inmersiva. El habitáculo cuenta con
+          materiales de alta calidad, una pantalla curva panorámica y funciones
+          inteligentes para una conducción moderna.
+        </p>
+        <p>
+          Todo ha sido pensado para el confort: desde los asientos ergonómicos
+          hasta el control intuitivo del vehículo, ofreciendo tecnología sin
+          complicaciones.
+        </p>
+      </div>
+      <div class="dynamic-item">
+        <img
+          src="/img/interior-peugeot.jpeg"
+          alt="Interior tecnológico del Peugeot E-3008"
+        />
+      </div>
+    </section>
+
+    <section class="feature-banner">
+      <img src="/img/carga-peugeot.jpg" alt="Carga del Peugeot E-3008" />
+      <div class="feature-text">
+        <h2 class="feature-title">Autonomía de hasta 700 km</h2>
+        <p class="feature-paragraph">
+          Gracias a su batería de hasta 98 kWh, el E-3008 puede alcanzar una
+          autonomía de 700 km (WLTP). Esto lo convierte en uno de los SUV
+          eléctricos con mayor alcance del mercado.
+        </p>
+      </div>
+    </section>
+
+    <section class="dynamic-layout">
+      <div class="dynamic-item text-box">
+        <h2>Rendimiento y Seguridad</h2>
+        <p>
+          Disponible con una o dos motorizaciones, el E-3008 ofrece tracción
+          simple o integral. Sus sistemas de asistencia avanzada a la conducción
+          elevan la seguridad y la confianza en cada trayecto.
+        </p>
+        <p>
+          Además, incorpora tecnologías como el control de crucero adaptativo,
+          frenado automático de emergencia y alerta de cambio involuntario de
+          carril, posicionándolo a la vanguardia del segmento.
+        </p>
+      </div>
+      <div class="dynamic-item">
+        <img
+          src="/img/portada-peugeot.jpg"
+          alt="Seguridad y autonomía del E-3008"
+        />
+      </div>
+    </section>
+  </section>
+</Layout>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Lora", serif;
+    background: #000;
+    color: white;
+  }
+
+  .nota-container {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .nota-header {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    color: black;
+  }
+
+  .nota-header h1 {
+    font-size: 4rem;
+    border-bottom: 2px solid black;
+    font-weight: bolder;
+    text-transform: uppercase;
+  }
+
+  .nota-header .subtitulo {
+    font-size: 1.5rem;
+    margin-top: 10px;
+  }
+
+  /* Diseño flexible para imágenes y texto */
+  .dynamic-layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 60vh;
+    padding: 20px;
+  }
+
+  .dynamic-item {
+    flex: 1;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dynamic-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .text-box {
+    padding: 100px;
+    background: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .text-box h2 {
+    font-size: 2.4rem;
+    margin-bottom: 15px;
+    text-align: start;
+    font-weight: bolder;
+    text-transform: uppercase;
+  }
+
+  .text-box p {
+    font-size: 1.4rem;
+    text-align: start;
+    padding: 20px;
+  }
+
+  /* SECCIÓN "CARGA ULTRARÁPIDA" */
+  .feature-banner {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* ← Agregado */
+  }
+
+  .feature-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+
+  .feature-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between; /* Título arriba, texto abajo */
+    padding: 1% 10%;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .feature-title {
+    width: 100%;
+    font-size: 4rem;
+    color: #d5ac24;
+    font-weight: bold;
+    border-radius: 10px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgb(91, 91, 91);
+  }
+
+  .feature-paragraph {
+    font-size: 1.2rem;
+    color: white;
+    width: 80%;
+    padding: 5px;
+  }
+
+  /* RESPONSIVE DESIGN */
+  @media (max-width: 768px) {
+    .dynamic-layout {
+      flex-direction: column;
+    }
+
+    .dynamic-item {
+      min-height: 0vh;
+    }
+
+    .dynamic-layout.reverse {
+      flex-direction: column-reverse;
+    }
+
+    .nota-header {
+      padding: 30px 20px;
+    }
+
+    .nota-header h1 {
+      font-size: 40px;
+      font-weight: 600;
+    }
+
+    .nota-header .subtitulo {
+      font-size: 1.2rem;
+      margin-top: 15px;
+    }
+
+    .feature-banner {
+      flex-direction: column;
+      position: relative;
+    }
+
+    .feature-banner img {
+      position: relative;
+      height: auto;
+    }
+
+    .feature-text {
+      position: relative;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      text-align: center;
+      height: auto;
+    }
+
+    .feature-title {
+      font-size: 2rem;
+      color: #d5ac24;
+    }
+
+    .feature-paragraph {
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .text-box {
+      padding: 30px;
+      text-align: start;
+    }
+
+    .text-box h2 {
+      text-align: center;
+    }
+
+    .text-box p {
+      text-align: start;
+      font-size: 1.2rem;
+    }
+  }
+
+  .feature-banner-1 {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+  }
+
+  .feature-banner-1 img {
+    padding-top: 10px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    z-index: 3;
+  }
+
+  .feature-text-1 {
+    position: absolute;
+    width: 50%;
+    padding: 5%;
+    text-align: end;
+    padding-top: 50px;
+    border-radius: 10px;
+    z-index: 3;
+  }
+
+  .feature-title-1 {
+    font-size: 4.9rem;
+    margin-bottom: 10px;
+    color: black;
+    font-weight: bolder;
+  }
+
+  /* Ajustes para móviles imagen principal y texto */
+  @media (max-width: 1400px) {
+    .feature-text-1 {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      padding: 20px;
+      background: none;
+      text-align: center;
+      color: black;
+    }
+
+    .feature-title-1 {
+      font-size: 2.6rem;
+      color: black;
+      font-weight: 600;
+    }
+
+    .feature-paragraph-1 {
+      font-size: 1.5rem;
+    }
+  }
+
+  /* Ajustes específicos para pantallas más pequeñas */
+  @media (max-width: 776px) {
+    .feature-title-1 {
+      font-size: 2.4rem;
+    }
+  }
+
+  /* Ajustes para pantallas aún más pequeñas */
+  @media (max-width: 768px) {
+    .feature-title-1 {
+      font-size: 2.1rem;
+    }
+  }
+</style>

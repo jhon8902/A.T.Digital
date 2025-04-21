@@ -1,0 +1,373 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<meta charset="UTF-8" />
+<Layout title="nota-renault-megane-e-tech" bodyClass="otras-page">
+  <section class="nota-container">
+    <div class="nota-header">
+      <h1>Renault Megane E-Tech Eléctrico</h1>
+      <p class="subtitulo">Innovación francesa en movimiento 100% eléctrico</p>
+    </div>
+
+    <section class="feature-banner-1">
+      <img
+        src="/img/cola-megane.jpg"
+        alt="Vista lateral Renault Megane E-Tech Eléctrico"
+      />
+      <div class="feature-text-1">
+        <h2 class="feature-title-1">Diseño y Rendimiento</h2>
+      </div>
+    </section>
+
+    <section class="dynamic-layout">
+      <div class="dynamic-item">
+        <img
+          src="/img/frontal-megane.jpg"
+          alt="Renault Megane E-Tech Eléctrico"
+        />
+      </div>
+      <div class="dynamic-item text-box">
+        <h2>Estética Moderna y Funcional</h2>
+        <p>
+          El Renault Megane E-Tech Eléctrico destaca por su diseño vanguardista,
+          líneas aerodinámicas y una silueta deportiva que transmite dinamismo.
+          La combinación de elementos modernos y detalles refinados lo
+          convierten en un referente de estilo dentro del segmento eléctrico.
+        </p>
+        <p>
+          Además de su apariencia, está pensado para ofrecer una experiencia
+          eficiente, tanto en consumo energético como en comportamiento
+          dinámico. Gracias a su plataforma CMF-EV, el vehículo proporciona una
+          conducción estable, silenciosa y cómoda.
+        </p>
+      </div>
+    </section>
+
+    <section class="dynamic-layout reverse">
+      <div class="dynamic-item text-box">
+        <h2>Interior Conectado e Inteligente</h2>
+        <p>
+          Equipado con el sistema OpenR Link con Google integrado, el Megane
+          E-Tech ofrece una interfaz intuitiva con pantalla de hasta 12
+          pulgadas, navegación en tiempo real, y comandos de voz. Todo el
+          habitáculo está diseñado para brindar una experiencia tecnológica y
+          envolvente.
+        </p>
+        <p>
+          Los materiales sostenibles y acabados de alta gama elevan el confort a
+          un nuevo nivel, mientras que los asientos ergonómicos y el espacio
+          bien optimizado aseguran comodidad para conductor y pasajeros en cada
+          viaje.
+        </p>
+      </div>
+      <div class="dynamic-item">
+        <img
+          src="/img/interior-megane.jpg"
+          alt="Interior Renault Megane E-Tech"
+        />
+      </div>
+    </section>
+
+    <section class="feature-banner">
+      <img src="/img/carga-megane.jpg" alt="Carga rápida Renault Megane" />
+      <div class="feature-text">
+        <h2 class="feature-title">Carga Rápida y Flexible</h2>
+        <p class="feature-paragraph">
+          Gracias a su sistema de carga rápida en corriente continua, el Megane
+          E-Tech puede recuperar hasta el 80% de su autonomía en apenas 30
+          minutos, ideal para los que necesitan eficiencia y practicidad en el
+          día a día.
+        </p>
+      </div>
+    </section>
+
+    <section class="dynamic-layout">
+      <div class="dynamic-item text-box">
+        <h2>Autonomía y Seguridad</h2>
+        <p>
+          Con hasta 470 km de autonomía según el ciclo WLTP, el Megane E-Tech te
+          permite recorrer largas distancias con confianza. Además, está
+          equipado con sistemas avanzados de asistencia a la conducción como el
+          control de crucero adaptativo, frenado automático de emergencia y
+          asistente de mantenimiento de carril.
+        </p>
+        <p>
+          La seguridad está garantizada gracias a una estructura optimizada, 26
+          ayudas a la conducción y tecnologías como el reconocimiento de señales
+          de tráfico y el sistema de detección de fatiga del conductor.
+        </p>
+      </div>
+      <div class="dynamic-item">
+        <img src="/img/cola-megane.jpg" alt="Autonomía y Seguridad Megane" />
+      </div>
+    </section>
+  </section>
+</Layout>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Lora", serif;
+    background: #000;
+    color: white;
+  }
+
+  .nota-container {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .nota-header {
+    text-align: center;
+    padding: 60px 20px;
+    background: #ac9c65;
+    color: black;
+  }
+
+  .nota-header h1 {
+    font-size: 4rem;
+    border-bottom: 2px solid black;
+    font-weight: bolder;
+    text-transform: uppercase;
+  }
+
+  .nota-header .subtitulo {
+    font-size: 1.5rem;
+    margin-top: 10px;
+  }
+
+  /* Diseño flexible para imágenes y texto */
+  .dynamic-layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 60vh;
+    padding: 20px;
+  }
+
+  .dynamic-item {
+    flex: 1;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dynamic-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .text-box {
+    padding: 100px;
+    background: #ac9c65;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .text-box h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-align: start;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .text-box p {
+    font-size: 1.4rem;
+    text-align: start;
+    padding: 20px;
+  }
+
+  /* SECCIÓN "CARGA ULTRARÁPIDA" */
+  .feature-banner {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .feature-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between; /* Título arriba, texto abajo */
+    padding: 1% 10%;
+    background: rgba(0, 0, 0, 0.2); /* Fondo negro semi-transparente */
+  }
+
+  .feature-title {
+    width: 100%;
+    font-size: 4rem;
+    color: #131313;
+    font-weight: bold;
+    border-radius: 10px;
+    padding-bottom: 20px;
+    /*background: rgba(0, 0, 0, 0.2); Fondo negro semi-transparente */
+    border-bottom: 2px solid rgb(91, 91, 91);
+    text-transform: uppercase;
+  }
+
+  .feature-paragraph {
+    font-size: 1.2rem;
+    color: white;
+    width: 80%;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.4); /* Fondo negro semi-transparente */
+  }
+
+  /* RESPONSIVE DESIGN */
+  @media (max-width: 768px) {
+    .dynamic-layout {
+      flex-direction: column;
+    }
+
+    .dynamic-item {
+      min-height: 0vh;
+    }
+
+    /* Alternar imágenes y texto en móviles */
+    .dynamic-layout.reverse {
+      flex-direction: column-reverse;
+    }
+
+    .nota-header {
+      padding: 30px 20px;
+    }
+
+    .nota-header h1 {
+      font-size: 40px;
+      font-weight: 600;
+    }
+
+    .nota-header .subtitulo {
+      font-size: 1.2rem;
+      margin-top: 15px;
+    }
+
+    .feature-text {
+      padding: 10% 5%;
+      background: none;
+    }
+
+    /* titulo carga ultra-rapida */
+    .feature-title {
+      font-size: 3rem;
+    }
+
+    .feature-paragraph {
+      font-size: 1.1rem;
+    }
+
+    .text-box {
+      padding: 30px;
+      text-align: start;
+    }
+
+    .text-box h2 {
+      text-align: center;
+    }
+
+    .text-box p {
+      text-align: start;
+      font-size: 1.2rem;
+    }
+  }
+
+  .feature-banner-1 {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+  }
+
+  .feature-banner-1 img {
+    padding-top: 10px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    z-index: 3;
+  }
+
+  .feature-text-1 {
+    position: absolute;
+    width: 100%;
+    padding: 5%;
+    text-align: end;
+    /*background: linear-gradient(
+      to right,
+      rgba(59, 58, 58, 0.3),
+      rgba(0, 0, 0, 0)
+    );*/
+    padding-top: 510px;
+    border-radius: 10px;
+    z-index: 3;
+  }
+
+  .feature-title-1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #faf9f7;
+    text-transform: uppercase;
+  }
+
+  .feature-paragraph-1 {
+    font-size: 2rem;
+    padding: 20px;
+  }
+
+  /* Ajustes para móviles imagen principal y texto */
+  @media (max-width: 1400px) {
+    .feature-text-1 {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      padding: 20px;
+      background: none;
+      text-align: center;
+      color: black;
+    }
+
+    .feature-title-1 {
+      font-size: 2.6rem;
+      color: white;
+      font-weight: 600;
+    }
+
+    .feature-paragraph-1 {
+      font-size: 1.5rem;
+    }
+  }
+
+  /* Ajustes específicos para pantallas más pequeñas */
+  @media (max-width: 776px) {
+    .feature-title-1 {
+      font-size: 2.4rem;
+    }
+  }
+
+  /* Ajustes para pantallas aún más pequeñas */
+  @media (max-width: 768px) {
+    .feature-title-1 {
+      font-size: 2.1rem;
+    }
+  }
+</style>
