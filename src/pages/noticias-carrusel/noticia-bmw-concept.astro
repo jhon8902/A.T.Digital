@@ -1,0 +1,207 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="nota-bmw-concept" bodyClass="otras-page">
+  <meta charset="UTF-8" />
+  <section class="section-noticias">
+    <!-- Título -->
+    <div class="header">
+      <h1>BMW Concept XM: Potencia y Lujo sin Precedentes</h1>
+    </div>
+    <div class="container">
+      <!-- Tarjeta 1 -->
+      <div class="card">
+        <div class="card-image">
+          <img
+            src="../img/bmw-concept/bmw-concept-diseño.webp"
+            alt="BMW Concept XM frontal"
+          />
+        </div>
+        <div class="card-text">
+          <h2>Diseño Exterior Audaz y Vanguardista</h2>
+          <p>
+            El BMW Concept XM presenta un diseño exterior imponente con una
+            parrilla de riñón de contorno octagonal y luces diurnas delgadas,
+            marcando una nueva era en los modelos de lujo de BMW. Las
+            superficies esculpidas y las líneas extravagantes crean una silueta
+            poderosa que irradia presencia.
+          </p>
+        </div>
+      </div>
+      <!-- Tarjeta 2 -->
+      <div class="card reverse">
+        <div class="card-image">
+          <img
+            src="../img/bmw-concept/bmw-concept-interior.webp"
+            alt="BMW Concept XM interior"
+          />
+        </div>
+        <div class="card-text">
+          <h2>Interior de Lujo con Tecnología de Punta</h2>
+          <p>
+            El interior del Concept XM combina materiales exclusivos como cuero
+            vintage, terciopelo y fibra de carbono. Destaca el BMW Curved
+            Display, que integra el cuadro de instrumentos y el sistema de
+            infoentretenimiento, y el M Lounge en la parte trasera ofrece un
+            espacio de relajación con iluminación ambiental y un techo
+            escultural iluminado.
+          </p>
+        </div>
+      </div>
+      <!-- Tarjeta 3 -->
+      <div class="card">
+        <div class="card-image">
+          <img
+            src="../img/bmw-concept/bmw-concept-lateral.webp"
+            alt="BMW Concept XM lateral"
+          />
+        </div>
+        <div class="card-text">
+          <h2>Rendimiento Híbrido de Alta Prestación</h2>
+          <p>
+            Equipado con un sistema de propulsión M Hybrid que combina un motor
+            V8 con un motor eléctrico, el Concept XM ofrece una potencia total
+            de 750 CV y un par máximo de 1.000 Nm. Además, permite una autonomía
+            eléctrica de hasta 80 km, ideal para una movilidad urbana silenciosa
+            y sin emisiones.
+          </p>
+        </div>
+      </div>
+      <!-- Tarjeta 4 -->
+      <div class="card reverse">
+        <div class="card-image">
+          <img
+            src="../img/bmw-concept/bmw-concept-cola.webp"
+            alt="BMW Concept XM luces y tecnología"
+          />
+        </div>
+        <div class="card-text">
+          <h2>Iluminación y Conectividad de Última Generación</h2>
+          <p>
+            El BMW Concept XM incorpora un sistema de iluminación dividido en
+            dos niveles con tecnología láser avanzada para una visibilidad
+            superior y un diseño distintivo. Además, cuenta con una suite
+            completa de asistentes digitales, conectividad 5G, y funciones de
+            conducción semiautónoma para una experiencia de manejo moderna y
+            segura.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+    color: #333;
+  }
+
+  .section-noticias {
+    padding: 10px 10px;
+    text-align: center;
+    max-width: 100%;
+    margin: auto;
+    font-family: "Georgia", serif;
+  }
+
+  /* header */
+  .header h1 {
+    text-align: center;
+    padding: 10px;
+    font-size: 52px;
+    font-weight: bolder;
+    color: black;
+    margin-bottom: 20px;
+    background: #efefef;
+    text-transform: uppercase;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 15px;
+    overflow: hidden;
+
+    transition:
+      transform 0.3s ease-in-out,
+      box-shadow 0.3s ease-in-out;
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+  }
+
+  .card.reverse {
+    flex-direction: row-reverse;
+  }
+
+  .card-image {
+    width: 60%;
+    height: 100%;
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card-text {
+    width: 50%;
+    padding: 80px;
+    text-align: start;
+  }
+
+  .card-text h2 {
+    font-size: 34px;
+    color: black;
+    margin-bottom: 15px;
+    border-bottom: 2px solid black;
+    /*display: inline-block;  Esto hace que el ancho de la línea sea igual al del texto */
+    text-transform: uppercase;
+    font-weight: bolder;
+  }
+
+  .card-text p {
+    font-size: 20px;
+    line-height: 1.6;
+    color: #444;
+    text-align: start;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .card {
+      flex-direction: column;
+    }
+
+    .header h1 {
+      font-size: 32px;
+    }
+
+    .card.reverse {
+      flex-direction: column;
+    }
+
+    .card-image,
+    .card-text {
+      width: 100%;
+    }
+
+    .card-text {
+      text-align: center;
+      padding: 20px;
+    }
+  }
+</style>

@@ -2,27 +2,33 @@
   {
     "id": 1,
     "titulo": "KIA EV-9",
-    "descripcion": "Así es el  nuevo SUV eléctrico de KIA que ya rueda en Colombia",
-    "imagen": "/img/ev9.webp",
+    "descripcion": "Así es el nuevo SUV 100& eléctrico de KIA que ya rueda en Colombia",
+    "imagen": "/img/kia-ev9/kia-ev9-portada.webp",
     "contenido": [
       {
         "titulo": "Diseño Innovador",
         "parrafo": "El KIA EV9 es un SUV completamente eléctrico que representa el futuro de la movilidad. Con un diseño innovador y tecnología de punta, el EV9 ofrece una experiencia de conducción inigualable.",
-        "imagen": "/img/ev91.jpg"
+        "imagen": "/img/kia-ev9/kia-ev9-diseño.webp"
       },
       {
         "titulo": "Baterías de Última Generación",
         "parrafo": "Equipado con baterías de última generación, el KIA EV9 tiene una autonomía de hasta 500 km con una sola carga. Además, su capacidad de carga rápida permite recuperar el 80% de la batería en solo 30 minutos.",
-        "imagen": "/img/ev92.jpg"
+        "imagen": "/img/kia-ev9/kia-ev9-autonomia.webp"
       },
       {
         "titulo": "Interior Sostenible",
         "parrafo": "El interior del EV9 está diseñado pensando en la comodidad y la sostenibilidad. Los materiales utilizados son eco-amigables, y el sistema de infoentretenimiento es de los más avanzados del mercado.",
-        "imagen": "/img/ev93.jpg"
+        "imagen": "/img/kia-ev9/kia-ev9-interior.webp"
+      },
+      {
+        "titulo": "Motor y Autonomía",
+        "parrafo": "El EV9 ofrece una autonomía confirmada de hasta 563 km bajo el ciclo WLTP. Gracias a su arquitectura eléctrica de 800V, puede recuperar hasta 249 km de alcance en solo 15 minutos de carga. Incorpora carga bidireccional (V2L, V2H, V2G), y es uno de los primeros modelos con actualizaciones remotas a través de la Kia Connect Store.",
+        "imagen": "/img/kia-ev9/kia-ev9-motor.webp"
       }
     ],
     "link": "/noticias-nacionales/noticia-kia-ev9"
   },
+  
   {
     "id": 2,
     "titulo": "Mazda EZ-6",

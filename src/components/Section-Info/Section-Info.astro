@@ -14,6 +14,23 @@
 
     <div class="container mx-auto px-2">
       <div id="carousel" class="relative flex overflow-hidden">
+        <!-- Imagen 5 -->
+        <a
+          href="/noticias-carrusel/noticia-bmw-concept"
+          class="carousel-item relative w-full transition-transform duration-600 hover:scale-105"
+        >
+          <!-- Cambiado a <h2> -->
+          <img
+            src="../img/bmw-concept/bmw-concept-portada.webp"
+            alt="BYD Yuan Plus fuerte en electrificación"
+            class="w-full h-full object-cover"
+          />
+
+          <div class="carousel-caption">
+            BMW Concept XM: El Futuro del Lujo y la Potencia Híbrida
+          </div>
+        </a>
+
         <!-- Imagen 3 -->
         <a
           href="/noticias-carrusel/noticia-bmw"
@@ -21,7 +38,7 @@
         >
           <!-- Cambiado a <h2> -->
           <img
-            src="../img/bmw.gif"
+            src="../img/bmw-330e/bmw.webp"
             alt="BMW Serie 5 eléctrico y potente"
             class="w-full h-full object-cover"
           />
@@ -53,12 +70,12 @@
         >
           <!-- Cambiado a <h2> -->
           <img
-            src="../img/suspension-dfsk.jpeg"
+            src="../img/lateral-dfsk.jpeg"
             alt="DFSK E5: híbrida para 7 pasajeros"
             class="w-full h-full object-cover"
           />
           <div class="carousel-caption">
-            Changan DFSK E5: híbrida para 7 pasajeros, descubre sus
+            DFSK seres e5: la híbrida para 7 pasajeros. descubre sus
             características.
           </div>
         </a>
@@ -70,31 +87,12 @@
         >
           <!-- Cambiado a <h2> -->
           <img
-            src="../img/Audi.jpg"
+            src="../img/audi-etron/audi-portada.webp"
             alt="Audi E-TRON: SUV eléctrico de lujo"
             class="w-full h-full object-cover"
           />
           <div class="carousel-caption">
             Audi E-TRON: el SUV eléctrico más elegante de la marca.
-          </div>
-        </a>
-
-        <!-- Imagen 5 -->
-        <a
-          href="/noticias-carrusel/noticia-byd"
-          class="carousel-item relative w-full transition-transform duration-600 hover:scale-105"
-        >
-          <!-- Cambiado a <h2> -->
-          <img
-            src="../img/planta1.avif"
-            alt="BYD Yuan Plus fuerte en electrificación"
-            class="w-full h-full object-cover"
-          />
-          <div class="carousel-caption">
-            <div class="carousel-caption">
-              Trump Impone Aranceles, GM Responde Aumentando la Producción en
-              Indiana.
-            </div>
           </div>
         </a>
       </div>
@@ -113,102 +111,97 @@
 <style>
   @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Merriweather:wght@400;700&display=swap");
 
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
   body {
-    font-family: "Lora", serif; /* Fuente para el texto principal */
+    font-family: "Lora", serif;
   }
 
   h1 {
     max-width: 100%;
     text-align: center;
     font-weight: bold;
-    font-size: 60px;
-    color: black; /* Color del texto */
+    font-size: 3.5rem;
+    color: black;
     letter-spacing: 2.6px;
-
     text-transform: uppercase;
-    opacity: 0; /* Comienza transparente */
-    transform: translateY(20px); /* Comienza un poco más abajo */
-    animation: fadeIn 6s forwards; /* Aplica la animación */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 6s forwards;
     font-family: "Georgia", serif;
-    position: relative; /* Necesario para los pseudoelementos */
+    position: relative;
   }
 
   p {
     max-width: 100%;
     text-align: center;
     font-weight: bold;
-    font-size: 18px;
-    color: black; /* Color del texto */
+    font-size: 1.125rem;
+    color: black;
     margin-bottom: 15px;
     padding: 10px;
     letter-spacing: 2.2px;
-
     text-transform: uppercase;
-    opacity: 0; /* Comienza transparente */
-    transform: translateY(20px); /* Comienza un poco más abajo */
-    animation: fadeIn 6s forwards; /* Aplica la animación */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 6s forwards;
     font-family: "Georgia", serif;
-    position: relative; /* Necesario para los pseudoelementos */
+    position: relative;
   }
 
   @keyframes fadeIn {
     to {
-      opacity: 1; /* Aparece gradualmente */
-      transform: translateY(0); /* Se mueve a su posición original */
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 
-  /* Contenedor del carrusel */
   #carousel {
-    align-items: center;
-    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100vh;
     overflow: hidden;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    position: relative;
-    border-bottom: 6px solid black;
   }
 
-  /* Elementos del carrusel */
   .carousel-item {
-    flex: 0 0 auto; /* Cada item ocupa el 100% del ancho del contenedor */
-    scroll-snap-align: center;
-    position: relative;
-    margin: 10px 10px;
-    max-width: 100%;
-    background: rgba(0, 0, 0, 0.7); /* Fondo negro con 70% de opacidad */
-    opacity: 1; /* Ocultar inicialmente */
-    transition: opacity 12s ease-in-out; /* Transición suave */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 0;
   }
 
-  /* Mostrar el elemento actual */
   .carousel-item.active {
-    opacity: 1; /* Mostrar el elemento activo */
+    opacity: 1;
+    z-index: 1;
   }
 
-  /* Imagen del carrusel */
   .carousel-item img {
-    width: 100%; /* Asegurarse de que ocupe todo el ancho */
-    height: 580px; /* Mantener la proporción de la imagen */
-    object-fit: cover; /* Llenar el contenedor manteniendo el aspecto, pero sin deformar */
-    display: block; /* Asegura que no haya espacios en blanco debajo de la imagen */
-    transition: transform 2.9s ease; /* Suavidad en la transición */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 2.9s ease;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
     background: rgba(0, 0, 0, 0.8);
   }
 
-  /* Efecto de desplazamiento hacia arriba al pasar el cursor */
   .carousel-item:hover img {
-    transform: scale(1.1) translateY(-10px); /* Desplazamiento hacia arriba al hacer hover para la imagen */
+    transform: scale(1.1) translateY(-10px);
   }
 
-  /* Estilos adicionales para la sección */
   .section-info {
     padding: 20px;
-    background: linear-gradient(#b98f04 30%, #000 70%);
+    background: linear-gradient(white 30%, #000 70%);
   }
 
-  /* Estilos para el contenedor sticky */
   .sticky-container {
     position: relative;
   }
@@ -220,40 +213,57 @@
   }
 
   .carousel-caption {
-    position: relative;
+    position: absolute;
     bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 2rem;
+    padding: 16px 40px;
+    font-weight: bold;
     text-align: center;
-    font-weight: bolder;
-    font-size: 36px;
-    color: rgb(228, 227, 227);
-    padding: 30px;
-    transform: translateY(10px); /* Ajuste de la posición */
-    transition: transform 0.4s ease;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+    z-index: 5;
     text-transform: uppercase;
+    opacity: 0;
+    pointer-events: none;
   }
 
-  /* Efecto de aparición del texto */
-  .carousel-item:hover .carousel-caption {
-    transform: translateY(8);
+  /* animacion entrada texto caption */
+  .carousel-item.active .carousel-caption {
+    opacity: 1;
+    animation: captionFade 2.4s ease forwards;
+    pointer-events: auto;
   }
 
-  /* Botón "Ver Más" ajustado */
+  @keyframes captionFade {
+    0% {
+      opacity: 0;
+      transform: translateY(20px) translateX(-50%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) translateX(-50%);
+    }
+  }
+
   .carousel-item a {
-    display: flex; /* Ajusta el ancho al contenido */
-    position: absolute; /* Mantiene el flujo del documento */
+    display: flex;
+    position: absolute;
     text-align: center;
-    margin: 25px auto; /* Márgenes superior e inferior con auto para centrar */
+    margin: 25px auto;
     background-color: #19354b;
     color: white;
-    font-size: 20px;
+    font-size: 1.25rem;
     border-radius: 10px;
     text-decoration: none;
     transition: transform 0.3s ease;
     bottom: -25px;
-    width: auto; /* Ajusta el ancho automáticamente */
-    max-width: fit-content; /* Ajusta el ancho al contenido */
-    box-sizing: border-box; /* Incluye el padding en el cálculo del ancho */
+    width: auto;
+    max-width: fit-content;
+    padding: 8px 24px;
   }
 
   .carousel-item a:hover {
@@ -263,51 +273,72 @@
     transition: background-color 0.6s ease;
   }
 
-  /* Botones de navegación */
   .carousel-control-prev,
   .carousel-control-next {
     position: absolute;
-    top: 50%; /* Centrado verticalmente */
-    transform: translateY(-50%); /* Ajuste para mantener centrado */
-
-    color: whitesmoke;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    color: #333;
     border: none;
-    font-size: 55px;
-
+    font-size: 28px;
     cursor: pointer;
     z-index: 10;
-    transition: background-color 0.3s ease;
-    border-radius: 100%;
+    border-radius: 50%;
+    padding: 12px;
+    width: 48px;
+    height: 48px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .carousel-control-prev {
-    left: 10px; /* Más cerca del borde izquierdo */
+    left: 15px;
   }
 
   .carousel-control-next {
-    right: 10px; /* Más cerca del borde derecho */
+    right: 15px;
   }
 
   .carousel-control-prev:hover,
   .carousel-control-next:hover {
-    border-radius: 100%;
-    color: black;
+    background-color: #19354b;
+    color: white;
+    transform: translateY(-50%) scale(1.15);
   }
 
   @media (max-width: 768px) {
-    /* Ajustes para pantallas pequeñas */
-
     h1 {
-      font-size: 32px;
+      font-size: 2rem;
     }
+
+    p {
+      font-size: 1rem;
+    }
+
     .carousel-caption {
-      font-size: 36px;
+      font-size: 1.5rem;
       padding: 8px;
     }
 
     .carousel-item a {
       padding: 6px 20px;
-      font-size: 16px;
+      font-size: 1rem;
+    }
+
+    #carousel,
+    .carousel-item {
+      height: 60vh;
+    }
+
+    .carousel-item img {
+      height: 60vh;
     }
 
     .carousel-control-prev {
@@ -317,48 +348,20 @@
     .carousel-control-next {
       right: 10px;
     }
-
-    .carousel-control-prev,
-    .carousel-control-next {
-      /* top: 110%; Centrado vertical */
-    }
   }
 
   @media (max-width: 480px) {
-    /* Ajustes para dispositivos móviles */
-    .carousel-caption {
-      font-size: 22px;
-      padding: 8px;
-      color: black;
-    }
-
-    .section-info,
-    .carousel-item {
-      background: white;
-    }
-
-    .carousel-item a {
-      padding: 8px 20px;
-      font-size: 16px;
-    }
-
-    .carousel-item img {
-      height: 300px; /* Mantiene la relación de aspecto */
-    }
-
-    .carousel-control-prev,
-    .carousel-control-next {
-      top: 55%; /* Centrado vertical */
-      font-size: 30px;
+    h1 {
+      font-size: 1.5rem;
     }
 
     h2 {
-      font-size: 30px;
+      font-size: 1.25rem;
       color: black;
     }
 
     p {
-      font-size: 15px;
+      font-size: 0.9rem;
     }
 
     .ford,
@@ -366,77 +369,88 @@
     .bmw,
     .audi,
     .byd {
-      font-size: 20px;
+      font-size: 1.25rem;
+    }
+
+    .carousel-caption {
+      font-size: 1.2rem;
+      padding: 8px;
+      color: white;
+    }
+
+    .carousel-item a {
+      padding: 8px 20px;
+      font-size: 1rem;
+    }
+
+    /* altura contenedor imagenes carrusel */
+    #carousel,
+    .carousel-item {
+      height: 54vh;
+    }
+
+    /* altura imagenes */
+    .carousel-item img {
+      height: 35vh;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      top: 53%;
+      font-size: 30px;
+    }
+
+    .section-info,
+    .carousel-item {
+      background: white;
     }
   }
 </style>
 
 <script>
-  // Variables iniciales
   const carousel = document.getElementById("carousel");
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
-  const items = Array.from(carousel.children);
-  let isPaused = false;
+  const items = Array.from(carousel.getElementsByClassName("carousel-item"));
   let currentIndex = 0;
 
-  // Clonar los primeros y últimos elementos para un efecto infinito
-  carousel.appendChild(items[0].cloneNode(true));
-  carousel.insertBefore(items[items.length - 1].cloneNode(true), items[0]);
+  // Mostrar el item activo y reiniciar animaciones
+  function showItem(index) {
+    items.forEach((item, i) => {
+      item.classList.remove("active");
 
-  // Función de auto deslizamiento
-  function autoSlide() {
-    if (!isPaused) {
-      currentIndex++;
-      if (currentIndex >= items.length + 1) {
-        currentIndex = 1;
-        carousel.scrollTo({ left: 0, behavior: "auto" });
+      // Reiniciar animación de la caption si existe
+      const caption = item.querySelector(".carousel-caption");
+      if (caption) {
+        caption.classList.remove("animate-caption");
+        // Forzamos reflow para reiniciar la animación
+        void caption.offsetWidth;
+        caption.classList.add("animate-caption");
       }
-      carousel.scrollBy({ left: carousel.clientWidth, behavior: "smooth" });
-    }
+
+      // También reiniciar animación del botón si existe
+      const button = item.querySelector("a");
+      if (button) {
+        button.classList.remove("animate-caption");
+        void button.offsetWidth;
+        button.classList.add("animate-caption");
+      }
+    });
+
+    items[index].classList.add("active");
   }
 
-  // Intervalo automático para deslizar el carrusel
-  let slideInterval = setInterval(autoSlide, 3000);
-
-  // Pausar auto deslizamiento al pasar el mouse sobre el carrusel
-  carousel.addEventListener("mouseover", () => {
-    isPaused = true;
-    clearInterval(slideInterval);
-  });
-
-  // Reanudar auto deslizamiento al salir el mouse del carrusel
-  carousel.addEventListener("mouseout", () => {
-    isPaused = false;
-    slideInterval = setInterval(autoSlide, 6000);
-  });
-
-  // Botón de navegación "anterior"
+  // Navegación
   prevBtn.addEventListener("click", () => {
-    isPaused = true;
-    currentIndex--;
-    if (currentIndex < 0) {
-      // Corrección aquí
-      currentIndex = items.length - 1;
-      carousel.scrollTo({ left: carousel.scrollWidth, behavior: "auto" });
-    }
-    carousel.scrollBy({ left: -carousel.clientWidth, behavior: "smooth" });
-    isPaused = false;
-    clearInterval(slideInterval);
-    slideInterval = setInterval(autoSlide, 3000);
+    currentIndex = (currentIndex - 1 + items.length) % items.length;
+    showItem(currentIndex);
   });
 
-  // Botón de navegación "siguiente"
   nextBtn.addEventListener("click", () => {
-    isPaused = true;
-    currentIndex++;
-    if (currentIndex >= items.length + 1) {
-      currentIndex = 1;
-      carousel.scrollTo({ left: 0, behavior: "auto" });
-    }
-    carousel.scrollBy({ left: carousel.clientWidth, behavior: "smooth" });
-    isPaused = false;
-    clearInterval(slideInterval);
-    slideInterval = setInterval(autoSlide, 3000);
+    currentIndex = (currentIndex + 1) % items.length;
+    showItem(currentIndex);
   });
+
+  // Iniciar carrusel
+  showItem(currentIndex);
 </script>

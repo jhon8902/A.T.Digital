@@ -47,22 +47,26 @@ const noticia = noticiaData.find((item) => item.id === 1);
 }
 
 <style>
+  body {
+    font-family: "Playfair Display", Georgia, serif;
+  }
+
   /* Contenedor principal */
   .noticia-detalle {
     width: 100%;
     margin: 0;
     padding: 20px 0;
-    font-family: "Lora", serif; /* Fuente para el texto principal */
+
     position: relative;
-    background: #c8c9c9;
+    background: white;
   }
 
   /* Título flotante */
   .noticia-detalle h1 {
     font-size: 75px;
     text-align: center;
-    color: #b98f04;
-    background: black;
+    color: black;
+    background: #f1f2f2;
     font-weight: 400;
     margin: 0 auto 5px;
     text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
@@ -115,7 +119,7 @@ const noticia = noticiaData.find((item) => item.id === 1);
   .noticia-bloque .noticia-texto {
     flex: 1;
     text-align: center;
-    background: black;
+
     padding: 20px;
     border-radius: 12px;
     width: 50%;
@@ -125,16 +129,16 @@ const noticia = noticiaData.find((item) => item.id === 1);
   }
 
   .noticia-titulo {
-    font-size: 34px;
-    font-weight: 600;
-    color: #b98f04;
+    font-size: 26px;
+    font-weight: bolder;
+    color: black;
     margin-bottom: 10px;
     text-transform: uppercase;
   }
 
   .noticia-bloque .noticia-parrafo {
-    font-size: 25px;
-    color: #c5c4c4;
+    font-size: 22px;
+    color: black;
   }
 
   /* Alternar posiciones */
