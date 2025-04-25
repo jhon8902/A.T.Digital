@@ -14,5 +14,8 @@
     "framer-motion": "^11.13.5",
     "styled-components": "^6.1.12",
     "swiper": "^11.1.15"
+  },
+  "devDependencies": {
+    "@astrojs/vercel": "^7.8.2"
   }
 }
