@@ -1,8 +1,10 @@
 import { defineConfig } from 'astro/config';
-import vercel from '@astrojs/vercel/server';
+import staticAdapter from '@astrojs/static';
 
 export default defineConfig({
-  output: 'server',
-  adapter: vercel(),
+  output: 'static',
+  adapter: staticAdapter(),
 });
+
+
 
