@@ -150,7 +150,7 @@
     place-items: center;
     gap: 10px;
     background: linear-gradient(black 30%, #000 70%);
-    padding: 20px;
+    padding: 0;
     text-align: center;
 
     box-shadow: 0 8px 8px rgba(0, 0, 0, 0.5);
@@ -260,17 +260,31 @@
   }
 
   @media (max-width: 768px) {
+    .hibrido {
+      transition: none;
+    }
+
+    .hibrido:hover {
+      transform: none;
+    }
+
     .texto-fecha {
       background: #b98314;
     }
 
     .central-content h1 {
-      font-size: 44px;
+      font-size: 46px;
+      letter-spacing: 6px;
     }
 
     .hibrido-texto p,
     h2 {
       text-align: start;
+    }
+
+    .hibrido-texto p {
+      font-size: clamp(1.2rem, 1.2vw, 1.2rem);
+      padding: 5px;
     }
   }
 </style>
