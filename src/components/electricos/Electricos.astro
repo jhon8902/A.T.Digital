@@ -1,11 +1,21 @@
 <div id="electricos" class="electrico-container">
   <div class="central-content">
-    <h1>Carros Eléctricos</h1>
+    <h1>
+      <i class="fas fa-car-battery" style="color:#00cc66; margin-right: 14px;"
+      ></i>Eléctricos
+    </h1>
   </div>
 
   <div class="grid-container">
     <div class="imagen-destacada nueva-destacada">
       <a href="/notas-electricos/nota-volvo-cx40" class="destacada-link">
+        <div class="imagen-destacada-img">
+          <img
+            src="../img/volvo-cx40-portada.jpg"
+            alt="Volvo CX40"
+            class="electrico-imagen"
+          />
+        </div>
         <div class="texto-destacado">
           <p class="texto-f">nota: 10-feb</p>
           <h2>Volvo CX40 RECHARGE</h2>
@@ -13,13 +23,6 @@
             No solo ofrece una autonomía de 500km sino que además llega con
             nuevo diseño vanguardista.
           </p>
-        </div>
-        <div class="imagen-destacada-img">
-          <img
-            src="../img/volvo-cx40-portada.jpg"
-            alt="Volvo CX40"
-            class="electrico-imagen"
-          />
         </div>
       </a>
     </div>
@@ -36,7 +39,10 @@
     </div>
     <div class="imagen-card">
       <a href="/notas-electricos/peugeot-e3008">
-        <img src="../img/principal-peugeot.jpg" alt="peugeot e3008" />
+        <img
+          src="/img/peugeot-3008-electrica/principal-peugeot.webp"
+          alt="peugeot e3008"
+        />
         <h2>peugeot e3008</h2>
         <p>Eléctrico y potente para la nueva era.</p>
         <p class="texto-f">nota: 24-mar</p>
@@ -44,7 +50,10 @@
     </div>
     <div class="imagen-card">
       <a href="/notas-electricos/byd-sealion-7">
-        <img src="../img/byd-sealion-7-3.jpg" alt="Ford Mustang" />
+        <img
+          src="/img/byd-sealion-7/byd-sealion7-principal.webp"
+          alt="Ford Mustang"
+        />
         <h2>byd Sealion 7</h2>
         <p>Deportivo y sostenible sin perder su esencia.</p>
         <p class="texto-f">nota: 13-mar</p>
@@ -52,7 +61,10 @@
     </div>
     <div class="imagen-card">
       <a href="/notas-electricos/nota-megane">
-        <img src="../img/foto-principal-megane.gif" alt="renault megane" />
+        <img
+          src="/img/renault-megane-e-tech/renault-megane-principal.webp"
+          alt="renault megane"
+        />
         <h2>Changan Lumin</h2>
         <p>Compacto y eficiente para la movilidad urbana.</p>
         <p class="texto-f">nota: 13-mar</p>
@@ -62,6 +74,8 @@
 </div>
 
 <style>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
+
   .electrico-container {
     display: flex;
     flex-direction: column;
@@ -87,23 +101,18 @@
     color: white;
     font-size: 60px;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: bolder;
     letter-spacing: 1px;
     transition: color 0.9s ease;
     position: absolute;
     top: 20px;
-    right: 0;
-
+    right: 200px;
     transform: none;
     display: inline-block;
     white-space: nowrap;
     z-index: 3;
-    text-shadow: 2px 2px 6px rgba(16, 16, 16, 0.8);
+    text-shadow: 2px 2px 6px rgba(16, 16, 16, 0.2);
     padding: 20px;
-  }
-
-  .central-content h1:hover {
-    color: rgb(216, 232, 244);
   }
 
   .grid-container {
@@ -219,7 +228,7 @@
 
   .imagen-card h2 {
     font-size: 24px;
-    font-weight: bold;
+    font-weight: 600;
     color: white;
     padding: 5px;
     text-align: start;
@@ -236,9 +245,14 @@
     text-align: start;
   }
 
+  .imagen-card h2,
+  .imagen-card p {
+    font-family: "Poppins", sans-serif;
+  }
+
   .imagen-card .texto-f {
     font-size: 18px;
-    color: rgb(247, 246, 246);
+    color: black;
     position: absolute;
     top: 10px;
     left: 10px;
@@ -246,7 +260,7 @@
     z-index: 2;
     text-align: left;
     text-transform: none;
-    border-bottom: 1px solid #f4bd07;
+    border-bottom: 1px solid black;
     display: inline-block;
   }
 
@@ -261,11 +275,11 @@
     }
 
     .texto-destacado h2 {
-      font-size: 28px;
+      font-size: 30px;
     }
 
     .texto-destacado p {
-      font-size: 16px;
+      font-size: 22px;
       color: white;
     }
 
@@ -294,15 +308,47 @@
       text-align: center;
       display: block;
       margin: 0 auto;
-      white-space: normal; /* permite que el texto se ajuste en varias líneas si es necesario */
-      padding: 10px 20px;
-      color: #4e93fb;
+
+      padding: 10px;
+      color: whitesmoke;
     }
 
     .imagen-card .texto-f {
-      font-size: 10px;
-      padding: 15px;
-      color: rgb(233, 199, 74);
+      font-size: 14px;
+      padding: 5px;
+      color: black;
+      border-bottom: 2px solid black;
+      text-transform: uppercase;
+    }
+  }
+
+  /* Vista de escritorio: texto a la izquierda, imagen a la derecha */
+  @media (min-width: 901px) {
+    .destacada-link {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .imagen-destacada-img {
+      order: 2; /* imagen a la derecha */
+      flex: 1;
+    }
+
+    .texto-destacado {
+      order: 1; /* texto a la izquierda */
+      flex: 1;
+    }
+  }
+
+  /* Vista móvil: imagen arriba, texto abajo */
+  @media (max-width: 900px) {
+    .destacada-link {
+      flex-direction: column;
+    }
+
+    .imagen-destacada-img,
+    .texto-destacado {
+      order: unset; /* vuelve al flujo natural: imagen primero */
     }
   }
 </style>

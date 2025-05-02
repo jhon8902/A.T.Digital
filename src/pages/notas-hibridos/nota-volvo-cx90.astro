@@ -1,0 +1,357 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<meta charset="UTF-8" />
+<Layout title="nota-volvo-cx90" bodyClass="otras-page">
+  <section class="nota-container">
+    <div class="nota-header">
+      <h1>Ford Escape Híbrida</h1>
+      <p class="subtitulo">
+        Innovación, eficiencia y tecnología para el futuro
+      </p>
+    </div>
+
+    <section
+      class="seccion full-img"
+      style="background-image: url('/img/volvo-cx90/volvo-cx90-portada.jpg');"
+    >
+      <div class="texto-overlay">
+        <h2>Diseño Aerodinámico</h2>
+        <p>
+          La Ford Escape Híbrida 2025 combina estilo y funcionalidad con un
+          diseño aerodinámico que mejora la eficiencia y la conducción.
+        </p>
+      </div>
+    </section>
+
+    <section class="seccion texto-izquierda">
+      <div class="texto">
+        <h2>Tecnología de Última Generación</h2>
+        <p>
+          Equipada con el sistema Ford Co-Pilot360™, ofrece asistente de
+          conducción, integración con Apple CarPlay y Android Auto, y un sistema
+          de navegación intuitivo.
+        </p>
+      </div>
+      <img
+        src="/img/ford-scape-trasero.jpg"
+        alt="Tecnología Ford Escape Híbrida 2025"
+      />
+    </section>
+
+    <section
+      class="seccion full-img"
+      style="background-image: url('/img/ford-scape-parqueo.jpg');"
+    >
+      <div class="texto-overlay">
+        <h2>Motor Inteligente</h2>
+        <p>
+          Su sistema híbrido permite cambiar automáticamente entre los modos
+          eléctrico y gasolina, maximizando la eficiencia del combustible.
+        </p>
+      </div>
+    </section>
+
+    <section class="seccion texto-derecha">
+      <img
+        src="/img/ford-scape-trasero.jpg"
+        alt="Ford Escape Híbrida en carretera"
+      />
+      <div class="texto">
+        <h2>Compromiso con el Medio Ambiente</h2>
+        <p>
+          La Ford Escape Híbrida 2025 reduce emisiones de CO₂ y ayuda a
+          preservar el medio ambiente sin comprometer el rendimiento.
+        </p>
+        <p>
+          Disponible en Colombia en las versiones Peugeot Allure y GT, con
+          precios de COP$159.990.000 y COP $179.990.000, respectivamente, este
+          SUV ya tiene rodando 100 unidades por las calles gracias a la
+          expectativa que generó su lanzamiento en el país y disponibilidad en
+          la red de concesionarios autorizados de la marca.
+        </p>
+      </div>
+    </section>
+  </section>
+  <section class="ficha-tecnica">
+    <h2>Ficha Técnica Destacada</h2>
+    <div class="ficha-grid">
+      <div class="ficha-item">
+        <h3>Autonomía</h3>
+        <p>Hasta 885 km</p>
+      </div>
+      <div class="ficha-item">
+        <h3>Consumo</h3>
+        <p>5.5 L/100km</p>
+      </div>
+      <div class="ficha-item">
+        <h3>Motor</h3>
+        <p>Híbrido 2.5L + Eléctrico</p>
+      </div>
+      <div class="ficha-item">
+        <h3>Transmisión</h3>
+        <p>Automática eCVT</p>
+      </div>
+      <div class="ficha-item">
+        <h3>Tracción</h3>
+        <p>AWD</p>
+      </div>
+      <div class="ficha-item">
+        <h3>Pantalla</h3>
+        <p>13.2” SYNC 4</p>
+      </div>
+      <div class="ficha-item">
+        <h3>Conectividad</h3>
+        <p>Apple CarPlay / Android Auto</p>
+      </div>
+      <div class="ficha-item">
+        <h3>Seguridad</h3>
+        <p>Ford Co-Pilot360™</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Lora", serif;
+    background: #000;
+    color: black; /* color titulo y subtitulos del background #b98f04 */
+  }
+
+  /* todo el contenedor ocupa el 100% de la pantalla */
+  .nota-container {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .nota-header {
+    text-align: center;
+    padding: 60px 20px;
+    background: #b98f04;
+  }
+
+  .nota-header h1 {
+    font-size: 4.5rem;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .nota-header .subtitulo {
+    font-size: 1.5rem;
+    margin-top: 10px;
+  }
+
+  /* contenido completo de los textos encima de la imagen grande */
+  .seccion {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    padding: 20px;
+  }
+
+  .full-img {
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+  }
+
+  .full-img::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  /* texto encima de imagenes grandes */
+  .texto-overlay {
+    position: relative;
+    z-index: 2;
+    text-align: start;
+    color: white;
+    max-width: 80%;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    border-radius: 10px;
+    font-weight: 400;
+  }
+
+  .texto-overlay h2 {
+    font-size: 3.4rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #eedca0;
+  }
+
+  .texto-overlay p {
+    font-size: 1.8rem;
+  }
+
+  .texto-izquierda,
+  .texto-derecha {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .texto-izquierda .texto,
+  .texto-derecha .texto {
+    flex: 1;
+    padding: 30px;
+    text-align: left;
+    background: #b98f04;
+  }
+
+  .texto-derecha .texto {
+    order: 2;
+  }
+
+  .texto-izquierda img,
+  .texto-derecha img {
+    flex: 1;
+    width: 50%;
+    height: auto;
+  }
+
+  .texto h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bolder;
+  }
+
+  .texto p {
+    font-size: 1.4rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .texto-overlay {
+      max-width: 100%;
+      padding: 5px;
+    }
+
+    .texto-overlay h2 {
+      font-size: 2.2rem;
+    }
+
+    .texto-overlay p {
+      font-size: 1.4rem;
+    }
+
+    .nota-header {
+      padding: 20px 10px;
+    }
+
+    .nota-header h1 {
+      font-size: 2.8rem;
+    }
+
+    .nota-header .subtitulo {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+
+    .texto-izquierda,
+    .texto-derecha {
+      flex-direction: column;
+    }
+
+    .texto-izquierda img,
+    .texto-derecha img {
+      width: 100%;
+    }
+
+    .texto {
+      padding: 5px;
+      width: 100%;
+    }
+
+    .texto h2 {
+      font-size: 2rem;
+      text-align: start;
+      width: 100%;
+    }
+
+    .texto p {
+      font-size: 1.2rem;
+    }
+  }
+
+  .ficha-tecnica {
+    padding: 60px 20px;
+    background: #b98f04;
+    text-align: center;
+  }
+
+  .ficha-tecnica h2 {
+    font-size: 2.8rem;
+    margin-bottom: 40px;
+    color: #000;
+    font-weight: bolder;
+  }
+
+  .ficha-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .ficha-item {
+    background: black;
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .ficha-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 18px rgba(0, 0, 0, 0.4);
+  }
+
+  .ficha-item h3 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .ficha-item p {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  /* Para que siempre se vean 4 tarjetas arriba y 4 abajo (en dos filas de 4), solo necesitas ajustar la propiedad grid-template-columns para que tenga exactamente 4 columnas fijas, en lugar de usar auto-fit.*/
+
+  @media (max-width: 1024px) {
+    .ficha-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .ficha-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

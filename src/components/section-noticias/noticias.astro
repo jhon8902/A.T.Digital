@@ -2,12 +2,9 @@
 import noticias from "../../data/noticias.json";
 ---
 
-<h1 class="noticias-titulo">Lanzamiento Automotriz</h1>
-<div class="-noticias-subtitulo-container">
-  <h2 class="noticias-subtitulo">
-    los mas recientes lanzamientos en colombia.
-  </h2>
-</div>
+<h1 class="noticias-titulo">
+  <i class="fa-brands fa-galactic-republic"></i> Lanzamientos
+</h1>
 
 <section class="noticias-container">
   {
@@ -30,8 +27,12 @@ import noticias from "../../data/noticias.json";
 </section>
 
 <style>
+  @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Merriweather:wght@400;700&display=swap");
   html {
     scroll-behavior: smooth;
+  }
+  body {
+    font-family: "Lora", serif;
   }
 
   /* Contenedor Principal */
@@ -39,42 +40,39 @@ import noticias from "../../data/noticias.json";
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
-    padding: 50px;
-    border-bottom: 20px solid black;
+    padding: 40px;
+
     position: relative;
-    background: linear-gradient(white 70%, #000 70%);
+    background-color: rgb(29, 28, 28);
+    font-family: "Georgia", serif;
   }
 
   /* Título */
   .noticias-titulo {
-    font-size: 55px;
-    color: black;
+    font-size: 42px;
+    color: rgb(0, 0, 0);
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 1px;
-
+    border-bottom: none;
     /* text-shadow: 2px 2px 8px rgb(213, 213, 212); */
-    padding: 0;
+    padding: 30px;
     font-weight: bolder;
     transition: color 0.9s ease; /* Duración y efecto de transición */
     background-color: white;
     padding-top: 30px;
-    border-bottom: 2px solid black;
   }
 
-  /* subtitulo */
-  .noticias-subtitulo {
-    font-size: 22px;
-    /*text-shadow: 2px 2px 6px rgba(228, 158, 5, 0.1);*/
-    color: black;
-    margin-top: 10px;
-    text-align: center;
-    letter-spacing: 1.1px;
+  .noticias-titulo i {
+    color: black; /* Cambia el color del ícono */
+    font-size: 54px; /* Ajusta el tamaño */
+    margin-right: 5px; /* Cambia el margen derecho */
+    transition: all 0.3s ease; /* Añade una transición para efectos interactivos */
+  }
 
-    /* text-shadow: 2px 2px 8px rgb(213, 213, 212); */
-    padding: 20px;
-    font-weight: 600;
-    padding-top: 0;
+  .noticias-titulo i:hover {
+    color: blue; /* Cambia el color al pasar el cursor */
+    transform: scale(1.2); /* Escala el tamaño en hover */
   }
 
   /* Tarjeta de Noticias */
@@ -95,7 +93,7 @@ import noticias from "../../data/noticias.json";
   /* Imagen */
   .noticia-imagen {
     width: 100%;
-    height: 220px;
+    height: 230px;
     object-fit: cover;
     align-items: center;
   }
@@ -104,16 +102,17 @@ import noticias from "../../data/noticias.json";
   .noticia-texto {
     padding: 15px;
     text-align: start;
-    background: whitesmoke;
+    background: #f5f6f7;
     text-transform: uppercase;
   }
 
   .noticia-texto-titulo {
     font-size: 28px;
     margin-bottom: 12px;
-    color: #19354b;
-    font-weight: 600;
+    color: #121212;
+    font-weight: bolder;
     text-shadow: 2px 2px 4px white;
+    font-family: "Lora", serif;
   }
 
   .noticia-descripcion {
@@ -121,34 +120,48 @@ import noticias from "../../data/noticias.json";
     color: rgb(18, 18, 18);
     line-height: 1.6;
     font-weight: 600;
+    font-family: "Lora", serif;
   }
 
   /* Responsive */
   @media (max-width: 768px) {
     .noticias-container {
       padding: 0;
+      background-color: whitesmoke;
     }
+
     .noticia-imagen {
-      height: 180px;
+      height: 270px;
       align-content: center;
     }
 
     .noticias-titulo {
-      font-size: 35px;
-    }
+      font-size: 44px;
 
-    .noticias-subtitulo {
-      font-size: 14px;
-    }
-
-    .noticia-texto-titulo {
-      font-size: 28px;
+      padding: 10px;
       text-align: center;
+      border-bottom: 20px solid white;
+    }
+
+    .noticia-container {
+      transition: none;
+      max-width: 1560px;
+    }
+
+    .noticia-container:hover {
+      transform: none;
+    }
+    .noticia-texto {
+      background-color: white;
+      text-align: start;
+      padding: 20px;
+    }
+    .noticia-texto-titulo {
+      font-size: 26px;
     }
 
     .noticia-descripcion {
       font-size: 16px;
-      text-align: center;
     }
   }
 </style>

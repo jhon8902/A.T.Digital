@@ -43,7 +43,7 @@
             class="w-full h-full object-cover"
           />
           <div class="carousel-caption">
-            BMW Serie 5: poderoso, tecnológico y ahora electrificado.
+            BMW Serie 5: poderoso y ahora electrificado.
           </div>
         </a>
 
@@ -75,8 +75,7 @@
             class="w-full h-full object-cover"
           />
           <div class="carousel-caption">
-            DFSK seres e5: la híbrida para 7 pasajeros. descubre sus
-            características.
+            DFSK seres e5: la híbrida para 7 pasajeros.
           </div>
         </a>
 
@@ -165,6 +164,7 @@
     width: 100%;
     height: 100vh;
     overflow: hidden;
+    border-bottom: none;
   }
 
   .carousel-item {
@@ -199,7 +199,7 @@
 
   .section-info {
     padding: 20px;
-    background: linear-gradient(white 30%, #000 70%);
+    background: linear-gradient(rgb(216, 162, 33) 30%, #000 70%);
   }
 
   .sticky-container {
@@ -218,13 +218,14 @@
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
     background: rgba(0, 0, 0, 0.6);
-    color: #fff;
+    color: white;
     font-size: 2rem;
     padding: 16px 40px;
     font-weight: bold;
     text-align: center;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+
     z-index: 5;
     text-transform: uppercase;
     opacity: 0;
@@ -234,7 +235,7 @@
   /* animacion entrada texto caption */
   .carousel-item.active .carousel-caption {
     opacity: 1;
-    animation: captionFade 2.4s ease forwards;
+    animation: captionFade 2.6s ease forwards;
     pointer-events: auto;
   }
 
@@ -352,7 +353,8 @@
 
   @media (max-width: 480px) {
     h1 {
-      font-size: 1.5rem;
+      font-size: 2rem;
+      padding-top: 20px;
     }
 
     h2 {
@@ -373,36 +375,51 @@
     }
 
     .carousel-caption {
-      font-size: 1.2rem;
-      padding: 8px;
-      color: white;
+      font-size: 1.1rem;
+      padding: 20px;
+      color: whitesmoke;
+      text-transform: uppercase;
+      top: auto;
     }
 
     .carousel-item a {
-      padding: 8px 20px;
+      padding: 10px 20px;
       font-size: 1rem;
     }
 
     /* altura contenedor imagenes carrusel */
     #carousel,
     .carousel-item {
-      height: 54vh;
+      height: 48vh;
+    }
+
+    #carousel {
+      border-bottom: 10px solid whitesmoke;
     }
 
     /* altura imagenes */
     .carousel-item img {
-      height: 35vh;
+      height: 34vh;
     }
 
     .carousel-control-prev,
     .carousel-control-next {
-      top: 53%;
-      font-size: 30px;
+      top: 60%;
+      font-size: 25px;
+      color: white;
+      background-color: black;
+      text-transform: uppercase;
     }
 
-    .section-info,
-    .carousel-item {
-      background: white;
+    .carousel-control-next,
+    .carousel-control-prev {
+      width: 34px;
+      height: 38px;
+    }
+
+    .section-info {
+      padding: 0;
+      background: linear-gradient(rgb(216, 162, 33) 30%, #000 70%);
     }
   }
 </style>
