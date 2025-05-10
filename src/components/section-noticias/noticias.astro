@@ -27,12 +27,8 @@ import noticias from "../../data/noticias.json";
 </section>
 
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Merriweather:wght@400;700&display=swap");
   html {
     scroll-behavior: smooth;
-  }
-  body {
-    font-family: "Lora", serif;
   }
 
   /* Contenedor Principal */
@@ -44,12 +40,11 @@ import noticias from "../../data/noticias.json";
 
     position: relative;
     background-color: rgb(29, 28, 28);
-    font-family: "Georgia", serif;
   }
 
   /* Título */
   .noticias-titulo {
-    font-size: 42px;
+    font-size: 48px;
     color: rgb(0, 0, 0);
     text-align: center;
     text-transform: uppercase;
@@ -61,6 +56,7 @@ import noticias from "../../data/noticias.json";
     transition: color 0.9s ease; /* Duración y efecto de transición */
     background-color: white;
     padding-top: 30px;
+    font-family: "Georgia", serif;
   }
 
   .noticias-titulo i {
@@ -103,23 +99,22 @@ import noticias from "../../data/noticias.json";
     padding: 15px;
     text-align: start;
     background: #f5f6f7;
-    text-transform: uppercase;
   }
 
   .noticia-texto-titulo {
-    font-size: 28px;
+    font-family: "Georgia", serif;
+    font-size: 34px;
     margin-bottom: 12px;
     color: #121212;
-    font-weight: bolder;
+    font-weight: 600;
     text-shadow: 2px 2px 4px white;
-    font-family: "Lora", serif;
   }
 
   .noticia-descripcion {
     font-size: 18px;
     color: rgb(18, 18, 18);
     line-height: 1.6;
-    font-weight: 600;
+    font-weight: 400;
     font-family: "Lora", serif;
   }
 
@@ -136,7 +131,7 @@ import noticias from "../../data/noticias.json";
     }
 
     .noticias-titulo {
-      font-size: 42px;
+      font-size: 39px;
 
       padding: 10px;
       text-align: center;
@@ -154,10 +149,10 @@ import noticias from "../../data/noticias.json";
     .noticia-texto {
       background-color: white;
       text-align: start;
-      padding: 20px;
+      padding: 10px;
     }
     .noticia-texto-titulo {
-      font-size: 26px;
+      font-size: 24px;
     }
 
     .noticia-descripcion {

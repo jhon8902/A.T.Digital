@@ -14,7 +14,7 @@ import Layout from "../../layouts/Layout.astro";
 
     <section
       class="seccion full-img"
-      style="background-image: url('/img/ford-scape-diseño.jpg');"
+      style="background-image: url('/img/ford-scape-hibrida/ford-scape-portada.webp');"
     >
       <div class="texto-overlay">
         <h2>Diseño Aerodinámico</h2>
@@ -35,14 +35,14 @@ import Layout from "../../layouts/Layout.astro";
         </p>
       </div>
       <img
-        src="/img/ford-scape-trasero.jpg"
+        src="/img/ford-scape-hibrida/ford-scape-tecnologia.webp"
         alt="Tecnología Ford Escape Híbrida 2025"
       />
     </section>
 
     <section
       class="seccion full-img"
-      style="background-image: url('/img/ford-scape-parqueo.jpg');"
+      style="background-image: url('/img/ford-scape-hibrida/ford-scape-motor.webp');"
     >
       <div class="texto-overlay">
         <h2>Motor Inteligente</h2>
@@ -55,7 +55,7 @@ import Layout from "../../layouts/Layout.astro";
 
     <section class="seccion texto-derecha">
       <img
-        src="/img/ford-scape-trasero.jpg"
+        src="/img/ford-scape-hibrida/ford-scape-hambiente.webp"
         alt="Ford Escape Híbrida en carretera"
       />
       <div class="texto">
@@ -139,7 +139,7 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .nota-header h1 {
-    font-size: 4.5rem;
+    font-size: 3.4rem;
     text-transform: uppercase;
     font-weight: 600;
   }
@@ -191,7 +191,7 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .texto-overlay h2 {
-    font-size: 3.4rem;
+    font-size: 3rem;
     margin-bottom: 15px;
     text-transform: uppercase;
     font-weight: 600;
@@ -242,17 +242,34 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   @media (max-width: 768px) {
+    .full-img {
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: scroll;
+      min-height: auto;
+      padding: 10px 20px; /* Asegura que haya espacio vertical */
+    }
+
     .texto-overlay {
+      display: flex;
+      flex-direction: column; /* Organiza el contenido en columna */
+      align-items: center;
+      text-align: center;
       max-width: 100%;
-      padding: 5px;
+      padding: 10px;
+      background: none; /* Elimina el fondo oscuro */
     }
 
     .texto-overlay h2 {
       font-size: 2.2rem;
+      margin-bottom: 310px;
+      text-align: center;
     }
 
     .texto-overlay p {
       font-size: 1.4rem;
+      text-align: center;
     }
 
     .nota-header {
@@ -260,7 +277,7 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     .nota-header h1 {
-      font-size: 2.8rem;
+      font-size: 2rem;
     }
 
     .nota-header .subtitulo {
@@ -284,7 +301,7 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     .texto h2 {
-      font-size: 2rem;
+      font-size: 1.6rem;
       text-align: start;
       width: 100%;
     }

@@ -14,6 +14,38 @@
 
     <div class="container mx-auto px-2">
       <div id="carousel" class="relative flex overflow-hidden">
+        <!-- Imagen 1 -->
+        <a
+          href="/noticias-carrusel/noticia-ford"
+          class="carousel-item relative w-full transition-opacity duration-[1400ms] hover:opacity-75"
+        >
+          <!-- Cambiado a <h2> -->
+          <img
+            src="../img/ford-1bronco.jpg"
+            alt="Ford Bronco, SUV todo terreno"
+            class="w-full h-full object-cover"
+          />
+          <div class="carousel-caption">
+            Ford Bronco: la última apuesta todo terreno.
+          </div>
+        </a>
+
+        <!-- Imagen 4 -->
+        <a
+          href="/noticias-carrusel/noticia-audi"
+          class="carousel-item relative w-full transition-transform duration-600 hover:scale-95"
+        >
+          <!-- Cambiado a <h2> -->
+          <img
+            src="../img/audi-etron/audi-portada.webp"
+            alt="Audi E-TRON: SUV eléctrico de lujo"
+            class="w-full h-full object-cover"
+          />
+          <div class="carousel-caption">
+            Audi E-TRON: el SUV eléctrico más elegante de la marca.
+          </div>
+        </a>
+
         <!-- Imagen 5 -->
         <a
           href="/noticias-carrusel/noticia-bmw-concept"
@@ -47,22 +79,6 @@
           </div>
         </a>
 
-        <!-- Imagen 1 -->
-        <a
-          href="/noticias-carrusel/noticia-ford"
-          class="carousel-item relative w-full transition-opacity duration-[1400ms] hover:opacity-75"
-        >
-          <!-- Cambiado a <h2> -->
-          <img
-            src="../img/ford-1bronco.jpg"
-            alt="Ford Bronco, SUV todo terreno"
-            class="w-full h-full object-cover"
-          />
-          <div class="carousel-caption">
-            Ford Bronco: la última apuesta todo terreno de la marca.
-          </div>
-        </a>
-
         <!-- Imagen 2 -->
         <a
           href="/noticias-carrusel/noticia-dfsk"
@@ -76,22 +92,6 @@
           />
           <div class="carousel-caption">
             DFSK seres e5: la híbrida para 7 pasajeros.
-          </div>
-        </a>
-
-        <!-- Imagen 4 -->
-        <a
-          href="/noticias-carrusel/noticia-audi"
-          class="carousel-item relative w-full transition-transform duration-600 hover:scale-95"
-        >
-          <!-- Cambiado a <h2> -->
-          <img
-            src="../img/audi-etron/audi-portada.webp"
-            alt="Audi E-TRON: SUV eléctrico de lujo"
-            class="w-full h-full object-cover"
-          />
-          <div class="carousel-caption">
-            Audi E-TRON: el SUV eléctrico más elegante de la marca.
           </div>
         </a>
       </div>
@@ -108,30 +108,32 @@
 </section>
 
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Merriweather:wght@400;700&display=swap");
-
   * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
 
-  body {
-    font-family: "Lora", serif;
+  .container {
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    max-width: 100%; /* Evita restricciones de ancho */
+    margin: 0 auto; /* Centra el contenido */
+    padding: 0; /* Elimina padding innecesario */
   }
 
   h1 {
     max-width: 100%;
     text-align: center;
-    font-weight: bold;
-    font-size: 3.5rem;
+    font-weight: 700;
+    font-size: 60px;
     color: black;
-    letter-spacing: 2.6px;
+    letter-spacing: 0;
     text-transform: uppercase;
     opacity: 0;
     transform: translateY(20px);
     animation: fadeIn 6s forwards;
     font-family: "Georgia", serif;
+
     position: relative;
   }
 
@@ -139,16 +141,16 @@
     max-width: 100%;
     text-align: center;
     font-weight: bold;
-    font-size: 1.125rem;
+    font-size: 1.15rem;
     color: black;
     margin-bottom: 15px;
     padding: 10px;
-    letter-spacing: 2.2px;
+    letter-spacing: 0;
     text-transform: uppercase;
     opacity: 0;
     transform: translateY(20px);
     animation: fadeIn 6s forwards;
-    font-family: "Georgia", serif;
+    font-family: "roboto", sans-serif;
     position: relative;
   }
 
@@ -161,9 +163,11 @@
 
   #carousel {
     position: relative;
-    width: 100%;
+    width: 100%; /* Asegura que ocupe todo el ancho */
     height: 100vh;
     overflow: hidden;
+    margin: 0 auto; /* Centra el carrusel si hay espacio adicional */
+    padding: 0;
     border-bottom: none;
   }
 
@@ -221,11 +225,11 @@
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
     background: rgba(0, 0, 0, 0.6);
     color: white;
-    font-size: 2rem;
+    font-size: 26px;
     padding: 16px 40px;
-    font-weight: bold;
+    font-weight: 400;
     text-align: center;
-
+    font-family: "Georgia", serif;
     z-index: 5;
     text-transform: uppercase;
     opacity: 0;
@@ -321,6 +325,7 @@
 
     p {
       font-size: 1rem;
+      text-transform: none;
     }
 
     .carousel-caption {
@@ -353,7 +358,7 @@
 
   @media (max-width: 480px) {
     h1 {
-      font-size: 2rem;
+      font-size: 2.2rem;
       padding-top: 20px;
     }
 
@@ -363,7 +368,7 @@
     }
 
     p {
-      font-size: 0.9rem;
+      font-size: 1.2rem;
     }
 
     .ford,
@@ -376,7 +381,7 @@
 
     .carousel-caption {
       font-size: 1.1rem;
-      padding: 20px;
+      padding: 26px;
       color: whitesmoke;
       text-transform: uppercase;
       top: auto;
@@ -419,7 +424,7 @@
 
     .section-info {
       padding: 0;
-      background: linear-gradient(rgb(216, 162, 33) 30%, #000 70%);
+      background: linear-gradient(rgb(249, 249, 248) 30%, #000 70%);
     }
   }
 </style>

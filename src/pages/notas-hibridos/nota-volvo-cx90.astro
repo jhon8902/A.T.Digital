@@ -8,13 +8,14 @@ import Layout from "../../layouts/Layout.astro";
     <div class="nota-header">
       <h1>Ford Escape Híbrida</h1>
       <p class="subtitulo">
-        Innovación, eficiencia y tecnología para el futuro
+        Innovación, eficiencia y tecnología para el futuro, con un precio
+        accesible que redefine el segmento de los vehículos híbridos de lujo.
       </p>
     </div>
 
     <section
       class="seccion full-img"
-      style="background-image: url('/img/volvo-cx90/volvo-cx90-portada.jpg');"
+      style="background-image: url('/img/volvo-cx90-hibrida/volvo-cx90-subportada.webp');"
     >
       <div class="texto-overlay">
         <h2>Diseño Aerodinámico</h2>
@@ -35,14 +36,14 @@ import Layout from "../../layouts/Layout.astro";
         </p>
       </div>
       <img
-        src="/img/ford-scape-trasero.jpg"
+        src="/img/volvo-cx90-hibrida/volvo-cx90-interior.webp"
         alt="Tecnología Ford Escape Híbrida 2025"
       />
     </section>
 
     <section
       class="seccion full-img"
-      style="background-image: url('/img/ford-scape-parqueo.jpg');"
+      style="background-image: url('/img/volvo-cx90-hibrida/volvo-cx90-motor.webp');"
     >
       <div class="texto-overlay">
         <h2>Motor Inteligente</h2>
@@ -55,7 +56,7 @@ import Layout from "../../layouts/Layout.astro";
 
     <section class="seccion texto-derecha">
       <img
-        src="/img/ford-scape-trasero.jpg"
+        src="/img/volvo-cx90-hibrida/volvo-cx90-hambiente.webp"
         alt="Ford Escape Híbrida en carretera"
       />
       <div class="texto">
@@ -121,7 +122,6 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   body {
-    font-family: "Lora", serif;
     background: #000;
     color: black; /* color titulo y subtitulos del background #b98f04 */
   }
@@ -134,7 +134,7 @@ import Layout from "../../layouts/Layout.astro";
 
   .nota-header {
     text-align: center;
-    padding: 60px 20px;
+    padding: 30px 20px;
     background: #b98f04;
   }
 
@@ -142,11 +142,13 @@ import Layout from "../../layouts/Layout.astro";
     font-size: 4.5rem;
     text-transform: uppercase;
     font-weight: 600;
+    font-family: "Georgia", serif;
   }
 
   .nota-header .subtitulo {
     font-size: 1.5rem;
     margin-top: 10px;
+    color: black;
   }
 
   /* contenido completo de los textos encima de la imagen grande */
@@ -191,7 +193,7 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .texto-overlay h2 {
-    font-size: 3.4rem;
+    font-size: 3rem;
     margin-bottom: 15px;
     text-transform: uppercase;
     font-weight: 600;
@@ -242,35 +244,48 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   @media (max-width: 768px) {
-    .texto-overlay {
-      max-width: 100%;
-      padding: 5px;
-    }
-
-    .texto-overlay h2 {
-      font-size: 2.2rem;
-    }
-
-    .texto-overlay p {
-      font-size: 1.4rem;
-    }
-
-    .nota-header {
-      padding: 20px 10px;
-    }
-
     .nota-header h1 {
-      font-size: 2.8rem;
+      font-size: 2.4rem;
     }
 
     .nota-header .subtitulo {
       font-size: 1.2rem;
-      margin-top: 10px;
+    }
+
+    .full-img {
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: scroll;
+      min-height: auto;
+      padding: 10px 20px; /* Asegura que haya espacio vertical */
+    }
+
+    .texto-overlay {
+      display: flex;
+      flex-direction: column; /* Organiza el contenido en columna */
+      align-items: center;
+      text-align: center;
+      max-width: 100%;
+      padding: 10px;
+      background: none; /* Elimina el fondo oscuro */
+    }
+
+    .texto-overlay h2 {
+      font-size: 2.1rem;
+      margin-bottom: 380px;
+      text-align: center;
+    }
+
+    .texto-overlay p {
+      font-size: 1.2rem;
+      text-align: center;
     }
 
     .texto-izquierda,
     .texto-derecha {
       flex-direction: column;
+      text-align: center;
     }
 
     .texto-izquierda img,
@@ -279,18 +294,17 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     .texto {
-      padding: 5px;
-      width: 100%;
+      padding: 40px;
     }
 
     .texto h2 {
-      font-size: 2rem;
-      text-align: start;
-      width: 100%;
+      font-size: 1.8rem;
+      text-align: center;
     }
 
     .texto p {
       font-size: 1.2rem;
+      text-align: center;
     }
   }
 

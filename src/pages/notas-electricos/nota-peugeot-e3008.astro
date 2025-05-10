@@ -6,13 +6,13 @@ import Layout from "../../layouts/Layout.astro";
 <Layout title="nota-peugeot-e3008" bodyClass="otras-page">
   <section class="nota-container">
     <div class="nota-header">
-      <h1>Volvo XC40 Recharge</h1>
+      <h1>peugeot e-3008</h1>
       <p class="subtitulo">El futuro eléctrico con seguridad y elegancia</p>
     </div>
 
     <section class="feature-banner-1">
       <img
-        src="/img/volvo-cx40-lateral.jpg"
+        src="/img/peugeot-3008-electrica/portada-peugeot-3008.webp"
         alt="Vista lateral Volvo XC40 Recharge"
       />
       <div class="feature-text-1">
@@ -22,7 +22,10 @@ import Layout from "../../layouts/Layout.astro";
 
     <section class="dynamic-layout">
       <div class="dynamic-item">
-        <img src="/img/volvo-cx40-1.png" alt="Volvo XC40 Recharge" />
+        <img
+          src="/img/peugeot-3008-electrica/cola-peugeot.webp"
+          alt="Volvo XC40 Recharge"
+        />
       </div>
       <div class="dynamic-item text-box">
         <h2>Diseño Vanguardista</h2>
@@ -65,14 +68,17 @@ import Layout from "../../layouts/Layout.astro";
       </div>
       <div class="dynamic-item">
         <img
-          src="/img/volvo-cx40-interior.jpg"
+          src="/img/peugeot-3008-electrica/interior-peugeot.webp"
           alt="Interiores del Volvo XC40"
         />
       </div>
     </section>
 
     <section class="feature-banner">
-      <img src="/img/volvo-cx40-s-portada.gif" alt="Carga Ultrarápida" />
+      <img
+        src="/img/peugeot-3008-electrica/carga-peugeot.webp"
+        alt="Carga Ultrarápida"
+      />
       <div class="feature-text">
         <h2 class="feature-title">Carga Ultrarápida</h2>
         <p class="feature-paragraph">
@@ -102,7 +108,10 @@ import Layout from "../../layouts/Layout.astro";
         </p>
       </div>
       <div class="dynamic-item">
-        <img src="/img/volvo-cx40-trasero.jpg" alt="Autonomía y Seguridad" />
+        <img
+          src="/img/peugeot-3008-electrica/portada-peugeot-3008.webp"
+          alt="Autonomía y Seguridad"
+        />
       </div>
     </section>
   </section>
@@ -129,7 +138,7 @@ import Layout from "../../layouts/Layout.astro";
   .nota-header {
     text-align: center;
     padding: 60px 20px;
-    background: #b98f04;
+    background: whitesmoke;
     color: black;
   }
 
@@ -170,7 +179,7 @@ import Layout from "../../layouts/Layout.astro";
 
   .text-box {
     padding: 100px;
-    background: #b98f04;
+    background: whitesmoke;
     color: black;
     display: flex;
     flex-direction: column;
@@ -194,10 +203,21 @@ import Layout from "../../layouts/Layout.astro";
   /* SECCIÓN "CARGA ULTRARÁPIDA" */
   .feature-banner {
     position: relative;
+    width: 100%;
     min-height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden; /* Evita desbordamientos */
+  }
+
+  .feature-banner img {
+    width: 100%; /* La imagen ocupa todo el ancho del contenedor */
+    height: 100%; /* La imagen ocupa toda la altura del contenedor */
+    object-fit: cover; /* Ajusta la imagen sin deformarla */
+    position: absolute; /* Asegura que la imagen esté detrás del texto */
+    top: 0;
+    left: 0;
   }
 
   .feature-text {
@@ -225,7 +245,7 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .feature-paragraph {
-    font-size: 1rem;
+    font-size: 1.4rem;
     color: rgb(186, 186, 186);
     width: 80%;
     padding: 5px;
