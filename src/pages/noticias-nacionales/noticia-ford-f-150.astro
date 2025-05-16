@@ -27,6 +27,7 @@ const noticia = noticiaData.find((item) => item.id === 4);
                 <div class="noticia-texto">
                   <h3 class="noticia-titulo">{seccion.titulo}</h3>
                   <p class="noticia-parrafo">{seccion.parrafo}</p>
+                  <p class="noticia-parrafo">{seccion.parrafo2}</p>
                 </div>
                 <img
                   src={seccion.imagen}
@@ -47,36 +48,39 @@ const noticia = noticiaData.find((item) => item.id === 4);
 }
 
 <style>
+  body {
+    font-family: "Poppins", sans-serif;
+  }
   /* Contenedor principal */
   .noticia-detalle {
     width: 100%;
     margin: 0;
     padding: 40px 0;
-    font-family: "Lora", serif; /* Fuente para el texto principal */
+    background: white;
     position: relative;
   }
 
   /* Título flotante */
   .noticia-detalle h1 {
-    font-size: 75px;
+    font-size: 45px;
     text-align: center;
     color: black;
     font-family: "Lora", serif; /* Fuente para el texto principal */
     margin: 0 auto 5px;
-    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
-    border-bottom: 2px solid black;
+    font-family: "Georgia", serif;
+
     padding: 15px;
   }
 
   .noticia-descripcion {
     position: relative; /* Necesario para posicionar el pseudo-elemento */
-    font-size: 75px;
+    font-size: 48px;
+    font-weight: 600;
     text-align: center;
     color: black;
     font-family: "Lora", serif; /* Fuente para el texto principal */
     margin: 0 auto 5px;
-    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
-
+    text-transform: uppercase;
     padding: 15px;
   }
 
@@ -110,8 +114,8 @@ const noticia = noticiaData.find((item) => item.id === 4);
 
   .noticia-bloque .noticia-texto {
     flex: 1;
-    text-align: center;
-    background: #ffffff;
+    font-family: "Georgia", serif; /* Fuente para el texto principal */
+
     padding: 20px;
     border-radius: 12px;
     width: 50%;
@@ -121,7 +125,7 @@ const noticia = noticiaData.find((item) => item.id === 4);
   }
 
   .noticia-titulo {
-    font-size: 34px;
+    font-size: 36px;
     font-weight: 600;
     color: black;
     margin-bottom: 10px;
@@ -129,8 +133,11 @@ const noticia = noticiaData.find((item) => item.id === 4);
   }
 
   .noticia-bloque .noticia-parrafo {
-    font-size: 25px;
+    font-size: 22px;
     color: #333;
+    margin-bottom: 15px; /* Agrega espacio entre los párrafos */
+    font-family: "Poppins", sans-serif;
+    line-height: 1.6; /* Mejora la legibilidad del texto */
   }
 
   /* Alternar posiciones */
@@ -148,7 +155,7 @@ const noticia = noticiaData.find((item) => item.id === 4);
       flex-direction: column;
     }
     .noticia-detalle h1 {
-      font-size: 40px;
+      font-size: 32px;
       background: none;
       color: black;
     }
@@ -162,13 +169,20 @@ const noticia = noticiaData.find((item) => item.id === 4);
     }
 
     .noticia-descripcion {
-      font-size: 30px;
+      font-size: 32px;
       font-weight: 600;
       padding: 15px;
+      padding-top: 0;
+      text-align: start;
+    }
+
+    .noticia-titulo {
+      font-size: 24px;
+      text-align: start;
     }
 
     .noticia-bloque .noticia-parrafo {
-      font-size: 22px;
+      font-size: 18px;
       color: #333;
     }
 

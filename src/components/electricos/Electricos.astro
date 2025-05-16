@@ -33,7 +33,7 @@
       <a href="/notas-electricos/nota-mini-cooper">
         <img src="../img/mini-cooper1.jpg" alt="Mini Cooper" />
         <h2>Mini Cooper</h2>
-        <p>Lujo y tecnología en un compacto electrico.</p>
+        <p>Lujo y tecnología en un compacto eléctrico.</p>
         <p class="texto-f">nota: 13-mar</p>
       </a>
     </div>
@@ -52,9 +52,9 @@
       <a href="/notas-electricos/nota-byd-sealion7">
         <img
           src="/img/byd-sealion-7/byd-sealion7-principal.webp"
-          alt="Ford Mustang"
+          alt="BYD Sealion 7"
         />
-        <h2>byd Sealion 7</h2>
+        <h2>BYD Sealion 7</h2>
         <p>Deportivo y sostenible sin perder su esencia.</p>
         <p class="texto-f">nota: 13-mar</p>
       </a>
@@ -63,9 +63,9 @@
       <a href="/notas-electricos/nota-renault-megane">
         <img
           src="/img/renault-megane-e-tech/renault-megane-principal.webp"
-          alt="renault megane"
+          alt="Renault Megane"
         />
-        <h2>renaul megane</h2>
+        <h2>Renault Megane</h2>
         <p>Compacto y eficiente para la movilidad urbana.</p>
         <p class="texto-f">nota: 20-abril</p>
       </a>
@@ -74,6 +74,7 @@
 </div>
 
 <style>
+  /* Contenedor principal */
   .electrico-container {
     display: flex;
     flex-direction: column;
@@ -85,26 +86,13 @@
     width: 100%;
   }
 
-  .texto-fecha {
-    font-size: 15px;
-    padding: 10px;
-  }
-
-  .central-content {
-    position: relative;
-  }
-
   .central-content h1 {
     color: white;
     font-size: 60px;
     text-transform: uppercase;
     font-weight: bolder;
     letter-spacing: 1px;
-    transition: color 0.9s ease;
-    position: absolute;
-    top: 20px;
-    right: 270px;
-    transform: none;
+    position: relative;
     display: inline-block;
     white-space: nowrap;
     z-index: 3;
@@ -129,9 +117,7 @@
     margin-top: 50px;
     width: 100%;
     max-width: 1680px;
-
     overflow: hidden;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
   }
 
   .destacada-link {
@@ -155,7 +141,7 @@
   }
 
   .texto-destacado h2 {
-    font-size: 40px;
+    font-size: 32px;
     margin-bottom: 15px;
     text-transform: uppercase;
     font-weight: bold;
@@ -164,13 +150,13 @@
   }
 
   .texto-destacado p {
-    font-size: 24px;
+    font-size: 20px;
     line-height: 1.4;
     margin-bottom: 10px;
   }
 
   .texto-destacado .texto-f {
-    font-size: 20px;
+    font-size: 18px;
     margin-bottom: 10px;
     color: #cccccc;
     border-bottom: 1px solid #f4bd07;
@@ -192,11 +178,6 @@
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 1.9s ease;
-  }
-
-  .imagen-destacada-img:hover img {
-    transform: scale(1.2); /* Hace zoom al 110% */
   }
 
   .imagenes-grid {
@@ -212,25 +193,22 @@
 
   .imagen-card {
     overflow: hidden;
-    transition: transform 0.3s;
     text-align: center;
     position: relative;
   }
 
-  .imagen-card:hover {
-    transform: translateY(-15px);
-  }
-
   .imagen-card img {
     width: 100%;
-    height: 300px;
+    height: 350px;
     object-fit: cover;
+    position: relative;
+    display: block;
   }
 
   .imagen-card h2 {
     font-size: 22px;
     font-weight: 600;
-    color: #cccccc;
+    color: white;
     padding: 5px;
     text-align: start;
     position: relative;
@@ -243,11 +221,8 @@
     font-size: 18px;
     padding: 5px;
     font-weight: 400;
-    color: #a6a6a6;
+    color: #cfcece;
     text-align: start;
-  }
-
-  .imagen-card p {
     font-family: "Poppins", sans-serif;
   }
 
@@ -265,102 +240,27 @@
     display: inline-block;
   }
 
-  @media (max-width: 900px) {
-    .nueva-destacada {
-      flex-direction: column;
-    }
-
-    .texto-destacado {
-      padding: 10px;
-      text-align: center;
-    }
-
-    .texto-destacado h2 {
-      font-size: 26px;
-    }
-
-    .texto-destacado p {
-      font-size: 20px;
-      color: white;
-    }
-
-    .texto-destacado .texto-f {
-      width: 100%;
-    }
-  }
-
   @media (max-width: 768px) {
-    .electrico-container {
-      border-bottom: none;
-      font-family: none;
-    }
-
     .imagenes-grid {
       grid-template-columns: 1fr;
     }
 
-    .imagen-card:hover {
-      transform: none;
+    .central-content h1 {
+      font-size: 32px;
+      text-align: center;
+      padding: 20px;
     }
 
     .imagen-card h2 {
-      padding: 10px;
       font-size: 24px;
     }
 
     .imagen-card p {
-      padding: 10px;
-      text-transform: none;
-      font-size: 20px;
-    }
-
-    .central-content h1 {
-      position: static; /* o 'relative' */
-      font-size: 42px;
-      text-align: center;
-      display: block;
-      margin: 0 auto;
-
-      padding: 20px;
-      color: whitesmoke;
+      font-size: 18px;
     }
 
     .imagen-card .texto-f {
-      font-size: 14px;
-      padding: 5px;
-      color: black;
-      border-bottom: 2px solid black;
-      text-transform: uppercase;
-    }
-  }
-
-  /* Vista de escritorio: texto a la izquierda, imagen a la derecha */
-  @media (min-width: 901px) {
-    .destacada-link {
-      display: flex;
-      flex-direction: row;
-    }
-
-    .imagen-destacada-img {
-      order: 2; /* imagen a la derecha */
-      flex: 1;
-    }
-
-    .texto-destacado {
-      order: 1; /* texto a la izquierda */
-      flex: 1;
-    }
-  }
-
-  /* Vista móvil: imagen arriba, texto abajo */
-  @media (max-width: 900px) {
-    .destacada-link {
-      flex-direction: column;
-    }
-
-    .imagen-destacada-img,
-    .texto-destacado {
-      order: unset; /* vuelve al flujo natural: imagen primero */
+      font-size: 12px;
     }
   }
 </style>

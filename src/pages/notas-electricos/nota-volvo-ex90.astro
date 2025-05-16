@@ -17,18 +17,9 @@ import Layout from "../../layouts/Layout.astro";
         src="/img/volvo-ex90-electrico/volvo-ex90-subportada.webp"
         alt="Vista lateral Volvo EX90"
       />
-      <div class="feature-text-1">
-        <h2 class="feature-title-1">Innovación Eléctrica</h2>
-      </div>
     </section>
 
     <section class="dynamic-layout">
-      <div class="dynamic-item">
-        <img
-          src="/img/volvo-ex90-electrico/volvo-ex90-diseño.webp"
-          alt="Volvo EX90"
-        />
-      </div>
       <div class="dynamic-item text-box">
         <h2>Diseño Escandinavo y Funcionalidad</h2>
         <p>
@@ -43,6 +34,12 @@ import Layout from "../../layouts/Layout.astro";
           equilibrado, ideal para quienes buscan elegancia y responsabilidad
           ambiental en un solo vehículo.
         </p>
+      </div>
+      <div class="dynamic-item">
+        <img
+          src="/img/volvo-ex90-electrico/volvo-ex90-diseño.webp"
+          alt="Volvo EX90"
+        />
       </div>
     </section>
 
@@ -97,7 +94,7 @@ import Layout from "../../layouts/Layout.astro";
       </div>
       <div class="dynamic-item">
         <img
-          src="/img/volvo-ex90-electrico/volvo-ex90-autonomia.webp"
+          src="/img/volvo-ex90-electrico/volvo-ex90-diseño.webp"
           alt="Autonomía del Volvo EX90"
         />
       </div>
@@ -120,7 +117,7 @@ import Layout from "../../layouts/Layout.astro";
       </div>
       <div class="dynamic-item">
         <img
-          src="/img/volvo-ex90-electrico/volvo-ex90-motorizacion.webp"
+          src="/img/volvo-ex90-electrico/volvo-ex90-diseño.webp"
           alt="Motorización del Volvo EX90"
         />
       </div>
@@ -171,13 +168,13 @@ import Layout from "../../layouts/Layout.astro";
 
   .nota-header {
     text-align: center;
-    padding: 60px 20px;
+    padding: 30px 20px;
     background: #d3d3d3;
     color: black;
   }
 
   .nota-header h1 {
-    font-size: 6rem;
+    font-size: 5rem;
     border-bottom: 2px solid black;
     text-transform: uppercase;
     font-weight: 600;
@@ -227,12 +224,12 @@ import Layout from "../../layouts/Layout.astro";
 
   .dynamic-item img {
     width: 100%;
-    height: auto;
+    height: 400px;
     object-fit: cover;
   }
 
   .text-box {
-    padding: 20px;
+    padding: 60px;
     background: #d3d3d3;
     color: black;
     display: flex;
@@ -241,7 +238,7 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .text-box h2 {
-    font-size: 2.1rem;
+    font-size: 1.6rem;
     margin-bottom: 15px;
     text-align: start;
     font-weight: 600;
@@ -250,7 +247,7 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .text-box p {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     text-align: start;
     padding: 20px;
   }
@@ -328,39 +325,6 @@ import Layout from "../../layouts/Layout.astro";
     z-index: 3;
   }
 
-  .feature-text-1 {
-    position: absolute;
-    width: 100%;
-    padding: 45px;
-    text-align: end;
-    /*background: linear-gradient(
-      to right,
-      rgba(59, 58, 58, 0.3),
-      rgba(0, 0, 0, 0)
-    );*/
-    padding-top: -30px;
-    border-radius: 10px;
-    z-index: 3;
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-
-  .feature-title-1 {
-    font-size: 2.4rem;
-    margin-bottom: 10px;
-    color: #faf9f7;
-    opacity: 0;
-    transform: translateY(20px);
-    transition:
-      opacity 2s,
-      transform 6s; /* Usar transición para suavizar */
-  }
-
-  .feature-title-1.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
   .feature-paragraph-1 {
     font-size: 2rem;
     padding: 20px;
@@ -376,9 +340,15 @@ import Layout from "../../layouts/Layout.astro";
       min-height: 0vh;
     }
 
+    .dynamic-item img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
     /* Alternar imágenes y texto en móviles */
     .dynamic-layout.reverse {
-      flex-direction: column-reverse;
+      flex-direction: column;
     }
 
     .nota-header {
@@ -400,11 +370,6 @@ import Layout from "../../layouts/Layout.astro";
       background: none;
     }
 
-    /* titulo carga ultra-rapida */
-    .feature-title {
-      font-size: 3rem;
-    }
-
     .feature-paragraph {
       font-size: 1.1rem;
     }
@@ -422,11 +387,6 @@ import Layout from "../../layouts/Layout.astro";
     .text-box p {
       text-align: start;
       font-size: 1.2rem;
-    }
-
-    .feature-title,
-    .feature-title-1 {
-      font-size: 1.8rem; /* Tamaño de fuente unificado */
     }
 
     .text-box h2 {
@@ -452,7 +412,7 @@ import Layout from "../../layouts/Layout.astro";
 
   @media (max-width: 768px) {
     .feature-title {
-      font-size: 3rem;
+      font-size: 1.4rem;
     }
 
     .feature-content img {
@@ -479,35 +439,8 @@ import Layout from "../../layouts/Layout.astro";
       color: black;
     }
 
-    .feature-title-1 {
-      font-size: 2.6rem;
-      color: white;
-      font-weight: 600;
-    }
-
     .feature-paragraph-1 {
       font-size: 1.5rem;
-    }
-  }
-
-  /* Ajustes específicos para pantallas más pequeñas */
-  @media (max-width: 776px) {
-    .feature-title-1 {
-      font-size: 2.4rem;
-    }
-  }
-
-  /* Ajustes para pantallas aún más pequeñas */
-  @media (max-width: 768px) {
-    .feature-title-1 {
-      font-size: 1.8rem;
-    }
-
-    .text-box h2 {
-      font-size: 1.4rem;
-    }
-    .text-box p {
-      font-size: 1.2rem;
     }
   }
 </style>

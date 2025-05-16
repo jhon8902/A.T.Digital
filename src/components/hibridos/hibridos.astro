@@ -166,7 +166,8 @@
   }
 
   .central-content h1 {
-    font-size: clamp(3rem, 5vw, 2.5rem);
+    font-size: 36px;
+    color: white;
     text-transform: uppercase;
     font-weight: bold;
     letter-spacing: 4px;
@@ -225,20 +226,6 @@
     display: block;
   }
 
-  .texto-fecha {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #3e3d3dcc;
-    color: #19c1ca;
-    padding: 6px 12px;
-    font-size: 0.6rem;
-    font-weight: bold;
-    border-radius: 10px;
-    text-transform: uppercase;
-    z-index: 10;
-  }
-
   .hibrido-texto {
     background: linear-gradient(
       to bottom,
@@ -257,30 +244,24 @@
   }
 
   .hibrido-texto h2 {
-    font-size: clamp(1.5rem, 2.5vw, 1.3rem);
+    font-size: 24px;
     font-weight: bold;
     text-transform: uppercase;
     margin: 5px 0 10px;
-    color: #19c1ca;
+    color: #f6f7f7;
     font-family: "Georgia", serif;
 
     text-align: start; /* Cambia la alineación a la izquierda */
     position: relative; /* Necesario para el pseudo-elemento ::after */
+    padding: 5px;
+    display: inline-block;
+    width: 85%;
   }
 
-  .hibrido-texto h2::after {
-    content: ""; /* Crea un elemento vacío para la línea */
-    position: absolute;
-    bottom: -5px; /* Ajusta la posición debajo del texto */
-    left: 0;
-    width: 0; /* Inicialmente, la línea no es visible */
-    height: 2px;
-    background-color: white;
-    transition: width 0.6s ease; /* Animación suave */
-  }
-
-  .hibrido-texto h2:hover::after {
-    width: 100%; /* La línea se expande al ancho del texto al hacer hover */
+  .hibrido-texto h2::first-letter {
+    font-size: 2.4rem;
+    font-weight: bold;
+    color: #0af2d7;
   }
 
   .hibrido-texto p {
@@ -288,13 +269,28 @@
     line-height: 1.6;
     margin: 0;
     text-align: start; /* Cambia la alineación a la izquierda */
-    color: #a9a9a9;
+    color: #cacaca;
+  }
+
+  .texto-fecha {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #3e3d3dcc;
+    color: #f6f7f7;
+    padding: 6px 12px;
+    font-size: 0.6rem;
+    font-weight: bold;
+    border-radius: 10px;
+    text-transform: uppercase;
+    z-index: 10;
   }
 
   @media (max-width: 768px) {
     .texto-fecha {
-      font-size: 0.75rem;
+      font-size: 14px;
       padding: 4px 8px;
+      text-transform: none;
     }
 
     .icono-central {
@@ -302,18 +298,24 @@
     }
 
     .central-content h1 {
-      font-size: 2.4rem;
+      font-size: 32px;
       letter-spacing: 2px;
     }
 
     .hibrido-texto h2 {
-      font-size: 1.4rem;
+      font-size: 24px;
       text-align: start;
       background: none;
     }
 
     .hibrido-texto p {
-      font-size: 1.2rem;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    .hibrido-imagen {
+      width: 100%;
+      height: 250px;
     }
   }
 </style>

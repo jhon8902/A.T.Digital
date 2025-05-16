@@ -9,75 +9,75 @@
   <div class="anunciantes-carrusel">
     <div class="anunciante">
       <img src="/img/logo-bmw.jpg" alt="Logo Marca 1" />
-      <p>31 unidades</p>
+      <p>41</p>
     </div>
     <div class="anunciante">
       <img src="/../img/logo-audi.jpg" alt="Logo audi" />
-      <p>60 unidades</p>
+      <p>60</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-mercedes.jpg" alt="Logo Marca 3" />
-      <p>75 unidades</p>
+      <p>75</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-nissan.jpg" alt="Logo Marca 1" />
-      <p>90 unidades</p>
+      <p>90</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-opel.jpg" alt="Logo Marca 2" />
-      <p>106 unidades</p>
+      <p>106</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-porsche.jpg" alt="Logo Marca 3" />
-      <p>20 unidades</p>
+      <p>20</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-bmw.jpg" alt="Logo Marca 1" />
-      <p>31 unidades</p>
+      <p>33</p>
     </div>
     <div class="anunciante">
       <img src="/../img/logo-audi.jpg" alt="Logo audi" />
-      <p>669 unidades</p>
+      <p>45</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-mercedes.jpg" alt="Logo Marca 3" />
-      <p>669 unidades</p>
+      <p>94</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-nissan.jpg" alt="Logo Marca 1" />
-      <p>669 unidades</p>
+      <p>123</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-opel.jpg" alt="Logo Marca 2" />
-      <p>669 unidades</p>
+      <p>60</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-porsche.jpg" alt="Logo Marca 3" />
-      <p>669 unidades</p>
+      <p>42</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-bmw.jpg" alt="Logo Marca 1" />
-      <p>31 unidades</p>
+      <p>31</p>
     </div>
     <div class="anunciante">
       <img src="/../img/logo-audi.jpg" alt="Logo audi" />
-      <p>669 unidades</p>
+      <p>58</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-mercedes.jpg" alt="Logo Marca 3" />
-      <p>669 unidades</p>
+      <p>23</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-nissan.jpg" alt="Logo Marca 1" />
-      <p>669 unidades</p>
+      <p>36</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-opel.jpg" alt="Logo Marca 2" />
-      <p>669 unidades</p>
+      <p>49</p>
     </div>
     <div class="anunciante">
       <img src="/img/logo-porsche.jpg" alt="Logo Marca 3" />
-      <p>669 unidades</p>
+      <p>69</p>
     </div>
 
     <!-- Agrega más logos según sea necesario -->
@@ -107,9 +107,9 @@
   }
 
   .titulo-slider h1 {
-    font-size: 34px;
+    font-size: 48px;
     font-weight: bolder;
-    margin-bottom: 40px; /* Añade espacio entre el título y el carrusel */
+    margin-bottom: 30px; /* Añade espacio entre el título y el carrusel */
     font-family: "Georgia", serif;
   }
 
@@ -119,7 +119,7 @@
     animation: scroll 60s linear infinite;
     cursor: pointer;
     margin-top: 100px; /* Ajusta este valor según el espacio que desees */
-    background: black;
+    background: whitesmoke;
   }
 
   .anunciantes-carrusel:hover {
@@ -137,12 +137,12 @@
   }
 
   .anunciante {
-    height: 200px;
-    width: 190px;
     display: flex;
-    flex-direction: column; /* Cambiado para apilar imagen y texto verticalmente */
+    flex-direction: column;
     align-items: center;
     padding: 22px;
+    gap: 10px; /* Espacio entre la imagen y el texto */
+    color: black;
   }
 
   .anunciante img {
@@ -157,20 +157,12 @@
     transform: scale(1.1);
   }
 
-  .anunciante p {
-    margin-top: 10px; /* Espacio entre la imagen y el texto */
-    color: whitesmoke;
-    text-align: center;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
   .anunciante-p {
     margin-top: 60px; /* Espacio entre la imagen y el texto */
-    color: black;
     text-align: center;
-    font-size: 34px;
+    font-size: 36px;
     font-weight: 600;
+    padding: 10px;
   }
 
   .anunciantes-carrusel::before,
@@ -214,26 +206,48 @@
   @media (max-width: 768px) {
     .anunciantes-container {
       border-bottom: none;
+      height: auto; /* Ajusta la altura según el contenido */
+      padding-top: 70px; /* Espacio entre el título y el carrusel */
     }
 
     .anunciante {
-      width: 100px;
+      width: 120px;
       height: auto;
-      background-color: black;
+    }
+
+    .anunciantes-carrusel {
+      margin-top: 50px; /* Ajusta este valor según el espacio que necesites */
+    }
+
+    .anunciante p {
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      color: black;
+      padding: 5px;
+    }
+
+    .titulo-slider {
+      top: 10px; /* Ajusta la posición del título */
     }
 
     .titulo-slider h1 {
-      font-size: 22px;
+      font-size: 32px;
       width: 100%; /* Ocupa el 100% del ancho */
       text-align: center; /* Centra el texto */
       margin: 0; /* Elimina los márgenes */
       padding: 0; /* Elimina el espacio interior */
+      color: rgb(235, 182, 23);
+      padding-top: 0;
+      margin-bottom: 10px; /* Añade espacio entre el título y el carrusel */
     }
 
     .anunciante img {
-      width: 100px;
-      height: 65px;
+      width: 80px;
+      height: 80px;
       border-radius: none;
+      padding-top: 20px;
+      margin: 0; /* Elimina el margen */
     }
   }
 </style>

@@ -1,5 +1,5 @@
 ---
-// src/pages/noticias-nacionales/noticia-kia-ev9.astro
+// filepath: c:\Users\pc\Downloads\A.T.Digital\src\pages\noticias-nacionales\noticia-kia-ev9.astro
 import Layout from "../../layouts/Layout.astro";
 import noticiaData from "../../data/noticias.json";
 
@@ -10,14 +10,20 @@ const noticia = noticiaData.find((item) => item.id === 1);
   noticia ? (
     <Layout title={noticia.titulo} bodyClass="otras-page">
       <section class="noticia-detalle">
+        <!-- Descripción de la noticia -->
         <p class="noticia-descripcion">{noticia.descripcion}</p>
 
+        <!-- Imagen de portada -->
         <img
           src={noticia.imagen}
-          alt={noticia.titulo}
+          alt={`Portada de la noticia: ${noticia.titulo}`}
           class="noticia-portada"
         />
+
+        <!-- Título principal -->
         <h1>{noticia.titulo}</h1>
+
+        <!-- Contenido de la noticia -->
         <article>
           {noticia.contenido ? (
             noticia.contenido.map((seccion, index) => (
@@ -27,10 +33,11 @@ const noticia = noticiaData.find((item) => item.id === 1);
                 <div class="noticia-texto">
                   <h3 class="noticia-titulo">{seccion.titulo}</h3>
                   <p class="noticia-parrafo">{seccion.parrafo}</p>
+                  <p class="noticia-parrafo">{seccion.parrafo2}</p>
                 </div>
                 <img
                   src={seccion.imagen}
-                  alt={noticia.titulo}
+                  alt={`Imagen relacionada: ${seccion.titulo}`}
                   class="noticia-imagen"
                 />
               </div>
@@ -47,42 +54,39 @@ const noticia = noticiaData.find((item) => item.id === 1);
 }
 
 <style>
-  body {
-    font-family: "Georgia", serif;
-  }
-
-  /* Contenedor principal */
+  /* Estilos principales */
   .noticia-detalle {
     width: 100%;
     margin: 0;
     padding: 20px 0;
-
     position: relative;
     background: white;
   }
 
-  /* Título flotante */
+   /* Título subtitulo kia ev9 */
   .noticia-detalle h1 {
-    font-size: 75px;
+    font-size: 45px;
     text-align: center;
     color: black;
-    background: #f1f2f2;
+  
     font-weight: 400;
     margin: 0 auto 5px;
     text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
-    border-bottom: 2px solid black;
+   
     padding: 15px;
+    font-family: "Georgia", serif;
   }
 
+  /* Título principal */
   .noticia-descripcion {
-    font-size: 45px;
+    font-size: 48px;
     font-weight: bolder;
     text-align: center;
     padding: 30px;
     text-transform: uppercase;
+    font-family: "Georgia", serif;
   }
 
-  /* Imagen de portada */
   .noticia-portada {
     width: 100%;
     height: auto;
@@ -95,7 +99,6 @@ const noticia = noticiaData.find((item) => item.id === 1);
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
   }
 
-  /* Bloques alternados */
   .noticia-bloque {
     display: flex;
     align-items: center;
@@ -108,40 +111,46 @@ const noticia = noticiaData.find((item) => item.id === 1);
     width: 50%;
     height: auto;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
-    transition: transform 0.9s ease; /*efecto alejamiento zoom*/
+    transition: transform 0.9s ease;
   }
 
-  /*efecto alejamiento zoom*/
   .noticia-bloque img:hover {
-    transform: scale(0.9); /* Reduce el tamaño de la imagen al 80% */
+    transform: scale(0.9);
   }
 
   .noticia-bloque .noticia-texto {
     flex: 1;
     text-align: center;
-
     padding: 20px;
     border-radius: 12px;
     width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    
   }
 
   .noticia-titulo {
-    font-size: 26px;
+    font-size: 36px;
     font-weight: bolder;
     color: black;
     margin-bottom: 10px;
     text-transform: uppercase;
+    font-family: "Georgia", serif;
   }
 
-  .noticia-bloque .noticia-parrafo {
-    font-size: 22px;
-    color: black;
+  .noticia-bloque .noticia-parrafo  {
+   font-size: 20px;
+    text-align: start;
+    color: #333;
+   
+    font-family: "Poppins", sans-serif;
+    margin-bottom: 15px; /* Agrega espacio entre los párrafos */
+    line-height: 1.6; /* Mejora la legibilidad del texto */
   }
 
-  /* Alternar posiciones */
+ 
+
   .noticia-imagen-izquierda {
     flex-direction: row;
   }
@@ -150,16 +159,17 @@ const noticia = noticiaData.find((item) => item.id === 1);
     flex-direction: row-reverse;
   }
 
-  /* Responsividad */
   @media (max-width: 768px) {
     .noticia-bloque {
       flex-direction: column;
     }
+
     .noticia-detalle h1 {
-      font-size: 40px;
+      font-size: 32px;
       background: none;
       color: black;
       text-shadow: none;
+       
     }
 
     .noticia-bloque img {
@@ -168,16 +178,18 @@ const noticia = noticiaData.find((item) => item.id === 1);
 
     .noticia-bloque .noticia-texto {
       font-size: 20px;
+      text-align: start;
     }
 
     .noticia-descripcion {
-      font-size: 22px;
+      font-size: 32px;
       font-weight: bolder;
       padding: 15px;
+      text-align: start;
     }
 
     .noticia-bloque .noticia-parrafo {
-      font-size: 20px;
+      font-size: 18px;
       color: black;
     }
 
@@ -185,7 +197,6 @@ const noticia = noticiaData.find((item) => item.id === 1);
       width: 100%;
     }
 
-    /* titulo-texto */
     .noticia-titulo {
       font-size: 24px;
     }

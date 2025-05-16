@@ -129,7 +129,8 @@ import Layout from "../../layouts/Layout.astro";
   body {
     margin: 0;
     padding: 0;
-    background: black;
+    background: white;
+    font-family: "Poppins", sans-serif;
   }
 
   .section-noticias {
@@ -137,19 +138,23 @@ import Layout from "../../layouts/Layout.astro";
     text-align: center;
     max-width: 100%;
     margin: auto;
-    font-family: "Georgia", serif;
   }
 
   /* header */
   .header h1 {
     text-align: center;
     padding: 10px;
-    font-size: 40px;
+    font-size: 48px;
     font-weight: bolder;
     color: black;
     margin-bottom: 15px;
-    background: #b98f04;
+
     text-transform: uppercase;
+  }
+
+  .header h1,
+  .card-text h2 {
+    font-family: "Georgia", serif;
   }
 
   .grid-container {
@@ -196,10 +201,10 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .card-text h2 {
-    font-size: 34px;
-    color: rgb(180, 140, 39);
+    font-size: 36px;
+    color: black;
     margin-bottom: 15px;
-    border-bottom: 2px solid rgb(180, 140, 39);
+    border-bottom: 2px solid black;
     /*display: inline-block;  Esto hace que el ancho de la línea sea igual al del texto */
     text-transform: uppercase;
     font-weight: bolder;
@@ -208,12 +213,13 @@ import Layout from "../../layouts/Layout.astro";
   .card-text p {
     font-size: 22px;
     line-height: 1.6;
-    color: #a6a5a5;
+    color: black;
     text-align: start;
+    font-family: "Poppins", sans-serif;
   }
 
   .sub-parrafo {
-    color: rgb(180, 140, 39);
+    color: black;
   }
 
   /* RESPONSIVE */
@@ -223,7 +229,7 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     .header h1 {
-      font-size: 22px;
+      font-size: 28px;
     }
 
     .card.reverse {
@@ -241,11 +247,11 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     .card-text h2 {
-      font-size: 22px;
+      font-size: 24px;
     }
 
     .card-text p {
-      font-size: 20px;
+      font-size: 18px;
     }
   }
 </style>
