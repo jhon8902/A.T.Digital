@@ -121,9 +121,9 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   body {
-    font-family: "Lora", serif;
-    background: #000;
+    background: black;
     color: black; /* color titulo y subtitulos del background #b98f04 */
+    font-family: "Poppins", sans-serif;
   }
 
   /* todo el contenedor ocupa el 100% de la pantalla */
@@ -141,7 +141,8 @@ import Layout from "../../layouts/Layout.astro";
   .nota-header h1 {
     font-size: 4.5rem;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: bolder;
+    font-family: "Georgia", serif;
   }
 
   .nota-header .subtitulo {
@@ -174,7 +175,7 @@ import Layout from "../../layouts/Layout.astro";
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.2);
+    /*background: rgba(0, 0, 0, 0.2);*/
   }
 
   /* texto encima de imagenes grandes */
@@ -188,6 +189,7 @@ import Layout from "../../layouts/Layout.astro";
     padding: 30px;
     border-radius: 10px;
     font-weight: 400;
+    font-family: "Georgia", serif;
   }
 
   .texto-overlay h2 {
@@ -214,7 +216,7 @@ import Layout from "../../layouts/Layout.astro";
     flex: 1;
     padding: 30px;
     text-align: left;
-    background: #b98f04;
+    background: white;
   }
 
   .texto-derecha .texto {
@@ -234,6 +236,7 @@ import Layout from "../../layouts/Layout.astro";
     text-transform: uppercase;
     text-align: center;
     font-weight: bolder;
+    font-family: "Georgia", serif;
   }
 
   .texto p {
@@ -243,7 +246,7 @@ import Layout from "../../layouts/Layout.astro";
 
   @media (max-width: 768px) {
     .nota-header h1 {
-      font-size: 2.4rem;
+      font-size: 2.2rem;
     }
 
     .nota-header .subtitulo {
@@ -292,29 +295,29 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     .texto {
-      padding: 40px;
+      padding: 10px;
     }
 
     .texto h2 {
       font-size: 1.8rem;
-      text-align: center;
+      text-align: start;
     }
 
     .texto p {
       font-size: 1.2rem;
-      text-align: center;
+      text-align: start;
     }
   }
 
   .ficha-tecnica {
     padding: 60px 20px;
-    background: #b98f04;
+    background: white;
     text-align: center;
   }
 
   .ficha-tecnica h2 {
-    font-size: 2.8rem;
-    margin-bottom: 40px;
+    font-size: 2.4rem;
+    margin-bottom: 20px;
     color: #000;
     font-weight: bolder;
   }

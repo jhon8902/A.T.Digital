@@ -134,7 +134,7 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .section-noticias {
-    padding: 10px 10px;
+    padding: 20px 10px;
     text-align: center;
     max-width: 100%;
     margin: auto;
@@ -147,8 +147,8 @@ import Layout from "../../layouts/Layout.astro";
     font-size: 48px;
     font-weight: bolder;
     color: black;
-    margin-bottom: 15px;
-
+    margin-bottom: 60px;
+    background: white;
     text-transform: uppercase;
   }
 
@@ -157,10 +157,10 @@ import Layout from "../../layouts/Layout.astro";
     font-family: "Georgia", serif;
   }
 
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
   }
 
   .card {
@@ -184,7 +184,7 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .card-image {
-    width: 50%;
+    width: 60%;
     height: 100%;
   }
 
@@ -204,22 +204,20 @@ import Layout from "../../layouts/Layout.astro";
     font-size: 36px;
     color: black;
     margin-bottom: 15px;
-    border-bottom: 2px solid black;
-    /*display: inline-block;  Esto hace que el ancho de la línea sea igual al del texto */
+    text-align: center;
+    /*border-bottom: 2px solid black;
+    display: inline-block;  Esto hace que el ancho de la línea sea igual al del texto */
     text-transform: uppercase;
     font-weight: bolder;
+    padding: 10px;
   }
 
   .card-text p {
-    font-size: 22px;
+    font-size: 20px;
     line-height: 1.6;
-    color: black;
+    color: #121212;
     text-align: start;
     font-family: "Poppins", sans-serif;
-  }
-
-  .sub-parrafo {
-    color: black;
   }
 
   /* RESPONSIVE */
@@ -227,9 +225,11 @@ import Layout from "../../layouts/Layout.astro";
     .card {
       flex-direction: column;
     }
-
     .header h1 {
-      font-size: 28px;
+      font-size: 26px;
+      text-align: start;
+      padding: 0 10px;
+      margin-bottom: 20px;
     }
 
     .card.reverse {
@@ -243,15 +243,20 @@ import Layout from "../../layouts/Layout.astro";
 
     .card-text {
       text-align: center;
-      padding: 20px;
+      padding: 10px;
     }
 
     .card-text h2 {
       font-size: 24px;
+      border-bottom: none;
+      text-align: start;
+      padding: 0;
+      margin: 0;
     }
 
     .card-text p {
       font-size: 18px;
+      padding-top: 10px;
     }
   }
 </style>

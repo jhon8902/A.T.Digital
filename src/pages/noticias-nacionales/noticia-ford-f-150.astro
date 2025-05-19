@@ -48,50 +48,51 @@ const noticia = noticiaData.find((item) => item.id === 4);
 }
 
 <style>
-  body {
-    font-family: "Poppins", sans-serif;
-  }
-  /* Contenedor principal */
+  /* Estilos principales */
   .noticia-detalle {
     width: 100%;
     margin: 0;
-    padding: 40px 0;
-    background: white;
+    padding: 20px 0;
     position: relative;
+    background: white;
   }
 
-  /* Título flotante */
+  /* Título subtitulo kia ev9 */
   .noticia-detalle h1 {
     font-size: 45px;
     text-align: center;
     color: black;
-    font-family: "Lora", serif; /* Fuente para el texto principal */
+
+    font-weight: 400;
     margin: 0 auto 5px;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+
+    padding: 15px;
     font-family: "Georgia", serif;
-
-    padding: 15px;
   }
 
+  /* Título principal */
   .noticia-descripcion {
-    position: relative; /* Necesario para posicionar el pseudo-elemento */
     font-size: 48px;
-    font-weight: 600;
+    font-weight: bolder;
     text-align: center;
-    color: black;
-    font-family: "Lora", serif; /* Fuente para el texto principal */
-    margin: 0 auto 5px;
+    padding: 30px;
     text-transform: uppercase;
-    padding: 15px;
+    font-family: "Georgia", serif;
   }
 
-  /* Imagen de portada */
   .noticia-portada {
     width: 100%;
-    height: 1024px;
+    height: auto;
     object-fit: cover;
+    padding: 20px;
+    transition: box-shadow 0.4s ease;
   }
 
-  /* Bloques alternados */
+  .noticia-portada:hover {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+  }
+
   .noticia-bloque {
     display: flex;
     align-items: center;
@@ -104,18 +105,16 @@ const noticia = noticiaData.find((item) => item.id === 4);
     width: 50%;
     height: auto;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
-    transition: transform 0.9s ease; /*efecto alejamiento zoom*/
+    transition: transform 0.9s ease;
   }
 
-  /*efecto alejamiento zoom*/
   .noticia-bloque img:hover {
-    transform: scale(0.9); /* Reduce el tamaño de la imagen al 80% */
+    transform: scale(0.9);
   }
 
   .noticia-bloque .noticia-texto {
     flex: 1;
-    font-family: "Georgia", serif; /* Fuente para el texto principal */
-
+    text-align: center;
     padding: 20px;
     border-radius: 12px;
     width: 50%;
@@ -126,21 +125,23 @@ const noticia = noticiaData.find((item) => item.id === 4);
 
   .noticia-titulo {
     font-size: 36px;
-    font-weight: 600;
+    font-weight: bolder;
     color: black;
     margin-bottom: 10px;
     text-transform: uppercase;
+    font-family: "Georgia", serif;
   }
 
   .noticia-bloque .noticia-parrafo {
-    font-size: 22px;
+    font-size: 20px;
+    text-align: start;
     color: #333;
-    margin-bottom: 15px; /* Agrega espacio entre los párrafos */
+
     font-family: "Poppins", sans-serif;
+    margin-bottom: 15px; /* Agrega espacio entre los párrafos */
     line-height: 1.6; /* Mejora la legibilidad del texto */
   }
 
-  /* Alternar posiciones */
   .noticia-imagen-izquierda {
     flex-direction: row;
   }
@@ -149,15 +150,17 @@ const noticia = noticiaData.find((item) => item.id === 4);
     flex-direction: row-reverse;
   }
 
-  /* Responsividad */
   @media (max-width: 768px) {
     .noticia-bloque {
       flex-direction: column;
     }
+
     .noticia-detalle h1 {
-      font-size: 32px;
+      font-size: 28px;
       background: none;
       color: black;
+      text-shadow: none;
+      padding: 0;
     }
 
     .noticia-bloque img {
@@ -166,28 +169,30 @@ const noticia = noticiaData.find((item) => item.id === 4);
 
     .noticia-bloque .noticia-texto {
       font-size: 20px;
+      text-align: start;
+      padding-top: 0;
     }
 
     .noticia-descripcion {
-      font-size: 32px;
-      font-weight: 600;
+      font-size: 28px;
+      font-weight: bolder;
       padding: 15px;
+      text-align: start;
       padding-top: 0;
-      text-align: start;
-    }
-
-    .noticia-titulo {
-      font-size: 24px;
-      text-align: start;
     }
 
     .noticia-bloque .noticia-parrafo {
       font-size: 18px;
-      color: #333;
+      color: black;
+      padding-top: 5px;
     }
 
     .noticia-bloque .noticia-texto {
       width: 100%;
+    }
+
+    .noticia-titulo {
+      font-size: 24px;
     }
 
     .noticia-portada {

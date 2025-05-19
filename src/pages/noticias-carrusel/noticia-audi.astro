@@ -5,11 +5,8 @@ import Layout from "../../layouts/Layout.astro";
 <Layout title="nota-audi" bodyClass="otras-page">
   <section class="section-noticias">
     <!-- Título -->
-    <div class="header-titulo">
-      <h1>
-        Audi e-tron 2025 en Colombia: Innovación Eléctrica y Prestaciones
-        Premium
-      </h1>
+    <div class="header">
+      <h1>Audi e-tron: Eléctrica con Prestaciones Premium</h1>
     </div>
     <div class="container">
       <!-- Tarjeta 1 -->
@@ -129,29 +126,32 @@ import Layout from "../../layouts/Layout.astro";
   body {
     margin: 0;
     padding: 0;
-    background: #f4f4f4;
-    color: #333;
+    background: white;
     font-family: "Poppins", sans-serif;
   }
 
   .section-noticias {
-    padding: 10px 10px;
+    padding: 20px 10px;
     text-align: center;
     max-width: 100%;
     margin: auto;
-    font-family: "Georgia", serif;
   }
 
   /* header */
-  .header-titulo h1 {
+  .header h1 {
     text-align: center;
     padding: 10px;
     font-size: 48px;
     font-weight: bolder;
     color: black;
-    margin-bottom: 10px;
-
+    margin-bottom: 60px;
+    background: white;
     text-transform: uppercase;
+  }
+
+  .header h1,
+  .card-text h2 {
+    font-family: "Georgia", serif;
   }
 
   .container {
@@ -164,7 +164,7 @@ import Layout from "../../layouts/Layout.astro";
     display: flex;
     flex-direction: row;
     align-items: center;
-
+    border-radius: 15px;
     overflow: hidden;
 
     transition:
@@ -181,7 +181,7 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .card-image {
-    width: 50%;
+    width: 60%;
     height: 100%;
   }
 
@@ -202,15 +202,17 @@ import Layout from "../../layouts/Layout.astro";
     color: black;
     margin-bottom: 15px;
     text-align: center;
-    /*display: inline-block;  Esto hace que el ancho de la línea sea igual al del texto */
+    /*border-bottom: 2px solid black;
+    display: inline-block;  Esto hace que el ancho de la línea sea igual al del texto */
     text-transform: uppercase;
     font-weight: bolder;
+    padding: 10px;
   }
 
   .card-text p {
     font-size: 20px;
     line-height: 1.6;
-    color: #444;
+    color: #121212;
     text-align: start;
     font-family: "Poppins", sans-serif;
   }
@@ -220,9 +222,11 @@ import Layout from "../../layouts/Layout.astro";
     .card {
       flex-direction: column;
     }
-
-    .header-titulo h1 {
-      font-size: 28px;
+    .header h1 {
+      font-size: 26px;
+      text-align: start;
+      padding: 0 10px;
+      margin-bottom: 20px;
     }
 
     .card.reverse {
@@ -236,15 +240,20 @@ import Layout from "../../layouts/Layout.astro";
 
     .card-text {
       text-align: center;
-      padding: 20px;
+      padding: 10px;
     }
 
     .card-text h2 {
       font-size: 24px;
+      border-bottom: none;
+      text-align: start;
+      padding: 0;
+      margin: 0;
     }
 
     .card-text p {
       font-size: 18px;
+      padding-top: 10px;
     }
   }
 </style>
