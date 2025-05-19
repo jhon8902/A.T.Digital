@@ -156,8 +156,7 @@ import Layout from "../../layouts/Layout.astro";
 
   body {
     font-family: "Lora", serif;
-    background: #000;
-    color: white;
+    background: black;
   }
 
   .nota-container {
@@ -355,12 +354,12 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     .nota-header h1 {
-      font-size: 40px;
+      font-size: 36px;
       font-weight: 600;
     }
 
     .nota-header .subtitulo {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       margin-top: 15px;
     }
 
@@ -384,18 +383,18 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     .text-box h2 {
-      font-size: 1.4rem;
-      text-align: center;
+      font-size: 1.3rem;
+      text-align: start;
     }
 
     .text-box p {
-      font-size: 1.2rem;
-      text-align: start;
+      font-size: 1.1rem;
+      padding: 5px;
     }
 
     .feature-content img {
       width: 100%;
-      height: 260px;
+      height: 300px;
       object-fit: cover;
     }
 
@@ -407,6 +406,12 @@ import Layout from "../../layouts/Layout.astro";
   @media (max-width: 768px) {
     .feature-title {
       font-size: 1.4rem;
+    }
+
+    .feature-content img {
+      width: 100%; /* Aplica un margen de 10px en pantallas pequeñas */
+      height: 250px;
+      object-fit: cover;
     }
 
     .feature-paragraph {
