@@ -69,12 +69,6 @@ import Layout from "../../layouts/Layout.astro";
 
     <section class="feature-banner">
       <h2 class="feature-title">Motorización, Seguridad y Tecnología</h2>
-      <div class="feature-content">
-        <img
-          src="/img/volvo-ex90-electrico/volvo-ex90-motor.webp"
-          alt="Volvo EX90 Cargando"
-        />
-      </div>
     </section>
 
     <!-- Nueva sección: Autonomía -->
@@ -94,7 +88,7 @@ import Layout from "../../layouts/Layout.astro";
       </div>
       <div class="dynamic-item">
         <img
-          src="/img/volvo-ex90-electrico/volvo-ex90-diseño.webp"
+          src="/img/volvo-ex90-electrico/volvo-ex90-motor.webp"
           alt="Autonomía del Volvo EX90"
         />
       </div>
@@ -199,41 +193,46 @@ import Layout from "../../layouts/Layout.astro";
     margin-top: 10px;
   }
 
-  /* Diseño flexible para imágenes y texto */
+  /* DISEÑO FLEXIBLE */
   .dynamic-layout {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between; /* Asegura que los elementos se distribuyan correctamente */
-    min-height: 90vh;
-    padding: 20px;
+    justify-content: center;
+    padding: 0;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1800px;
   }
 
   .dynamic-layout.reverse {
-    flex-direction: row-reverse; /* Invierte el orden de los elementos */
+    flex-direction: row-reverse;
   }
 
   .dynamic-item {
-    flex: 1;
-    min-width: 50%; /* Asegura que cada elemento ocupe la mitad del ancho */
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
   }
 
   .dynamic-item img {
     width: 100%;
-    height: 550px;
+    height: auto;
     object-fit: cover;
+    max-width: 100%;
   }
 
   .text-box {
-    padding: 60px;
+    width: 100%;
+    padding: 60px 20px;
     background: white;
     color: black;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    box-sizing: border-box;
   }
 
   .text-box h2 {
@@ -248,19 +247,18 @@ import Layout from "../../layouts/Layout.astro";
   .text-box p {
     font-size: 1.2rem;
     text-align: start;
-    padding: 20px;
+    padding: 20px 0;
   }
 
   /* SECCIÓN "CARGA ULTRARÁPIDA" */
   .feature-banner {
     position: relative;
-    min-height: auto; /* Ajusta la altura automáticamente */
     display: flex;
-    flex-direction: column; /* Coloca los elementos en columna */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding: 20px 0; /* Espaciado superior e inferior */
+    padding: 20px 0;
   }
 
   .feature-title {
@@ -268,7 +266,7 @@ import Layout from "../../layouts/Layout.astro";
     color: #e6b410;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 20px; /* Espaciado entre el título y el contenido */
+    margin-bottom: 20px;
     text-transform: uppercase;
     opacity: 0;
     transform: translateY(20px);
@@ -283,19 +281,10 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .feature-content {
-    width: 100%; /* Asegura que el contenedor ocupe todo el ancho */
-    max-width: 100%; /* Evita restricciones */
-    padding: 0; /* Elimina padding adicional */
-    margin: 0; /* Elimina márgenes adicionales */
-  }
-
-  .feature-content img {
-    width: 100%; /* Asegura que ocupe todo el ancho de la pantalla */
-
-    height: auto;
-    object-fit: cover;
-    margin: 0; /* Elimina cualquier margen que pueda afectar el ancho */
-    padding: 10px; /* Aplica el padding deseado */
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
   }
 
   .feature-paragraph {
@@ -312,7 +301,6 @@ import Layout from "../../layouts/Layout.astro";
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
   }
 
   .feature-banner-1 img {
@@ -331,23 +319,21 @@ import Layout from "../../layouts/Layout.astro";
 
   /* RESPONSIVE DESIGN */
   @media (max-width: 768px) {
-    .dynamic-layout {
+    .dynamic-layout,
+    .dynamic-layout.reverse {
       flex-direction: column;
+      padding: 0;
     }
 
     .dynamic-item {
-      min-height: 0vh;
+      width: 100%;
+      min-height: auto;
     }
 
     .dynamic-item img {
       width: 100%;
-      height: 300px;
+      height: auto;
       object-fit: cover;
-    }
-
-    /* Alternar imágenes y texto en móviles */
-    .dynamic-layout.reverse {
-      flex-direction: column;
     }
 
     .nota-header {
@@ -364,14 +350,8 @@ import Layout from "../../layouts/Layout.astro";
       margin-top: 15px;
     }
 
-    /* limita el alto de la imagen para que no quede cortada*/
     .feature-banner-1 {
       min-height: 30vh;
-    }
-
-    .feature-text {
-      padding: 10% 5%;
-      background: none;
     }
 
     .feature-paragraph {
@@ -379,7 +359,7 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     .text-box {
-      padding: 30px;
+      padding: 20px;
       text-align: start;
     }
 
@@ -390,51 +370,44 @@ import Layout from "../../layouts/Layout.astro";
 
     .text-box p {
       font-size: 1.1rem;
-      padding: 5px;
+      padding: 10px 0;
     }
 
-    .feature-content img {
-      width: 100%;
-      height: 400px;
-      object-fit: cover;
-    }
-
-    .feature-paragraph {
-      font-size: 1.1rem;
-    }
-  }
-
-  @media (max-width: 768px) {
     .feature-title {
       font-size: 1.4rem;
-    }
-
-    .feature-content img {
-      width: 100%; /* Aplica un margen de 10px en pantallas pequeñas */
-      height: 400px;
-      object-fit: cover;
-    }
-
-    .feature-paragraph {
-      font-size: 1.1rem;
+      margin-bottom: 10px;
+      padding-top: 20px;
+      padding: 10px;
+      font-weight: 500;
     }
   }
 
-  /* Ajustes para móviles imagen principal y texto */
-  @media (max-width: 1400px) {
-    .feature-text-1 {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 100%;
+  /* SOLO PARA ESCRITORIO */
+  @media (min-width: 1024px) {
+    .dynamic-item {
+      flex: 1;
+      max-width: 50%;
       padding: 20px;
-      background: none;
-      text-align: center;
-      color: black;
+      box-sizing: border-box;
     }
 
-    .feature-paragraph-1 {
-      font-size: 1.5rem;
+    .dynamic-item img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .text-box {
+      padding: 40px;
+    }
+
+    .text-box h2 {
+      font-size: 1.8rem;
+    }
+
+    .text-box p {
+      font-size: 1.2rem;
     }
   }
 </style>
