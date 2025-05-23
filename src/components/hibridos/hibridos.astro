@@ -176,6 +176,26 @@
     font-family: "Georgia", serif;
   }
 
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-title {
+    animation: fadeInUp 1s ease-out;
+  }
+
+  .central-content h1 {
+    opacity: 0; /* Inicialmente oculto */
+    transition: opacity 0.3s;
+  }
+
   .imagenes-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -360,3 +380,30 @@
     }
   }
 </style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const tituloHibrido = document.querySelector(
+      "#hibridos .central-content h1"
+    ) as HTMLElement;
+
+    if (!tituloHibrido) return;
+
+    const observerHibridos = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            tituloHibrido.classList.add("animate-title");
+            tituloHibrido.style.opacity = "1";
+          } else {
+            tituloHibrido.classList.remove("animate-title");
+            tituloHibrido.style.opacity = "0";
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    observerHibridos.observe(tituloHibrido);
+  });
+</script>

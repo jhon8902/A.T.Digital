@@ -9,11 +9,10 @@
   <section class="highlight-banner">
     <a href="/notas-deportes/nota-deportes-motos">
       <img src="/img/img-deportes/deporte-1.webp" alt="Superbikes en acción" />
-      <div class="highlight-text">
-        <h2></h2>
-        <p>El automovilismo y motociclismo en su máxima expresión.</p>
-      </div>
     </a>
+    <div class="highlight-text">
+      <p>El automovilismo y motociclismo en su máxima expresión.</p>
+    </div>
   </section>
 
   <section class="info-grid">
@@ -61,7 +60,7 @@
 
   body {
     background: whitesmoke;
-    color: white;
+    font-family: "Roboto", Arial, sans-serif;
   }
 
   .nota-container {
@@ -74,31 +73,44 @@
     height: 250px;
     text-align: center;
     padding: 20px 20px;
-
     color: white;
+    background-image: url("/img/fondo-deporte13.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    /*  border: 2px solid red; /* Cambiado para borde en todos los lados */
   }
 
   .nota-header h1 {
-    font-size: 70px;
+    font-size: 48px;
     font-weight: bolder;
     text-transform: uppercase;
-    color: black;
+    color: rgb(245, 243, 243);
     display: inline-block;
     padding-bottom: 5px;
+    font-family: "Georgia", serif;
+    padding: 20px;
   }
 
   .nota-header .subtitulo {
     font-size: 25px;
-    padding: 15px;
-    text-transform: uppercase;
-    font-weight: bolder;
-    color: black;
+    padding: 20px;
+
+    font-weight: 500;
+    color: white;
+    background-color: rgba(255, 0, 0, 0.7); /* Rojo semitransparente */
   }
 
   .highlight-banner {
+    height: auto;
+    flex-direction: column;
+  }
+
+  .highlight-banner p {
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,7 +118,7 @@
 
   .highlight-banner img {
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: cover;
   }
 
@@ -119,33 +131,39 @@
   }
 
   .highlight-text {
-    position: absolute;
-    top: 0;
+    /* position: absolute; */ /* Elimina o comenta esta línea */
     width: 100%;
     background: black;
     padding: 20px;
     color: white;
     text-align: center;
     font-size: 35px;
-    font-weight: bolder;
-    text-transform: uppercase;
+    font-weight: 500;
   }
 
   .info-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
-    padding: 40px;
+    padding: 0; /* Quita el padding lateral */
+    width: 100vw; /* Ocupa todo el ancho de la ventana */
+    margin-left: calc(
+      -50vw + 50%
+    ); /* Centra el grid si está dentro de un contenedor centrado */
   }
 
   .info-item {
     background: #222;
     padding: 20px;
     text-align: start;
+    font-family: "Georgia", serif;
   }
 
   .info-item img {
     width: 100%;
+    aspect-ratio: 16/9; /* O usa 1/1 para cuadrado */
+    object-fit: cover;
+    border-radius: 5px;
   }
 
   .info-item h3 {
@@ -156,15 +174,18 @@
     font-weight: bolder;
   }
 
-  .info-item .p {
-    font-size: 1.8rem;
+  .info-item p {
+    font-size: 22px;
+    padding-top: 10px;
+    font-family: "Roboto", Arial, sans-serif;
   }
 
   .info-item .texto-fecha {
-    color: #b98f04;
+    color: red;
     padding: 10px;
     background: white;
-    font-size: 15px;
+    font-size: 16px;
+    font-weight: 600;
   }
 
   @media (max-width: 1024px) {
@@ -197,7 +218,7 @@
     }
 
     .highlight-banner {
-      height: 40vh;
+      height: auto; /* Cambia 40vh por auto */
       flex-direction: column;
     }
 
@@ -208,7 +229,9 @@
 
     .info-grid {
       grid-template-columns: 1fr;
-      padding: 20px;
+      padding: 0;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
     }
 
     .info-item h3 {
@@ -223,6 +246,7 @@
 
     .nota-header h1 {
       font-size: 28px;
+      padding: 30px;
     }
 
     .nota-header .subtitulo {
@@ -230,16 +254,20 @@
     }
 
     .highlight-banner {
-      height: 30vh;
+      height: auto; /* Cambia 30vh por auto */
     }
 
     .highlight-text {
-      font-size: 18px;
-      padding: 8px;
+      font-size: 16px;
+      padding: 10px;
     }
 
     .info-item h3 {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
+    }
+
+    .info-item p {
+      font-size: 1rem;
     }
   }
 </style>

@@ -7,8 +7,7 @@
     <div class="titulo-con-lineas sticky-titulo">
       <div class="linea"></div>
       <h1>Noticias sobre ruedas</h1>
-      <!-- Cambiado a <h1> para el título principal -->
-      <p>Avances y reportes del mundo automotor</p>
+
       <div class="linea"></div>
     </div>
 
@@ -125,33 +124,24 @@
     max-width: 100%;
     text-align: center;
     font-weight: 700;
-    font-size: 60px;
+    font-size: 48px;
     color: black;
     letter-spacing: 0;
     text-transform: uppercase;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeIn 2s forwards;
+    opacity: 0; /* Empieza invisible */
     font-family: "Georgia", serif;
-
+    padding: 20px;
     position: relative;
+    transform: translateY(-40px);
+    /* Quita la línea de animación aquí */
+    /* animation: fadeInTitle 1.2s forwards; */
   }
 
-  p {
-    max-width: 100%;
-    text-align: center;
-    font-weight: bold;
-    font-size: 20px;
-    color: black;
-    margin-bottom: 15px;
-    padding: 10px;
-    letter-spacing: 0;
-    text-transform: uppercase;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeIn 2s forwards;
-    font-family: "roboto", sans-serif;
-    position: relative;
+  @keyframes fadeInTitle {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   @keyframes fadeIn {
@@ -203,7 +193,7 @@
 
   .section-info {
     padding: 20px;
-    background: linear-gradient(rgb(216, 162, 33) 30%, #000 70%);
+    background: linear-gradient(#dbad06 30%, #000 70%);
   }
 
   .sticky-container {
@@ -321,13 +311,6 @@
   @media (max-width: 768px) {
     h1 {
       font-size: 1.8rem;
-      background-color: darkgoldenrod;
-    }
-
-    p {
-      font-size: 18px;
-      text-transform: none;
-      margin-bottom: 0;
     }
 
     .carousel-caption {
@@ -362,24 +345,13 @@
     h1 {
       font-size: 2.1rem;
       padding-top: 20px;
-      background-color: rgb(223, 164, 15);
+      background-color: #dbad06;
       position: relative; /* necesario para posicionar el pseudo-elemento */
-    }
-
-    h1::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 5%;
-      width: 90%;
-      height: 2px;
-      background-color: black;
-      border-radius: 10px;
     }
 
     p {
       font-size: 16px;
-      background-color: rgb(223, 164, 15);
+      background-color: #e6b814;
     }
 
     .ford,
@@ -408,10 +380,6 @@
       height: 48vh;
     }
 
-    #carousel {
-      border-bottom: 0px solid whitesmoke;
-    }
-
     /* altura imagenes */
     .carousel-item img {
       height: 36vh;
@@ -434,7 +402,7 @@
 
     .section-info {
       padding: 0;
-      background: linear-gradient(rgb(249, 249, 248) 30%, #000 70%);
+      background: linear-gradient(#dbad06 30%, #000 70%);
     }
   }
 </style>
@@ -485,4 +453,34 @@
 
   // Iniciar carrusel
   showItem(currentIndex);
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const titulo = document.querySelector(".sticky-titulo h1") as HTMLElement;
+    if (titulo) {
+      titulo.style.opacity = "0";
+      titulo.style.transform = "translateY(-40px)";
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // Reinicia la animación
+              titulo.style.animation = "none";
+              // Forzar reflow
+              void titulo.offsetWidth;
+              titulo.style.animation = "fadeInTitle 1.2s forwards";
+            } else {
+              // Oculta el título y lo sube para que la animación se repita
+              titulo.style.opacity = "0";
+              titulo.style.transform = "translateY(-40px)";
+              titulo.style.animation = "none";
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+      observer.observe(titulo);
+    }
+  });
 </script>

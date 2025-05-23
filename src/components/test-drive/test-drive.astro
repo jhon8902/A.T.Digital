@@ -74,17 +74,18 @@
     overflow: hidden;
     white-space: nowrap;
     font-family: "Georgia", serif;
-    font-size: 48px;
+    font-size: 36px;
     font-weight: bolder;
     color: #e2b009;
     text-transform: uppercase;
     width: 0;
+    padding: 30px;
   }
 
   /* animacion titulo */
   .animate-typing {
     animation:
-      typing 3s steps(30, end) forwards,
+      typing 1s steps(30, end) forwards,
       glow 2s ease-in-out infinite alternate;
   }
 
@@ -119,6 +120,11 @@
     justify-content: space-between;
     max-width: 100%;
     flex-wrap: wrap;
+  }
+
+  .videos-container .video-element {
+    height: 300px;
+    max-height: 300px;
   }
 
   .video {
@@ -193,8 +199,13 @@
       flex-direction: column;
     }
 
+    .videos-container .video-element {
+      height: 200px;
+      max-height: 200px;
+    }
+
     .test-drive-container h1 {
-      font-size: 32px;
+      font-size: 30px;
     }
 
     .video {

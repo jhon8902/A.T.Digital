@@ -113,5 +113,34 @@
     }
   ],
   "link": "/noticias-nacionales/noticia-ford-f-150"
+},
+{
+  "id": 5,
+   "imagen": "/img/jeep-avenger/jepp-avenger-subportada.webp",
+  "titulo": "Jeep Avenger",
+  
+  "descripcion": "El nuevo SUV compacto 100% eléctrico de Jeep llega para revolucionar la movilidad urbana, conoce precios, versiones y mucho mas.",
+ 
+  "contenido": [
+    {
+      "titulo": "Diseño Compacto y Moderno",
+      "parrafo": "El Jeep Avenger destaca por su diseño compacto, ideal para la ciudad, pero sin perder el carácter robusto y aventurero de la marca.",
+      "parrafo2": "Sus líneas modernas y detalles icónicos de Jeep lo convierten en un SUV atractivo y funcional, perfecto para quienes buscan estilo y practicidad.",
+      "imagen": "/img/jeep-avenger/jepp-avenger-diseño.webp"
+    },
+    {
+      "titulo": "Movilidad 100% Eléctrica",
+      "parrafo": "Equipado con un motor totalmente eléctrico, el Avenger ofrece una autonomía de hasta 400 km con una sola carga, permitiendo desplazamientos diarios sin preocupaciones.",
+      "parrafo2": "La carga rápida permite recuperar el 80% de la batería en menos de 30 minutos, facilitando la vida en la ciudad y los viajes cortos.",
+      "imagen": "/img/jeep-avenger/jepp-avenger-motor.webp"
+    },
+    {
+      "titulo": "Tecnología y Seguridad",
+      "parrafo": "El Jeep Avenger incorpora lo último en tecnología de conectividad y asistentes de conducción, como frenado autónomo de emergencia, mantenimiento de carril y sensores de estacionamiento.",
+      "parrafo2": "Su sistema de infoentretenimiento con pantalla táctil y compatibilidad con Apple CarPlay y Android Auto garantiza una experiencia moderna y segura.",
+      "imagen": "/img/jeep-avenger/jepp-avenger-trasero.webp"
+    }
+  ],
+  "link": "/noticias-nacionales/noticia-jeep-avenger"
 }
 ]

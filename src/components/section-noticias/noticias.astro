@@ -7,21 +7,40 @@ import noticias from "../../data/noticias.json";
 </h1>
 
 <section class="noticias-container">
+  {/* Renderiza primero la noticia de Avenger */}
+  <a
+    href={noticias[noticias.length - 1].link}
+    class="noticia-avenger-container"
+    style="text-decoration: none;"
+  >
+    <div class="noticia-avenger-texto">
+      <h3 class="noticia-texto-titulo">
+        {noticias[noticias.length - 1].titulo}
+      </h3>
+      <p class="noticia-descripcion">
+        {noticias[noticias.length - 1].descripcion}
+      </p>
+    </div>
+    <img
+      src={noticias[noticias.length - 1].imagen}
+      alt={noticias[noticias.length - 1].titulo}
+      class="noticia-avenger-imagen"
+    />
+  </a>
+  {/* Luego renderiza las otras noticias */}
   {
-    noticias.map((noticia) => (
-      <div class="noticia-container">
-        <a href={noticia.link} class="noticia">
-          <img
-            src={noticia.imagen}
-            alt={noticia.titulo}
-            class="noticia-imagen"
-          />
-        </a>
+    noticias.slice(0, noticias.length - 1).map((noticia) => (
+      <a
+        href={noticia.link}
+        class="noticia-container"
+        style="text-decoration: none;"
+      >
+        <img src={noticia.imagen} alt={noticia.titulo} class="noticia-imagen" />
         <div class="noticia-texto">
           <h3 class="noticia-texto-titulo">{noticia.titulo}</h3>
           <p class="noticia-descripcion">{noticia.descripcion}</p>
         </div>
-      </div>
+      </a>
     ))
   }
 </section>
@@ -31,64 +50,63 @@ import noticias from "../../data/noticias.json";
     scroll-behavior: smooth;
   }
 
+  html,
+  body {
+    background: black;
+    background: #000 !important;
+    color-scheme: dark;
+  }
+
   /* Contenedor Principal */
   .noticias-container {
+    box-sizing: border-box;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 40px;
-
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 40px 10px;
     position: relative;
-    background-color: rgb(29, 28, 28);
+    background-color: black;
   }
 
   /* Título */
   .noticias-titulo {
     font-size: 48px;
-    color: rgb(0, 0, 0);
+    color: white;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 1px;
     border-bottom: none;
-    /* text-shadow: 2px 2px 8px rgb(213, 213, 212); */
-    padding: 30px;
+    padding: 20px 0 30px 0;
     font-weight: bolder;
-    transition: color 0.9s ease; /* Duración y efecto de transición */
-    background-color: white;
-    padding-top: 30px;
+
     font-family: "Georgia", serif;
+    padding: 30px;
+    opacity: 0;
+    transform: scale(0.7) translateY(-40px);
+    transition: none;
   }
 
   .noticias-titulo i {
-    color: black; /* Cambia el color del ícono */
-    font-size: 54px; /* Ajusta el tamaño */
-    margin-right: 5px; /* Cambia el margen derecho */
-    transition: all 0.3s ease; /* Añade una transición para efectos interactivos */
-  }
-
-  .noticias-titulo i:hover {
-    color: blue; /* Cambia el color al pasar el cursor */
-    transform: scale(1.2); /* Escala el tamaño en hover */
+    color: #f8ca26;
+    font-size: 54px;
+    margin-right: 5px;
   }
 
   /* Tarjeta de Noticias animacion card completa */
   .noticia-container {
     border-radius: 5px;
     overflow: hidden;
-    max-width: 1550px;
-  }
-
-  /* Efecto de luz horizontal para las imágenes */
-  .noticia-container {
-    position: relative;
-    overflow: hidden;
+    background: #181818;
+    border: 1px solid #222;
+    display: flex;
+    flex-direction: column;
   }
 
   .noticia-container::before {
     content: "";
     position: absolute;
     top: 0;
-    left: -100%; /* Comienza fuera de la imagen */
+    left: -100%;
     width: 100%;
     height: 100%;
     background: linear-gradient(
@@ -102,16 +120,15 @@ import noticias from "../../data/noticias.json";
   }
 
   .noticia-container:hover::before {
-    animation: light-pass 2s ease forwards; /* Aplica la animación */
+    animation: light-pass 2s ease forwards;
   }
 
-  /* Definición de la animación */
   @keyframes light-pass {
     from {
-      left: -100%; /* Comienza fuera de la imagen */
+      left: -100%;
     }
     to {
-      left: 100%; /* Termina fuera de la imagen */
+      left: 100%;
     }
   }
 
@@ -119,89 +136,215 @@ import noticias from "../../data/noticias.json";
     width: 100%;
     height: 230px;
     object-fit: cover;
-    position: relative;
-    z-index: 1; /* Asegura que la imagen esté debajo del efecto */
+    display: block;
   }
 
-  /* Texto */
   .noticia-texto {
     padding: 15px;
-    text-align: start;
-    background: #f5f6f7;
+    background: black;
+    color: white;
   }
 
   .noticia-texto-titulo {
+    background: black;
     font-family: "Georgia", serif;
-    font-size: 24px;
+    font-size: 26px;
     margin-bottom: 12px;
-    color: black;
+    color: #dbad06;
     font-weight: 600;
-    background: #e0e0e1;
-    padding: 5px;
-    text-align: center;
+    background: transparent;
+    padding: 5px 0;
+    text-align: start;
     text-transform: uppercase;
+    border-bottom: none;
   }
 
   .noticia-descripcion {
-    font-size: 18px;
-    color: rgb(36, 36, 36);
+    font-size: 20px;
+    color: #d5d5d4;
     line-height: 1.6;
-    font-weight: 400;
     font-family: "Poppins", sans-serif;
   }
 
+  /* --- Jeep Avenger noticia especial --- */
+  .noticia-avenger-container {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    margin-bottom: 30px;
+    background: #181818;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 100%;
+    min-height: 350px;
+  }
+  .noticia-avenger-texto {
+    padding: 40px 30px 20px 30px;
+    text-align: center;
+    background: black;
+    color: white;
+    font-family: "Montserrat", sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  .noticia-avenger-texto .noticia-texto-titulo {
+    color: #e1e1df;
+    font-size: 36px;
+    font-weight: bold;
+    background: transparent;
+    display: inline-block;
+    border-bottom: 2px solid #dbad06;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .noticia-avenger-texto .noticia-descripcion {
+    color: #d5d5d4;
+    font-size: 22px;
+
+    background: transparent;
+  }
+
+  .noticia-avenger-imagen {
+    width: 100%;
+    height: 520px;
+    min-height: unset;
+    object-fit: cover;
+    display: block;
+    border-radius: 0 10px 10px 0;
+  }
+
+  .noticia-avenger-link {
+    display: block;
+    background: rgb(209, 208, 208);
+    color: black;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    margin: 30px auto 0 auto;
+    font-size: 20px;
+    text-align: center;
+    border: none;
+    width: fit-content;
+    transition:
+      background 0.2s,
+      color 0.2s;
+    grid-column: 1 / -1; /* Hace que el botón ocupe todo el ancho del grid */
+    justify-self: center; /* Centra el botón horizontalmente */
+  }
+  .noticia-avenger-link:hover {
+    background: #e9c02d;
+    color: black;
+  }
+
+  .noticia-avenger-texto,
+  .noticia-avenger-imagen {
+    flex: 1 1 50%;
+    max-width: 50%;
+  }
+
+  /* Animación del título */
+  @keyframes fadeInTitle {
+    from {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes zoomInFade {
+    from {
+      opacity: 0;
+      transform: scale(0.7) translateY(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .noticias-titulo {
+    opacity: 0;
+    transform: scale(0.7) translateY(-40px);
+    transition: none;
+  }
+
+  .noticias-titulo.visible {
+    animation: zoomInFade 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
   /* Responsive */
-  @media (max-width: 768px) {
+  @media (max-width: 1200px) {
     .noticias-container {
-      padding: 0;
-      background-color: whitesmoke;
+      grid-template-columns: 1fr 1fr;
     }
-
-    .noticia-imagen {
-      height: 230px;
-      align-content: center;
-
-      margin: 0;
-    }
-
-    .noticias-titulo {
-      font-size: 34px;
-
-      padding: 20px;
-      text-align: center;
-      border-bottom: 20px solid white;
-    }
-
-    .noticia-container {
-      transition: none;
-      max-width: 1560px;
-    }
-
-    .noticia-container:hover {
-      transform: none;
-    }
-    .noticia-texto {
-      background-color: white;
-      text-align: start;
+  }
+  @media (max-width: 900px) {
+    .noticias-container {
+      grid-template-columns: 1fr;
       padding: 10px;
     }
-    .noticia-texto-titulo {
-      font-size: 22px;
-      margin-bottom: 10px;
-      text-align: start;
-      display: inline-block;
-      width: 60%;
-      background: none;
-      border-bottom: 2px solid #9e9e9e;
-      padding: 5px;
+    .noticia-avenger-container {
+      flex-direction: column-reverse;
+      min-height: unset;
+      border-radius: 0;
     }
-
-    .noticia-descripcion {
-      font-size: 17px;
-      color: black;
-      font-weight: 600;
-      padding: 5px;
-      text-align: start;
+    .noticia-avenger-texto,
+    .noticia-avenger-imagen {
+      max-width: 100%;
+      flex: 1 1 100%;
+    }
+    .noticia-avenger-imagen {
+      height: 180px;
+      border-radius: 0 0 10px 10px;
+    }
+    .noticia-avenger-texto {
+      padding: 20px 10px 10px 10px;
+    }
+  }
+  @media (max-width: 600px) {
+    .noticias-titulo {
+      font-size: 28px;
+      padding: 10px 0;
+    }
+    .noticia-texto-titulo {
+      font-size: 18px;
+    }
+    .noticia-avenger-texto .noticia-texto-titulo {
+      font-size: 20px;
     }
   }
 </style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const titulo = document.querySelector(".noticias-titulo");
+    if (!titulo) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            titulo.classList.add("visible");
+          } else {
+            titulo.classList.remove("visible");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(titulo);
+  });
+</script>

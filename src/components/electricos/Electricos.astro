@@ -1,8 +1,10 @@
 <div id="electricos" class="electrico-container">
   <div class="central-content">
     <h1>
-      <i class="fas fa-car-battery" style="color:#45e758; margin-right: 14px;"
-      ></i>Eléctricos
+      <span class="icono-electricos">
+        <i class="fas fa-car-battery"></i>
+      </span>
+      <span class="titulo-electricos">Eléctricos</span>
     </h1>
   </div>
 
@@ -81,9 +83,20 @@
     align-items: center;
     background: black;
     border-bottom: 20px solid black;
-    padding: 0;
+    padding: 10px;
     text-align: center;
     width: 100%;
+  }
+
+  @keyframes fadeInTitle {
+    from {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .central-content h1 {
@@ -99,25 +112,44 @@
     text-shadow: 2px 2px 6px rgba(16, 16, 16, 0.2);
     padding: 40px;
     font-family: "Georgia", serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .central-content h1.visible {
+    animation: fadeInTitle 1.2s forwards;
+  }
+
+  .icono-electricos i {
+    font-size: 50px;
+    color: #45e758;
+    margin-right: 14px;
   }
 
   .grid-container {
     width: 100%;
-    max-width: 100%;
+    max-width: none;
     display: flex;
     justify-content: center;
+    margin: 0;
+    padding: 0;
   }
 
   .nueva-destacada {
+    width: 100%;
+    max-width: none;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: stretch;
     background-color: #0e0e0e;
-    margin-top: 50px;
-    width: 100%;
-    max-width: 1680px;
+    margin-top: 40px;
     overflow: hidden;
+    border-radius: 10px;
   }
 
   .destacada-link {
@@ -127,17 +159,6 @@
     text-decoration: none;
     color: inherit;
     width: 100%;
-  }
-
-  .texto-destacado {
-    flex: 1;
-    padding: 40px 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: #101010;
-    color: white;
-    text-align: left;
   }
 
   .texto-destacado h2 {
@@ -170,14 +191,34 @@
     min-width: 300px;
     max-height: 100%;
     overflow: hidden;
-    padding: 10px;
+    padding: 20px;
   }
 
-  .imagen-destacada-img img {
+  .imagen-destacada-img img,
+  .imagen-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+
+    transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+  }
+
+  .imagen-destacada-img img:hover,
+  .imagen-card img:hover {
+    transform: scale(1.08);
+    z-index: 2;
+  }
+
+  .texto-destacado {
+    flex: 1;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #101010;
+    color: white;
+    text-align: left;
   }
 
   .imagenes-grid {
@@ -185,10 +226,10 @@
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 10px;
     width: 100%;
-    max-width: 1680px;
+    max-width: none;
     margin-top: 40px;
     text-transform: uppercase;
-    padding: 10px;
+    padding: 10px; /* Elimina el padding lateral */
   }
 
   .imagen-card {
@@ -208,8 +249,9 @@
   .imagen-card h2 {
     font-size: 22px;
     font-weight: 600;
-    color: white;
-    padding: 5px;
+    color: #f4bd07;
+
+    padding: 10px;
     text-align: start;
     position: relative;
     display: block;
@@ -218,11 +260,12 @@
   }
 
   .imagen-card p {
-    font-size: 18px;
+    font-size: 20px;
     padding: 5px;
     font-weight: 400;
     color: #cfcece;
     text-align: start;
+    text-transform: none;
     font-family: "Poppins", sans-serif;
   }
 
@@ -266,9 +309,24 @@
     }
 
     .central-content h1 {
-      font-size: 32px;
+      display: flex;
+      flex-direction: column-reverse; /* Cambia el orden: título arriba, icono abajo */
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
       text-align: center;
       padding: 20px;
+      gap: 0;
+    }
+
+    .icono-electricos {
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+
+    .icono-electricos i {
+      margin-bottom: 10px;
+      font-size: 40px;
     }
 
     .imagen-card img {
@@ -287,7 +345,8 @@
 
     .imagen-card p {
       font-size: 18px;
-      text-transform: none;
+      font-weight: 400;
+      color: #cfcece;
       padding: 6px;
     }
 
@@ -296,3 +355,25 @@
     }
   }
 </style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const titulo = document.querySelector(".central-content h1");
+    if (!titulo) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            titulo.classList.add("visible");
+          } else {
+            titulo.classList.remove("visible");
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(titulo);
+  });
+</script>
