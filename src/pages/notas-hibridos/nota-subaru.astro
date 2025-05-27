@@ -78,8 +78,9 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   body {
-    background: #000;
-    color: black; /* color titulo y subtitulos del background #b98f04 */
+    font-family: "Lora", serif;
+    background: black !important;
+    color: #b98f04 !important; /* O el color que prefieras para los textos */
   }
 
   /* todo el contenedor ocupa el 100% de la pantalla */
@@ -95,22 +96,24 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .nota-header h1 {
-    font-size: 4.5rem;
-    font-weight: bolder;
+    font-size: 3.4rem;
     text-transform: uppercase;
+    font-weight: 600;
+    color: black;
     font-family: "Georgia", serif;
   }
 
   .nota-header .subtitulo {
     font-size: 1.5rem;
     margin-top: 10px;
+    color: black;
   }
 
   /* contenido completo de los textos encima de la imagen grande */
   .seccion {
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: start;
     min-height: 100vh;
     width: 100%;
     position: relative;
@@ -131,6 +134,7 @@ import Layout from "../../layouts/Layout.astro";
     left: 0;
     width: 100%;
     height: 100%;
+    background: rgba(0, 0, 0, 0.2);
   }
 
   /* texto encima de imagenes grandes */
@@ -146,13 +150,16 @@ import Layout from "../../layouts/Layout.astro";
     font-weight: 400;
   }
 
+  .subtitulo {
+    padding-top: 10px;
+  }
+
   .texto-overlay h2 {
     font-size: 3rem;
     margin-bottom: 15px;
     text-transform: uppercase;
     font-weight: 600;
-    color: #eedca0;
-    font-family: "Georgia", serif;
+    color: #f7cd44;
   }
 
   .texto-overlay p {
@@ -169,9 +176,11 @@ import Layout from "../../layouts/Layout.astro";
   .texto-izquierda .texto,
   .texto-derecha .texto {
     flex: 1;
-    padding: 15px;
+    padding: 30px;
     text-align: left;
-    background: white;
+    background: #b98f04;
+    height: 30%;
+    color: black;
   }
 
   .texto-derecha .texto {
@@ -188,9 +197,9 @@ import Layout from "../../layouts/Layout.astro";
   .texto h2 {
     font-size: 2.5rem;
     margin-bottom: 15px;
-    font-weight: bolder;
     text-transform: uppercase;
-    font-family: "Georgia", serif;
+    text-align: center;
+    font-weight: bolder;
   }
 
   .texto p {
@@ -199,14 +208,6 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   @media (max-width: 768px) {
-    .nota-header h1 {
-      font-size: 2.4rem;
-    }
-
-    .nota-header .subtitulo {
-      font-size: 1.2rem;
-    }
-
     .full-img {
       background-size: contain;
       background-repeat: no-repeat;
@@ -227,20 +228,32 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     .texto-overlay h2 {
-      font-size: 2.1rem;
-      margin-bottom: 380px;
+      font-size: 2.2rem;
+      margin-bottom: 310px;
       text-align: center;
     }
 
     .texto-overlay p {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       text-align: center;
+    }
+
+    .nota-header {
+      padding: 20px 10px;
+    }
+
+    .nota-header h1 {
+      font-size: 2rem;
+    }
+
+    .nota-header .subtitulo {
+      font-size: 1.2rem;
+      margin-top: 10px;
     }
 
     .texto-izquierda,
     .texto-derecha {
       flex-direction: column;
-      text-align: center;
     }
 
     .texto-izquierda img,
@@ -249,17 +262,90 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     .texto {
-      padding: 40px;
+      padding: 5px;
+      width: 100%;
     }
 
     .texto h2 {
-      font-size: 1.8rem;
-      text-align: center;
+      font-size: 1.6rem;
+      text-align: start;
+      width: 100%;
     }
 
     .texto p {
       font-size: 1.2rem;
-      text-align: center;
+    }
+  }
+
+  .ficha-tecnica {
+    padding: 60px 20px;
+    background: #b98f04;
+    text-align: center;
+  }
+
+  .ficha-tecnica h2 {
+    font-size: 2.8rem;
+    margin-bottom: 40px;
+    color: #000;
+    font-weight: bolder;
+  }
+
+  .ficha-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .ficha-item {
+    background: black;
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .ficha-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 18px rgba(0, 0, 0, 0.4);
+  }
+
+  .ficha-item h3 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .ficha-item p {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  /* Para que siempre se vean 4 tarjetas arriba y 4 abajo (en dos filas de 4), solo necesitas ajustar la propiedad grid-template-columns para que tenga exactamente 4 columnas fijas, en lugar de usar auto-fit.*/
+
+  @media (max-width: 1024px) {
+    .ficha-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .ficha-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .texto-overlay h2 {
+      padding-top: 30px;
+      text-align: start;
+      font-size: 2rem;
+    }
+
+    .texto-overlay p {
+      padding-top: 80px;
+      text-align: start;
     }
   }
 </style>

@@ -2,16 +2,23 @@
 
 <section id="deportes" class="nota-container">
   <div class="nota-header">
-    <h1>Pasión por el Motor</h1>
-    <p class="subtitulo">Todo en deportes</p>
+    <h1>Adrenalina Sobre Ruedas</h1>
+    <p class="subtitulo">
+      Descubre lo mejor del automovilismo y motociclismo mundial
+    </p>
   </div>
 
   <section class="highlight-banner">
     <a href="/notas-deportes/nota-deportes-motos">
-      <img src="/img/img-deportes/deporte-1.webp" alt="Superbikes en acción" />
+      <img
+        src="/img/img-deportes/deportes-motos-portada1.jpg"
+        alt="Competencia de autos y motos"
+      />
     </a>
     <div class="highlight-text">
-      <p>El automovilismo y motociclismo en su máxima expresión.</p>
+      <p>
+        Vive la emoción de la velocidad, la tecnología y la pasión por el motor.
+      </p>
     </div>
   </section>
 
@@ -74,15 +81,13 @@
     text-align: center;
     padding: 20px 20px;
     color: white;
-    background-image: url("/img/fondo-deporte13.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+
     position: relative;
     /*  border: 2px solid red; /* Cambiado para borde en todos los lados */
   }
 
   .nota-header h1 {
+    width: 100%;
     font-size: 48px;
     font-weight: bolder;
     text-transform: uppercase;
@@ -90,7 +95,8 @@
     display: inline-block;
     padding-bottom: 5px;
     font-family: "Georgia", serif;
-    padding: 20px;
+    padding: 10px;
+    background-color: rgba(255, 0, 0, 0.7); /* Rojo semitransparente */
   }
 
   .nota-header .subtitulo {
@@ -99,7 +105,6 @@
 
     font-weight: 500;
     color: white;
-    background-color: rgba(255, 0, 0, 0.7); /* Rojo semitransparente */
   }
 
   .highlight-banner {
@@ -118,7 +123,7 @@
 
   .highlight-banner img {
     width: 100%;
-    height: auto;
+    height: 900px;
     object-fit: cover;
   }
 
@@ -246,7 +251,7 @@
 
     .nota-header h1 {
       font-size: 28px;
-      padding: 30px;
+      padding: 5px;
     }
 
     .nota-header .subtitulo {
@@ -257,13 +262,18 @@
       height: auto; /* Cambia 30vh por auto */
     }
 
+    .highlight-banner img {
+      height: auto; /* Cambia 30vh por auto */
+    }
+
     .highlight-text {
       font-size: 16px;
       padding: 10px;
     }
 
     .info-item h3 {
-      font-size: 1.6rem;
+      font-size: 1.3rem;
+      font-weight: 500;
     }
 
     .info-item p {

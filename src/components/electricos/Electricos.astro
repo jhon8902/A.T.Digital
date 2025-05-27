@@ -1,11 +1,9 @@
 <div id="electricos" class="electrico-container">
   <div class="central-content">
-    <h1>
-      <span class="icono-electricos">
-        <i class="fas fa-car-battery"></i>
-      </span>
-      <span class="titulo-electricos">Eléctricos</span>
-    </h1>
+    <span class="icono-electricos">
+      <i class="fas fa-car-battery"></i>
+    </span>
+    <span class="titulo-electricos">Eléctricos</span>
   </div>
 
   <div class="grid-container">
@@ -33,7 +31,10 @@
   <div class="imagenes-grid">
     <div class="imagen-card">
       <a href="/notas-electricos/nota-mini-cooper">
-        <img src="../img/mini-cooper1.jpg" alt="Mini Cooper" />
+        <img
+          src="../img/mini-cooper-electrico/mini-cooper-portada.webp"
+          alt="Mini Cooper"
+        />
         <h2>Mini Cooper</h2>
         <p>Lujo y tecnología en un compacto eléctrico.</p>
         <p class="texto-f">nota: 13-mar</p>
@@ -99,6 +100,27 @@
     }
   }
 
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .central-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 0;
+    padding: 40px 0 0 0;
+  }
+
   .central-content h1 {
     color: white;
     font-size: 60px;
@@ -106,7 +128,6 @@
     font-weight: bolder;
     letter-spacing: 1px;
     position: relative;
-    display: inline-block;
     white-space: nowrap;
     z-index: 3;
     text-shadow: 2px 2px 6px rgba(16, 16, 16, 0.2);
@@ -116,18 +137,28 @@
     align-items: center;
     justify-content: center;
     gap: 14px;
-    opacity: 0;
-    transition: opacity 0.3s;
   }
 
-  .central-content h1.visible {
-    animation: fadeInTitle 1.2s forwards;
+  .icono-electricos {
+    animation: fadeInUp 1s 0.1s both;
   }
 
   .icono-electricos i {
     font-size: 50px;
     color: #45e758;
     margin-right: 14px;
+  }
+
+  .titulo-electricos {
+    font-size: 60px;
+    color: white;
+    font-family: "Georgia", serif;
+    font-weight: bolder;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 6px rgba(16, 16, 16, 0.2);
+    margin-top: 10px;
+    animation: fadeInUp 1s 0.5s both;
   }
 
   .grid-container {
@@ -284,6 +315,17 @@
   }
 
   @media (max-width: 768px) {
+    .electrico-container {
+      padding: 0;
+    }
+
+    .titulo-electricos {
+      font-size: 36px;
+      padding: 0;
+    }
+    .icono-electricos i {
+      font-size: 40px;
+    }
     .imagenes-grid {
       grid-template-columns: 1fr;
     }
@@ -317,6 +359,7 @@
       text-align: center;
       padding: 20px;
       gap: 0;
+      margin: 0;
     }
 
     .icono-electricos {
@@ -358,22 +401,56 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const titulo = document.querySelector(".central-content h1");
-    if (!titulo) return;
+    const seccion = document.getElementById("electricos");
+    const logo = document.querySelector(".icono-electricos") as HTMLElement;
+    const titulo = document.querySelector(".titulo-electricos") as HTMLElement;
+
+    if (!seccion || !logo || !titulo) return;
+
+    // Prepara los estilos iniciales para animar
+    logo.style.opacity = "0";
+    logo.style.transform = "translateY(40px)";
+    titulo.style.opacity = "0";
+    titulo.style.transform = "translateY(40px)";
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            titulo.classList.add("visible");
+            // Reinicia la animación
+            logo.style.animation = "none";
+            titulo.style.animation = "none";
+            void logo.offsetWidth; // Forzar reflow
+            void titulo.offsetWidth;
+            // Aplica la animación
+            logo.style.animation = "fadeInUp 1s 0.1s both";
+            titulo.style.animation = "fadeInUp 1s 0.5s both";
           } else {
-            titulo.classList.remove("visible");
+            // Oculta para que la animación se repita al volver a entrar
+            logo.style.opacity = "0";
+            logo.style.transform = "translateY(40px)";
+            titulo.style.opacity = "0";
+            titulo.style.transform = "translateY(40px)";
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.1 }
     );
 
-    observer.observe(titulo);
+    observer.observe(seccion);
+
+    // Forzar animación si ya está visible al cargar la página
+    function isInViewport(element: HTMLElement) {
+      const rect = element.getBoundingClientRect();
+      return rect.top < window.innerHeight && rect.bottom > 0;
+    }
+    if (isInViewport(seccion)) {
+      logo.style.animation = "none";
+      titulo.style.animation = "none";
+      void logo.offsetWidth;
+      void titulo.offsetWidth;
+      logo.style.animation = "fadeInUp 1s 0.1s both";
+      titulo.style.animation = "fadeInUp 1s 0.5s both";
+    }
   });
 </script>

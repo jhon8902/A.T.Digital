@@ -19,8 +19,9 @@ import Layout from "../../layouts/Layout.astro";
       <div class="texto-overlay">
         <h2>Diseño Aerodinámico</h2>
         <p>
-          La Ford Escape Híbrida 2025 combina estilo y funcionalidad con un
-          diseño aerodinámico que mejora la eficiencia y la conducción.
+          combina estilo y funcionalidad con un diseño aerodinámico que mejora
+          la estabilidad a altas velocidades, reduciendo la resistencia al
+          viento y favoreciendo un menor consumo energético.
         </p>
       </div>
     </section>
@@ -29,9 +30,27 @@ import Layout from "../../layouts/Layout.astro";
       <div class="texto">
         <h2>Tecnología de Última Generación</h2>
         <p>
-          Equipada con el sistema Ford Co-Pilot360™, ofrece asistente de
-          conducción, integración con Apple CarPlay y Android Auto, y un sistema
-          de navegación intuitivo.
+          Equipada con el avanzado sistema Ford Co-Pilot360™, la Ford Escape
+          Híbrida 2025 ofrece un conjunto de asistencias inteligentes para el
+          conductor, como frenado automático de emergencia, asistencia de
+          mantenimiento de carril, monitoreo de punto ciego y control de crucero
+          adaptativo con función stop-and-go, brindando mayor seguridad y
+          confianza al volante.
+        </p>
+        <p class="subtitulo">
+          La integración con Apple CarPlay y Android Auto permite conectar
+          fácilmente tu smartphone para acceder a tus aplicaciones favoritas,
+          realizar llamadas, enviar mensajes o reproducir música con comandos de
+          voz o mediante la intuitiva pantalla central.
+        </p>
+        <p class="subtitulo">
+          Además, incorpora una pantalla táctil de alta resolución que mejora la
+          visibilidad y la navegación del sistema multimedia, un cargador
+          inalámbrico que mantiene tus dispositivos siempre con energía sin
+          necesidad de cables, y conectividad Wi-Fi para que todos los ocupantes
+          puedan mantenerse conectados durante el viaje. Esta combinación de
+          funciones transforma cada trayecto en una experiencia más conectada,
+          segura y entretenida.
         </p>
       </div>
       <img
@@ -65,53 +84,60 @@ import Layout from "../../layouts/Layout.astro";
           preservar el medio ambiente sin comprometer el rendimiento.
         </p>
         <p>
-          Disponible en Colombia en las versiones Peugeot Allure y GT, con
-          precios de COP$159.990.000 y COP $179.990.000, respectivamente, este
-          SUV ya tiene rodando 100 unidades por las calles gracias a la
+          Disponible en Colombia en las versiones Escape SE y Titanium, con
+          precios desde COP $159.990.000 y COP $179.990.000, respectivamente,
+          este SUV ya tiene rodando 100 unidades por las calles gracias a la
           expectativa que generó su lanzamiento en el país y disponibilidad en
           la red de concesionarios autorizados de la marca.
+        </p>
+        <p>
+          Este compromiso ambiental se complementa con materiales reciclables en
+          su fabricación y un proceso de producción más limpio, alineado con las
+          metas globales de sostenibilidad que Ford ha asumido como parte de su
+          visión para el futuro.
         </p>
       </div>
     </section>
   </section>
-  <section class="ficha-tecnica">
-    <h2>Ficha Técnica Destacada</h2>
-    <div class="ficha-grid">
-      <div class="ficha-item">
-        <h3>Autonomía</h3>
-        <p>Hasta 885 km</p>
-      </div>
-      <div class="ficha-item">
-        <h3>Consumo</h3>
-        <p>5.5 L/100km</p>
-      </div>
-      <div class="ficha-item">
-        <h3>Motor</h3>
-        <p>Híbrido 2.5L + Eléctrico</p>
-      </div>
-      <div class="ficha-item">
-        <h3>Transmisión</h3>
-        <p>Automática eCVT</p>
-      </div>
-      <div class="ficha-item">
-        <h3>Tracción</h3>
-        <p>AWD</p>
-      </div>
-      <div class="ficha-item">
-        <h3>Pantalla</h3>
-        <p>13.2” SYNC 4</p>
-      </div>
-      <div class="ficha-item">
-        <h3>Conectividad</h3>
-        <p>Apple CarPlay / Android Auto</p>
-      </div>
-      <div class="ficha-item">
-        <h3>Seguridad</h3>
-        <p>Ford Co-Pilot360™</p>
-      </div>
-    </div>
-  </section>
 </Layout>
+
+<section class="ficha-tecnica">
+  <h2>Ficha Técnica Destacada</h2>
+  <div class="ficha-grid">
+    <div class="ficha-item">
+      <h3>Autonomía</h3>
+      <p>Hasta 885 km</p>
+    </div>
+    <div class="ficha-item">
+      <h3>Consumo</h3>
+      <p>5.5 L/100km</p>
+    </div>
+    <div class="ficha-item">
+      <h3>Motor</h3>
+      <p>Híbrido 2.5L + Eléctrico</p>
+    </div>
+    <div class="ficha-item">
+      <h3>Transmisión</h3>
+      <p>Automática eCVT</p>
+    </div>
+    <div class="ficha-item">
+      <h3>Tracción</h3>
+      <p>AWD</p>
+    </div>
+    <div class="ficha-item">
+      <h3>Pantalla</h3>
+      <p>13.2” SYNC 4</p>
+    </div>
+    <div class="ficha-item">
+      <h3>Conectividad</h3>
+      <p>Apple CarPlay / Android Auto</p>
+    </div>
+    <div class="ficha-item">
+      <h3>Seguridad</h3>
+      <p>Ford Co-Pilot360™</p>
+    </div>
+  </div>
+</section>
 
 <style>
   * {
@@ -122,8 +148,8 @@ import Layout from "../../layouts/Layout.astro";
 
   body {
     font-family: "Lora", serif;
-    background: black;
-    color: black; /* color titulo y subtitulos del background #b98f04 */
+    background: black !important;
+    color: #b98f04 !important; /* O el color que prefieras para los textos */
   }
 
   /* todo el contenedor ocupa el 100% de la pantalla */
@@ -135,18 +161,21 @@ import Layout from "../../layouts/Layout.astro";
   .nota-header {
     text-align: center;
     padding: 60px 20px;
-    background: #b98f04;
+    background: white;
   }
 
   .nota-header h1 {
     font-size: 3.4rem;
     text-transform: uppercase;
     font-weight: 600;
+    color: black;
+    font-family: "Georgia", serif;
   }
 
   .nota-header .subtitulo {
     font-size: 1.5rem;
     margin-top: 10px;
+    color: black;
   }
 
   /* contenido completo de los textos encima de la imagen grande */
@@ -190,12 +219,16 @@ import Layout from "../../layouts/Layout.astro";
     font-weight: 400;
   }
 
+  .subtitulo {
+    padding-top: 10px;
+  }
+
   .texto-overlay h2 {
     font-size: 3rem;
     margin-bottom: 15px;
     text-transform: uppercase;
     font-weight: 600;
-    color: #eedca0;
+    color: #f7cd44;
   }
 
   .texto-overlay p {
@@ -216,6 +249,7 @@ import Layout from "../../layouts/Layout.astro";
     text-align: left;
     background: #b98f04;
     height: 30%;
+    color: black;
   }
 
   .texto-derecha .texto {
@@ -370,6 +404,18 @@ import Layout from "../../layouts/Layout.astro";
   @media (max-width: 600px) {
     .ficha-grid {
       grid-template-columns: 1fr;
+    }
+
+    .texto-overlay h2,
+    p {
+      padding-top: 30px;
+      text-align: start;
+      font-size: 2rem;
+    }
+
+    .texto-overlay p {
+      padding-top: 50px;
+      text-align: start;
     }
   }
 </style>

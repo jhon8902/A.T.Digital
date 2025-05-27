@@ -183,7 +183,7 @@ import noticias from "../../data/noticias.json";
   }
   .noticia-avenger-texto {
     padding: 40px 30px 20px 30px;
-    text-align: center;
+
     background: black;
     color: white;
     font-family: "Montserrat", sans-serif;
@@ -308,9 +308,12 @@ import noticias from "../../data/noticias.json";
     .noticia-avenger-imagen {
       height: 180px;
       border-radius: 0 0 10px 10px;
+      width: 100%;
+      object-fit: cover;
     }
     .noticia-avenger-texto {
       padding: 20px 10px 10px 10px;
+      text-align: start;
     }
   }
   @media (max-width: 600px) {
@@ -318,11 +321,34 @@ import noticias from "../../data/noticias.json";
       font-size: 28px;
       padding: 10px 0;
     }
-    .noticia-texto-titulo {
-      font-size: 18px;
+    /* Elimina o comenta esta regla global */
+    /* .noticia-texto-titulo {
+      font-size: 28px;
+      text-align: start;
+    } */
+    .noticia-avenger-texto {
+      text-align: start;
     }
     .noticia-avenger-texto .noticia-texto-titulo {
+      font-size: 22px;
+      text-align: start;
+      margin-left: 0;
+      margin-right: 0;
+      display: block;
+    }
+
+    .noticia-avenger-texto .noticia-descripcion {
+      color: #d5d5d4;
       font-size: 20px;
+
+      background: transparent;
+    }
+
+    .noticia-texto-titulo {
+      font-size: 22px;
+      text-align: start;
+      font-weight: 500;
+      border-bottom: 1px solid #f8ca26;
     }
   }
 </style>
