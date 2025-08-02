@@ -7,7 +7,7 @@ import Layout from "../../layouts/Layout.astro";
   <section class="section-noticias">
     <!-- Título -->
     <div class="header">
-      <h1>BMW 330e Híbrido Enchufable</h1>
+      <h1>BMW 330e Híbrido enchufable</h1>
     </div>
     <div class="container">
       <!-- Tarjeta 1 -->
@@ -64,7 +64,7 @@ import Layout from "../../layouts/Layout.astro";
           />
         </div>
         <div class="card-text">
-          <h2>Motor y Autonomía</h2>
+          <h2>Motor y autonomía</h2>
           <p>
             El BMW 330e combina un motor turbo de gasolina de 2.0 litros con un
             motor eléctrico, entregando una potencia combinada de hasta 292 CV.
@@ -106,7 +106,7 @@ import Layout from "../../layouts/Layout.astro";
           />
         </div>
         <div class="card-text">
-          <h2>Comportamiento y Suspensión</h2>
+          <h2>Comportamiento y suspensión</h2>
           <p>
             El BMW 330e ofrece una conducción equilibrada, gracias a su chasis
             adaptativo y suspensión deportiva opcional. La distribución de peso
@@ -146,7 +146,6 @@ import Layout from "../../layouts/Layout.astro";
     color: black;
     margin-bottom: 60px;
     background: white;
-    text-transform: uppercase;
   }
 
   .header h1,
@@ -191,6 +190,11 @@ import Layout from "../../layouts/Layout.astro";
     object-fit: cover;
   }
 
+  .card-image,
+  .card-text {
+    width: 100%;
+  }
+
   .card-text {
     width: 50%;
     padding: 70px;
@@ -201,10 +205,10 @@ import Layout from "../../layouts/Layout.astro";
     font-size: 36px;
     color: black;
     margin-bottom: 15px;
-    text-align: center;
+    text-align: start;
     /*border-bottom: 2px solid black;
     display: inline-block;  Esto hace que el ancho de la línea sea igual al del texto */
-    text-transform: uppercase;
+
     font-weight: bolder;
     padding: 10px;
   }

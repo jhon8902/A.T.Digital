@@ -3,7 +3,13 @@
     <span class="icono-electricos">
       <i class="fas fa-car-battery"></i>
     </span>
-    <span class="titulo-electricos">Eléctricos</span>
+
+    <span class="titulo-electricos inicial">Carros Eléctricos</span>
+    <p class="descripcion-electricos">
+      Modelos 100% eléctricos disponibles en el mercado nacional: autonomía,
+      tiempos de carga, conectividad y lo que debes saber antes de dar el salto
+      a esa nueva adquisicion.
+    </p>
   </div>
 
   <div class="grid-container">
@@ -17,11 +23,11 @@
           />
         </div>
         <div class="texto-destacado">
-          <p class="texto-f">nota: 10-feb</p>
-          <h2>Volvo ex90</h2>
+          <p class="texto-f">Nota: 10-feb</p>
+          <h2>Volvo EX90</h2>
           <p>
             No solo ofrece una autonomía de 500km sino que además llega con
-            nuevo diseño vanguardista.
+            nuevo diseño vanguardista es una de las mas cotizadas en colombia.
           </p>
         </div>
       </a>
@@ -36,21 +42,14 @@
           alt="Mini Cooper"
         />
         <h2>Mini Cooper</h2>
-        <p>Lujo y tecnología en un compacto eléctrico.</p>
-        <p class="texto-f">nota: 13-mar</p>
+        <p>
+          Lujo y tecnología en un compacto eléctrico capas de satisfacer todas
+          tus necesidades basicas y de confort.
+        </p>
+        <p class="texto-f">Nota: 13-mar</p>
       </a>
     </div>
-    <div class="imagen-card">
-      <a href="/notas-electricos/nota-peugeot-e3008">
-        <img
-          src="/img/peugeot-3008-electrica/principal-peugeot.webp"
-          alt="peugeot e3008"
-        />
-        <h2>peugeot e-3008</h2>
-        <p>Eléctrico y potente para la nueva era.</p>
-        <p class="texto-f">nota: 24-mar</p>
-      </a>
-    </div>
+
     <div class="imagen-card">
       <a href="/notas-electricos/nota-byd-sealion7">
         <img
@@ -58,8 +57,25 @@
           alt="BYD Sealion 7"
         />
         <h2>BYD Sealion 7</h2>
-        <p>Deportivo y sostenible sin perder su esencia.</p>
-        <p class="texto-f">nota: 13-mar</p>
+        <p>
+          Deportivo y sostenible sin perder su esencia, el diseño y lujo se
+          convinan para ofrecer lo mejor.
+        </p>
+        <p class="texto-f">Nota: 13-mar</p>
+      </a>
+    </div>
+    <div class="imagen-card">
+      <a href="/notas-electricos/nota-peugeot-e3008">
+        <img
+          src="/img/peugeot-3008-electrica/carga-peugeot.webp"
+          alt="peugeot e3008"
+        />
+        <h2>Peugeot E-3008</h2>
+        <p>
+          Eléctrico y potente para la nueva era si lo que quieres es que te vean
+          con este suv lo logras.
+        </p>
+        <p class="texto-f">Nota: 24-mar</p>
       </a>
     </div>
     <div class="imagen-card">
@@ -69,10 +85,16 @@
           alt="Renault Megane"
         />
         <h2>Renault Megane</h2>
-        <p>Compacto y eficiente para la movilidad urbana.</p>
-        <p class="texto-f">nota: 20-abril</p>
+        <p>
+          Compacto y eficiente para la movilidad urbana, ademàs de futurista que
+          compensa cualquier pero.
+        </p>
+        <p class="texto-f">Nota: 20-abril</p>
       </a>
     </div>
+  </div>
+  <div class="ver-mas-modelos-container">
+    <button class="ver-mas-modelos-btn">Ver más modelos</button>
   </div>
 </div>
 
@@ -82,11 +104,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: black;
+    background: linear-gradient(to bottom, #000 30%, #fff 40%);
     border-bottom: 20px solid black;
     padding: 10px;
     text-align: center;
     width: 100%;
+    font-family: "Georgia", serif;
   }
 
   @keyframes fadeInTitle {
@@ -123,7 +146,7 @@
 
   .central-content h1 {
     color: white;
-    font-size: 60px;
+    font-size: 70px;
     text-transform: uppercase;
     font-weight: bolder;
     letter-spacing: 1px;
@@ -132,33 +155,63 @@
     z-index: 3;
     text-shadow: 2px 2px 6px rgba(16, 16, 16, 0.2);
     padding: 40px;
-    font-family: "Georgia", serif;
+
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 14px;
   }
 
+  .descripcion-electricos {
+    font-size: 1.8rem;
+    text-align: center;
+    color: rgb(224, 224, 224);
+    padding: 20px; /* Top reducido, laterales igual, bottom cero */
+    font-family: "Georgia", serif;
+    margin-top: -10px; /* (Opcional) más pegado aún si lo ves necesario */
+  }
+
   .icono-electricos {
-    animation: fadeInUp 1s 0.1s both;
+    animation: pulse-move 2s ease-in-out infinite;
   }
 
   .icono-electricos i {
-    font-size: 50px;
-    color: #45e758;
+    font-size: 80px;
+    color: #05aafc;
     margin-right: 14px;
+  }
+
+  @keyframes pulse-move {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(-8px) scale(1.1);
+      opacity: 0.85;
+    }
+    100% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
   }
 
   .titulo-electricos {
     font-size: 60px;
     color: white;
-    font-family: "Georgia", serif;
+
     font-weight: bolder;
     text-transform: uppercase;
     letter-spacing: 1px;
     text-shadow: 2px 2px 6px rgba(16, 16, 16, 0.2);
     margin-top: 10px;
     animation: fadeInUp 1s 0.5s both;
+
+    opacity: 0;
+    transform: translateY(40px);
+    transition:
+      opacity 0.5s ease-in-out,
+      transform 0.5s ease-in-out;
   }
 
   .grid-container {
@@ -192,27 +245,40 @@
     width: 100%;
   }
 
+  .texto-destacado {
+    flex: 1;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: white;
+    color: black;
+    text-align: left;
+
+    font-weight: 500;
+  }
+
   .texto-destacado h2 {
-    font-size: 32px;
+    font-size: 48px;
     margin-bottom: 15px;
     text-transform: uppercase;
     font-weight: bold;
-    color: #f4bd07;
-    font-family: "Georgia", serif;
+    color: black;
   }
 
   .texto-destacado p {
-    font-size: 20px;
+    font-size: 24px;
     line-height: 1.4;
     margin-bottom: 10px;
+    font-family: "Georgia", serif;
   }
 
   .texto-destacado .texto-f {
     font-size: 18px;
     margin-bottom: 10px;
-    color: #cccccc;
-    border-bottom: 1px solid #f4bd07;
-    width: 72%;
+    color: black;
+    border-bottom: 4px solid #0689ca;
+    width: 38%;
     display: inline-block;
     padding: 5px;
   }
@@ -222,7 +288,6 @@
     min-width: 300px;
     max-height: 100%;
     overflow: hidden;
-    padding: 20px;
   }
 
   .imagen-destacada-img img,
@@ -241,17 +306,6 @@
     z-index: 2;
   }
 
-  .texto-destacado {
-    flex: 1;
-    padding: 40px 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: #101010;
-    color: white;
-    text-align: left;
-  }
-
   .imagenes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -259,7 +313,7 @@
     width: 100%;
     max-width: none;
     margin-top: 40px;
-    text-transform: uppercase;
+
     padding: 10px; /* Elimina el padding lateral */
   }
 
@@ -267,11 +321,12 @@
     overflow: hidden;
     text-align: center;
     position: relative;
+    background: white;
   }
 
   .imagen-card img {
     width: 100%;
-    height: 270px;
+    height: 290px;
     object-fit: cover;
     position: relative;
     display: block;
@@ -280,24 +335,25 @@
   .imagen-card h2 {
     font-size: 22px;
     font-weight: 600;
-    color: #f4bd07;
-
+    color: black;
+    border-bottom: 3px solid #0689ca;
     padding: 10px;
     text-align: start;
     position: relative;
     display: block;
-    width: 100%;
-    font-family: "Georgia", serif;
+    width: 90%;
+
+    text-transform: uppercase;
   }
 
   .imagen-card p {
     font-size: 20px;
     padding: 5px;
+    padding-top: 10px;
     font-weight: 400;
-    color: #cfcece;
+    color: black;
     text-align: start;
     text-transform: none;
-    font-family: "Poppins", sans-serif;
   }
 
   .imagen-card .texto-f {
@@ -314,15 +370,50 @@
     display: inline-block;
   }
 
+  .ver-mas-modelos-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 30px 0 0 0;
+    padding: 30px;
+  }
+
+  .ver-mas-modelos-btn {
+    background: #0689ca;
+    color: #fff;
+    font-size: 22px;
+
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 38px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: background 0.2s;
+  }
+
+  .ver-mas-modelos-btn:hover {
+    background: #056fa1;
+  }
+
   @media (max-width: 768px) {
     .electrico-container {
       padding: 0;
+      background: linear-gradient(to bottom, #000 10%, #fff 40%);
     }
 
     .titulo-electricos {
-      font-size: 36px;
+      font-size: 44px;
       padding: 0;
     }
+
+    .descripcion-electricos {
+      font-size: 1.2rem;
+      padding: 10px;
+      margin-top: 0; /* Ajusta el margen superior */
+      text-align: center;
+    }
+
     .icono-electricos i {
       font-size: 40px;
     }
@@ -340,7 +431,7 @@
     }
 
     .texto-destacado p {
-      font-size: 16px;
+      font-size: 18px;
       padding: 10px;
     }
 
@@ -355,7 +446,7 @@
       flex-direction: column-reverse; /* Cambia el orden: título arriba, icono abajo */
       align-items: center;
       justify-content: center;
-      font-size: 36px;
+      font-size: 44px;
       text-align: center;
       padding: 20px;
       gap: 0;
@@ -369,7 +460,7 @@
 
     .icono-electricos i {
       margin-bottom: 10px;
-      font-size: 40px;
+      font-size: 60px;
     }
 
     .imagen-card img {
@@ -381,15 +472,13 @@
       font-size: 20px;
       padding: 6px;
       padding-top: 10px;
-      font-weight: 400;
-      border-bottom: 1px solid rgb(227, 165, 9);
-      width: 60%;
+      font-weight: 600;
     }
 
     .imagen-card p {
       font-size: 18px;
       font-weight: 400;
-      color: #cfcece;
+      color: black;
       padding: 6px;
     }
 
@@ -402,35 +491,19 @@
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const seccion = document.getElementById("electricos");
-    const logo = document.querySelector(".icono-electricos") as HTMLElement;
-    const titulo = document.querySelector(".titulo-electricos") as HTMLElement;
+    const titulo = document.querySelector(".titulo-electricos");
 
-    if (!seccion || !logo || !titulo) return;
-
-    // Prepara los estilos iniciales para animar
-    logo.style.opacity = "0";
-    logo.style.transform = "translateY(40px)";
-    titulo.style.opacity = "0";
-    titulo.style.transform = "translateY(40px)";
+    if (!seccion || !(titulo instanceof HTMLElement)) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Reinicia la animación
-            logo.style.animation = "none";
-            titulo.style.animation = "none";
-            void logo.offsetWidth; // Forzar reflow
-            void titulo.offsetWidth;
-            // Aplica la animación
-            logo.style.animation = "fadeInUp 1s 0.1s both";
+            titulo.classList.remove("inicial");
             titulo.style.animation = "fadeInUp 1s 0.5s both";
           } else {
-            // Oculta para que la animación se repita al volver a entrar
-            logo.style.opacity = "0";
-            logo.style.transform = "translateY(40px)";
-            titulo.style.opacity = "0";
-            titulo.style.transform = "translateY(40px)";
+            titulo.classList.add("inicial");
+            titulo.style.animation = "none";
           }
         });
       },
@@ -439,17 +512,14 @@
 
     observer.observe(seccion);
 
-    // Forzar animación si ya está visible al cargar la página
-    function isInViewport(element: HTMLElement) {
+    // Si ya está en viewport al cargar
+    function isInViewport(element) {
       const rect = element.getBoundingClientRect();
       return rect.top < window.innerHeight && rect.bottom > 0;
     }
+
     if (isInViewport(seccion)) {
-      logo.style.animation = "none";
-      titulo.style.animation = "none";
-      void logo.offsetWidth;
-      void titulo.offsetWidth;
-      logo.style.animation = "fadeInUp 1s 0.1s both";
+      titulo.classList.remove("inicial");
       titulo.style.animation = "fadeInUp 1s 0.5s both";
     }
   });

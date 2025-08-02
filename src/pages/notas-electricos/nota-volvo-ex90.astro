@@ -6,7 +6,7 @@ import Layout from "../../layouts/Layout.astro";
 <Layout title="nota-volvo-ex90" bodyClass="otras-page">
   <section class="nota-container">
     <div class="nota-header">
-      <h1>Volvo EX90</h1>
+      <h1>Volvo EX90 tu mejor ¡opcion!</h1>
       <p class="subtitulo">
         Una nueva era eléctrica con tecnología y seguridad de vanguardia
       </p>
@@ -111,7 +111,7 @@ import Layout from "../../layouts/Layout.astro";
       </div>
       <div class="dynamic-item">
         <img
-          src="/img/volvo-ex90-electrico/volvo-ex90-diseño.webp"
+          src="/img/volvo-ex90-electrico/volvo-ex90-portada.webp"
           alt="Motorización del Volvo EX90"
         />
       </div>
@@ -150,7 +150,6 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   body {
-    font-family: "Lora", serif;
     background: black;
   }
 
@@ -167,7 +166,8 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .nota-header h1 {
-    font-size: 5rem;
+    display: inline-block;
+    font-size: 58px;
     border-bottom: 2px solid black;
     text-transform: uppercase;
     font-weight: 600;
@@ -189,7 +189,7 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .nota-header .subtitulo {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     margin-top: 10px;
   }
 
@@ -242,6 +242,7 @@ import Layout from "../../layouts/Layout.astro";
     font-weight: 600;
     text-transform: uppercase;
     border-bottom: 2px solid black;
+    font-family: "Georgia", serif;
   }
 
   .text-box p {
@@ -262,6 +263,7 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .feature-title {
+    background: black;
     font-size: 3rem;
     color: #e6b410;
     font-weight: bold;
@@ -273,7 +275,7 @@ import Layout from "../../layouts/Layout.astro";
     transition:
       opacity 0.8s ease-out,
       transform 0.8s ease-out;
-    background: black;
+    font-family: "Georgia", serif;
   }
 
   .feature-title.visible {
@@ -342,13 +344,15 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     .nota-header h1 {
-      font-size: 36px;
+      font-size: 24px;
       font-weight: 600;
+      text-align: center;
     }
 
     .nota-header .subtitulo {
       font-size: 1.1rem;
       margin-top: 15px;
+      text-align: center;
     }
 
     .feature-banner-1 {
@@ -361,12 +365,12 @@ import Layout from "../../layouts/Layout.astro";
 
     .text-box {
       padding: 20px;
-      text-align: start;
     }
 
     .text-box h2 {
       font-size: 1.3rem;
-      text-align: start;
+      border-bottom: none;
+      margin-bottom: 10px;
     }
 
     .text-box p {

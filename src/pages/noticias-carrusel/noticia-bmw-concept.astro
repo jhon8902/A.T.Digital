@@ -7,7 +7,7 @@ import Layout from "../../layouts/Layout.astro";
   <section class="section-noticias">
     <!-- Título -->
     <div class="header">
-      <h1>BMW Concept XM: Potencia y Lujo sin Precedentes</h1>
+      <h1>BMW Concept XM: potencia y lujo sin precedentes</h1>
     </div>
     <div class="container">
       <!-- Tarjeta 1 -->
@@ -19,7 +19,7 @@ import Layout from "../../layouts/Layout.astro";
           />
         </div>
         <div class="card-text">
-          <h2>Diseño Exterior Audaz y Vanguardista</h2>
+          <h2>Diseño exterior audaz y vanguardista</h2>
           <p>
             El BMW Concept XM presenta un diseño exterior imponente con una
             parrilla de riñón de contorno octagonal y luces diurnas delgadas,
@@ -38,7 +38,7 @@ import Layout from "../../layouts/Layout.astro";
           />
         </div>
         <div class="card-text">
-          <h2>Interior de Lujo con Tecnología de Punta</h2>
+          <h2>Interior de lujo con tecnología de punta</h2>
           <p>
             El interior del Concept XM combina materiales exclusivos como cuero
             vintage, terciopelo y fibra de carbono. Destaca el BMW Curved
@@ -58,7 +58,7 @@ import Layout from "../../layouts/Layout.astro";
           />
         </div>
         <div class="card-text">
-          <h2>Rendimiento Híbrido de Alta Prestación</h2>
+          <h2>Rendimiento híbrido de alta prestación</h2>
           <p>
             Equipado con un sistema de propulsión M Hybrid que combina un motor
             V8 con un motor eléctrico, el Concept XM ofrece una potencia total
@@ -77,7 +77,7 @@ import Layout from "../../layouts/Layout.astro";
           />
         </div>
         <div class="card-text">
-          <h2>Iluminación y Conectividad de Última Generación</h2>
+          <h2>Iluminación y conectividad de última generación</h2>
           <p>
             El BMW Concept XM incorpora un sistema de iluminación dividido en
             dos niveles con tecnología láser avanzada para una visibilidad
@@ -116,7 +116,6 @@ import Layout from "../../layouts/Layout.astro";
     color: black;
     margin-bottom: 60px;
     background: white;
-    text-transform: uppercase;
   }
 
   .header h1,
@@ -161,6 +160,11 @@ import Layout from "../../layouts/Layout.astro";
     object-fit: cover;
   }
 
+  .card-image,
+  .card-text {
+    width: 100%;
+  }
+
   .card-text {
     width: 50%;
     padding: 70px;
@@ -171,10 +175,11 @@ import Layout from "../../layouts/Layout.astro";
     font-size: 36px;
     color: black;
     margin-bottom: 15px;
-    text-align: center;
+    text-align: start;
+    font-family: "Georgia", serif;
     /*border-bottom: 2px solid black;
     display: inline-block;  Esto hace que el ancho de la línea sea igual al del texto */
-    text-transform: uppercase;
+
     font-weight: bolder;
     padding: 10px;
   }

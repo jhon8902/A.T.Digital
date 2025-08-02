@@ -7,7 +7,7 @@ import Layout from "../../layouts/Layout.astro";
   <section class="section-noticias">
     <!-- Título -->
     <div class="header">
-      <h1>DFSK Seres E5: SUV Híbrido Enchufable de 7 Plazas</h1>
+      <h1>DFSK Seres E5: SUV híbrido enchufable de 7 plazas</h1>
     </div>
     <div class="container">
       <!-- Tarjeta 1 -->
@@ -64,7 +64,7 @@ import Layout from "../../layouts/Layout.astro";
           />
         </div>
         <div class="card-text">
-          <h2>Motor y Autonomía</h2>
+          <h2>Motor y autonomía</h2>
           <p>
             La Seres E5 combina un motor de gasolina de 1.5 litros (109 HP) con
             un motor eléctrico de 174 HP, alcanzando una potencia combinada de
@@ -108,7 +108,7 @@ import Layout from "../../layouts/Layout.astro";
           />
         </div>
         <div class="card-text">
-          <h2>Conducción y Suspensión</h2>
+          <h2>Conducción y suspensión</h2>
           <p>
             La suspensión delantera McPherson y trasera Multilink, junto con la
             dirección eléctrica, proporcionan una conducción suave y estable. La
@@ -149,7 +149,6 @@ import Layout from "../../layouts/Layout.astro";
     color: black;
     margin-bottom: 60px;
     background: white;
-    text-transform: uppercase;
   }
 
   .header h1,
@@ -194,6 +193,11 @@ import Layout from "../../layouts/Layout.astro";
     object-fit: cover;
   }
 
+  .card-image,
+  .card-text {
+    width: 100%;
+  }
+
   .card-text {
     width: 50%;
     padding: 70px;
@@ -204,10 +208,10 @@ import Layout from "../../layouts/Layout.astro";
     font-size: 36px;
     color: black;
     margin-bottom: 15px;
-    text-align: center;
+    text-align: start;
     /*border-bottom: 2px solid black;
     display: inline-block;  Esto hace que el ancho de la línea sea igual al del texto */
-    text-transform: uppercase;
+
     font-weight: bolder;
     padding: 10px;
   }

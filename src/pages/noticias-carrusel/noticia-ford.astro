@@ -8,13 +8,16 @@ import Layout from "../../layouts/Layout.astro";
   <section class="section-noticias">
     <!-- Título -->
     <div class="header">
-      <h1>Explorando la Ford Bronco: Innovaciones en Diseño y Seguridad.</h1>
+      <h1>Explorando la Ford Bronco: innovaciones en diseño y seguridad.</h1>
     </div>
     <div class="container">
       <!-- Tarjeta 1 -->
       <div class="card">
         <div class="card-image">
-          <img src="/img/ford-1bronco.jpg" alt="bronco diseño" />
+          <img
+            src="/img/ford-bronco/ford-bronco-portada.jpg"
+            alt="bronco diseño"
+          />
         </div>
         <div class="card-text">
           <h2>Diseño</h2>
@@ -31,10 +34,14 @@ import Layout from "../../layouts/Layout.astro";
           </p>
         </div>
       </div>
+
       <!-- Tarjeta 2 -->
       <div class="card reverse">
         <div class="card-image">
-          <img src="/img/ford-2bronco.jpg" alt="bronco tecnología" />
+          <img
+            src="/img/ford-bronco/ford-bronco-tecnologia.jpg"
+            alt="bronco tecnología"
+          />
         </div>
         <div class="card-text">
           <h2>Tecnología</h2>
@@ -53,10 +60,14 @@ import Layout from "../../layouts/Layout.astro";
           </p>
         </div>
       </div>
+
       <!-- Tarjeta 3 -->
       <div class="card">
         <div class="card-image">
-          <img src="/img/ford-3bronco.jpg" alt="bronco motor" />
+          <img
+            src="/img/ford-bronco/ford-bronco-motor.jpg"
+            alt="bronco motor"
+          />
         </div>
         <div class="card-text">
           <h2>Motor</h2>
@@ -73,7 +84,10 @@ import Layout from "../../layouts/Layout.astro";
       <!-- Tarjeta 4 -->
       <div class="card reverse">
         <div class="card-image">
-          <img src="/img/ford-interior.jpg" alt="bronco interior" />
+          <img
+            src="/img/ford-bronco/ford-bronco-interior.jpg"
+            alt="bronco interior"
+          />
         </div>
         <div class="card-text">
           <h2>Interior</h2>
@@ -91,7 +105,10 @@ import Layout from "../../layouts/Layout.astro";
       <!-- Tarjeta 5 -->
       <div class="card">
         <div class="card-image">
-          <img src="/img/ford-suspension.jpg" alt="bronco suspensión" />
+          <img
+            src="/img/ford-bronco/ford-bronco-suspension.jpg"
+            alt="bronco suspensión"
+          />
         </div>
         <div class="card-text">
           <h2>Suspensión</h2>
@@ -116,7 +133,6 @@ import Layout from "../../layouts/Layout.astro";
   body {
     margin: 0;
     padding: 0;
-
     font-family: "Poppins", sans-serif;
   }
 
@@ -136,7 +152,6 @@ import Layout from "../../layouts/Layout.astro";
     color: black;
     margin-bottom: 60px;
     background: white;
-    text-transform: uppercase;
   }
 
   .header h1,
@@ -171,8 +186,13 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .card-image {
-    width: 60%;
+    width: 50%;
     height: 100%;
+  }
+
+  .card-image,
+  .card-text {
+    width: 100%;
   }
 
   .card-image img {
@@ -191,10 +211,10 @@ import Layout from "../../layouts/Layout.astro";
     font-size: 36px;
     color: black;
     margin-bottom: 15px;
-    text-align: center;
+    text-align: start;
     /*border-bottom: 2px solid black;
     display: inline-block;  Esto hace que el ancho de la línea sea igual al del texto */
-    text-transform: uppercase;
+
     font-weight: bolder;
     padding: 10px;
   }

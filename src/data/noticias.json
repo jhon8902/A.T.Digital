@@ -1,30 +1,34 @@
 [
  {
   "id": 1,
-  "titulo": "KIA EV-9",
-  "descripcion": "Así es el nuevo SUV 100% eléctrico de KIA que ya rueda en Colombia",
+  "titulo": "Kia EV-9",
+   "resumen": "El KIA EV9 es uno de los primeros SUV eléctricos en el mundo que puede recibir actualizaciones de software a distancia.",
+  "descripcion": "Adiós a los espejos: el SUV 100% eléctrico de KIA llega a Colombia con visión digital.",
+  "titulo_nota": "KIA EV-9: tecnología y diseño que redefinen el futuro",
+  "subtitulo_nota": "Explora su tecnología avanzada, visión digital y versiones disponibles",
   "imagen": "/img/kia-ev9/kia-ev9-portada.webp",
+  "fecha": "2025-07-01",
   "contenido": [
     {
-      "titulo": "Diseño Innovador",
+      "titulo": "Diseño innovador",
       "parrafo": "El KIA EV9 es un SUV completamente eléctrico que representa el futuro de la movilidad. Con un diseño innovador y tecnología de punta, el EV9 ofrece una experiencia de conducción inigualable.",
       "parrafo2": "El diseño exterior del EV9 combina líneas modernas y detalles futuristas que no solo mejoran la aerodinámica, sino que también lo convierten en un vehículo visualmente impactante. Cada detalle ha sido cuidadosamente pensado para ofrecer un equilibrio entre funcionalidad y estilo.",
       "imagen": "/img/kia-ev9/kia-ev9-diseño.webp"
     },
     {
-      "titulo": "Baterías de Última Generación",
+      "titulo": "Baterías de última generación",
       "parrafo": "Equipado con baterías de última generación, el KIA EV9 tiene una autonomía de hasta 500 km con una sola carga. Además, su capacidad de carga rápida permite recuperar el 80% de la batería en solo 30 minutos.",
       "parrafo2": "El sistema de gestión de energía del EV9 está diseñado para maximizar la eficiencia en cada trayecto. Además, incluye funciones avanzadas como la preacondicionamiento de la batería para optimizar el rendimiento en climas extremos.",
       "imagen": "/img/kia-ev9/kia-ev9-autonomia.webp"
     },
     {
-      "titulo": "Interior Sostenible",
+      "titulo": "Interior sostenible",
       "parrafo": "El interior del EV9 está diseñado pensando en la comodidad y la sostenibilidad. Los materiales utilizados son eco-amigables, y el sistema de infoentretenimiento es de los más avanzados del mercado.",
       "parrafo2": "El habitáculo del EV9 ofrece un espacio amplio y versátil, ideal para familias y viajes largos. Además, cuenta con iluminación ambiental personalizable y asientos ajustables que garantizan una experiencia de lujo.",
       "imagen": "/img/kia-ev9/kia-ev9-interior.webp"
     },
     {
-      "titulo": "Motor y Autonomía",
+      "titulo": "Motor y autonomía",
       "parrafo": "El EV9 ofrece una autonomía confirmada de hasta 563 km bajo el ciclo WLTP. Gracias a su arquitectura eléctrica de 800V, puede recuperar hasta 249 km de alcance en solo 15 minutos de carga. Incorpora carga bidireccional (V2L, V2H, V2G), y es uno de los primeros modelos con actualizaciones remotas a través de la Kia Connect Store.",
       "parrafo2": "El motor eléctrico del EV9 no solo es potente, sino también silencioso, proporcionando una conducción suave y sin interrupciones. Además, su capacidad de carga bidireccional permite alimentar dispositivos externos, convirtiéndolo en una herramienta útil para el día a día.",
       "imagen": "/img/kia-ev9/kia-ev9-motor.webp"
@@ -36,23 +40,25 @@
  {
   "id": 2,
   "titulo": "Mazda EZ-6",
+   "resumen": "'Skyactiv' Tecnología que optimiza el rendimiento y la eficiencia del motor híbrido, Mazda fue pionera en el uso del motor rotativo.",
   "descripcion": "Mazda lanza su nuevo SUV híbrido con tecnología avanzada.",
   "imagen": "/img/mazda-ez6/mazda-ez6-portada.webp",
+  "fecha": "2025-06-28",
   "contenido": [
     {
-      "titulo": "Tecnología Híbrida",
+      "titulo": "Tecnología híbrida",
       "parrafo": "El Mazda EZ-6 combina un motor de combustión interna con un motor eléctrico para ofrecer una eficiencia de combustible excepcional y una conducción suave. Este sistema híbrido no solo reduce las emisiones de carbono, sino que también mejora el rendimiento general del vehículo, haciéndolo ideal tanto para la ciudad como para viajes largos.",
       "parrafo2": "Además, el sistema híbrido está diseñado para adaptarse a diferentes estilos de conducción, ofreciendo un equilibrio perfecto entre potencia y eficiencia. Esto lo convierte en una opción versátil para quienes buscan un vehículo confiable y sostenible.",
       "imagen": "/img/mazda-ez6/mazda-ez6-carga.webp"
     },
     {
-      "titulo": "Diseño Elegante",
+      "titulo": "Diseño elegante",
       "parrafo": "Con líneas aerodinámicas y un diseño sofisticado, el Mazda EZ-6 destaca en cualquier camino. Su estética moderna combina funcionalidad y estilo, ofreciendo detalles como faros LED y acabados premium que reflejan la atención al detalle característica de Mazda.",
       "parrafo2": "El diseño interior también ha sido cuidadosamente pensado, con materiales de alta calidad y un enfoque en la comodidad del conductor y los pasajeros. Cada detalle está diseñado para ofrecer una experiencia de lujo.",
       "imagen": "/img/mazda-ez6/mazda-ez6-lateral.webp"
     },
     {
-      "titulo": "Conectividad Avanzada",
+      "titulo": "Conectividad avanzada",
       "parrafo": "El EZ-6 está equipado con un sistema de infoentretenimiento de última generación, compatible con Apple CarPlay y Android Auto. Además, incluye funciones avanzadas como navegación en tiempo real, comandos de voz intuitivos y actualizaciones de software inalámbricas para mantener el sistema siempre actualizado.",
       "parrafo2": "La conectividad no solo mejora la experiencia de conducción, sino que también garantiza que el vehículo esté siempre preparado para las necesidades del futuro. Esto incluye la integración con aplicaciones móviles para un control total desde cualquier lugar.",
       "imagen": "/img/mazda-ez6/mazda-ez6-interior.webp"
@@ -62,27 +68,29 @@
 },
  {
   "id": 3,
-  "titulo": "Toyota Prado",
+  "titulo": "Toyota prado",
+   "resumen": "La Toyota Prado es famosa por su durabilidad: en algunos países, es el vehículo preferido para expediciones en desiertos y zonas extremas.",
   "descripcion": "El híbrido más popular de Toyota renueva su diseño y eficiencia.",
-  "imagen": "/img/toyota-prado.jpg",
+  "imagen": "/img/toyota-prado/toyota-prado-copia.jpg",
+  "fecha": "2025-06-20",
   "contenido": [
     {
-      "titulo": "Diseño Robusto",
+      "titulo": "Diseño robusto",
       "parrafo": "La Toyota Prado 2025 llega con un diseño renovado, combinando robustez y elegancia para destacar en cualquier terreno.",
       "parrafo2": "El diseño exterior incluye líneas modernas y detalles aerodinámicos que mejoran la eficiencia y el rendimiento. Además, los acabados premium y las opciones de personalización hacen que la Prado sea ideal tanto para la ciudad como para la aventura.",
-      "imagen": "/img/toyota-prado1.jpg"
+      "imagen": "/img/toyota-prado/toyota-prado-copia1.jpg"
     },
     {
-      "titulo": "Eficiencia Híbrida",
+      "titulo": "Eficiencia híbrida",
       "parrafo": "Gracias a su sistema híbrido avanzado, la Toyota Prado 2025 ofrece un menor consumo de combustible y una reducción en emisiones sin sacrificar potencia.",
       "parrafo2": "El sistema híbrido combina un motor eléctrico con un motor de combustión interna, optimizando el rendimiento en diferentes condiciones de manejo. Esto asegura una experiencia de conducción suave y eficiente, incluso en terrenos difíciles.",
-      "imagen": "/img/toyota-prado2.jpg"
+      "imagen": "/img/toyota-prado/toyota-prado-copia2.jpg"
     },
     {
-      "titulo": "Tecnología de Vanguardia",
+      "titulo": "Tecnología de vanguardia",
       "parrafo": "Equipada con un sistema de infoentretenimiento moderno y avanzados asistentes de conducción, la nueva Prado garantiza seguridad y comodidad en cada viaje.",
       "parrafo2": "Incluye características como control de crucero adaptativo, frenado automático de emergencia y cámaras de 360 grados, lo que la convierte en una de las SUVs más tecnológicamente avanzadas de su categoría.",
-      "imagen": "/img/toyota-prado3.jpg"
+      "imagen": "/img/toyota-prado/toyota-prado-copia3.jpg"
     }
   ],
   "link": "/noticias-nacionales/noticia-toyota-prado"
@@ -90,55 +98,57 @@
 {
   "id": 4,
   "titulo": "Ford F-150",
-  "descripcion": "La versión eléctrica de la icónica pickup de Ford, conócela.",
-  "imagen": "/img/ford-f150-3.jpg",
+   "resumen": "La Ford F-150 Lightning puede alimentar una casa entera durante un corte de energía gracias a su batería de alta capacidad.",
+  "descripcion": "La versión eléctrica de la icónica pickup de Ford. ¡Conócela!",
+  "imagen": "/img/ford-f150/ford-f150-3.jpg",
+  "fecha": "2025-05-15",
   "contenido": [
     {
-      "titulo": "Potencia Eléctrica",
+      "titulo": "Potencia eléctrica",
       "parrafo": "La Ford F-150 Lightning redefine la potencia con su tren motriz 100% eléctrico, ofreciendo hasta 563 caballos de fuerza y un torque impresionante.",
       "parrafo2": "Este modelo también cuenta con un sistema de tracción en las cuatro ruedas que garantiza un rendimiento excepcional en cualquier tipo de terreno, desde carreteras pavimentadas hasta caminos off-road.",
-      "imagen": "/img/ford-f150-2.jpg"
+      "imagen": "/img/ford-f150/ford-f150-2.jpg"
     },
     {
-      "titulo": "Autonomía y Carga",
+      "titulo": "Autonomía y carga",
       "parrafo": "Con una autonomía de hasta 480 km y capacidad de carga rápida, la F-150 Lightning está diseñada para el trabajo y la aventura.",
       "parrafo2": "La capacidad de carga bidireccional permite alimentar herramientas eléctricas o incluso una casa en caso de emergencia, lo que la convierte en una pickup versátil y funcional.",
-      "imagen": "/img/ford-f150-4.webp"
+      "imagen": "/img/ford-f150/ford-f150-4.webp"
     },
     {
-      "titulo": "Innovación y Tecnología",
+      "titulo": "Innovación y tecnología",
       "parrafo": "Cuenta con una pantalla táctil de última generación, actualizaciones inalámbricas y un sistema de conducción asistida para mayor seguridad y confort.",
       "parrafo2": "El sistema Ford Co-Pilot360 incluye funciones avanzadas como asistencia de mantenimiento de carril, monitoreo de punto ciego y estacionamiento automático, ofreciendo una experiencia de conducción más segura y cómoda.",
-      "imagen": "/img/ford-f150-interior.jpg"
+      "imagen": "/img/ford-f150/interior-f150.webp"
     }
   ],
   "link": "/noticias-nacionales/noticia-ford-f-150"
 },
 {
   "id": 5,
-   "imagen": "/img/jeep-avenger/jepp-avenger-subportada.webp",
   "titulo": "Jeep Avenger",
-  
-  "descripcion": "El nuevo SUV compacto 100% eléctrico de Jeep llega para revolucionar la movilidad urbana, conoce precios, versiones y mucho mas.",
- 
+  "resumen": "¿Sabías que el Jeep Avenger fue el primer modelo 100% eléctrico de la marca lanzado en Europa, ganando el premio 'Car of the Year 2023'?.",
+  "descripcion": "Potencia eléctrica y agilidad urbana en un SUV compacto.",
+  "imagen": "/img/jeep-avenger/jepp-avenger-subportada.webp",
+  "fecha": "2025-06-10",
   "contenido": [
     {
-      "titulo": "Diseño Compacto y Moderno",
-      "parrafo": "El Jeep Avenger destaca por su diseño compacto, ideal para la ciudad, pero sin perder el carácter robusto y aventurero de la marca.",
-      "parrafo2": "Sus líneas modernas y detalles icónicos de Jeep lo convierten en un SUV atractivo y funcional, perfecto para quienes buscan estilo y practicidad.",
+      "titulo": "Diseño compacto y moderno",
+      "parrafo": "El Jeep Avenger llega a Colombia con un diseño compacto pensado para la vida urbana, pero manteniendo el espíritu aventurero de la marca. Jeep busca conquistar un nuevo público que valore la movilidad eléctrica sin renunciar a su ADN todoterreno.",
+      "parrafo2": "Sus líneas modernas y detalles icónicos refuerzan la identidad Jeep, ofreciendo un equilibrio entre elegancia y funcionalidad. Es un SUV compacto que destaca por su estilo urbano sin perder robustez.",
       "imagen": "/img/jeep-avenger/jepp-avenger-diseño.webp"
     },
     {
-      "titulo": "Movilidad 100% Eléctrica",
+      "titulo": "Movilidad 100% eléctrica",
       "parrafo": "Equipado con un motor totalmente eléctrico, el Avenger ofrece una autonomía de hasta 400 km con una sola carga, permitiendo desplazamientos diarios sin preocupaciones.",
       "parrafo2": "La carga rápida permite recuperar el 80% de la batería en menos de 30 minutos, facilitando la vida en la ciudad y los viajes cortos.",
       "imagen": "/img/jeep-avenger/jepp-avenger-motor.webp"
     },
     {
-      "titulo": "Tecnología y Seguridad",
+      "titulo": "Tecnología y seguridad",
       "parrafo": "El Jeep Avenger incorpora lo último en tecnología de conectividad y asistentes de conducción, como frenado autónomo de emergencia, mantenimiento de carril y sensores de estacionamiento.",
       "parrafo2": "Su sistema de infoentretenimiento con pantalla táctil y compatibilidad con Apple CarPlay y Android Auto garantiza una experiencia moderna y segura.",
-      "imagen": "/img/jeep-avenger/jepp-avenger-trasero.webp"
+      "imagen": "/img/jeep-avenger/jeep-avenger.interior.jpg"
     }
   ],
   "link": "/noticias-nacionales/noticia-jeep-avenger"

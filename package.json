@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "astro": "^5.7.5",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
     "framer-motion": "^11.13.5",
+    "mysql2": "^3.14.2",
     "styled-components": "^6.1.12",
     "swiper": "^11.1.15"
   },

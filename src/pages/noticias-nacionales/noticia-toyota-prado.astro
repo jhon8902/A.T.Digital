@@ -54,6 +54,7 @@ const noticia = noticiaData.find((item) => item.id === 3);
     padding: 20px 0;
     position: relative;
     background: white;
+    font-family: "Georgia", serif;
   }
 
   /* Título subtitulo kia ev9 */
@@ -61,13 +62,12 @@ const noticia = noticiaData.find((item) => item.id === 3);
     font-size: 45px;
     text-align: center;
     color: black;
-
-    font-weight: 400;
+    width: 90%;
+    font-weight: 600;
     margin: 0 auto 5px;
-    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
 
+    border-bottom: 2px solid #595902;
     padding: 15px;
-    font-family: "Georgia", serif;
   }
 
   /* Título principal */
@@ -76,15 +76,32 @@ const noticia = noticiaData.find((item) => item.id === 3);
     font-weight: bolder;
     text-align: center;
     padding: 30px;
-    text-transform: uppercase;
-    font-family: "Georgia", serif;
+    text-transform: none;
+
+    /* Animación */
+    opacity: 0;
+    animation: fadeSlideIn 1s ease-out forwards;
+    animation-delay: 0.3s; /* leve retraso opcional */
+  }
+
+  /* animacion titulo descripcion */
+
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px); /* empieza un poco abajo */
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0); /* termina en su lugar */
+    }
   }
 
   .noticia-portada {
     width: 100%;
-    height: auto;
+    height: 900px;
     object-fit: cover;
-    padding: 20px;
+    padding: 0;
     transition: box-shadow 0.4s ease;
   }
 
@@ -101,19 +118,20 @@ const noticia = noticiaData.find((item) => item.id === 3);
   }
 
   .noticia-bloque img {
-    width: 50%;
+    margin: 10px;
+    width: 48%;
     height: auto;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
     transition: transform 0.9s ease;
   }
 
   .noticia-bloque img:hover {
-    transform: scale(0.9);
+    transform: scale(1.05);
   }
 
   .noticia-bloque .noticia-texto {
     flex: 1;
-    text-align: center;
+    text-align: start;
     padding: 20px;
     border-radius: 12px;
     width: 50%;
@@ -127,8 +145,7 @@ const noticia = noticiaData.find((item) => item.id === 3);
     font-weight: bolder;
     color: black;
     margin-bottom: 10px;
-    text-transform: uppercase;
-    font-family: "Georgia", serif;
+    text-transform: none;
   }
 
   .noticia-bloque .noticia-parrafo {
@@ -136,7 +153,6 @@ const noticia = noticiaData.find((item) => item.id === 3);
     text-align: start;
     color: #333;
 
-    font-family: "Poppins", sans-serif;
     margin-bottom: 15px; /* Agrega espacio entre los párrafos */
     line-height: 1.6; /* Mejora la legibilidad del texto */
   }
@@ -159,11 +175,11 @@ const noticia = noticiaData.find((item) => item.id === 3);
       background: none;
       color: black;
       text-shadow: none;
-      padding: 0;
     }
 
     .noticia-bloque img {
       width: 100%;
+      height: auto;
     }
 
     .noticia-bloque .noticia-texto {

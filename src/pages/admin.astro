@@ -1,0 +1,195 @@
+---
+// src/pages/admin.astro
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Agregar nueva nota" bodyClass="admin-page">
+  <section class="form-wrapper">
+    <h1>Agregar nueva nota</h1>
+
+    <form id="nota-form">
+      <label>
+        Título:
+        <input type="text" name="titulo" required />
+      </label>
+
+      <label>
+        Subtítulo:
+        <input type="text" name="subtitulo" required />
+      </label>
+
+      <label>
+        Descripción:
+        <input type="text" name="descripcion" required />
+      </label>
+
+      <label>
+        Slug (para la URL):
+        <input type="text" name="slug" required />
+      </label>
+
+      <label>
+        Imagen principal:
+        <input type="text" name="imagen" required />
+      </label>
+
+      <label>
+        Categoría:
+        <select name="categoria_id" required>
+          <option value="1">Noticias</option>
+          <option value="2">Lanzamientos</option>
+          <option value="3">Híbridos</option>
+          <option value="4">Eléctricos</option>
+          <option value="5">Test Drive</option>
+          <option value="6">Deportes</option>
+        </select>
+      </label>
+
+      <h3>Secciones de contenido</h3>
+      <div id="bloques-container">
+        <div class="bloque">
+          <label>Título sección:</label>
+          <input type="text" name="contenido[0][titulo]" required />
+
+          <label>Párrafo 1:</label>
+          <textarea name="contenido[0][parrafo]" required></textarea>
+
+          <label>Párrafo 2:</label>
+          <textarea name="contenido[0][parrafo2]" required></textarea>
+
+          <label>Imagen sección:</label>
+          <input type="text" name="contenido[0][imagen]" required />
+        </div>
+      </div>
+
+      <button type="button" id="agregar-bloque">+ Agregar sección</button>
+      <br /><br />
+      <button type="submit">Crear Nota</button>
+    </form>
+  </section>
+
+  <script type="module">
+    let index = 1;
+    document.getElementById("agregar-bloque").addEventListener("click", () => {
+      const container = document.getElementById("bloques-container");
+      const bloque = document.createElement("div");
+      bloque.classList.add("bloque");
+      bloque.innerHTML = `
+        <label>Título sección:</label>
+        <input type="text" name="contenido[${index}][titulo]" required />
+
+        <label>Párrafo 1:</label>
+        <textarea name="contenido[${index}][parrafo]" required></textarea>
+
+        <label>Párrafo 2:</label>
+        <textarea name="contenido[${index}][parrafo2]" required></textarea>
+
+        <label>Imagen sección:</label>
+        <input type="text" name="contenido[${index}][imagen]" required />
+        <hr />
+      `;
+      container.appendChild(bloque);
+      index++;
+    });
+
+    document
+      .getElementById("nota-form")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = {
+          titulo: formData.get("titulo"),
+          subtitulo: formData.get("subtitulo"),
+          descripcion: formData.get("descripcion"),
+          slug: formData.get("slug"),
+          imagen: formData.get("imagen"),
+          categoria_id: parseInt(formData.get("categoria_id")),
+          contenido: [],
+        };
+
+        for (let i = 0; i < index; i++) {
+          if (formData.get(`contenido[${i}][titulo]`)) {
+            data.contenido.push({
+              titulo: formData.get(`contenido[${i}][titulo]`),
+              parrafo: formData.get(`contenido[${i}][parrafo]`),
+              parrafo2: formData.get(`contenido[${i}][parrafo2]`),
+              imagen: formData.get(`contenido[${i}][imagen]`),
+            });
+          }
+        }
+
+        try {
+          const res = await fetch("/.netlify/functions/nueva-nota", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+
+          if (res.ok) {
+            alert("Nota creada correctamente");
+            e.target.reset();
+          } else {
+            const error = await res.json();
+            alert("Error: " + error.error);
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Error al enviar el formulario");
+        }
+      });
+  </script>
+
+  <style>
+    .form-wrapper {
+      padding: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+      background: #f9f9f9;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    form label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .bloque {
+      border: 1px dashed #aaa;
+      padding: 15px;
+      margin-bottom: 20px;
+      background: #fff;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #005fa3;
+    }
+  </style>
+</Layout>

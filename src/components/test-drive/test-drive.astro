@@ -5,10 +5,14 @@
 <section id="test-drive" class="test-drive-container">
   <div class="central-content">
     <h1>TEST DRIVE videos</h1>
+    <p class="texto-principal">
+      Ponemos a prueba todos los vehiculos, te contamos lo mas relevante de cada
+      una de las marcas
+    </p>
   </div>
   <div class="video video-grande">
     <video controls class="video-element video-grande-element">
-      <source src="../img/ford f-150.mp4" type="video/mp4" />
+      <source src="../img/videos-pruebas/ford f-150.mp4" type="video/mp4" />
       Tu navegador no soporta el elemento de video.
     </video>
     <div class="video-texto">
@@ -19,31 +23,34 @@
   <div class="videos-container">
     <div class="video">
       <video controls class="video-element">
-        <source src="../img/prueba-mazda.mp4" type="video/mp4" />
+        <source src="../img/videos-pruebas/prueba-mazda.mp4" type="video/mp4" />
         Tu navegador no soporta el elemento de video.
       </video>
       <div class="video-texto">
-        <h2>Ford Scape</h2>
+        <h2>Mazda Iconic</h2>
         <p>Conduce con estilo y eficiencia.</p>
       </div>
     </div>
     <div class="video">
       <video controls class="video-element">
-        <source src="../img/ford f-150.mp4" type="video/mp4" />
+        <source
+          src="../img/videos-pruebas/nissan qashqai.mp4"
+          type="video/mp4"
+        />
         Tu navegador no soporta el elemento de video.
       </video>
       <div class="video-texto">
-        <h2>KIA Stonic</h2>
+        <h2>Nissan Qashqai</h2>
         <p>Innovación en cada recorrido descubrelo.</p>
       </div>
     </div>
     <div class="video">
       <video controls class="video-element">
-        <source src="../img/deportivo blanco.mp4" type="video/mp4" />
+        <source src="../img/videos-pruebas/xiaomi YU7.mp4" type="video/mp4" />
         Tu navegador no soporta el elemento de video.
       </video>
       <div class="video-texto">
-        <h2>Volkswagen</h2>
+        <h2>Xiaomi YU7</h2>
         <p>Diseño y tecnología en armonía.</p>
       </div>
     </div>
@@ -59,10 +66,10 @@
     place-items: center;
     grid-template-columns: 1fr;
     gap: 50px;
-    background: linear-gradient(black 30%, #000 70%);
+    background: linear-gradient(to bottom, #000 70%, #fff 30%);
     padding: 20px;
-    text-align: start;
-    text-transform: uppercase;
+    text-align: center;
+
     cursor: pointer;
   }
 
@@ -74,12 +81,12 @@
     overflow: hidden;
     white-space: nowrap;
     font-family: "Georgia", serif;
-    font-size: 36px;
+    font-size: 60px;
     font-weight: bolder;
     color: #e2b009;
     text-transform: uppercase;
     width: 0;
-    padding: 30px;
+    padding: 10px 30px 10px 30px; /* arriba, derecha, abajo, izquierda */
   }
 
   /* animacion titulo */
@@ -98,6 +105,12 @@
     to {
       width: 100%;
     }
+  }
+
+  .central-content .texto-principal {
+    font-size: 28px;
+    color: white;
+    margin-bottom: 20px;
   }
 
   .test-drive-container p {
@@ -159,7 +172,7 @@
   }
 
   .video-texto h2 {
-    font-size: 36px;
+    font-size: 46px;
     margin-bottom: 10px;
     color: black;
     font-weight: 600;
@@ -206,6 +219,10 @@
 
     .test-drive-container h1 {
       font-size: 30px;
+    }
+
+    .central-content .texto-principal {
+      font-size: 23px;
     }
 
     .video {

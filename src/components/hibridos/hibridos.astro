@@ -1,14 +1,22 @@
 <section id="hibridos" class="hibridos-container">
   <div class="central-content">
     <i class="fa-brands fa-megaport icono-central"></i>
-    <h1>Híbridos</h1>
+    <h1>Carros Híbridos</h1>
+    <p class="descripcion-hibridos">
+      Modelos híbridos disponibles en el mercado nacional: consumo,
+      características y detalles técnicos
+    </p>
   </div>
 
   <div class="imagenes-container">
     <!-- Tarjeta 1 -->
     <a href="/notas-hibridos/nota-scape" class="hibrido">
       <div class="imagen-wrapper">
-        <img src="../img/ford-s.jpg" alt="ford-scape" class="hibrido-imagen" />
+        <img
+          src="../img/ford-scape-hibrida/ford-s.jpg"
+          alt="ford-scape"
+          class="hibrido-imagen"
+        />
         <div class="texto-fecha">nota: 13-mar</div>
       </div>
       <div class="hibrido-texto">
@@ -121,6 +129,12 @@
     </a>
   </div>
 </section>
+<div class="ver-mas-container izquierda">
+  <a href="/hibridos-antiguos" class="ver-mas-boton">
+    <i class="fas fa-arrow-right flecha-icono"></i>
+    <span class="texto-hover">Ver más híbridos</span>
+  </a>
+</div>
 
 <!-- CSS -->
 <style>
@@ -149,6 +163,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    font-family: "Georgia", serif;
   }
 
   .central-content {
@@ -158,24 +173,44 @@
   }
 
   .icono-central {
-    font-size: clamp(3rem, 6vw, 4rem);
+    font-size: 80px;
     color: #0af2d7;
-    display: block;
-    margin-bottom: 10px;
-    padding-top: 20px;
+    animation: pulso-electrico 1.5s infinite ease-in-out;
+  }
+
+  /* animacion icono titulo  */
+  @keyframes pulso-electrico {
+    0% {
+      text-shadow:
+        0 0 2px #0af2d7,
+        0 0 4px #0af2d7;
+      transform: scale(1);
+    }
+    50% {
+      text-shadow:
+        0 0 6px #0af2d7,
+        0 0 10px #0af2d7;
+      transform: scale(1.05);
+    }
+    100% {
+      text-shadow:
+        0 0 2px #0af2d7,
+        0 0 4px #0af2d7;
+      transform: scale(1);
+    }
   }
 
   .central-content h1 {
-    font-size: 48px;
+    font-size: 60px;
     color: white;
     text-transform: uppercase;
     font-weight: bold;
-    letter-spacing: 4px;
+    letter-spacing: 6px;
     margin: 0;
     padding: 20px;
-    font-family: "Georgia", serif;
   }
 
+  /* animacion titulo aparezca */
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -185,6 +220,13 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  .descripcion-hibridos {
+    font-size: 1.6rem;
+    color: #cccccc;
+    margin-top: 2px;
+    font-family: "Georgia", serif;
   }
 
   .animate-title {
@@ -268,7 +310,6 @@
     text-transform: uppercase;
     border-bottom: 1px solid #76aea8;
     color: #f6f7f7;
-    font-family: "Georgia", serif;
 
     text-align: start; /* Cambia la alineación a la izquierda */
     position: relative; /* Necesario para el pseudo-elemento ::after */
@@ -298,13 +339,60 @@
     top: 10px;
     right: 10px;
     background-color: #3e3d3dcc;
-    color: #f6f7f7;
+    color: #d2fafa;
     padding: 6px 12px;
-    font-size: 0.6rem;
+    font-size: 0.8rem;
     font-weight: bold;
     border-radius: 10px;
-    text-transform: uppercase;
+    font-family: "Roboto", sans-serif;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     z-index: 10;
+  }
+
+  .ver-mas-boton {
+    margin-left: 35px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background-color: #0af2d7;
+    color: black;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    overflow: hidden;
+    position: relative;
+    width: auto;
+  }
+
+  /* Oculta el texto inicialmente */
+  .ver-mas-boton .texto-hover {
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition:
+      max-width 0.4s ease,
+      opacity 0.4s ease;
+  }
+
+  /* Al hacer hover, muestra el texto */
+  .ver-mas-boton:hover .texto-hover {
+    max-width: 200px;
+    opacity: 1;
+    margin-left: 8px;
+  }
+
+  .flecha-icono {
+    font-size: 1.2rem;
+  }
+
+  .ver-mas-boton:hover .flecha-icono {
+    transform: translateX(4px);
+    transition: transform 0.3s ease;
   }
 
   @media (max-width: 768px) {
@@ -346,12 +434,16 @@
     }
 
     .icono-central {
-      font-size: 3rem;
+      font-size: 4rem;
     }
 
     .central-content h1 {
-      font-size: 32px;
-      letter-spacing: 2px;
+      font-size: 44px;
+      letter-spacing: 4px;
+    }
+
+    .descripcion-hibridos {
+      font-size: 1.2rem;
     }
 
     .hibrido-texto {
@@ -361,7 +453,7 @@
     }
 
     .hibrido-texto h2 {
-      font-size: 22px;
+      font-size: 20px;
       text-align: start;
       background: none;
       margin: 0;
@@ -378,6 +470,10 @@
     .hibrido-imagen {
       width: 100%;
       height: 250px;
+    }
+
+    .ver-mas-boton {
+      margin-left: 10px;
     }
   }
 </style>
