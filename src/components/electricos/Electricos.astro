@@ -106,10 +106,11 @@
     align-items: center;
     background: linear-gradient(to bottom, #000 30%, #fff 40%);
     border-bottom: 20px solid black;
-    padding: 10px;
+    padding: 5px;
     text-align: center;
     width: 100%;
     font-family: "Georgia", serif;
+    padding: 0;
   }
 
   @keyframes fadeInTitle {
@@ -142,6 +143,7 @@
     gap: 0;
     margin: 0;
     padding: 40px 0 0 0;
+    /*background: #4b5563;*/
   }
 
   .central-content h1 {
@@ -169,6 +171,7 @@
     padding: 20px; /* Top reducido, laterales igual, bottom cero */
     font-family: "Georgia", serif;
     margin-top: -10px; /* (Opcional) más pegado aún si lo ves necesario */
+    margin-top: -20px;
   }
 
   .icono-electricos {
@@ -205,13 +208,13 @@
     letter-spacing: 1px;
     text-shadow: 2px 2px 6px rgba(16, 16, 16, 0.2);
     margin-top: 10px;
-    animation: fadeInUp 1s 0.5s both;
+    animation: fadeInUp 1s 0.2s both;
 
     opacity: 0;
     transform: translateY(40px);
     transition:
-      opacity 0.5s ease-in-out,
-      transform 0.5s ease-in-out;
+      opacity 0.2s ease-in-out,
+      transform 0.2s ease-in-out;
   }
 
   .grid-container {
@@ -230,7 +233,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     align-items: stretch;
-    background-color: #0e0e0e;
+    background: #4b5563;
     margin-top: 40px;
     overflow: hidden;
     border-radius: 10px;
@@ -404,19 +407,25 @@
 
     .titulo-electricos {
       font-size: 44px;
-      padding: 0;
+      padding: 10px;
     }
 
     .descripcion-electricos {
+      width: 100%;
+      padding: 0 15px; /* espacio lateral */
+      margin: 10px 0; /* espacio arriba y abajo */
       font-size: 1.2rem;
-      padding: 10px;
-      margin-top: 0; /* Ajusta el margen superior */
-      text-align: center;
+      text-align: start;
+      line-height: 1.5; /* mejor lectura */
+      display: block;
+      box-sizing: border-box;
     }
 
     .icono-electricos i {
       font-size: 40px;
+      padding-top: 30px;
     }
+
     .imagenes-grid {
       grid-template-columns: 1fr;
     }
@@ -439,6 +448,10 @@
       text-align: center;
       width: 100%;
       font-size: 16px;
+    }
+
+    .central-content {
+      padding: 0;
     }
 
     .central-content h1 {
@@ -500,7 +513,7 @@
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             titulo.classList.remove("inicial");
-            titulo.style.animation = "fadeInUp 1s 0.5s both";
+            titulo.style.animation = "fadeInUp 1s 0.2s both";
           } else {
             titulo.classList.add("inicial");
             titulo.style.animation = "none";
@@ -520,7 +533,7 @@
 
     if (isInViewport(seccion)) {
       titulo.classList.remove("inicial");
-      titulo.style.animation = "fadeInUp 1s 0.5s both";
+      titulo.style.animation = "fadeInUp 1s 0.2s both";
     }
   });
 </script>

@@ -156,20 +156,24 @@
 
   .hibridos-container {
     width: 100%;
-    padding: 10px;
-    background: linear-gradient(black 30%, #000 70%);
+
+    background: linear-gradient(rgb(13, 13, 13) 30%, #000 70%);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     font-family: "Georgia", serif;
+    padding: 0;
   }
 
   .central-content {
     text-align: center;
-    padding: 20px;
+    padding: 40px;
     width: 100%;
+
+    gap: 0;
+    margin: 0;
   }
 
   .icono-central {
@@ -202,12 +206,13 @@
 
   .central-content h1 {
     font-size: 60px;
-    color: white;
+    color: rgb(243, 241, 241);
     text-transform: uppercase;
     font-weight: bold;
-    letter-spacing: 6px;
+    letter-spacing: 3px;
     margin: 0;
     padding: 20px;
+    font-family: "Georgia", serif;
   }
 
   /* animacion titulo aparezca */
@@ -224,9 +229,11 @@
 
   .descripcion-hibridos {
     font-size: 1.6rem;
-    color: #cccccc;
+    color: rgb(215, 214, 214);
     margin-top: 2px;
     font-family: "Georgia", serif;
+    font-weight: 500;
+    margin-top: -20px;
   }
 
   .animate-title {
@@ -244,7 +251,7 @@
     gap: 30px;
     max-width: 100%;
     width: 100%;
-    padding: 10px 20px;
+    padding: 30px 30px;
     margin: auto;
   }
 
@@ -366,6 +373,7 @@
     overflow: hidden;
     position: relative;
     width: auto;
+    margin: 20px;
   }
 
   /* Oculta el texto inicialmente */
@@ -435,19 +443,33 @@
 
     .icono-central {
       font-size: 4rem;
+      padding: 20px;
+    }
+
+    .central-content {
+      padding: 0; /* sin padding */
+      text-align: center;
     }
 
     .central-content h1 {
       font-size: 44px;
-      letter-spacing: 4px;
+      letter-spacing: 2px;
     }
 
     .descripcion-hibridos {
+      width: 100%;
+      padding: 0 15px; /* espacio lateral */
+      margin: 10px 0; /* espacio arriba y abajo */
       font-size: 1.2rem;
+      text-align: center;
+      line-height: 1.5; /* mejor lectura */
+      display: block;
+      box-sizing: border-box;
+      background: #0e0d0d;
     }
 
     .hibrido-texto {
-      padding: 10px;
+      padding: 20px;
       gap: 0;
       width: 100%;
     }

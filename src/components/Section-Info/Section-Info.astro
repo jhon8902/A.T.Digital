@@ -28,7 +28,7 @@
             class="w-full h-full object-cover"
           />
           <div class="carousel-caption">
-            Ford Bronco: la última apuesta todo terreno.
+            Ford Bronco: la última apuesta todoterreno.
             <span class="fecha-publicacion">Publicado: 01/07/2025</span>
           </div>
         </a>
@@ -134,10 +134,16 @@
     font-family: "Georgia", serif;
   }
 
+  .section-info {
+    padding: 20px;
+    background: linear-gradient(#dbad06 30%, white 70%);
+    border-bottom: 30px solid white;
+  }
+
   h1 {
     max-width: 100%;
     text-align: center;
-    font-weight: 800;
+    font-weight: 600;
     font-size: 60px;
     color: #111;
     letter-spacing: 1px;
@@ -228,12 +234,6 @@
     margin-top: 6px;
     font-weight: 300;
     letter-spacing: 0.5px;
-  }
-
-  .section-info {
-    padding: 20px;
-    background: linear-gradient(#dbad06 30%, white 70%);
-    border-bottom: 30px solid white;
   }
 
   .sticky-container {
@@ -375,6 +375,7 @@
   @media (max-width: 768px) {
     h1 {
       font-size: 1.8rem;
+      background: linear-gradient(white 30%, white 70%);
     }
 
     .carousel-caption {
@@ -410,7 +411,7 @@
       font-size: 2rem;
       padding-top: 20px;
       letter-spacing: 1px;
-      background-color: #dbad06;
+      background: linear-gradient(white 30%, white 70%);
       position: relative; /* necesario para posicionar el pseudo-elemento */
     }
 
@@ -473,7 +474,7 @@
 
     .section-info {
       padding: 0;
-      background: linear-gradient(#dbad06 30%, #000 70%);
+      background: linear-gradient(white 30%, #000 70%);
       border-bottom: 20px solid black;
     }
 
