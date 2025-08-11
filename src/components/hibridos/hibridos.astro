@@ -130,10 +130,7 @@
   </div>
 </section>
 <div class="ver-mas-container izquierda">
-  <a href="/hibridos-antiguos" class="ver-mas-boton">
-    <i class="fas fa-arrow-right flecha-icono"></i>
-    <span class="texto-hover">Ver más híbridos</span>
-  </a>
+  <a href="/hibridos-antiguos" class="ver-mas-boton">Ver más Modelos</a>
 </div>
 
 <!-- CSS -->
@@ -356,51 +353,33 @@
     z-index: 10;
   }
 
-  .ver-mas-boton {
-    margin-left: 35px;
+  .ver-mas-container {
+    text-align: center; /* Centrar horizontalmente */
+    margin-bottom: 50px; /* Espacio debajo del botón */
+    padding-top: 20px;
+  }
 
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px;
+  .ver-mas-boton {
+    display: inline-block;
+    padding: 10px 60px;
     background-color: #0af2d7;
     color: black;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: bold;
     border-radius: 6px;
     transition: background-color 0.3s ease;
-    overflow: hidden;
-    position: relative;
-    width: auto;
-    margin: 20px;
   }
 
-  /* Oculta el texto inicialmente */
-  .ver-mas-boton .texto-hover {
-    max-width: 0;
-    opacity: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    transition:
-      max-width 0.4s ease,
-      opacity 0.4s ease;
+  /* Efecto hover simple */
+  .ver-mas-boton:hover {
+    background-color: #09d2b9;
   }
 
-  /* Al hacer hover, muestra el texto */
-  .ver-mas-boton:hover .texto-hover {
-    max-width: 200px;
-    opacity: 1;
-    margin-left: 8px;
-  }
-
-  .flecha-icono {
-    font-size: 1.2rem;
-  }
-
-  .ver-mas-boton:hover .flecha-icono {
-    transform: translateX(4px);
-    transition: transform 0.3s ease;
+  /* Ocultar icono y texto-hover original */
+  .flecha-icono,
+  .texto-hover {
+    display: none !important;
   }
 
   @media (max-width: 768px) {
@@ -452,13 +431,15 @@
     }
 
     .central-content h1 {
-      font-size: 44px;
+      font-size: 32px;
       letter-spacing: 2px;
+      text-align: start;
+      padding: 15px;
     }
 
     .descripcion-hibridos {
       width: 100%;
-      padding: 0 15px; /* espacio lateral */
+      padding: 20px 15px; /* espacio lateral */
       margin: 10px 0; /* espacio arriba y abajo */
       font-size: 1.1rem;
       text-align: start;
@@ -495,7 +476,12 @@
     }
 
     .ver-mas-boton {
-      margin-left: 10px;
+      padding: 12px 24px; /* Un poco más de área táctil */
+      font-size: 1.1rem;
+    }
+
+    .ver-mas-container {
+      margin-bottom: 50px; /* Más aire en móviles */
     }
   }
 </style>
