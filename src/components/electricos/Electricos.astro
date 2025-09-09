@@ -104,9 +104,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: linear-gradient(to bottom, #363636 30%, #fff 40%);
+    background: linear-gradient(to bottom, #4b5563 30%, #4b5563 40%);
     border-bottom: 20px solid rgb(250, 250, 250);
-
+    scroll-margin-top: 100px;
     text-align: center;
     width: 100%;
     font-family: "Georgia", serif;
@@ -171,6 +171,7 @@
     font-family: "Georgia", serif;
     margin-top: -10px; /* (Opcional) más pegado aún si lo ves necesario */
     margin-top: -20px;
+    font-weight: 600;
   }
 
   .icono-electricos {
@@ -270,6 +271,7 @@
 
   .texto-destacado p {
     font-size: 24px;
+    font-weight: 600;
     line-height: 1.4;
     margin-bottom: 10px;
     font-family: "Georgia", serif;
@@ -352,7 +354,7 @@
     font-size: 20px;
     padding: 5px;
     padding-top: 10px;
-    font-weight: 400;
+    font-weight: 600;
     color: black;
     text-align: start;
     text-transform: none;
@@ -376,13 +378,13 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    margin: 30px 0 0 0;
+    margin: 30px 0 30px 0;
     padding: 30px;
   }
 
   .ver-mas-modelos-btn {
-    background: #0689ca;
-    color: #fff;
+    background: #097db7;
+    color: white;
     font-size: 22px;
 
     font-weight: 600;
@@ -401,20 +403,19 @@
   @media (max-width: 768px) {
     .electrico-container {
       padding: 0;
-      background: linear-gradient(to bottom, #000 10%, #fff 40%);
     }
 
     .titulo-electricos {
-      font-size: 44px;
-      padding: 10px;
+      font-size: 32px;
+      padding: 5px;
     }
 
     .descripcion-electricos {
       width: 100%;
       padding: 0 15px; /* espacio lateral */
-      margin: 10px 0; /* espacio arriba y abajo */
+      margin: 5px 0; /* espacio arriba y abajo */
       font-size: 1.1rem;
-      text-align: start;
+      text-align: center;
       line-height: 1.5; /* mejor lectura */
       display: block;
       box-sizing: border-box;
@@ -422,7 +423,7 @@
 
     .icono-electricos i {
       font-size: 40px;
-      padding-top: 30px;
+      padding-top: 40px;
     }
 
     .imagenes-grid {
@@ -496,6 +497,16 @@
 
     .imagen-card .texto-f {
       font-size: 12px;
+    }
+
+    .ver-mas-modelos-btn {
+      padding: 12px 22px; /* Un poco más de área táctil */
+      font-size: 1.1rem;
+    }
+
+    .ver-mas-modelos-btn {
+      margin-bottom: 10px; /* Más aire en móviles */
+      padding-top: 10px;
     }
   }
 </style>

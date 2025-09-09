@@ -4,12 +4,13 @@ import noticias from "../../data/noticias.json";
 
 <section id="lanzamientos">
   <div class="noticias-icono">
+    <h1 class="noticias-titulo">Lanzamientos</h1>
     <i class="fa-brands fa-galactic-republic"></i>
   </div>
-  <h1 class="noticias-titulo">Lanzamientos</h1>
+
   <p class="descripcion-lanzamientos">
     Descubre los nuevos modelos que llegan al país: fichas técnicas, imágenes,
-    versiones, precios estimados y nuestras primeras impresiones.
+    versiones y precios estimados.
   </p>
 
   <section class="noticias-container">
@@ -74,9 +75,14 @@ import noticias from "../../data/noticias.json";
 
   html,
   body {
-    background: #000 !important;
+    background: linear-gradient(to bottom, #0b0b0b 70%, #fff 30%) !important;
     color-scheme: dark;
   }
+
+  section {
+    scroll-margin-top: 100px;
+  }
+  /* Contenedor principal */
 
   .noticias-container {
     box-sizing: border-box;
@@ -85,42 +91,54 @@ import noticias from "../../data/noticias.json";
     gap: 10px;
     padding: 40px 10px;
     position: relative;
-    background: linear-gradient(to bottom, #000 50%, #fff 40%);
+    background: white;
+
     font-family: "Georgia", serif;
   }
 
   .noticias-titulo {
     font-size: 60px;
-    color: white;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 4px;
+    letter-spacing: 1px;
     font-weight: bolder;
     font-family: "Georgia", serif;
     padding-top: 20px;
     opacity: 0;
     transform: scale(0.7) translateY(-40px);
-    transition: none;
+
+    /* Gradiente en el texto */
+    background: linear-gradient(90deg, white 10%, white 90%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
   }
 
   .descripcion-lanzamientos {
     font-size: 1.8rem;
     text-align: center;
-    color: white;
+    color: black;
     padding: 20px; /* Top reducido, laterales igual, bottom cero */
     font-family: "Georgia", serif;
     margin-top: -10px; /* (Opcional) más pegado aún si lo ves necesario */
+    background: white;
+    font-weight: 600;
+    text-transform: uppercase;
   }
 
   .noticias-icono {
     text-align: center;
-    margin-top: 5px;
-    padding-top: 30px;
+    margin-top: 0;
+    padding-top: 20px;
+    padding: 40px;
+
+    background: linear-gradient(90deg, #05223b 10%, #063d67 90%);
   }
 
   .noticias-icono i {
-    color: #f8ca26;
-    font-size: 78px;
+    color: #f1bf0b;
+    font-size: 58px;
     animation: girar 2s linear infinite;
   }
 
@@ -154,7 +172,7 @@ import noticias from "../../data/noticias.json";
     height: 100%;
     background: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0) 0%,
+      rgba(207, 1, 1, 0) 0%,
       rgba(255, 255, 255, 0.5) 50%,
       rgba(255, 255, 255, 0) 100%
     );
@@ -178,7 +196,7 @@ import noticias from "../../data/noticias.json";
   .noticia-imagen,
   .noticia-avenger-imagen {
     width: 100%;
-    height: 300px;
+    height: 260px;
     object-fit: cover;
     display: block;
   }
@@ -192,7 +210,7 @@ import noticias from "../../data/noticias.json";
   .noticia-texto-titulo {
     background: black;
 
-    font-size: 26px;
+    font-size: 22px;
     margin-bottom: 12px;
     color: black;
     font-weight: 600;
@@ -209,7 +227,7 @@ import noticias from "../../data/noticias.json";
     line-height: 1.6;
 
     text-transform: none;
-    font-weight: 500;
+    font-weight: 600;
   }
 
   .noticia-fecha {
@@ -249,8 +267,8 @@ import noticias from "../../data/noticias.json";
   }
   .noticia-avenger-texto .noticia-texto-titulo {
     color: black;
-    font-size: 36px;
-    font-weight: bold;
+    font-size: 26px;
+    font-weight: 600;
     background: transparent;
     display: inline-block;
     border-bottom: 4px solid #dbad06;
@@ -266,7 +284,7 @@ import noticias from "../../data/noticias.json";
 
     background: transparent;
 
-    font-weight: 500;
+    font-weight: 600;
   }
 
   .noticia-avenger-imagen {
@@ -346,12 +364,12 @@ import noticias from "../../data/noticias.json";
     grid-column: 1 / -1; /* Hace que ocupe todo el ancho del grid */
     display: flex;
     justify-content: center;
-    margin: 30px 0 40px 0;
+    margin: 50px 0 30px 0;
   }
 
   .ver-mas-noticias-btn {
-    background: #f8ca26;
-    color: #181818;
+    background: #063d67;
+    color: white;
     font-size: 22px;
 
     font-weight: 600;
@@ -364,7 +382,7 @@ import noticias from "../../data/noticias.json";
   }
 
   .ver-mas-noticias-btn:hover {
-    background: #e9c02d;
+    background: #07528b;
   }
 
   /* Responsive */
@@ -377,7 +395,6 @@ import noticias from "../../data/noticias.json";
     .noticias-container {
       grid-template-columns: 1fr;
       padding: 10px;
-      background: linear-gradient(to bottom, #000 20%, #fff 40%);
     }
     .noticia-avenger-container {
       flex-direction: column-reverse;
@@ -406,7 +423,7 @@ import noticias from "../../data/noticias.json";
 
   @media (max-width: 600px) {
     .noticias-titulo {
-      font-size: 36px;
+      font-size: 30px;
       padding: 10px 0;
       letter-spacing: 3px;
     }
@@ -417,20 +434,27 @@ import noticias from "../../data/noticias.json";
     } */
 
     .descripcion-lanzamientos {
-      font-size: 1.2rem;
+      font-size: 1rem;
       padding: 10px;
       margin-top: 0; /* Ajusta el margen superior */
-      text-align: start;
+      text-align: center;
+      background: white;
+      color: black;
+    }
+
+    .noticias-icono {
+      background-color: white;
     }
 
     .noticias-icono i {
-      font-size: 72px;
+      font-size: 52px;
       padding-top: 15px;
+      color: #f1bf0b;
     }
 
     .noticia-imagen {
       width: 100%;
-      height: 250px;
+      height: 220px;
       object-fit: cover;
     }
 
@@ -438,8 +462,8 @@ import noticias from "../../data/noticias.json";
       text-align: start;
     }
     .noticia-avenger-texto .noticia-texto-titulo {
-      font-size: 20px;
-      text-align: start;
+      font-size: 1.2rem;
+      text-align: center;
       margin-left: 0;
       margin-right: 0;
       display: block;
@@ -447,16 +471,24 @@ import noticias from "../../data/noticias.json";
 
     .noticia-avenger-texto .noticia-descripcion {
       color: black;
-      font-size: 20px;
+      font-size: 18px;
 
       background: transparent;
     }
 
+    .noticia-fecha {
+      font-size: 0.6rem;
+    }
+
     .noticia-texto-titulo {
-      font-size: 20px;
-      text-align: start;
+      font-size: 1.2rem;
+      text-align: center;
       font-weight: 600;
       border-bottom: 3px solid #f8ca26;
+    }
+
+    .noticia-descripcion {
+      font-size: 18px;
     }
 
     .ver-mas-noticias-btn {

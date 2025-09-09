@@ -127,7 +127,7 @@
   }
 
   .container {
-    width: 100%; /* Asegura que ocupe todo el ancho */
+    width: 90%; /* Asegura que ocupe todo el ancho */
     max-width: 100%; /* Evita restricciones de ancho */
     margin: 0 auto; /* Centra el contenido */
     padding: 0; /* Elimina padding innecesario */
@@ -136,8 +136,7 @@
 
   .section-info {
     padding: 20px;
-    background: linear-gradient(#dbad06 30%, white 70%);
-    border-bottom: 30px solid white;
+    background: white;
   }
 
   h1 {
@@ -145,17 +144,25 @@
     text-align: center;
     font-weight: 600;
     font-size: 60px;
-    color: #111;
+    color: rgb(20, 20, 20);
     letter-spacing: 1px;
     text-transform: uppercase;
     opacity: 0; /* Empieza invisible */
     font-family: "Georgia", serif;
-    padding: 10px;
+    padding: 5px;
     position: relative;
     transform: translateY(-40px);
     /* Quita la línea de animación aquí */
     /* animation: fadeInTitle 1.2s forwards; */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    background: #dbad06;
+    margin-bottom: 10px;
+
+    /* Gradiente en el texto 
+    background: linear-gradient(90deg, #022038 20%, #705f12 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;*/
   }
 
   @keyframes fadeInTitle {
@@ -175,11 +182,12 @@
   .descripcion-noticias {
     font-size: 2rem;
     text-align: center;
-    color: rgb(43, 43, 43);
+    color: rgb(9, 31, 75);
     padding: 20px;
     font-family: "Georgia", serif;
-    margin-top: -45px;
-    font-weight: 500;
+    margin-top: -25px;
+    font-weight: 600;
+
     opacity: 0;
     transform: translateY(20px);
     animation: fadeIn 1.5s ease-out forwards;
@@ -253,11 +261,11 @@
     transform: translateX(-50%);
     width: 100%;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-    background: rgba(0, 0, 0, 0.6);
+    background: #140e01;
     color: rgb(225, 225, 225);
     font-size: 32px;
     padding: 16px 40px;
-    font-weight: 400;
+    font-weight: 600;
     text-align: center;
 
     z-index: 5;
@@ -357,10 +365,10 @@
     background: #f8ca26;
     color: #181818;
     font-size: 22px;
-
+    margin-bottom: 40px;
     font-weight: 600;
     border: none;
-    border-radius: 8px;
+
     padding: 16px 38px;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -374,8 +382,7 @@
 
   @media (max-width: 768px) {
     h1 {
-      font-size: 1.8rem;
-      background: linear-gradient(white 30%, white 70%);
+      font-size: 1.6rem;
     }
 
     .carousel-caption {
@@ -411,7 +418,7 @@
       font-size: 1.6rem;
       padding-top: 20px;
       letter-spacing: 1px;
-      background: linear-gradient(white 30%, white 70%);
+
       position: relative; /* necesario para posicionar el pseudo-elemento */
     }
 
@@ -424,8 +431,7 @@
     }
 
     p {
-      font-size: 16px;
-      background-color: #e6b814;
+      background-color: none;
     }
 
     .ford,
@@ -438,7 +444,7 @@
 
     .carousel-caption {
       font-size: 1.2rem;
-      padding: 0;
+      padding: 10px;
       text-transform: none;
       top: auto;
     }
@@ -461,8 +467,8 @@
 
     .carousel-control-prev,
     .carousel-control-next {
-      top: 63%;
-      font-size: 28px;
+      top: 48%;
+      font-size: 26px;
       color: white;
       background-color: black;
       text-transform: uppercase;
@@ -474,10 +480,12 @@
       height: 40px;
     }
 
-    .section-info {
-      padding: 0;
-      background: linear-gradient(white 30%, #000 70%);
-      border-bottom: 20px solid black;
+    .carousel-control-prev {
+      left: 30px;
+    }
+
+    .carousel-control-next {
+      right: 30px;
     }
 
     .fecha-publicacion {
@@ -489,9 +497,9 @@
     }
 
     .ver-mas-noticias-btn {
-      font-size: 14px;
+      font-size: 12px;
 
-      padding: 12px 26px;
+      padding: 10px 24px;
     }
   }
 </style>
@@ -500,48 +508,42 @@
   const carousel = document.getElementById("carousel");
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
-  const items = Array.from(carousel.getElementsByClassName("carousel-item"));
-  let currentIndex = 0;
 
-  // Mostrar el item activo y reiniciar animaciones
-  function showItem(index) {
-    items.forEach((item, i) => {
-      item.classList.remove("active");
+  if (carousel && prevBtn && nextBtn) {
+    const items = Array.from(carousel.getElementsByClassName("carousel-item"));
+    let currentIndex = 0;
 
-      // Reiniciar animación de la caption si existe
-      const caption = item.querySelector(".carousel-caption");
-      if (caption) {
-        caption.classList.remove("animate-caption");
-        // Forzamos reflow para reiniciar la animación
-        void caption.offsetWidth;
-        caption.classList.add("animate-caption");
-      }
+    function showItem(index) {
+      items.forEach((item, i) => {
+        item.classList.remove("active");
+        const caption = item.querySelector(".carousel-caption");
+        if (caption) {
+          (caption as HTMLElement).classList.remove("animate-caption");
+          void (caption as HTMLElement).offsetWidth;
+          (caption as HTMLElement).classList.add("animate-caption");
+        }
+        const button = item.querySelector("a");
+        if (button) {
+          (button as HTMLElement).classList.remove("animate-caption");
+          void (button as HTMLElement).offsetWidth;
+          (button as HTMLElement).classList.add("animate-caption");
+        }
+      });
+      items[index].classList.add("active");
+    }
 
-      // También reiniciar animación del botón si existe
-      const button = item.querySelector("a");
-      if (button) {
-        button.classList.remove("animate-caption");
-        void button.offsetWidth;
-        button.classList.add("animate-caption");
-      }
+    prevBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex - 1 + items.length) % items.length;
+      showItem(currentIndex);
     });
 
-    items[index].classList.add("active");
+    nextBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % items.length;
+      showItem(currentIndex);
+    });
+
+    showItem(currentIndex);
   }
-
-  // Navegación
-  prevBtn.addEventListener("click", () => {
-    currentIndex = (currentIndex - 1 + items.length) % items.length;
-    showItem(currentIndex);
-  });
-
-  nextBtn.addEventListener("click", () => {
-    currentIndex = (currentIndex + 1) % items.length;
-    showItem(currentIndex);
-  });
-
-  // Iniciar carrusel
-  showItem(currentIndex);
 </script>
 
 <script>

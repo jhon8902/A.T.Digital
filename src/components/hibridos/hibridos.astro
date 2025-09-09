@@ -151,6 +151,10 @@
     overflow-x: hidden; /* Evita desbordamientos laterales */
   }
 
+  section {
+    scroll-margin-top: 100px;
+  }
+
   .hibridos-container {
     width: 100%;
 
@@ -229,7 +233,7 @@
     color: rgb(215, 214, 214);
     margin-top: 2px;
     font-family: "Georgia", serif;
-    font-weight: 500;
+    font-weight: 600;
     margin-top: -20px;
   }
 
@@ -336,6 +340,7 @@
     color: #cacaca;
     width: 90%;
     padding-top: 15px;
+    font-weight: 600;
   }
 
   .texto-fecha {
@@ -355,20 +360,22 @@
 
   .ver-mas-container {
     text-align: center; /* Centrar horizontalmente */
-    margin-bottom: 50px; /* Espacio debajo del botón */
-    padding-top: 20px;
+    margin-bottom: 10px; /* Espacio debajo del botón */
+    padding: 80px;
   }
 
   .ver-mas-boton {
-    display: inline-block;
-    padding: 10px 60px;
     background-color: #0af2d7;
     color: black;
-    text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
+    font-size: 22px;
+
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 38px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: background 0.2s;
   }
 
   /* Efecto hover simple */
@@ -433,7 +440,7 @@
     .central-content h1 {
       font-size: 32px;
       letter-spacing: 2px;
-      text-align: start;
+
       padding: 15px;
     }
 
@@ -442,11 +449,12 @@
       padding: 20px 15px; /* espacio lateral */
       margin: 10px 0; /* espacio arriba y abajo */
       font-size: 1.1rem;
-      text-align: start;
+      text-align: center;
       line-height: 1.5; /* mejor lectura */
       display: block;
       box-sizing: border-box;
       background: #0e0d0d;
+      margin-top: -25px;
     }
 
     .hibrido-texto {
@@ -481,7 +489,7 @@
     }
 
     .ver-mas-container {
-      margin-bottom: 50px; /* Más aire en móviles */
+      margin-bottom: 20px; /* Más aire en móviles */
     }
   }
 </style>

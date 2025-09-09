@@ -8,6 +8,7 @@
   "subtitulo_nota": "Explora su tecnología avanzada, visión digital y versiones disponibles",
   "imagen": "/img/kia-ev9/kia-ev9-portada.webp",
   "fecha": "2025-07-01",
+   "slug": "noticia-Kia EV-9",
   "contenido": [
     {
       "titulo": "Diseño innovador",
@@ -44,6 +45,7 @@
   "descripcion": "Mazda lanza su nuevo SUV híbrido con tecnología avanzada.",
   "imagen": "/img/mazda-ez6/mazda-ez6-portada.webp",
   "fecha": "2025-06-28",
+  "slug": "noticia-Mazda EZ-6",
   "contenido": [
     {
       "titulo": "Tecnología híbrida",
@@ -73,6 +75,7 @@
   "descripcion": "El híbrido más popular de Toyota renueva su diseño y eficiencia.",
   "imagen": "/img/toyota-prado/toyota-prado-copia.jpg",
   "fecha": "2025-06-20",
+  "slug": "noticia-Toyota prado",
   "contenido": [
     {
       "titulo": "Diseño robusto",
@@ -102,6 +105,7 @@
   "descripcion": "La versión eléctrica de la icónica pickup de Ford. ¡Conócela!",
   "imagen": "/img/ford-f150/ford-f150-3.jpg",
   "fecha": "2025-05-15",
+  "slug": "noticia-Ford F-150",
   "contenido": [
     {
       "titulo": "Potencia eléctrica",
@@ -131,6 +135,7 @@
   "descripcion": "Potencia eléctrica y agilidad urbana en un SUV compacto.",
   "imagen": "/img/jeep-avenger/jepp-avenger-subportada.webp",
   "fecha": "2025-06-10",
+  "slug": "noticia-Jeep Avenger",
   "contenido": [
     {
       "titulo": "Diseño compacto y moderno",
