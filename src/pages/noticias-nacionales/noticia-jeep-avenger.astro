@@ -1,57 +1,75 @@
 ---
-// filepath: c:\Users\pc\Downloads\A.T.Digital\src\pages\noticias-nacionales\noticia-kia-ev9.astro
 import Layout from "../../layouts/Layout.astro";
-import noticiaData from "../../data/noticias.json";
-
-const noticia = noticiaData.find((item) => item.id === 5);
 ---
 
-{
-  noticia ? (
-    <Layout title={noticia.titulo} bodyClass="otras-page">
-      <section class="noticia-detalle">
-        <!-- Descripción de la noticia -->
-        <p class="noticia-descripcion">{noticia.descripcion}</p>
+<Layout title="JEEP AVENGER" bodyClass="otras-page">
+  <section class="noticia-detalle">
+    <p class="noticia-descripcion">
+      ¿Sabías que el Jeep Avenger fue el primer modelo 100% eléctrico de la
+      marca lanzado en Europa, ganando el premio 'Car of the Year 2023'?
+    </p>
 
-        <!-- Imagen de portada -->
+    <img
+      src="/img/jeep-avenger/jeep-avenger-portada.webp"
+      alt="Portada de la noticia: JEEP AVENGER"
+      class="noticia-portada"
+    />
+
+    <h1>JEEP AVENGER</h1>
+
+    <article>
+      <div class="noticia-bloque noticia-imagen-izquierda">
+        <div class="noticia-texto">
+          <h3 class="noticia-titulo">Electrificación urbana</h3>
+          <p class="noticia-parrafo">
+            El Jeep Avenger es un SUV compacto 100% eléctrico con
+            aproximadamente 156 hp y 260 Nm de torque, diseñado para eficiencia
+            urbana.
+          </p>
+          <p class="noticia-parrafo">
+            Su autonomía ronda los 400 km y soporta carga rápida, ideal para el
+            día a día en la ciudad.
+          </p>
+        </div>
         <img
-          src={noticia.imagen}
-          alt={`Portada de la noticia: ${noticia.titulo}`}
-          class="noticia-portada"
+          src="/img/jeep-avenger/jeep-avenger.interior.jpg"
+          alt="Exterior Jeep Avenger"
+          class="noticia-imagen"
         />
+      </div>
 
-        <!-- Título principal -->
-        <h1>{noticia.titulo}</h1>
+      <div class="noticia-bloque noticia-imagen-derecha">
+        <div class="noticia-texto">
+          <h3 class="noticia-titulo">Confort y diseño</h3>
+          <p class="noticia-parrafo">
+            A pesar de ser compacto, ofrece un interior bien distribuido, buena
+            pantalla de info-entretenimiento y asistencias al conductor.
+          </p>
+          <p class="noticia-parrafo">
+            Su tamaño lo hace ideal para movilidad eléctrica práctica, con
+            espacio para pasajeros y estilo moderno.
+          </p>
+        </div>
+        <img
+          src="/img/jeep-avenger/jepp-avenger-trasero.webp"
+          alt="Interior Jeep Avenger"
+          class="noticia-imagen"
+        />
+      </div>
 
-        <!-- Contenido de la noticia -->
-        <article>
-          {noticia.contenido ? (
-            noticia.contenido.map((seccion, index) => (
-              <div
-                class={`noticia-bloque ${index % 2 === 0 ? "noticia-imagen-izquierda" : "noticia-imagen-derecha"}`}
-              >
-                <div class="noticia-texto">
-                  <h3 class="noticia-titulo">{seccion.titulo}</h3>
-                  <p class="noticia-parrafo">{seccion.parrafo}</p>
-                  <p class="noticia-parrafo">{seccion.parrafo2}</p>
-                </div>
-                <img
-                  src={seccion.imagen}
-                  alt={`Imagen relacionada: ${seccion.titulo}`}
-                  class="noticia-imagen"
-                />
-              </div>
-            ))
-          ) : (
-            <p>Contenido no disponible</p>
-          )}
-        </article>
+      <section class="ficha-tecnica">
+        <h2>Ficha Técnica</h2>
+        <ul>
+          <li>⚡ Autonomía: ~400 km</li>
+          <li>🔋 Batería: 54 kWh</li>
+          <li>💪 Potencia: 156 hp</li>
+          <li>🚙 Tracción: delantera</li>
+          <li>🏆 Car of the Year 2023 en Europa</li>
+        </ul>
       </section>
-    </Layout>
-  ) : (
-    <p>Noticia no encontrada</p>
-  )
-}
+    </article>
+  </section>
+</Layout>
 
 <style>
   /* Estilos principales */
@@ -63,7 +81,7 @@ const noticia = noticiaData.find((item) => item.id === 5);
     background: white;
   }
 
-   /* Título subtitulo kia ev9 */
+  /* Título subtitulo kia ev9 */
   .noticia-detalle h1 {
     font-size: 45px;
     text-align: center;
@@ -76,36 +94,34 @@ const noticia = noticiaData.find((item) => item.id === 5);
     padding: 15px;
     font-family: "Georgia", serif;
   }
- 
 
-/* Título principal */
-.noticia-descripcion {
-  font-size: 48px;
-  font-weight: bolder;
-  text-align: center;
-  padding: 30px;
-  text-transform: none;
-  font-family: "Georgia", serif;
+  /* Título principal */
+  .noticia-descripcion {
+    font-size: 48px;
+    font-weight: bolder;
+    text-align: center;
+    padding: 30px;
+    text-transform: none;
+    font-family: "Georgia", serif;
 
-  /* Animación */
-  opacity: 0;
-  animation: fadeSlideIn 1s ease-out forwards;
-  animation-delay: 0.3s; /* leve retraso opcional */
-}
-
-/* animacion titulo descripcion */
-
- @keyframes fadeSlideIn {
-  from {
+    /* Animación */
     opacity: 0;
-    transform: translateY(20px); /* empieza un poco abajo */
+    animation: fadeSlideIn 1s ease-out forwards;
+    animation-delay: 0.3s; /* leve retraso opcional */
   }
-  to {
-    opacity: 1;
-    transform: translateY(0); /* termina en su lugar */
-  }
-}
 
+  /* animacion titulo descripcion */
+
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px); /* empieza un poco abajo */
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0); /* termina en su lugar */
+    }
+  }
 
   .noticia-portada {
     width: 100%;
@@ -148,7 +164,6 @@ const noticia = noticiaData.find((item) => item.id === 5);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
   }
 
   .noticia-titulo {
@@ -160,17 +175,15 @@ const noticia = noticiaData.find((item) => item.id === 5);
     font-family: "Georgia", serif;
   }
 
-  .noticia-bloque .noticia-parrafo  {
-   font-size: 20px;
+  .noticia-bloque .noticia-parrafo {
+    font-size: 20px;
     text-align: start;
     color: #333;
-   
+
     font-family: "Poppins", sans-serif;
     margin-bottom: 15px; /* Agrega espacio entre los párrafos */
     line-height: 1.6; /* Mejora la legibilidad del texto */
   }
-
- 
 
   .noticia-imagen-izquierda {
     flex-direction: row;
@@ -178,6 +191,43 @@ const noticia = noticiaData.find((item) => item.id === 5);
 
   .noticia-imagen-derecha {
     flex-direction: row-reverse;
+  }
+
+  .ficha-tecnica {
+    background: #f7f7f7;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 30px auto;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: "Poppins", sans-serif;
+  }
+
+  .ficha-tecnica h2 {
+    font-size: 30px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #333;
+    font-weight: 600;
+    font-family: "Georgia", serif;
+  }
+
+  .ficha-tecnica ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  .ficha-tecnica li {
+    font-size: 20px;
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   }
 
   @media (max-width: 768px) {
@@ -190,9 +240,6 @@ const noticia = noticiaData.find((item) => item.id === 5);
       background: none;
       color: black;
       text-shadow: none;
-     
-      
-       
     }
 
     .noticia-bloque img {

@@ -1,51 +1,78 @@
 ---
-// src/pages/noticias-nacionales/noticia-mazda-ez-6.astro
 import Layout from "../../layouts/Layout.astro";
-import noticiaData from "../../data/noticias.json";
-const noticia = noticiaData.find((item) => item.id === 4);
 ---
 
-{
-  noticia ? (
-    <Layout title={noticia.titulo} bodyClass="otras-page">
-      <section class="noticia-detalle">
-        <p class="noticia-descripcion">{noticia.descripcion}</p>
+<Layout title="MAZDA EZ-6" bodyClass="otras-page">
+  <section class="noticia-detalle">
+    <p class="noticia-descripcion">
+      ‘Skyactiv’ Tecnología que optimiza el rendimiento y la eficiencia del
+      motor híbrido, Mazda fue pionera en el uso del motor rotativo.
+    </p>
 
+    <img
+      src="/img/mazda-ez6/mazda-ez6-portada.webp"
+      alt="Portada de la noticia: MAZDA EZ-6"
+      class="noticia-portada"
+    />
+
+    <h1>MAZDA EZ-6</h1>
+
+    <article>
+      <div class="noticia-bloque noticia-imagen-izquierda">
+        <div class="noticia-texto">
+          <h3 class="noticia-titulo">Variedades de motorización</h3>
+          <p class="noticia-parrafo">
+            El Mazda EZ-6 está disponible tanto en versión completamente
+            eléctrica (EV) como en modalidad de rango extendido (EREV), lo que
+            le permite ofrecer distintas opciones.
+          </p>
+          <p class="noticia-parrafo">
+            En su versión EV, entrega unos 190 kW (~258 hp), con una batería de
+            68.8 kWh que le permite una autonomía estimada de alrededor de 600
+            km bajo ciclo CLTC.
+          </p>
+        </div>
         <img
-          src={noticia.imagen}
-          alt={noticia.titulo}
-          class="noticia-portada"
+          src="/img/mazda-ez6/mazda-ez6-carga.webp"
+          alt="Mazda EZ-6 exterior"
+          class="noticia-imagen"
         />
-        <h1>{noticia.titulo}</h1>
-        <article>
-          {noticia.contenido ? (
-            noticia.contenido.map((seccion, index) => (
-              // div para las imagenes posicionadas derecha y izquierda
-              <div
-                class={`noticia-bloque ${index % 2 === 0 ? "noticia-imagen-izquierda" : "noticia-imagen-derecha"}`}
-              >
-                <div class="noticia-texto">
-                  <h3 class="noticia-titulo">{seccion.titulo}</h3>
-                  <p class="noticia-parrafo">{seccion.parrafo}</p>
-                  <p class="noticia-parrafo">{seccion.parrafo2}</p>
-                </div>
-                <img
-                  src={seccion.imagen}
-                  alt={noticia.titulo}
-                  class="noticia-imagen"
-                />
-              </div>
-            ))
-          ) : (
-            <p>Contenido no disponible</p>
-          )}
-        </article>
+      </div>
+
+      <div class="noticia-bloque noticia-imagen-derecha">
+        <div class="noticia-texto">
+          <h3 class="noticia-titulo">Diseño y equipamiento</h3>
+          <p class="noticia-parrafo">
+            El EZ-6 adopta el lenguaje de diseño Kodo de Mazda, con líneas
+            limpias, gran pantalla central, interiores modernos y materiales de
+            calidad.
+          </p>
+          <p class="noticia-parrafo">
+            Destaca también por su distribución de peso cercana al 50-50 en
+            algunas versiones, lo que mejora la estabilidad y dinamismo en la
+            conducción.
+          </p>
+        </div>
+        <img
+          src="/img/mazda-ez6/mazda-ez6-cola.webp"
+          alt="Mazda EZ-6 tecnología"
+          class="noticia-imagen"
+        />
+      </div>
+
+      <section class="ficha-tecnica">
+        <h2>Ficha Técnica</h2>
+        <ul>
+          <li>⚡ Autonomía: hasta 600 km (EV)</li>
+          <li>🔋 Batería: 68,8 kWh</li>
+          <li>💪 Potencia: 258 hp (EV)</li>
+          <li>🔌 También disponible en versión EREV</li>
+          <li>⚖️ Distribución de peso 50/50</li>
+        </ul>
       </section>
-    </Layout>
-  ) : (
-    <p>Noticia no encontrada</p>
-  )
-}
+    </article>
+  </section>
+</Layout>
 
 <style>
   /* Estilos principales */
@@ -164,6 +191,43 @@ const noticia = noticiaData.find((item) => item.id === 4);
 
   .noticia-imagen-derecha {
     flex-direction: row-reverse;
+  }
+
+  .ficha-tecnica {
+    background: #f7f7f7;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 30px auto;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: "Poppins", sans-serif;
+  }
+
+  .ficha-tecnica h2 {
+    font-size: 30px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #333;
+    font-weight: 600;
+    font-family: "Georgia", serif;
+  }
+
+  .ficha-tecnica ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  .ficha-tecnica li {
+    font-size: 20px;
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   }
 
   @media (max-width: 768px) {

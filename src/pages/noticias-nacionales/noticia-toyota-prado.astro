@@ -1,50 +1,78 @@
 ---
-// src/pages/noticias-nacionales/noticia-mazda-ez-6.astro
 import Layout from "../../layouts/Layout.astro";
-import noticiaData from "../../data/noticias.json";
-const noticia = noticiaData.find((item) => item.id === 3);
 ---
 
-{
-  noticia ? (
-    <Layout title={noticia.titulo} bodyClass="otras-page">
-      <section class="noticia-detalle">
-        <p class="noticia-descripcion">{noticia.descripcion}</p>
+<Layout title="TOYOTA PRADO" bodyClass="otras-page">
+  <section class="noticia-detalle">
+    <p class="noticia-descripcion">
+      La Toyota Prado es famosa por su durabilidad en algunos países, es el
+      vehículo preferido para condiciones extremas.
+    </p>
 
+    <img
+      src="/img/toyota-prado/toyota-prado-copia1.jpg"
+      alt="Portada de la noticia: TOYOTA PRADO"
+      class="noticia-portada"
+    />
+
+    <h1>TOYOTA PRADO</h1>
+
+    <article>
+      <div class="noticia-bloque noticia-imagen-izquierda">
+        <div class="noticia-texto">
+          <h3 class="noticia-titulo">Durabilidad y capacidad off-road</h3>
+          <p class="noticia-parrafo">
+            El Toyota Prado ha construido su reputación como un SUV fiable en
+            entornos extremos gracias a su chasis robusto y capacidades de
+            remolque destacadas.
+          </p>
+          <p class="noticia-parrafo">
+            Además, combina buena ingeniería, materiales duraderos y
+            mantenimiento sencillo, lo que le otorga una vida útil larga incluso
+            en condiciones adversas.
+          </p>
+        </div>
         <img
-          src={noticia.imagen}
-          alt={noticia.titulo}
-          class="noticia-portada"
+          src="/img/toyota-prado/toyota-prado-copia2.jpg"
+          alt="Toyota Prado en ruta"
+          class="noticia-imagen"
         />
-        <h1>{noticia.titulo}</h1>
-        <article>
-          {noticia.contenido ? (
-            noticia.contenido.map((seccion, index) => (
-              <div
-                class={`noticia-bloque ${index % 2 === 0 ? "noticia-imagen-izquierda" : "noticia-imagen-derecha"}`}
-              >
-                <div class="noticia-texto">
-                  <h3 class="noticia-titulo">{seccion.titulo}</h3>
-                  <p class="noticia-parrafo">{seccion.parrafo}</p>
-                  <p class="noticia-parrafo">{seccion.parrafo2}</p>
-                </div>
-                <img
-                  src={seccion.imagen}
-                  alt={noticia.titulo}
-                  class="noticia-imagen"
-                />
-              </div>
-            ))
-          ) : (
-            <p>Contenido no disponible</p>
-          )}
-        </article>
+      </div>
+
+      <div class="noticia-bloque noticia-imagen-derecha">
+        <div class="noticia-texto">
+          <h3 class="noticia-titulo">Tecnología y confort</h3>
+          <p class="noticia-parrafo">
+            En su última generación, el Prado incorpora asistencia de
+            conducción, interiores más refinados y mejoras en confort para
+            viajes largos.
+          </p>
+          <p class="noticia-parrafo">
+            Aunque su fama es la de vehículo rudo, también ofrece comodidad para
+            pasajeros y buena experiencia tanto en ciudad como en terrenos
+            complicados.
+          </p>
+        </div>
+        <img
+          src="/img/toyota-prado/toyota-prado-copia3.jpg"
+          alt="Interior Toyota Prado"
+          class="noticia-imagen"
+        />
+      </div>
+
+      <section class="ficha-tecnica">
+        <h2>Ficha Técnica</h2>
+        <ul>
+          <li>⛽ Motores: gasolina y diésel</li>
+          <li>⚙️ Caja: automática de 8 marchas</li>
+          <li>🚙 Tracción: 4x4 permanente</li>
+          <li>🛞 Capacidad off-road: bloqueo diferencial, modos de terreno</li>
+          <li>🪑 Espacio: hasta 7 plazas</li>
+        </ul>
       </section>
-    </Layout>
-  ) : (
-    <p>Noticia no encontrada</p>
-  )
-}
+    </article>
+  </section>
+</Layout>
 
 <style>
   /* Estilos principales */
@@ -163,6 +191,43 @@ const noticia = noticiaData.find((item) => item.id === 3);
 
   .noticia-imagen-derecha {
     flex-direction: row-reverse;
+  }
+
+  .ficha-tecnica {
+    background: #f7f7f7;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 30px auto;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: "Poppins", sans-serif;
+  }
+
+  .ficha-tecnica h2 {
+    font-size: 30px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #333;
+    font-weight: 600;
+    font-family: "Georgia", serif;
+  }
+
+  .ficha-tecnica ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  .ficha-tecnica li {
+    font-size: 20px;
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   }
 
   @media (max-width: 768px) {

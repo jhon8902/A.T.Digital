@@ -1,5 +1,5 @@
 ---
-import noticias from "../../data/noticias.json";
+
 ---
 
 <section id="lanzamientos">
@@ -14,54 +14,103 @@ import noticias from "../../data/noticias.json";
   </p>
 
   <section class="noticias-container">
-    {/* Renderiza primero la noticia de Avenger */}
+    <!-- Jeep Avenger (destacada) -->
     <a
-      href={noticias[noticias.length - 1].link}
+      href="./noticias-nacionales/noticia-jeep-avenger"
       class="noticia-avenger-container"
-      style="text-decoration: none;"
     >
       <div class="noticia-avenger-texto">
-        <h3 class="noticia-texto-titulo">
-          {noticias[noticias.length - 1].titulo}
-        </h3>
+        <h3 class="noticia-texto-titulo">JEEP AVENGER</h3>
         <p class="noticia-descripcion">
-          {noticias[noticias.length - 1].resumen}
+          ¿Sabías que el Jeep Avenger fue el primer modelo 100% eléctrico de la
+          marca lanzado en Europa, ganando el premio 'Car of the Year 2023'?
         </p>
-        <span class="noticia-fecha">
-          Publicado: {noticias[noticias.length - 1].fecha}
-        </span>
+        <span class="noticia-fecha">Publicado: 2025-08-05</span>
       </div>
       <img
-        src={noticias[noticias.length - 1].imagen}
-        alt={noticias[noticias.length - 1].titulo}
+        src="/img/jeep-avenger/jeep-avenger-portada.webp"
+        alt="JEEP AVENGER"
         class="noticia-avenger-imagen"
       />
     </a>
 
-    {/* Renderiza las otras noticias */}
-    {
-      noticias.slice(0, noticias.length - 1).map((noticia) => (
-        <a
-          href={noticia.link}
-          class="noticia-container"
-          style="text-decoration: none;"
-        >
-          <div class="noticia-imagen-wrapper">
-            <img
-              src={noticia.imagen}
-              alt={noticia.titulo}
-              class="noticia-imagen"
-            />
-          </div>
-          <div class="noticia-texto">
-            <h3 class="noticia-texto-titulo">{noticia.titulo}</h3>
-            <p class="noticia-descripcion">{noticia.resumen}</p>
-            <span class="noticia-fecha">Publicado: {noticia.fecha}</span>
-          </div>
-        </a>
-      ))
-    }
+    <!-- Otras noticias -->
+    <a href="./noticias-nacionales/noticia-kia-ev9" class="noticia-container">
+      <div class="noticia-imagen-wrapper">
+        <img
+          src="/img/kia-ev9/kia-ev9-portada.webp"
+          alt="KIA EV-9"
+          class="noticia-imagen"
+        />
+      </div>
+      <div class="noticia-texto">
+        <h3 class="noticia-texto-titulo">KIA EV-9</h3>
+        <p class="noticia-descripcion">
+          El KIA EV9 es uno de los primeros SUV eléctricos en el mundo que puede
+          recibir actualizaciones de software a distancia.
+        </p>
+        <span class="noticia-fecha">Publicado: 2025-08-01</span>
+      </div>
+    </a>
 
+    <a href="./noticias-nacionales/noticia-mazda-ez6" class="noticia-container">
+      <div class="noticia-imagen-wrapper">
+        <img
+          src="/img/mazda-ez6/mazda-ez6-portada.webp"
+          alt="MAZDA EZ-6"
+          class="noticia-imagen"
+        />
+      </div>
+      <div class="noticia-texto">
+        <h3 class="noticia-texto-titulo">MAZDA EZ-6</h3>
+        <p class="noticia-descripcion">
+          ‘Skyactiv’ Tecnología que optimiza el rendimiento y la eficiencia del
+          motor híbrido, Mazda fue pionera en el uso del motor rotativo.
+        </p>
+        <span class="noticia-fecha">Publicado: 2025-08-02</span>
+      </div>
+    </a>
+
+    <a
+      href="./noticias-nacionales/noticia-toyota-prado"
+      class="noticia-container"
+    >
+      <div class="noticia-imagen-wrapper">
+        <img
+          src="/img/toyota-prado/toyota-prado-copia.jpg"
+          alt="TOYOTA PRADO"
+          class="noticia-imagen"
+        />
+      </div>
+      <div class="noticia-texto">
+        <h3 class="noticia-texto-titulo">TOYOTA PRADO</h3>
+        <p class="noticia-descripcion">
+          La Toyota Prado es famosa por su durabilidad en algunos países, es el
+          vehículo preferido para condiciones extremas.
+        </p>
+        <span class="noticia-fecha">Publicado: 2025-08-03</span>
+      </div>
+    </a>
+
+    <a href="./noticias-nacionales/noticia-ford-f150" class="noticia-container">
+      <div class="noticia-imagen-wrapper">
+        <img
+          src="/img/ford-f150/ford-f150-2.jpg"
+          alt="FORD F-150"
+          class="noticia-imagen"
+        />
+      </div>
+      <div class="noticia-texto">
+        <h3 class="noticia-texto-titulo">FORD F-150</h3>
+        <p class="noticia-descripcion">
+          La Ford F-150 Lightning puede alimentar una casa entera durante un
+          corte de energía gracias a su batería de alta capacidad.
+        </p>
+        <span class="noticia-fecha">Publicado: 2025-08-04</span>
+      </div>
+    </a>
+
+    <!-- Botón -->
     <div class="ver-mas-noticias-container">
       <button class="ver-mas-noticias-btn">Ver más lanzamientos</button>
     </div>

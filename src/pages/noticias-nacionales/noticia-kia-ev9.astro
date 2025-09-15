@@ -1,57 +1,77 @@
 ---
-// filepath: c:\Users\pc\Downloads\A.T.Digital\src\pages\noticias-nacionales\noticia-kia-ev9.astro
 import Layout from "../../layouts/Layout.astro";
-import noticiaData from "../../data/noticias.json";
-
-const noticia = noticiaData.find((item) => item.id === 1);
 ---
 
-{
-  noticia ? (
-    <Layout title={noticia.titulo} bodyClass="otras-page">
-      <section class="noticia-detalle">
-        <!-- Descripción de la noticia -->
-        <p class="noticia-descripcion">{noticia.descripcion}</p>
+<Layout title="KIA EV-9" bodyClass="otras-page">
+  <section class="noticia-detalle">
+    <p class="noticia-descripcion">
+      El KIA EV9 es uno de los primeros SUV eléctricos en el mundo que puede
+      recibir actualizaciones de software a distancia.
+    </p>
 
-        <!-- Imagen de portada -->
+    <img
+      src="/img/kia-ev9/kia-ev9-diseño.webp"
+      alt="Portada de la noticia: KIA EV9"
+      class="noticia-portada"
+    />
+
+    <h1>KIA EV-9</h1>
+
+    <article>
+      <div class="noticia-bloque noticia-imagen-izquierda">
+        <div class="noticia-texto">
+          <h3 class="noticia-titulo">Potencia y autonomía destacadas</h3>
+          <p class="noticia-parrafo">
+            El KIA EV-9 ofrece versiones con tracción trasera o doble motor
+            (AWD) que entregan hasta ~379 hp en sus versiones más potentes, lo
+            que permite una aceleración destacable para su tamaño.
+          </p>
+          <p class="noticia-parrafo">
+            En cuanto a autonomía, dependiendo de la batería instalada, puede
+            alcanzar unos 435 km reales en su versión AWD con batería de ~96 kWh
+            utilizables.
+          </p>
+        </div>
         <img
-          src={noticia.imagen}
-          alt={`Portada de la noticia: ${noticia.titulo}`}
-          class="noticia-portada"
+          src="/img/kia-ev9/kia-ev9-motor.webp"
+          alt="Interior del KIA EV-9"
+          class="noticia-imagen"
         />
+      </div>
 
-        <!-- Título principal -->
-        <h1>{noticia.titulo}</h1>
-
-        <!-- Contenido de la noticia -->
-        <article>
-          {noticia.contenido ? (
-            noticia.contenido.map((seccion, index) => (
-              <div
-                class={`noticia-bloque ${index % 2 === 0 ? "noticia-imagen-izquierda" : "noticia-imagen-derecha"}`}
-              >
-                <div class="noticia-texto">
-                  <h3 class="noticia-titulo">{seccion.titulo}</h3>
-                  <p class="noticia-parrafo">{seccion.parrafo}</p>
-                  <p class="noticia-parrafo">{seccion.parrafo2}</p>
-                </div>
-                <img
-                  src={seccion.imagen}
-                  alt={`Imagen relacionada: ${seccion.titulo}`}
-                  class="noticia-imagen"
-                />
-              </div>
-            ))
-          ) : (
-            <p>Contenido no disponible</p>
-          )}
-        </article>
+      <div class="noticia-bloque noticia-imagen-derecha">
+        <div class="noticia-texto">
+          <h3 class="noticia-titulo">Tecnología y comodidad</h3>
+          <p class="noticia-parrafo">
+            Incorpora un sistema de pantallas panorámicas, iluminación
+            ambiental, modos de conducción variados, y funciones de confort como
+            los asientos tipo “relaxation”.
+          </p>
+          <p class="noticia-parrafo">
+            Diseño interior espacioso para varias filas, buena visibilidad y
+            materiales de alta calidad, lo que lo convierte en una opción
+            atractiva para quienes buscan un SUV grande eléctrico.
+          </p>
+        </div>
+        <img
+          src="/img/kia-ev9/kia-ev9-autonomia.webp"
+          alt="Tecnología del KIA EV-9"
+          class="noticia-imagen"
+        />
+      </div>
+      <section class="ficha-tecnica">
+        <h2>Ficha Técnica</h2>
+        <ul>
+          <li>⚡ Autonomía: ~435 km</li>
+          <li>🔋 Batería: 96 kWh</li>
+          <li>⏱ 0-100 km/h: ~5,2 s</li>
+          <li>🚙 Tracción: AWD o RWD</li>
+          <li>💪 Potencia: hasta 379 hp</li>
+        </ul>
       </section>
-    </Layout>
-  ) : (
-    <p>Noticia no encontrada</p>
-  )
-}
+    </article>
+  </section>
+</Layout>
 
 <style>
   /* Estilos principales */
@@ -63,7 +83,7 @@ const noticia = noticiaData.find((item) => item.id === 1);
     background: white;
   }
 
-   /* Título subtitulo kia ev9 */
+  /* Título subtitulo kia ev9 */
   .noticia-detalle h1 {
     font-size: 45px;
     text-align: center;
@@ -76,36 +96,34 @@ const noticia = noticiaData.find((item) => item.id === 1);
     padding: 15px;
     font-family: "Georgia", serif;
   }
- 
 
-/* Título principal */
-.noticia-descripcion {
-  font-size: 48px;
-  font-weight: bolder;
-  text-align: center;
-  padding: 30px;
-  text-transform: none;
-  font-family: "Georgia", serif;
+  /* Título principal */
+  .noticia-descripcion {
+    font-size: 48px;
+    font-weight: bolder;
+    text-align: center;
+    padding: 30px;
+    text-transform: none;
+    font-family: "Georgia", serif;
 
-  /* Animación */
-  opacity: 0;
-  animation: fadeSlideIn 1s ease-out forwards;
-  animation-delay: 0.3s; /* leve retraso opcional */
-}
-
-/* animacion titulo descripcion */
-
- @keyframes fadeSlideIn {
-  from {
+    /* Animación */
     opacity: 0;
-    transform: translateY(20px); /* empieza un poco abajo */
+    animation: fadeSlideIn 1s ease-out forwards;
+    animation-delay: 0.3s; /* leve retraso opcional */
   }
-  to {
-    opacity: 1;
-    transform: translateY(0); /* termina en su lugar */
-  }
-}
 
+  /* animacion titulo descripcion */
+
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px); /* empieza un poco abajo */
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0); /* termina en su lugar */
+    }
+  }
 
   .noticia-portada {
     width: 100%;
@@ -148,7 +166,6 @@ const noticia = noticiaData.find((item) => item.id === 1);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
   }
 
   .noticia-titulo {
@@ -160,17 +177,15 @@ const noticia = noticiaData.find((item) => item.id === 1);
     font-family: "Georgia", serif;
   }
 
-  .noticia-bloque .noticia-parrafo  {
-   font-size: 20px;
+  .noticia-bloque .noticia-parrafo {
+    font-size: 20px;
     text-align: start;
     color: #333;
-   
+
     font-family: "Poppins", sans-serif;
     margin-bottom: 15px; /* Agrega espacio entre los párrafos */
     line-height: 1.6; /* Mejora la legibilidad del texto */
   }
-
- 
 
   .noticia-imagen-izquierda {
     flex-direction: row;
@@ -178,6 +193,43 @@ const noticia = noticiaData.find((item) => item.id === 1);
 
   .noticia-imagen-derecha {
     flex-direction: row-reverse;
+  }
+
+  .ficha-tecnica {
+    background: #f7f7f7;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 30px auto;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: "Poppins", sans-serif;
+  }
+
+  .ficha-tecnica h2 {
+    font-size: 30px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #333;
+    font-weight: 600;
+    font-family: "Georgia", serif;
+  }
+
+  .ficha-tecnica ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  .ficha-tecnica li {
+    font-size: 20px;
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   }
 
   @media (max-width: 768px) {
@@ -190,9 +242,6 @@ const noticia = noticiaData.find((item) => item.id === 1);
       background: none;
       color: black;
       text-shadow: none;
-     
-      
-       
     }
 
     .noticia-bloque img {
