@@ -1,3 +1,90 @@
+---
+let dynamicHibridos: any[] = [];
+
+// Traemos dinámicas desde Netlify
+try {
+  const res = await fetch("http://localhost:8888/.netlify/functions/get-notes");
+  if (res.ok) {
+    const data = await res.json();
+
+    // Filtramos solo los que son de categoría "hibridos"
+    dynamicHibridos = data
+      .filter((note: any) => note.category?.toLowerCase() === "hibridos")
+      .map((note: any) => ({
+        href: `/notas/${note.id}`,
+        img: note.image1 || "/img/default.jpg",
+        alt: note.title,
+        title: note.title,
+        description: note.subtitle || "",
+        fecha: `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`,
+      }));
+  }
+} catch (err) {
+  console.error("Error cargando híbridos dinámicos:", err);
+}
+
+// Notas estáticas
+const staticHibridos = [
+  {
+    href: "/notas-hibridos/nota-scape",
+    img: "../img/ford-scape-hibrida/ford-s.jpg",
+    alt: "ford-scape",
+    title: "Ford Escape",
+    description:
+      "Usa motor eléctrico y de gasolina, brindando bajo consumo y buena autonomía. Ideal para viajes largos y manejo urbano cómodo y eficiente.",
+    fecha: "nota: 13-mar",
+  },
+  {
+    href: "/notas-hibridos/nota-volvo-cx90",
+    img: "/img/volvo-cx90-hibrida/volvo-cx90-portada.webp",
+    alt: "Volvo",
+    title: "Volvo XC90",
+    description:
+      "SUV premium con motor híbrido y diseño escandinavo. Potente, eficiente y seguro, pensado para quienes buscan confort y tecnología.",
+    fecha: "nota: 16-mar",
+  },
+  {
+    href: "/notas-hibridos/nota-subaru",
+    img: "/img/subaru-forester-hibrida/subaru-forester-portada.webp",
+    alt: "Subaru",
+    title: "Subaru Forester E-Boxer",
+    description:
+      "Integra motor bóxer con eléctrico para una tracción estable y eficiente. Ideal para caminos mixtos y aventuras urbanas.",
+    fecha: "nota: 21-mar",
+  },
+  {
+    href: "/notas-hibridos/nota-kona",
+    img: "/img/kona-hibrida/kona-portada.webp",
+    alt: "Kona",
+    title: "Hyundai Kona Hybrid",
+    description:
+      "SUV compacto con consumo eficiente y diseño moderno. Incorpora ayudas de conducción y pantallas digitales para una experiencia conectada.",
+    fecha: "nota: 25-mar",
+  },
+  {
+    href: "/notas-hibridos/nota-audi-q7",
+    img: "/img/audi-q7-hibrida/audi-q7-portada.webp",
+    alt: "Audi Q7",
+    title: "Audi Q7 TFSI E",
+    description:
+      "Lujoso SUV híbrido con motor V6 y gran autonomía eléctrica. Tecnología, potencia y confort se combinan en este modelo premium de Audi.",
+    fecha: "nota: 28-mar",
+  },
+  {
+    href: "/notas-hibridos/nota-nissan",
+    img: "../img/nissan-xtrail-hibrida/nissan-x-trail.webp",
+    alt: "X-Trail",
+    title: "Nissan X-Trail E-Power",
+    description:
+      "SUV híbrido que destaca en ventas por su diseño, confort y motor eléctrico. Una opción confiable y moderna para la familia y ciudad, disfrutando de su confort.",
+    fecha: "nota: 30-mar",
+  },
+];
+
+// Juntamos dinámicas + estáticas
+const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
+---
+
 <section id="hibridos" class="hibridos-container">
   <div class="central-content">
     <i class="fa-brands fa-megaport icono-central"></i>
@@ -9,126 +96,23 @@
   </div>
 
   <div class="imagenes-container">
-    <!-- Tarjeta 1 -->
-    <a href="/notas-hibridos/nota-scape" class="hibrido">
-      <div class="imagen-wrapper">
-        <img
-          src="../img/ford-scape-hibrida/ford-s.jpg"
-          alt="ford-scape"
-          class="hibrido-imagen"
-        />
-        <div class="texto-fecha">nota: 13-mar</div>
-      </div>
-      <div class="hibrido-texto">
-        <h2>Ford Escape</h2>
-        <p>
-          Usa motor eléctrico y de gasolina, brindando bajo consumo y buena
-          autonomía. Ideal para viajes largos y manejo urbano cómodo y
-          eficiente.
-        </p>
-      </div>
-    </a>
-
-    <!-- Tarjeta 2 -->
-    <a href="/notas-hibridos/nota-volvo-cx90" class="hibrido">
-      <div class="imagen-wrapper">
-        <img
-          src="/img/volvo-cx90-hibrida/volvo-cx90-portada.webp"
-          alt="Volvo"
-          class="hibrido-imagen"
-        />
-        <div class="texto-fecha">nota: 16-mar</div>
-      </div>
-      <div class="hibrido-texto">
-        <h2>Volvo XC90</h2>
-        <p>
-          SUV premium con motor híbrido y diseño escandinavo. Potente, eficiente
-          y seguro, pensado para quienes buscan confort y tecnología.
-        </p>
-      </div>
-    </a>
-
-    <!-- Tarjeta 3 -->
-    <a href="/notas-hibridos/nota-subaru" class="hibrido">
-      <div class="imagen-wrapper">
-        <img
-          src="/img/subaru-forester-hibrida/subaru-forester-portada.webp"
-          alt="Subaru"
-          class="hibrido-imagen"
-        />
-        <div class="texto-fecha">nota: 21-mar</div>
-      </div>
-      <div class="hibrido-texto">
-        <h2>Subaru Forester E-Boxer</h2>
-        <p>
-          Integra motor bóxer con eléctrico para una tracción estable y
-          eficiente. Ideal para caminos mixtos y aventuras urbanas.
-        </p>
-      </div>
-    </a>
-  </div>
-
-  <div class="imagenes-container nuevas-imagenes">
-    <!-- Tarjeta 4 -->
-    <a href="/notas-hibridos/nota-kona" class="hibrido">
-      <div class="imagen-wrapper">
-        <img
-          src="/img/kona-hibrida/kona-portada.webp"
-          alt="Kona"
-          class="hibrido-imagen"
-        />
-        <div class="texto-fecha">nota: 25-mar</div>
-      </div>
-      <div class="hibrido-texto">
-        <h2>Hyundai Kona Hybrid</h2>
-        <p>
-          SUV compacto con consumo eficiente y diseño moderno. Incorpora ayudas
-          de conducción y pantallas digitales para una experiencia conectada.
-        </p>
-      </div>
-    </a>
-
-    <!-- Tarjeta 5 -->
-    <a href="/notas-hibridos/nota-audi-q7" class="hibrido">
-      <div class="imagen-wrapper">
-        <img
-          src="/img/audi-q7-hibrida/audi-q7-portada.webp"
-          alt="Audi Q7"
-          class="hibrido-imagen"
-        />
-        <div class="texto-fecha">nota: 28-mar</div>
-      </div>
-      <div class="hibrido-texto">
-        <h2>Audi Q7 TFSI E</h2>
-        <p>
-          Lujoso SUV híbrido con motor V6 y gran autonomía eléctrica.
-          Tecnología, potencia y confort se combinan en este modelo premium de
-          Audi.
-        </p>
-      </div>
-    </a>
-
-    <!-- Tarjeta 6 -->
-    <a href="/notas-hibridos/nota-nissan" class="hibrido">
-      <div class="imagen-wrapper">
-        <img
-          src="../img/nissan-xtrail-hibrida/nissan-x-trail.webp"
-          alt="X-Trail"
-          class="hibrido-imagen"
-        />
-        <div class="texto-fecha">nota: 30-mar</div>
-      </div>
-      <div class="hibrido-texto">
-        <h2>Nissan X-Trail E-Power</h2>
-        <p>
-          SUV híbrido que destaca en ventas por su diseño, confort y motor
-          eléctrico. Una opción confiable y moderna para la familia y ciudad,
-          disfrutando de su confort.
-        </p>
-      </div>
-    </a>
+    {
+      allHibridos.map((nota) => (
+        <a href={nota.href} class="hibrido">
+          <div class="imagen-wrapper">
+            <img src={nota.img} alt={nota.alt} class="hibrido-imagen" />
+            <div class="texto-fecha">{nota.fecha}</div>
+          </div>
+          <div class="hibrido-texto">
+            <h2>{nota.title}</h2>
+            <p>{nota.description}</p>
+          </div>
+        </a>
+      ))
+    }
   </div>
 </section>
+
 <div class="ver-mas-container izquierda">
   <a href="/hibridos-antiguos" class="ver-mas-boton">Ver más Modelos</a>
 </div>
@@ -206,7 +190,8 @@
   }
 
   .central-content h1 {
-    font-size: 60px;
+    font-size: clamp(40px, 5vw, 60px);
+    font-weight: 700;
     color: rgb(243, 241, 241);
     text-transform: uppercase;
     font-weight: bold;
@@ -371,8 +356,8 @@
 
     font-weight: 600;
     border: none;
-    border-radius: 8px;
-    padding: 16px 38px;
+    border-radius: 50px;
+    padding: 14px 36px;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: background 0.2s;

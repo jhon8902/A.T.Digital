@@ -1,0 +1,209 @@
+---
+
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Crear Nota</title>
+  </head>
+  <body>
+    <h1>Crear Nota</h1>
+    <form id="noteForm">
+      <label>
+        Título:
+        <input type="text" name="title" placeholder="Título" required />
+      </label>
+
+      <label>
+        Subtítulo:
+        <input type="text" name="subtitle" placeholder="Subtítulo" />
+      </label>
+
+      <label>
+        Contenido:
+        <textarea name="content" placeholder="Contenido de la nota" required
+        ></textarea>
+      </label>
+
+      <label>
+        Categoría:
+        <select name="category" required>
+          <option value="electricos">Eléctricos</option>
+          <option value="hibridos">Híbridos</option>
+          <option value="deportes">Deportes</option>
+          <option value="noticias">Noticias</option>
+          <option value="pruebas">Pruebas</option>
+          <option value="lanzamientos">Lanzamientos</option>
+        </select>
+      </label>
+
+      <fieldset>
+        <legend>Imágenes (URLs)</legend>
+        <input type="text" name="image1" placeholder="URL Imagen 1" />
+        <input type="text" name="image2" placeholder="URL Imagen 2" />
+        <input type="text" name="image3" placeholder="URL Imagen 3" />
+        <input type="text" name="image4" placeholder="URL Imagen 4" />
+        <input type="text" name="image5" placeholder="URL Imagen 5" />
+        <input type="text" name="image6" placeholder="URL Imagen 5" />
+      </fieldset>
+
+      <!-- Videos -->
+      <label for="video1">Video principal (destacado)</label>
+      <input
+        type="text"
+        id="video1"
+        name="video1"
+        placeholder="../img/videos-pruebas/mi-video.mp4"
+      />
+
+      <label for="video2">Video 2</label>
+      <input type="text" id="video2" name="video2" />
+
+      <label for="video3">Video 3</label>
+      <input type="text" id="video3" name="video3" />
+
+      <label for="video3">Video 4</label>
+      <input type="text" id="video4" name="video4" />
+
+      <label for="video4">Video 5</label>
+      <input type="text" id="video5" name="video5" />
+
+      <label for="video4">Video 6</label>
+      <input type="text" id="video5" name="video6" />
+
+      <label for="video4">Video 7</label>
+      <input type="text" id="video7" name="video7" />
+
+      <button type="submit">Guardar Nota</button>
+    </form>
+
+    <p id="msg"></p>
+
+    <style>
+      body {
+        font-family: "Segoe UI", Roboto, sans-serif;
+        background-color: #eef1f5;
+        padding: 40px;
+        color: #333;
+      }
+
+      form {
+        max-width: 100%;
+        margin: auto;
+        background-color: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: box-shadow 0.3s ease;
+        font-size: 25px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #3f3510;
+        margin-bottom: 30px;
+        font-size: 42px;
+      }
+
+      form:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+      }
+
+      label {
+        font-weight: 600;
+        display: block;
+        margin-top: 20px;
+        margin-bottom: 5px;
+        color: #444;
+      }
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 12px 14px;
+        margin-top: 5px;
+        border: 1px solid #ccd1d9;
+        border-radius: 6px;
+        font-size: 16px;
+        background-color: #fdfdfd;
+        transition: border-color 0.2s ease;
+      }
+
+      input:focus,
+      textarea:focus,
+      select:focus {
+        border-color: #0077ff;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(0, 119, 255, 0.2);
+      }
+
+      button {
+        margin-top: 25px;
+        padding: 12px 20px;
+        background-color: #082a53;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%;
+      }
+
+      button:hover {
+        background-color: #0056cc;
+      }
+
+      .msg {
+        margin-top: 20px;
+        font-weight: 600;
+        color: #0077ff;
+      }
+    </style>
+
+    <script>
+      const form = document.getElementById("noteForm");
+      const msg = document.getElementById("msg");
+
+      if (form) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+
+          console.log("📤 Datos enviados:", data);
+          console.log("📌 Categoría seleccionada:", data.category);
+
+          try {
+            const res = await fetch(
+              "http://localhost:8888/.netlify/functions/save-note",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+              }
+            );
+
+            const result = await res.json();
+            console.log("📥 Respuesta del servidor:", result);
+
+            if (msg) {
+              msg.textContent = result.message || "Error al guardar";
+              msg.style.color = res.ok ? "green" : "red";
+            }
+          } catch (error) {
+            console.error("❌ Error de conexión:", error);
+            if (msg) {
+              msg.textContent = "Error de conexión con el servidor";
+              msg.style.color = "red";
+            }
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

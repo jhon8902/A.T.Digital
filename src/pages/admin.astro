@@ -1,0 +1,264 @@
+---
+/* 🔗 URL base para funciones de Netlify */
+const apiUrl = "http://localhost:8888/.netlify/functions";
+
+/* 📦 Array donde se guardarán las notas */
+let notes: Note[] = [];
+
+try {
+  /* 🔍 Carga las notas desde la función list-notes */
+  const res = await fetch(`${apiUrl}/list-notes`);
+  if (res.ok) {
+    notes = await res.json();
+  }
+} catch (err) {
+  console.error("Error cargando notas:", err);
+}
+
+/* 🧠 Tipo de datos para cada nota */
+type Note = {
+  id: number;
+  title: string;
+  subtitle: string | null;
+  content: string;
+  category: string | null;
+  created_at: string;
+  image1?: string;
+  image2?: string;
+  image3?: string;
+  image4?: string;
+  image5?: string;
+  video1?: string;
+  video2?: string;
+  video3?: string;
+  video4?: string;
+  video5?: string;
+  video6?: string;
+  video7?: string;
+};
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Administrar Notas</title>
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      nav {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .top-panel {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .badge {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        color: white;
+      }
+      .badge.electricos {
+        background: #2ecc71;
+      }
+      .badge.hibridos {
+        background: #3498db;
+      }
+      .badge.deportes {
+        background: #e67e22;
+      }
+      .badge.noticias {
+        background: #9b59b6;
+      }
+      .badge.default {
+        background: #7f8c8d;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+      }
+      .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        transition: transform 0.2s ease;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+      }
+      .card img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 10px;
+      }
+      .card h2 {
+        font-size: 1.2rem;
+        margin: 0 0 5px;
+      }
+      .card .extracto {
+        font-size: 0.85rem;
+        color: #555;
+        margin: 6px 0;
+        height: 40px;
+        overflow: hidden;
+      }
+      .card .fecha {
+        font-size: 0.8rem;
+        color: #888;
+        margin-top: 6px;
+      }
+      .acciones {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 12px;
+      }
+      .acciones button,
+      .acciones a {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        width: 32%;
+      }
+      .acciones .ver {
+        background: #0077cc;
+        color: white;
+      }
+      .acciones .editar {
+        background: #f39c12;
+        color: white;
+      }
+      .acciones .eliminar {
+        background: #e63946;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/formulario">➕ Crear Nota</a> |
+      <a href="/admin">🗂️ Administrar Notas</a>
+    </nav>
+
+    <h1>📋 Panel de Administración</h1>
+
+    <div class="top-panel">
+      <span>Total de notas: <b>{notes.length}</b></span>
+      <select id="filtro" onchange="filtrarNotas()">
+        <option value="todas">Todas las categorías</option>
+        <option value="electricos">Eléctricos</option>
+        <option value="hibridos">Híbridos</option>
+        <option value="deportes">Deportes</option>
+        <option value="noticias">Noticias</option>
+      </select>
+    </div>
+
+    {
+      notes.length === 0 ? (
+        <p style="text-align:center;">No hay notas registradas.</p>
+      ) : (
+        <div id="grid" class="grid">
+          {notes.map((note) => (
+            <div class="card" data-cat={note.category || "default"}>
+              <img src={note.image1 || "/img/default.jpg"} alt={note.title} />
+              <h2>{note.title}</h2>
+              <span
+                class={`badge ${(note.category || "default").toLowerCase()}`}
+              >
+                {note.category || "Sin categoría"}
+              </span>
+
+              <p class="extracto">{note.content.slice(0, 120)}...</p>
+              <p class="fecha">
+                📅 {new Date(note.created_at).toLocaleDateString("es-CO")}
+              </p>
+
+              <div class="acciones">
+                <a href={`/notas/${note.id}`} class="ver">
+                  Ver Nota
+                </a>
+                <a href={`/editar/${note.id}`} class="editar">
+                  ✏️ Editar
+                </a>
+                <button class="eliminar" data-id={note.id}>
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )
+    }
+
+    <script>
+      const apiUrl = "http://localhost:8888/.netlify/functions";
+
+      // 🔥 Eliminar nota con TypeScript friendly
+      document.querySelectorAll(".eliminar").forEach((btn) => {
+        btn.addEventListener("click", async (e) => {
+          const target = e.target as HTMLButtonElement;
+          const id = target.getAttribute("data-id");
+          if (!id) return;
+
+          if (!confirm("⚠️ ¿Seguro que quieres eliminar esta nota?")) return;
+
+          try {
+            const res = await fetch(`${apiUrl}/delete-note?id=${id}`, {
+              method: "DELETE",
+            });
+
+            if (res.ok) {
+              alert("Nota eliminada ✅");
+              location.reload();
+            } else {
+              const error = await res.json();
+              alert("❌ " + (error.error || "Error eliminando nota"));
+            }
+          } catch (err) {
+            console.error("Error eliminando:", err);
+            alert("❌ Error en el servidor");
+          }
+        });
+      });
+
+      // 🔍 Filtrar por categoría
+      function filtrarNotas() {
+        const filtroEl = document.getElementById("filtro");
+        if (!(filtroEl instanceof HTMLSelectElement)) return;
+
+        const filtro = filtroEl.value;
+        const cards = document.querySelectorAll(".card");
+
+        cards.forEach((card) => {
+          if (!(card instanceof HTMLElement)) return;
+          const cat = (card.dataset.cat || "default").toLowerCase();
+          const filtroVal = filtro.toLowerCase();
+          card.style.display =
+            filtroVal === "todas" || cat === filtroVal ? "block" : "none";
+        });
+      }
+    </script>
+  </body>
+</html>

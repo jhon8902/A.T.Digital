@@ -1,120 +1,140 @@
 ---
+let dynamicLanzamientos: any[] = [];
 
+// Traemos notas dinámicas desde Netlify
+try {
+  const res = await fetch("http://localhost:8888/.netlify/functions/get-notes");
+  if (res.ok) {
+    const data = await res.json();
+
+    // Filtramos solo las de categoría "lanzamientos"
+    dynamicLanzamientos = data
+      .filter((note: any) => note.category?.toLowerCase() === "lanzamientos")
+      .map((note: any) => ({
+        href: `/notas/${note.id}`,
+        img: note.image1 || "/img/default.jpg",
+        alt: note.title,
+        title: note.title,
+        description: note.subtitle || "",
+        fecha: note.created_at,
+      }));
+  }
+} catch (err) {
+  console.error("Error cargando lanzamientos dinámicos:", err);
+}
+
+// Notas estáticas originales
+const staticLanzamientos = [
+  {
+    href: "./noticias-nacionales/noticia-jeep-avenger",
+    img: "/img/jeep-avenger/jeep-avenger-portada.webp",
+    alt: "JEEP AVENGER",
+    title: "JEEP AVENGER",
+    description:
+      "¿Sabías que el Jeep Avenger fue el primer modelo 100% eléctrico de la marca lanzado en Europa, ganando el premio 'Car of the Year 2023'?",
+    fecha: "Publicado: 2025-08-05",
+    destacada: true,
+  },
+  {
+    href: "./noticias-nacionales/noticia-kia-ev9",
+    img: "/img/kia-ev9/kia-ev9-portada.webp",
+    alt: "KIA EV-9",
+    title: "KIA EV-9",
+    description:
+      "El KIA EV9 es uno de los primeros SUV eléctricos en el mundo que puede recibir actualizaciones de software a distancia.",
+    fecha: "Publicado: 2025-08-01",
+  },
+  {
+    href: "./noticias-nacionales/noticia-mazda-ez6",
+    img: "/img/mazda-ez6/mazda-ez6-portada.webp",
+    alt: "MAZDA EZ-6",
+    title: "MAZDA EZ-6",
+    description:
+      "‘Skyactiv’ Tecnología que optimiza el rendimiento y la eficiencia del motor híbrido, Mazda fue pionera en el uso del motor rotativo.",
+    fecha: "Publicado: 2025-08-02",
+  },
+  {
+    href: "./noticias-nacionales/noticia-toyota-prado",
+    img: "/img/toyota-prado/toyota-prado-copia.jpg",
+    alt: "TOYOTA PRADO",
+    title: "TOYOTA PRADO",
+    description:
+      "La Toyota Prado es famosa por su durabilidad en algunos países, es el vehículo preferido para condiciones extremas.",
+    fecha: "Publicado: 2025-08-03",
+  },
+  {
+    href: "./noticias-nacionales/noticia-ford-f150",
+    img: "/img/ford-f150/ford-f150-2.jpg",
+    alt: "FORD F-150",
+    title: "FORD F-150",
+    description:
+      "La Ford F-150 Lightning puede alimentar una casa entera durante un corte de energía gracias a su batería de alta capacidad.",
+    fecha: "Publicado: 2025-08-04",
+  },
+];
+
+// Mezclamos dinámicas y estáticas y ordenamos por fecha descendente
+const mezcladas = [...dynamicLanzamientos, ...staticLanzamientos];
+mezcladas.sort(
+  (a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
+);
+
+// Nota destacada y el resto
+const destacada = mezcladas[0];
+const resto = mezcladas.slice(1, 5);
 ---
 
-<section id="lanzamientos">
-  <div class="noticias-icono">
-    <h1 class="noticias-titulo">Lanzamientos</h1>
-    <i class="fa-brands fa-galactic-republic"></i>
+<section id="lanzamientos" class="noticias-container">
+  <div class="noticias-header">
+    <div class="noticias-icono">
+      <i class="fa-brands fa-galactic-republic"></i>
+    </div>
+    <h1 class="noticias-titulo">LANZAMIENTOS</h1>
+    <p class="descripcion-lanzamientos">
+      Descubre los nuevos modelos que llegan al país: fichas técnicas, imágenes
+      y versiones.
+    </p>
   </div>
 
-  <p class="descripcion-lanzamientos">
-    Descubre los nuevos modelos que llegan al país: fichas técnicas, imágenes y
-    versiones
-  </p>
-
-  <section class="noticias-container">
-    <!-- Jeep Avenger (destacada) -->
-    <a
-      href="./noticias-nacionales/noticia-jeep-avenger"
-      class="noticia-avenger-container"
-    >
-      <div class="noticia-avenger-texto">
-        <h3 class="noticia-texto-titulo">JEEP AVENGER</h3>
-        <p class="noticia-descripcion">
-          ¿Sabías que el Jeep Avenger fue el primer modelo 100% eléctrico de la
-          marca lanzado en Europa, ganando el premio 'Car of the Year 2023'?
-        </p>
-        <span class="noticia-fecha">Publicado: 2025-08-05</span>
-      </div>
-      <img
-        src="/img/jeep-avenger/jeep-avenger-portada.webp"
-        alt="JEEP AVENGER"
-        class="noticia-avenger-imagen"
-      />
-    </a>
-
-    <!-- Otras noticias -->
-    <a href="./noticias-nacionales/noticia-kia-ev9" class="noticia-container">
-      <div class="noticia-imagen-wrapper">
+  {
+    destacada && (
+      <a href={destacada.href} class="noticia-avenger-container">
+        <div class="noticia-avenger-texto">
+          <h3 class="noticia-texto-titulo">{destacada.title}</h3>
+          <p class="noticia-descripcion">{destacada.description}</p>
+          <span class="noticia-fecha">
+            Publicado: {new Date(destacada.fecha).toLocaleDateString("es-CO")}
+          </span>
+        </div>
         <img
-          src="/img/kia-ev9/kia-ev9-portada.webp"
-          alt="KIA EV-9"
-          class="noticia-imagen"
+          src={destacada.img}
+          alt={destacada.alt}
+          class="noticia-avenger-imagen"
         />
-      </div>
-      <div class="noticia-texto">
-        <h3 class="noticia-texto-titulo">KIA EV-9</h3>
-        <p class="noticia-descripcion">
-          El KIA EV9 es uno de los primeros SUV eléctricos en el mundo que puede
-          recibir actualizaciones de software a distancia.
-        </p>
-        <span class="noticia-fecha">Publicado: 2025-08-01</span>
-      </div>
-    </a>
+      </a>
+    )
+  }
 
-    <a href="./noticias-nacionales/noticia-mazda-ez6" class="noticia-container">
-      <div class="noticia-imagen-wrapper">
-        <img
-          src="/img/mazda-ez6/mazda-ez6-portada.webp"
-          alt="MAZDA EZ-6"
-          class="noticia-imagen"
-        />
-      </div>
-      <div class="noticia-texto">
-        <h3 class="noticia-texto-titulo">MAZDA EZ-6</h3>
-        <p class="noticia-descripcion">
-          ‘Skyactiv’ Tecnología que optimiza el rendimiento y la eficiencia del
-          motor híbrido, Mazda fue pionera en el uso del motor rotativo.
-        </p>
-        <span class="noticia-fecha">Publicado: 2025-08-02</span>
-      </div>
-    </a>
+  {
+    resto.map((nota) => (
+      <a href={nota.href} class="noticia-container">
+        <div class="noticia-imagen-wrapper">
+          <img src={nota.img} alt={nota.alt} class="noticia-imagen" />
+        </div>
+        <div class="noticia-texto">
+          <h3 class="noticia-texto-titulo">{nota.title}</h3>
+          <p class="noticia-descripcion">{nota.description}</p>
+          <span class="noticia-fecha">
+            Publicado: {new Date(nota.fecha).toLocaleDateString("es-CO")}
+          </span>
+        </div>
+      </a>
+    ))
+  }
 
-    <a
-      href="./noticias-nacionales/noticia-toyota-prado"
-      class="noticia-container"
-    >
-      <div class="noticia-imagen-wrapper">
-        <img
-          src="/img/toyota-prado/toyota-prado-copia.jpg"
-          alt="TOYOTA PRADO"
-          class="noticia-imagen"
-        />
-      </div>
-      <div class="noticia-texto">
-        <h3 class="noticia-texto-titulo">TOYOTA PRADO</h3>
-        <p class="noticia-descripcion">
-          La Toyota Prado es famosa por su durabilidad en algunos países, es el
-          vehículo preferido para condiciones extremas.
-        </p>
-        <span class="noticia-fecha">Publicado: 2025-08-03</span>
-      </div>
-    </a>
-
-    <a href="./noticias-nacionales/noticia-ford-f150" class="noticia-container">
-      <div class="noticia-imagen-wrapper">
-        <img
-          src="/img/ford-f150/ford-f150-2.jpg"
-          alt="FORD F-150"
-          class="noticia-imagen"
-        />
-      </div>
-      <div class="noticia-texto">
-        <h3 class="noticia-texto-titulo">FORD F-150</h3>
-        <p class="noticia-descripcion">
-          La Ford F-150 Lightning puede alimentar una casa entera durante un
-          corte de energía gracias a su batería de alta capacidad.
-        </p>
-        <span class="noticia-fecha">Publicado: 2025-08-04</span>
-      </div>
-    </a>
-
-    <!-- Botón -->
-    <div class="ver-mas-noticias-container">
-      <button class="ver-mas-noticias-btn">Ver más lanzamientos</button>
-    </div>
-  </section>
+  <div class="ver-mas-noticias-container">
+    <button class="ver-mas-noticias-btn">Ver más lanzamientos</button>
+  </div>
 </section>
 
 <style>
@@ -138,15 +158,57 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
-    padding: 40px 10px;
+
     position: relative;
     background: white;
 
     font-family: "Georgia", serif;
   }
 
-  .noticias-titulo {
+  .noticias-header {
+    grid-column: 1 / -1;
+    background: linear-gradient(90deg, #05223b 10%, #063d67 90%);
+    padding: 40px 0 30px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-bottom: 10px;
+  }
+
+  .noticias-header .noticias-icono {
+    background: none;
+    padding: 0;
+    margin-bottom: 10px;
+  }
+
+  .noticias-header .noticias-titulo {
+    opacity: 1;
+    background: none;
+    -webkit-text-fill-color: #fff;
+    color: #fff;
     font-size: 60px;
+    margin: 0;
+    padding: 0;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 8px #0008;
+  }
+
+  .noticias-header .descripcion-lanzamientos {
+    color: #fff;
+    background: none;
+    font-size: 1.9rem;
+    margin: 0;
+    padding: 10px 0 0 0;
+    font-weight: 600;
+
+    text-align: center;
+  }
+
+  .noticias-titulo {
+    font-size: clamp(40px, 5vw, 60px);
+    font-weight: 700;
+
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -154,14 +216,30 @@
     font-family: "Georgia", serif;
     padding-top: 20px;
     opacity: 0;
-    transform: scale(0.7) translateY(-40px);
+    transform: translateY(-40px) scale(0.95);
+    transition: none;
 
     /* Gradiente en el texto */
-    background: linear-gradient(90deg, white 10%, white 90%);
+    background: black;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
+  }
+
+  .noticias-titulo.visible {
+    animation: fadeInTitle 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes fadeInTitle {
+    from {
+      opacity: 0;
+      transform: translateY(-40px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
 
   .descripcion-lanzamientos {
@@ -173,7 +251,6 @@
     margin-top: -10px; /* (Opcional) más pegado aún si lo ves necesario */
     background: white;
     font-weight: 600;
-    text-transform: uppercase;
   }
 
   .noticias-icono {
@@ -259,7 +336,7 @@
   .noticia-texto-titulo {
     background: black;
 
-    font-size: 22px;
+    font-size: 28px;
     margin-bottom: 12px;
     color: black;
     font-weight: 600;
@@ -316,7 +393,7 @@
   }
   .noticia-avenger-texto .noticia-texto-titulo {
     color: black;
-    font-size: 26px;
+    font-size: 30px;
     font-weight: 600;
     background: transparent;
     display: inline-block;
@@ -423,8 +500,8 @@
 
     font-weight: 600;
     border: none;
-    border-radius: 8px;
-    padding: 16px 38px;
+    border-radius: 50px;
+    padding: 14px 36px;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: background 0.2s;
@@ -434,26 +511,31 @@
     background: #07528b;
   }
 
-  /* Responsive */
-  @media (max-width: 1200px) {
-    .noticias-container {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
   @media (max-width: 900px) {
-    .noticias-container {
-      grid-template-columns: 1fr;
-      padding: 10px;
+    .noticias-titulo {
+      font-size: 60px !important;
+      padding: 10px 0;
     }
+    .noticias-container {
+      /*grid-template-columns: 1fr;*/
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
     .noticia-avenger-container {
       flex-direction: column-reverse;
-      min-height: unset;
-      border-radius: 0;
     }
+
     .noticia-avenger-texto,
     .noticia-avenger-imagen {
       max-width: 100%;
       flex: 1 1 100%;
+    }
+
+    .noticia-avenger-imagen {
+      height: 480px;
+      width: 100%;
+      object-fit: cover;
     }
 
     .noticia-avenger-texto {
@@ -462,34 +544,22 @@
     }
   }
 
-  @media (max-width: 900px) {
-    .noticia-avenger-imagen {
-      height: 480px;
-      width: 100%;
-      object-fit: cover;
-    }
-  }
-
   @media (max-width: 600px) {
     .noticias-titulo {
-      font-size: 30px;
+      font-size: 34px !important;
       padding: 10px 0;
       letter-spacing: 3px;
     }
-    /* Elimina o comenta esta regla global */
-    /* .noticia-texto-titulo {
-      font-size: 28px;
-      text-align: start;
-    } */
 
     .descripcion-lanzamientos {
-      font-size: 18px;
+      font-size: 18px !important;
       padding: 10px;
       margin-top: 0; /* Ajusta el margen superior */
       text-align: center;
       background: white;
       color: black;
       text-transform: none;
+      width: 90%;
     }
 
     .noticias-icono {
@@ -498,15 +568,15 @@
     }
 
     .noticias-icono i {
-      font-size: 42px;
+      font-size: 52px;
       padding-top: 15px;
       color: #f1bf0b;
     }
 
+    .noticia-avenger-imagen,
     .noticia-imagen {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
+      height: 180px;
+      max-height: 180px;
     }
 
     .noticia-avenger-texto {
@@ -550,10 +620,11 @@
 </style>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", async function () {
     const titulo = document.querySelector(".noticias-titulo");
     if (!titulo) return;
 
+    // Animación con IntersectionObserver (ya la tenías)
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -566,7 +637,60 @@
       },
       { threshold: 0.1 }
     );
-
     observer.observe(titulo);
+
+    // 🚀 Nuevo: cargar noticias dinámicamente
+    try {
+      const res = await fetch("/.netlify/functions/get-notes");
+      const notas = await res.json();
+
+      // Filtrar solo las de categoría "lanzamientos"
+      const lanzamientos = notas.filter(
+        (n) => n.category?.toLowerCase() === "lanzamientos"
+      );
+
+      const contenedor = document.getElementById("lista-noticias")!;
+      contenedor.innerHTML = "";
+
+      lanzamientos.forEach((nota, index) => {
+        // La primera noticia será la "destacada"
+        if (index === 0) {
+          contenedor.innerHTML += `
+            <a href="#" class="noticia-avenger-container">
+              <div class="noticia-avenger-texto">
+                <h3 class="noticia-texto-titulo">${nota.title}</h3>
+                <p class="noticia-descripcion">${nota.subtitle || ""}</p>
+                <span class="noticia-fecha">Publicado: ${
+                  nota.created_at.split("T")[0]
+                }</span>
+              </div>
+              <img src="${
+                nota.image1 || "/img/placeholder.jpg"
+              }" alt="${nota.title}" class="noticia-avenger-imagen"/>
+            </a>
+          `;
+        } else {
+          // El resto normales
+          contenedor.innerHTML += `
+            <a href="#" class="noticia-container">
+              <div class="noticia-imagen-wrapper">
+                <img src="${
+                  nota.image1 || "/img/placeholder.jpg"
+                }" alt="${nota.title}" class="noticia-imagen"/>
+              </div>
+              <div class="noticia-texto">
+                <h3 class="noticia-texto-titulo">${nota.title}</h3>
+                <p class="noticia-descripcion">${nota.subtitle || ""}</p>
+                <span class="noticia-fecha">Publicado: ${
+                  nota.created_at.split("T")[0]
+                }</span>
+              </div>
+            </a>
+          `;
+        }
+      });
+    } catch (err) {
+      console.error("Error cargando lanzamientos:", err);
+    }
   });
 </script>

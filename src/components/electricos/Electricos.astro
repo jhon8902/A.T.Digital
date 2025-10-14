@@ -1,9 +1,87 @@
+---
+let dynamicElectricos: any[] = [];
+
+// Traemos dinámicas desde Netlify
+try {
+  const res = await fetch("http://localhost:8888/.netlify/functions/get-notes");
+  if (res.ok) {
+    const data = await res.json();
+
+    // Filtramos solo categoría "electricos"
+    dynamicElectricos = data
+      .filter((note: any) => note.category?.toLowerCase() === "electricos")
+
+      .map((note: any) => ({
+        href: `/notas/${note.id}`,
+        img: note.image1 || "/img/default.jpg",
+        alt: note.title,
+        title: note.title,
+        description: note.subtitle || "",
+        fecha: `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`,
+      }));
+  }
+} catch (err) {
+  console.error("Error cargando eléctricos dinámicos:", err);
+}
+
+// Notas estáticas
+const staticElectricos = [
+  {
+    href: "/notas-electricos/nota-volvo-ex90",
+    img: "../img/volvo-ex90-electrico/volvo-ex90-portada.webp",
+    alt: "Volvo EX90",
+    title: "Volvo EX90",
+    description:
+      "No solo ofrece una autonomía de 500km sino que además llega con nuevo diseño vanguardista, es una de las más cotizadas en Colombia.",
+    fecha: "Nota: 10-feb",
+  },
+  {
+    href: "/notas-electricos/nota-mini-cooper",
+    img: "../img/mini-cooper-electrico/mini-cooper-portada.webp",
+    alt: "Mini Cooper",
+    title: "Mini Cooper",
+    description:
+      "Lujo y tecnología en un compacto eléctrico capaz de satisfacer todas tus necesidades básicas y de confort.",
+    fecha: "Nota: 13-mar",
+  },
+  {
+    href: "/notas-electricos/nota-byd-sealion7",
+    img: "/img/byd-sealion-7/byd-sealion7-principal.webp",
+    alt: "BYD Sealion 7",
+    title: "BYD Sealion 7",
+    description:
+      "Deportivo y sostenible sin perder su esencia, el diseño y lujo se combinan para ofrecer lo mejor.",
+    fecha: "Nota: 13-mar",
+  },
+  {
+    href: "/notas-electricos/nota-peugeot-e3008",
+    img: "/img/peugeot-3008-electrica/carga-peugeot.webp",
+    alt: "Peugeot E-3008",
+    title: "Peugeot E-3008",
+    description:
+      "Eléctrico y potente para la nueva era: si lo que quieres es que te vean, con este SUV lo logras.",
+    fecha: "Nota: 24-mar",
+  },
+  {
+    href: "/notas-electricos/nota-renault-megane",
+    img: "/img/renault-megane-e-tech/renault-megane-principal.webp",
+    alt: "Renault Megane",
+    title: "Renault Megane",
+    description:
+      "Compacto y eficiente para la movilidad urbana, además de futurista que compensa cualquier pero.",
+    fecha: "Nota: 20-abril",
+  },
+];
+
+// Juntamos dinámicas + estáticas
+const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
+---
+
 <div id="electricos" class="electrico-container">
   <div class="central-content">
     <span class="icono-electricos">
       <i class="fas fa-car-battery"></i>
     </span>
-
     <span class="titulo-electricos inicial">Carros Eléctricos</span>
     <p class="descripcion-electricos">
       Modelos 100% eléctricos disponibles en el mercado nacional: autonomía,
@@ -12,86 +90,43 @@
   </div>
 
   <div class="grid-container">
-    <div class="imagen-destacada nueva-destacada">
-      <a href="/notas-electricos/nota-volvo-ex90" class="destacada-link">
-        <div class="imagen-destacada-img">
-          <img
-            src="../img/volvo-ex90-electrico/volvo-ex90-portada.webp"
-            alt="Volvo CX40"
-            class="electrico-imagen"
-          />
+    {
+      allElectricos.length > 0 && (
+        <div class="imagen-destacada nueva-destacada">
+          <a href={allElectricos[0].href} class="destacada-link">
+            <div class="imagen-destacada-img">
+              <img
+                src={allElectricos[0].img}
+                alt={allElectricos[0].alt}
+                class="electrico-imagen"
+              />
+            </div>
+            <div class="texto-destacado">
+              <p class="texto-f">{allElectricos[0].fecha}</p>
+              <h2>{allElectricos[0].title}</h2>
+              <p>{allElectricos[0].description}</p>
+            </div>
+          </a>
         </div>
-        <div class="texto-destacado">
-          <p class="texto-f">Nota: 10-feb</p>
-          <h2>Volvo EX90</h2>
-          <p>
-            No solo ofrece una autonomía de 500km sino que además llega con
-            nuevo diseño vanguardista es una de las mas cotizadas en colombia.
-          </p>
-        </div>
-      </a>
-    </div>
+      )
+    }
   </div>
 
   <div class="imagenes-grid">
-    <div class="imagen-card">
-      <a href="/notas-electricos/nota-mini-cooper">
-        <img
-          src="../img/mini-cooper-electrico/mini-cooper-portada.webp"
-          alt="Mini Cooper"
-        />
-        <h2>Mini Cooper</h2>
-        <p>
-          Lujo y tecnología en un compacto eléctrico capas de satisfacer todas
-          tus necesidades basicas y de confort.
-        </p>
-        <p class="texto-f">Nota: 13-mar</p>
-      </a>
-    </div>
-
-    <div class="imagen-card">
-      <a href="/notas-electricos/nota-byd-sealion7">
-        <img
-          src="/img/byd-sealion-7/byd-sealion7-principal.webp"
-          alt="BYD Sealion 7"
-        />
-        <h2>BYD Sealion 7</h2>
-        <p>
-          Deportivo y sostenible sin perder su esencia, el diseño y lujo se
-          convinan para ofrecer lo mejor.
-        </p>
-        <p class="texto-f">Nota: 13-mar</p>
-      </a>
-    </div>
-    <div class="imagen-card">
-      <a href="/notas-electricos/nota-peugeot-e3008">
-        <img
-          src="/img/peugeot-3008-electrica/carga-peugeot.webp"
-          alt="peugeot e3008"
-        />
-        <h2>Peugeot E-3008</h2>
-        <p>
-          Eléctrico y potente para la nueva era si lo que quieres es que te vean
-          con este suv lo logras.
-        </p>
-        <p class="texto-f">Nota: 24-mar</p>
-      </a>
-    </div>
-    <div class="imagen-card">
-      <a href="/notas-electricos/nota-renault-megane">
-        <img
-          src="/img/renault-megane-e-tech/renault-megane-principal.webp"
-          alt="Renault Megane"
-        />
-        <h2>Renault Megane</h2>
-        <p>
-          Compacto y eficiente para la movilidad urbana, ademàs de futurista que
-          compensa cualquier pero.
-        </p>
-        <p class="texto-f">Nota: 20-abril</p>
-      </a>
-    </div>
+    {
+      allElectricos.slice(1).map((nota) => (
+        <div class="imagen-card">
+          <a href={nota.href}>
+            <img src={nota.img} alt={nota.alt} />
+            <h2>{nota.title}</h2>
+            <p>{nota.description}</p>
+            <p class="texto-f">{nota.fecha}</p>
+          </a>
+        </div>
+      ))
+    }
   </div>
+
   <div class="ver-mas-modelos-container">
     <button class="ver-mas-modelos-btn">Ver más modelos</button>
   </div>
@@ -146,7 +181,7 @@
 
   .central-content h1 {
     color: white;
-    font-size: 70px;
+
     text-transform: uppercase;
     font-weight: bolder;
     letter-spacing: 1px;
@@ -199,7 +234,8 @@
   }
 
   .titulo-electricos {
-    font-size: 60px;
+    font-size: clamp(40px, 5vw, 60px);
+    font-weight: 700;
     color: white;
 
     font-weight: bolder;

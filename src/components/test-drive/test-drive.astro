@@ -1,38 +1,102 @@
 ---
+let dynamicPruebas: any[] = [];
 
+// Traemos dinámicas desde Netlify
+try {
+  const res = await fetch("http://localhost:8888/.netlify/functions/get-notes");
+  if (res.ok) {
+    const data = await res.json();
+
+    // Filtramos solo categoría "pruebas"
+    dynamicPruebas = data
+      .filter((note: any) => note.categoria?.toLowerCase() === "pruebas")
+      .map((note: any) => ({
+        video: note.video1 || "", // suponemos que el formulario guarda ruta del video
+        title: note.title,
+        description: note.subtitle || "",
+      }));
+  }
+} catch (err) {
+  console.error("Error cargando pruebas dinámicas:", err);
+}
+
+// Videos estáticos
+const staticPruebas = [
+  {
+    video: "../img/videos-pruebas/ford f-150.mp4",
+    title: "Ford F-150",
+    description:
+      "En nuestra prueba destacada tenemos a la Ford F-150, una pick-up que te brinda todo lo que necesitas para esos viajes fuera de la ciudad. Descubre la emoción de nuestro modelo estrella.",
+    destacado: true,
+  },
+  {
+    video: "../img/videos-pruebas/xiaomi YU7.mp4",
+    title: "Xiaomi YU7",
+    description:
+      "Diseño y tecnología en armonía, el carro de Xiaomi rompiendo récord como el más vendido en poco tiempo.",
+  },
+  {
+    video: "../img/videos-pruebas/nissan qashqai.mp4",
+    title: "Nissan Qashqai",
+    description:
+      "Con nueva parrilla, la Nissan Qashqai nos sorprende con sus cambios en tecnología y seguridad.",
+  },
+  {
+    video: "../img/videos-pruebas/prueba-mazda.mp4",
+    title: "Mazda Iconic",
+    description:
+      "El diseño de este Mazda Iconic es muy moderno y elegante, destaca por sus líneas deportivas y detalles innovadores.",
+  },
+  {
+    video: "../img/videos-pruebas/video-dfsk.mp4",
+    title: "DFSK E5",
+    description:
+      "La SUV eléctrica para 7 pasajeros, confortable y espaciosa, nos sorprendió mucho y seguro que a ustedes también les gustará.",
+  },
+  {
+    video: "../img/videos-pruebas/video-kia-k4.mp4",
+    title: "Kia K4 Xline",
+    description:
+      "La marca no quiere dejar los automóviles, por eso nos presenta el K4 Xline: deportivo, seguro y muy confortable.",
+  },
+  {
+    video: "../img/videos-pruebas/video-zeekr.mp4",
+    title: "ZEEKR 007 GT",
+    description:
+      "El ZEEKR 007 GT fue lanzado en China en abril del 2025 y a Europa llegará como 007 GT.",
+  },
+];
+
+// Juntamos dinámicos + estáticos
+const allPruebas = [...dynamicPruebas, ...staticPruebas];
 ---
 
 <section id="test-drive" class="test-drive-container">
   <div class="central-content">
     <h1>TEST DRIVE videos</h1>
     <p class="texto-principal">
-      Ponemos a prueba todos los vehiculos, te contamos lo mas relevante de cada
-      una de las marcas
+      Ponemos a prueba todos los vehículos, te contamos lo más relevante de cada
+      una de las marcas.
     </p>
   </div>
 
-  <!-- Videos grandes -->
-  <div class="video video-grande">
-    <video controls class="video-element video-grande-element">
-      <source src="../img/videos-pruebas/ford f-150.mp4" type="video/mp4" />
-      Tu navegador no soporta el elemento de video.
-    </video>
-    <div class="video-texto">
-      <h2>Modelo Destacado</h2>
-      <p>
-        en nuestra prueba destacada tenemos a la ford f150 una pick-up que te
-        brinda todo lo que necesitas para esos viajes fuera de la ciudad,
-        Descubre la emoción de nuestro modelo estrella.
-      </p>
-    </div>
-  </div>
+  <!-- Video destacado -->
+  {
+    allPruebas.length > 0 && (
+      <div class="video video-grande">
+        <video controls class="video-element video-grande-element">
+          <source src={allPruebas[0].video} type="video/mp4" />
+          Tu navegador no soporta el elemento de video.
+        </video>
+        <div class="video-texto">
+          <h2>{allPruebas[0].title}</h2>
+          <p>{allPruebas[0].description}</p>
+        </div>
+      </div>
+    )
+  }
 
-  <!-- Importa Font Awesome en el <head> -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
-
+  <!-- Título videos -->
   <div class="titulo-videos">
     <i class="fa-solid fa-plus"></i>
     <span>Videos</span>
@@ -41,107 +105,22 @@
 
   <!-- Videos pequeños -->
   <div class="videos-dos-columnas">
-    <div class="columna-videos">
-      <!-- Video 1 -->
-      <div class="video video-horizontal">
-        <video controls class="video-element">
-          <source src="../img/videos-pruebas/xiaomi YU7.mp4" type="video/mp4" />
-          Tu navegador no soporta el elemento de video.
-        </video>
-        <div class="video-texto">
-          <h2>Xiaomi YU7</h2>
-          <p>
-            Diseño y tecnología en armonía, el carro de xiaomi rompiendo record
-            como el mas vendido en poco tiempo.
-          </p>
+    {
+      allPruebas.slice(1).map((video) => (
+        <div class="video video-horizontal">
+          <video controls class="video-element">
+            <source src={video.video} type="video/mp4" />
+            Tu navegador no soporta el elemento de video.
+          </video>
+          <div class="video-texto">
+            <h2>{video.title}</h2>
+            <p>{video.description}</p>
+          </div>
         </div>
-      </div>
-      <!-- Video 2 -->
-      <div class="video video-horizontal">
-        <video controls class="video-element">
-          <source
-            src="../img/videos-pruebas/nissan qashqai.mp4"
-            type="video/mp4"
-          />
-          Tu navegador no soporta el elemento de video.
-        </video>
-        <div class="video-texto">
-          <h2>Nissan Qashqai</h2>
-          <p>
-            Con nueva parrilla la nissan qashqai nos sorprende con sus cambios
-            en tecnología y seguridad.
-          </p>
-        </div>
-      </div>
-      <!-- Video 3 -->
-      <div class="video video-horizontal">
-        <video controls class="video-element">
-          <source
-            src="../img/videos-pruebas/prueba-mazda.mp4"
-            type="video/mp4"
-          />
-          Tu navegador no soporta el elemento de video.
-        </video>
-        <div class="video-texto">
-          <h2>Mazda Iconic</h2>
-          <p>
-            El diseño de este Mazda Iconic es muy moderno y elegante, destaca
-            por sus líneas deportivas y detalles innovadores.
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="columna-videos">
-      <!-- Video 4 -->
-      <div class="video video-horizontal">
-        <video controls class="video-element">
-          <source src="../img/videos-pruebas/video-dfsk.mp4" type="video/mp4" />
-          Tu navegador no soporta el elemento de video.
-        </video>
-        <div class="video-texto">
-          <h2>dfsk-e5</h2>
-          <p>
-            La SUV eléctrica para 7 pasajeros confortable y espaciosa, nos
-            sorprendió mucho y seguro que a ustedes también les gustará.
-          </p>
-        </div>
-      </div>
-      <!-- Video 5 -->
-      <div class="video video-horizontal">
-        <video controls class="video-element">
-          <source
-            src="../img/videos-pruebas/video-kia-k4.mp4"
-            type="video/mp4"
-          />
-          Tu navegador no soporta el elemento de video.
-        </video>
-        <div class="video-texto">
-          <h2>kia-k4 xline</h2>
-          <p>
-            La marca no quiere dejar los automóviles por eso nos presenta el k4
-            xline, deportivo, seguro y muy confortable.
-          </p>
-        </div>
-      </div>
-      <!-- Video 6 -->
-      <div class="video video-horizontal">
-        <video controls class="video-element">
-          <source
-            src="../img/videos-pruebas/video-zeekr.mp4"
-            type="video/mp4"
-          />
-          Tu navegador no soporta el elemento de video.
-        </video>
-        <div class="video-texto">
-          <h2>ZEEKR 007 GT</h2>
-          <p>
-            El ZEEKR 007 GT fue lanzado en China para el mes de abril del 2025 y
-            a Europa llegará como 007 GT.
-          </p>
-        </div>
-      </div>
-    </div>
+      ))
+    }
   </div>
+
   <div class="ver-mas-container">
     <button class="ver-mas">Ver más videos</button>
   </div>
@@ -169,7 +148,8 @@
 
   .test-drive-container h1 {
     font-family: "Georgia", serif;
-    font-size: 60px;
+    font-size: clamp(40px, 5vw, 60px);
+    font-weight: 700;
     font-weight: bolder;
     color: #e2b009;
     text-transform: uppercase;

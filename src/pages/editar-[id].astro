@@ -1,0 +1,123 @@
+---
+export const prerender = false;
+
+type Note = {
+  id: number;
+  title: string;
+  subtitle?: string;
+  content: string;
+  category?: string;
+  image1?: string;
+  video1?: string;
+};
+
+const { id } = Astro.params;
+let note: Note | null = null;
+
+try {
+  const res = await fetch(
+    `http://localhost:8888/.netlify/functions/get-notes?id=${id}`
+  );
+  if (res.ok) {
+    note = await res.json();
+  }
+} catch (err) {
+  console.error("Error cargando la nota:", err);
+}
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Editar Nota</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <nav>
+      <a href="/formulario">➕ Crear Nota</a> |
+      <a href="/admin">🗂️ Administrar Notas</a>
+    </nav>
+
+    <h1>✏️ Editar Nota</h1>
+
+    {
+      note ? (
+        <form id="editForm">
+          <input type="hidden" name="id" value={note.id} />
+
+          <label>Título:</label>
+          <input type="text" name="title" value={note.title} required />
+
+          <label>Subtítulo:</label>
+          <input type="text" name="subtitle" value={note.subtitle || ""} />
+
+          <label>Contenido:</label>
+          <textarea name="content" required>
+            {note.content}
+          </textarea>
+
+          <label>Categoría:</label>
+          <select name="category">
+            <option
+              value="electricos"
+              selected={note.category === "electricos"}
+            >
+              Eléctricos
+            </option>
+            <option value="hibridos" selected={note.category === "hibridos"}>
+              Híbridos
+            </option>
+            <option value="deportes" selected={note.category === "deportes"}>
+              Deportes
+            </option>
+            <option value="noticias" selected={note.category === "noticias"}>
+              Noticias
+            </option>
+          </select>
+
+          <label>Imagen principal:</label>
+          <input type="text" name="image1" value={note.image1 || ""} />
+
+          <label>Video principal:</label>
+          <input type="text" name="video1" value={note.video1 || ""} />
+
+          <button type="submit">💾 Guardar Cambios</button>
+        </form>
+      ) : (
+        <p>❌ Nota no encontrada.</p>
+      )
+    }
+
+    <script>
+      const form = document.getElementById("editForm");
+      if (form instanceof HTMLFormElement) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const data = Object.fromEntries(new FormData(form));
+          try {
+            const res = await fetch(
+              "http://localhost:8888/.netlify/functions/update-note",
+              {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+              }
+            );
+
+            if (res.ok) {
+              alert("✅ Nota actualizada");
+              window.location.href = "/admin";
+            } else {
+              const error = await res.json();
+              alert("❌ " + (error.error || "Error actualizando nota"));
+            }
+          } catch (err) {
+            console.error("Error actualizando:", err);
+            alert("❌ Error en el servidor");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

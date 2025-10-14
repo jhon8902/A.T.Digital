@@ -1,0 +1,45 @@
+---
+// filepath: c:\Users\pc\Downloads\A.T.Digital\src\pages\notas\[id].astro
+import Layout from "../../layouts/Layout.astro";
+export const prerender = false;
+const { id } = Astro.params;
+
+let note: any = null;
+
+try {
+  const res = await fetch(
+    `http://localhost:8888/.netlify/functions/get-notes?id=${id}`
+  );
+  if (res.ok) {
+    note = await res.json();
+  }
+} catch (err) {
+  console.error("Error cargando la nota:", err);
+}
+---
+
+<Layout title={note ? note.title : "Nota no encontrada"} bodyClass="otras-page">
+  {
+    note ? (
+      <section class={`nota-container ${note.category || ""}`}>
+        <div class="nota-header">
+          <h1>{note.title}</h1>
+          {note.subtitle && <p class="subtitulo">{note.subtitle}</p>}
+        </div>
+        {note.image1 && (
+          <section class="feature-banner-1">
+            <img src={note.image1} alt={note.title} />
+          </section>
+        )}
+        <section class="dynamic-layout">
+          <div class="dynamic-item text-box">
+            <h2>Contenido</h2>
+            <p>{note.content}</p>
+          </div>
+        </section>
+      </section>
+    ) : (
+      <p>Nota no encontrada ❌</p>
+    )
+  }
+</Layout>

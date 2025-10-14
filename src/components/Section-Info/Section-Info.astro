@@ -1,125 +1,138 @@
 ---
+// --- CARGA Y FILTRO DE NOTAS DE CATEGORÍA "noticias" ---
 
+let dynamicNotes: any[] = [];
+
+try {
+  // 1️⃣ Traemos las notas desde tu función de Netlify
+  const baseUrl = import.meta.env.DEV
+    ? "http://localhost:8888"
+    : Astro.site || "";
+  const res = await fetch(`${baseUrl}/.netlify/functions/get-notes`);
+
+  if (res.ok) {
+    const data = await res.json();
+
+    // 2️⃣ Filtramos solo las notas de la categoría "noticias"
+    const filtered = data.filter(
+      (note: any) => note.category?.toLowerCase() === "noticias"
+    );
+
+    // 3️⃣ Normalizamos formato para el carrusel
+    dynamicNotes = filtered.map((note: any) => ({
+      href: `/notas/${note.id}`,
+      img: note.image1 || "/img/default.jpg",
+      alt: note.title,
+      caption: note.title,
+      fecha: `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`,
+    }));
+  } else {
+    console.error("❌ Error al obtener notas:", res.statusText);
+  }
+} catch (err) {
+  console.error("❌ Error cargando notas dinámicas:", err);
+}
+
+// 4️⃣ Notas estáticas (las que ya tenías)
+const staticNotes = [
+  {
+    href: "/noticias-carrusel/noticia-ford",
+    img: "/img/ford-bronco/ford-bronco-portada.jpg",
+    alt: "Ford Bronco, SUV todo terreno",
+    caption: "Ford Bronco: la última apuesta todoterreno.",
+    fecha: "Publicado: 01/07/2025",
+  },
+  {
+    href: "/noticias-carrusel/noticia-audi",
+    img: "/img/audi-etron/audi-portada.webp",
+    alt: "Audi E-TRON: SUV eléctrico de lujo",
+    caption: "Audi E-TRON: el SUV eléctrico más elegante de la marca.",
+    fecha: "Publicado: 28/06/2025",
+  },
+  {
+    href: "/noticias-carrusel/noticia-bmw-concept",
+    img: "/img/bmw-concept/bmw-concept-portada.webp",
+    alt: "BMW Concept XM",
+    caption: "BMW Concept XM: El Futuro del Lujo y la Potencia Híbrida",
+    fecha: "Publicado: 25/06/2025",
+  },
+  {
+    href: "/noticias-carrusel/noticia-bmw",
+    img: "/img/bmw-330e/bmw.webp",
+    alt: "BMW Serie 5 eléctrico y potente",
+    caption: "BMW Serie 5: poderoso y ahora electrificado.",
+    fecha: "Publicado: 20/06/2025",
+  },
+  {
+    href: "/noticias-carrusel/noticia-dfsk",
+    img: "/img/dfsk-e5/dfsk-ultima-portada.jpg",
+    alt: "DFSK E5: híbrida para 7 pasajeros",
+    caption: "DFSK seres e5: la híbrida para 7 pasajeros en Colombia.",
+    fecha: "Publicado: 15/06/2025",
+  },
+];
+
+// 5️⃣ Combinamos dinámicas + estáticas y mostramos máximo 5
+const allNotes = [...dynamicNotes, ...staticNotes].slice(0, 5);
 ---
 
-<section class="section-info w-full py-30">
-  <div class="sticky-container">
-    <div class="titulo-con-lineas sticky-titulo">
-      <div class="linea"></div>
-      <h1>Noticias sobre ruedas</h1>
-      <p class="descripcion-noticias">
-        La actualidad del sector automotor colombiano: lanzamientos,
-        regulaciones, tecnología y más.
-      </p>
-      <div class="linea"></div>
+<section id="noticias" class="section-info w-full py-30">
+  <div class="info-header">
+    <h1 class="info-titulo anim-titulo">
+      Noticias sobre ruedas
+      <span class="icono-rueda">
+        <i class="fa-solid fa-gauge-high"></i>
+      </span>
+    </h1>
+    <p class="info-descripcion">
+      La actualidad del sector automotor colombiano: lanzamientos, regulaciones,
+      tecnología y más.
+    </p>
+  </div>
+
+  <div class="container mx-auto px-2">
+    <div id="carousel" class="relative flex overflow-hidden">
+      {
+        allNotes.map((nota) => (
+          <a
+            href={nota.href}
+            class="carousel-item relative w-full transition-opacity duration-[1400ms] hover:opacity-75"
+          >
+            <img
+              src={nota.img}
+              alt={nota.alt}
+              class="w-full h-full object-cover"
+            />
+            <div class="carousel-caption">
+              {nota.caption}
+              <span class="fecha-publicacion">{nota.fecha}</span>
+            </div>
+          </a>
+        ))
+      }
     </div>
 
-    <div class="container mx-auto px-2">
-      <div id="carousel" class="relative flex overflow-hidden">
-        <!-- Imagen 1 -->
-        <a
-          href="/noticias-carrusel/noticia-ford"
-          class="carousel-item relative w-full transition-opacity duration-[1400ms] hover:opacity-75"
-        >
-          <!-- Cambiado a <h2> -->
-          <img
-            src="../img/ford-bronco/ford-bronco-portada.jpg"
-            alt="Ford Bronco, SUV todo terreno"
-            class="w-full h-full object-cover"
-          />
-          <div class="carousel-caption">
-            Ford Bronco: la última apuesta todoterreno.
-            <span class="fecha-publicacion">Publicado: 01/07/2025</span>
-          </div>
-        </a>
+    <!-- Botones de navegación -->
+    <button id="prevBtn" class="carousel-control-prev" aria-label="Anterior"
+      >❮</button
+    >
+    <button id="nextBtn" class="carousel-control-next" aria-label="Siguiente"
+      >❯</button
+    >
 
-        <!-- Imagen 4 -->
-        <a
-          href="/noticias-carrusel/noticia-audi"
-          class="carousel-item relative w-full transition-transform duration-600 hover:scale-95"
-        >
-          <!-- Cambiado a <h2> -->
-          <img
-            src="../img/audi-etron/audi-portada.webp"
-            alt="Audi E-TRON: SUV eléctrico de lujo"
-            class="w-full h-full object-cover"
-          />
-          <div class="carousel-caption">
-            Audi E-TRON: el SUV eléctrico más elegante de la marca.
-            <span class="fecha-publicacion">Publicado: 28/06/2025</span>
-          </div>
-        </a>
-
-        <!-- Imagen 5 -->
-        <a
-          href="/noticias-carrusel/noticia-bmw-concept"
-          class="carousel-item relative w-full transition-transform duration-600 hover:scale-105"
-        >
-          <!-- Cambiado a <h2> -->
-          <img
-            src="../img/bmw-concept/bmw-concept-portada.webp"
-            alt="BYD Yuan Plus fuerte en electrificación"
-            class="w-full h-full object-cover"
-          />
-
-          <div class="carousel-caption">
-            BMW Concept XM: El Futuro del Lujo y la Potencia Híbrida
-            <span class="fecha-publicacion">Publicado: 25/06/2025</span>
-          </div>
-        </a>
-
-        <!-- Imagen 3 -->
-        <a
-          href="/noticias-carrusel/noticia-bmw"
-          class="carousel-item relative w-full transition-transform duration-600 hover:scale-95"
-        >
-          <!-- Cambiado a <h2> -->
-          <img
-            src="../img/bmw-330e/bmw.webp"
-            alt="BMW Serie 5 eléctrico y potente"
-            class="w-full h-full object-cover"
-          />
-          <div class="carousel-caption">
-            BMW Serie 5: poderoso y ahora electrificado.
-            <span class="fecha-publicacion">Publicado: 20/06/2025</span>
-          </div>
-        </a>
-
-        <!-- Imagen 2 -->
-        <a
-          href="/noticias-carrusel/noticia-dfsk"
-          class="carousel-item relative w-full transition-transform duration-600 hover:scale-95"
-        >
-          <!-- Cambiado a <h2> -->
-          <img
-            src="../img/dfsk-e5/dfsk-ultima-portada.jpg"
-            alt="DFSK E5: híbrida para 7 pasajeros"
-            class="w-full h-full object-cover"
-          />
-          <div class="carousel-caption">
-            DFSK seres e5: la híbrida para 7 pasajeros en colombia.
-            <span class="fecha-publicacion">Publicado: 15/06/2025</span>
-          </div>
-        </a>
-      </div>
-
-      <!-- Botones de navegación -->
-      <button id="prevBtn" class="carousel-control-prev" aria-label="Anterior"
-        >❮</button
-      >
-      <button id="nextBtn" class="carousel-control-next" aria-label="Siguiente"
-        >❯</button
-      >
-
-      <!-- Botón Ver más noticias -->
-      <div class="ver-mas-noticias-section">
-        <a href="/noticias" class="ver-mas-noticias-btn">Ver más noticias</a>
-      </div>
+    <!-- Botón Ver más noticias -->
+    <div class="ver-mas-noticias-section">
+      <a href="/noticias" class="ver-mas-noticias-btn">Ver más noticias</a>
     </div>
   </div>
 </section>
 
 <style>
+  html {
+    scroll-behavior: smooth;
+    scroll-margin-top: 100px; /* ajusta según el alto de tu menú sticky */
+  }
+
   * {
     box-sizing: border-box;
     margin: 0;
@@ -135,33 +148,7 @@
   }
 
   .section-info {
-    background: white;
-  }
-
-  h1 {
-    max-width: 100%;
-    text-align: center;
-    font-weight: 600;
-    font-size: 60px;
-    color: rgb(20, 20, 20);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    opacity: 0; /* Empieza invisible */
-    font-family: "Georgia", serif;
-    padding: 5px;
-    position: relative;
-    transform: translateY(-40px);
-    /* Quita la línea de animación aquí */
-    /* animation: fadeInTitle 1.2s forwards; */
-    background: #dbad06;
-    margin-bottom: 10px;
-
-    /* Gradiente en el texto 
-    background: linear-gradient(90deg, #022038 20%, #705f12 80%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;*/
+    background: black;
   }
 
   @keyframes fadeInTitle {
@@ -176,6 +163,77 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  .info-header {
+    background: linear-gradient(90deg, #fbcb1d 86%, #232323 76%);
+    padding: 38px 0 24px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px; /* Espacio uniforme entre todos los hijos */
+  }
+
+  .info-titulo {
+    color: black;
+    font-size: 90px;
+    letter-spacing: 2px;
+    font-family: "Georgia", serif;
+    text-transform: uppercase;
+    font-weight: 800;
+    text-shadow: none;
+    padding: 0;
+    opacity: 1;
+    background: none;
+    margin: 0;
+  }
+
+  .info-descripcion {
+    color: rgb(16, 16, 16);
+
+    font-size: 1.9rem;
+    font-weight: 600;
+    text-align: center;
+    background: none;
+    max-width: 1000px;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (max-width: 600px) {
+    .info-header {
+      padding: 18px 0 10px 0;
+    }
+    .info-icono {
+      font-size: 1.7rem;
+      margin-bottom: 10px;
+    }
+    .info-titulo {
+      font-size: 28px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .info-descripcion {
+      color: #2b2502;
+      max-width: 80%; /* o 85%, según se vea mejor */
+      text-align: start;
+      font-size: 1rem;
+      padding: 0 8px;
+      /* text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);  mejora legibilidad */
+    }
+    .info-header {
+      background: linear-gradient(120deg, #fbcb1d 75%, #232323 65%);
+    }
+  }
+
+  .icono-rueda {
+    color: #f6f5f3; /* Amarillo de tu paleta */
+    font-size: 1.4em;
+    margin-left: 18px;
+    filter: drop-shadow(0 2px 4px #0008);
+    display: inline-flex;
+    align-items: center;
   }
 
   .descripcion-noticias {
@@ -236,7 +294,7 @@
   /* Agrega este bloque al final de tu <style> */
   .fecha-publicacion {
     display: block;
-    font-size: 0.7em;
+    font-size: 0.5em;
     color: #dbad06;
     margin-top: 6px;
     font-weight: 300;
@@ -253,33 +311,36 @@
     z-index: 100;
   }
 
+  /* Carrusel: caption con degradado */
   .carousel-caption {
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-    background: #140e01;
-    color: rgb(225, 225, 225);
-    font-size: 32px;
-    padding: 16px 40px;
+    background: linear-gradient(
+      180deg,
+      rgba(20, 14, 1, 0) 0%,
+      rgba(20, 14, 1, 0.85) 100%
+    );
+    color: #fff;
+    font-size: 2.6rem;
+    padding: 18px 40px 12px 40px;
     font-weight: 600;
     text-align: center;
-
     z-index: 5;
-
+    border: none;
+    box-shadow: none;
     opacity: 0;
     pointer-events: none;
+    text-transform: uppercase;
   }
 
-  /* animacion entrada texto caption */
   .carousel-item.active .carousel-caption {
     opacity: 1;
     animation: captionFade 2.6s ease forwards;
     pointer-events: auto;
   }
-
   @keyframes captionFade {
     0% {
       opacity: 0;
@@ -315,21 +376,22 @@
     transition: background-color 0.6s ease;
   }
 
+  /* Centrar botones prev/next sobre la imagen */
   .carousel-control-prev,
   .carousel-control-next {
     position: absolute;
-    top: 50%;
+    top: 130%;
     transform: translateY(-50%);
-    background-color: #19354b;
-    color: white;
+    background-color: white;
+    color: black;
     border: none;
     font-size: 45px;
     cursor: pointer;
     z-index: 10;
     border-radius: 50%;
     padding: 12px;
-    width: 48px;
-    height: 58px;
+    width: 58px;
+    height: 68px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     transition:
       background-color 0.3s ease,
@@ -350,8 +412,8 @@
 
   .carousel-control-prev:hover,
   .carousel-control-next:hover {
-    background-color: rgb(20, 55, 81);
-    color: white;
+    background-color: white;
+    color: rgb(20, 55, 81);
     transform: translateY(-50%) scale(1.15);
   }
 
@@ -367,8 +429,8 @@
     margin-bottom: 40px;
     font-weight: 600;
     border: none;
-
-    padding: 16px 38px;
+    border-radius: 50px;
+    padding: 14px 36px;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     text-decoration: none;
@@ -379,7 +441,29 @@
     color: #000;
   }
 
+  /* animacion titulo pricipal h1*/
+  .anim-titulo {
+    opacity: 0;
+    transform: translateY(-40px);
+    animation: none;
+  }
+
+  .anim-titulo.visible {
+    animation: fadeInTitle 1.2s forwards;
+  }
+
+  @keyframes fadeInTitle {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   @media (max-width: 768px) {
+    #noticias {
+      scroll-margin-top: 100px !important; /* móvil, ajusta según el alto del menú hamburguesa */
+    }
+
     h1 {
       font-size: 1.6rem;
     }
@@ -401,6 +485,14 @@
 
     .carousel-item img {
       height: 60vh;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      top: 70%;
+      width: 50px;
+      height: 58px;
+      font-size: 32px;
     }
 
     .carousel-control-prev {
@@ -466,25 +558,21 @@
 
     .carousel-control-prev,
     .carousel-control-next {
-      top: 48%;
+      width: 34px;
+      height: 40px;
+      top: 67%;
       font-size: 26px;
-      color: white;
-      background-color: black;
+      color: black;
+      background-color: white;
       text-transform: uppercase;
     }
 
-    .carousel-control-next,
     .carousel-control-prev {
-      width: 34px;
-      height: 40px;
-    }
-
-    .carousel-control-prev {
-      left: 30px;
+      left: 15px;
     }
 
     .carousel-control-next {
-      right: 30px;
+      right: 15px;
     }
 
     .fecha-publicacion {
@@ -501,76 +589,96 @@
       padding: 10px 24px;
     }
   }
+
+  #noticias {
+    scroll-margin-top: 120px; /* Ajusta este valor al alto real de tu menú */
+  }
 </style>
 
 <script>
-  const carousel = document.getElementById("carousel");
-  const prevBtn = document.getElementById("prevBtn");
-  const nextBtn = document.getElementById("nextBtn");
-
-  if (carousel && prevBtn && nextBtn) {
-    const items = Array.from(carousel.getElementsByClassName("carousel-item"));
-    let currentIndex = 0;
-
-    function showItem(index) {
-      items.forEach((item, i) => {
-        item.classList.remove("active");
-        const caption = item.querySelector(".carousel-caption");
-        if (caption) {
-          (caption as HTMLElement).classList.remove("animate-caption");
-          void (caption as HTMLElement).offsetWidth;
-          (caption as HTMLElement).classList.add("animate-caption");
-        }
-        const button = item.querySelector("a");
-        if (button) {
-          (button as HTMLElement).classList.remove("animate-caption");
-          void (button as HTMLElement).offsetWidth;
-          (button as HTMLElement).classList.add("animate-caption");
-        }
-      });
-      items[index].classList.add("active");
-    }
-
-    prevBtn.addEventListener("click", () => {
-      currentIndex = (currentIndex - 1 + items.length) % items.length;
-      showItem(currentIndex);
-    });
-
-    nextBtn.addEventListener("click", () => {
-      currentIndex = (currentIndex + 1) % items.length;
-      showItem(currentIndex);
-    });
-
-    showItem(currentIndex);
-  }
-</script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const titulo = document.querySelector(".sticky-titulo h1") as HTMLElement;
-    if (titulo) {
-      titulo.style.opacity = "0";
-      titulo.style.transform = "translateY(-40px)";
+  window.addEventListener("DOMContentLoaded", () => {
+    const titulo = document.querySelector(".anim-titulo");
+    const seccion = document.getElementById("noticias");
+    if (titulo && seccion) {
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              // Reinicia la animación
-              titulo.style.animation = "none";
-              // Forzar reflow
-              void titulo.offsetWidth;
-              titulo.style.animation = "fadeInTitle 1.2s forwards";
-            } else {
-              // Oculta el título y lo sube para que la animación se repita
-              titulo.style.opacity = "0";
-              titulo.style.transform = "translateY(-40px)";
-              titulo.style.animation = "none";
+              titulo.classList.remove("visible");
+              // Forzar reflujo para reiniciar animación
+              void (titulo as HTMLElement).offsetWidth;
+              titulo.classList.add("visible");
             }
           });
         },
-        { threshold: 0.3 }
+        { threshold: 0.3 } // Ajusta el umbral según necesites
       );
-      observer.observe(titulo);
+      observer.observe(seccion);
+
+      // 👇 Fuerza la animación si ya está visible al cargar
+      if (seccion.getBoundingClientRect().top < window.innerHeight) {
+        titulo.classList.add("visible");
+      }
+    }
+
+    const carousel = document.getElementById("carousel");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    if (carousel && prevBtn && nextBtn) {
+      const items = Array.from(
+        carousel.getElementsByClassName("carousel-item")
+      );
+      let currentIndex = 0;
+      let autoInterval: any = null;
+      const AUTO_TIME = 5000; // 5 segundos
+
+      function showItem(index: number) {
+        items.forEach((item, i) => {
+          item.classList.remove("active");
+          const caption = item.querySelector(".carousel-caption");
+          if (caption) {
+            (caption as HTMLElement).classList.remove("animate-caption");
+            void (caption as HTMLElement).offsetWidth;
+            (caption as HTMLElement).classList.add("animate-caption");
+          }
+          const button = item.querySelector("a");
+          if (button) {
+            (button as HTMLElement).classList.remove("animate-caption");
+            void (button as HTMLElement).offsetWidth;
+            (button as HTMLElement).classList.add("animate-caption");
+          }
+        });
+        items[index].classList.add("active");
+      }
+
+      function nextItem() {
+        currentIndex = (currentIndex + 1) % items.length;
+        showItem(currentIndex);
+      }
+
+      function prevItem() {
+        currentIndex = (currentIndex - 1 + items.length) % items.length;
+        showItem(currentIndex);
+      }
+
+      function startAuto() {
+        if (autoInterval) clearInterval(autoInterval);
+        autoInterval = setInterval(nextItem, AUTO_TIME);
+      }
+
+      prevBtn.addEventListener("click", () => {
+        prevItem();
+        startAuto(); // Reinicia el temporizador al navegar manualmente
+      });
+
+      nextBtn.addEventListener("click", () => {
+        nextItem();
+        startAuto();
+      });
+
+      showItem(currentIndex);
+      startAuto();
     }
   });
 </script>
