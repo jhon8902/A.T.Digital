@@ -16,11 +16,14 @@ environment = { NODE_VERSION = "16" }
   publish = "dist"
   functions = "netlify/functions"
 
-# 👇 PROXY: cuando pidas /api o /.netlify/functions en dev
-[[redirects]]
-  from = "/.netlify/functions/*"
-  to = "http://localhost:9999/.netlify/functions/:splat"
-  status = 200
-  force = true
+# 👇 ESTA REGLA SOLO SE USA LOCALMENTE
+# Si quieres mantenerla para desarrollo, cámbiala a esto:
+[context.dev]
+  [[redirects]]
+    from = "/api/*"
+    to = "http://localhost:9999/.netlify/functions/:splat"
+    status = 200
+    force = true
+
 
 
