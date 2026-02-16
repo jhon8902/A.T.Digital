@@ -1,8 +1,9 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import "../../../public/css/noticias.css";
 ---
 
-<Layout title="nota-audi" bodyClass="otras-page">
+<Layout title="nota-audi" bodyClass="nota-noticias">
   <section class="section-noticias">
     <!-- Título -->
     <div class="header">
@@ -118,11 +119,191 @@ import Layout from "../../layouts/Layout.astro";
           </p>
         </div>
       </div>
+
+      <!-- Ficha Técnica Profesional -->
+      <section class="ficha-tecnica-profesional">
+        <h2
+          style="font-size: 36px; font-weight: bold; color: #08341f; text-align: center; margin-bottom: 30px; font-family: 'Poppins', sans-serif;"
+        >
+          📋 Ficha Técnica Profesional - Audi e-tron
+        </h2>
+        <div class="ficha-grid">
+          <div class="ficha-item">
+            <div class="ficha-label">💰 Precio Estimado</div>
+            <div class="ficha-value">
+              Desde €82,000 / $365 millones COP (aprox.)
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🚗 Versiones</div>
+            <div class="ficha-value">
+              e-tron 50 quattro, e-tron 55 quattro, e-tron S, e-tron Sportback
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">⚙️ Motor</div>
+            <div class="ficha-value">
+              Dual motor eléctrico asíncrono (delantero + trasero) / e-tron S:
+              Tri-motor
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">💪 Potencia</div>
+            <div class="ficha-value">
+              e-tron 50: 313 hp / e-tron 55: 408 hp / e-tron S: 503 hp
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🔩 Torque</div>
+            <div class="ficha-value">
+              e-tron 50: 540 Nm / e-tron 55: 664 Nm / e-tron S: 973 Nm
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🔋 Batería y Autonomía</div>
+            <div class="ficha-value">
+              e-tron 50: 71 kWh (341 km) / e-tron 55: 95 kWh (441 km WLTP)
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">⚡ Aceleración</div>
+            <div class="ficha-value">
+              0-100 km/h: e-tron 50 6.8s / e-tron 55 5.7s / e-tron S 4.5s
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🔌 Carga Rápida</div>
+            <div class="ficha-value">
+              Carga DC hasta 150 kW (10-80% en ~30 min) / AC 11-22 kW
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🛡️ Seguridad</div>
+            <div class="ficha-value">
+              Audi Pre Sense 360°, asistente de tráfico cruzado, frenado
+              autónomo, 8 airbags, cámaras virtuales (opcional), sistema de
+              visión nocturna
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🎯 Equipamiento Destacado</div>
+            <div class="ficha-value">
+              MMI Touch Response doble pantalla, Virtual Cockpit Plus 12.3",
+              suspensión neumática adaptativa, carga inductica, climatización 4
+              zonas, Matrix LED
+            </div>
+          </div>
+          <div class="ficha-item pros">
+            <div class="ficha-label">✅ Puntos Fuertes</div>
+            <div class="ficha-value">
+              • Calidad premium Audi impecable<br />• Hasta 441 km autonomía
+              real<br />• Suspensión neumática muy confortable<br />• Carga
+              rápida 150 kW<br />• Capacidad de remolque hasta 1,800 kg
+            </div>
+          </div>
+          <div class="ficha-item contras">
+            <div class="ficha-label">❌ Áreas de Mejora</div>
+            <div class="ficha-value">
+              • Eficiencia energética mejorable<br />• Carga máxima 150 kW vs
+              350 kW de competencia<br />• Precio elevado vs Tesla Model X<br
+              />• Peso 2.5+ toneladas afecta dinámica
+            </div>
+          </div>
+          <div class="ficha-item competencia">
+            <div class="ficha-label">🏁 Competencia Directa</div>
+            <div class="ficha-value">
+              Mercedes-Benz EQC, BMW iX xDrive40, Jaguar I-PACE, Tesla Model X,
+              Genesis GV60
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </section>
 </Layout>
 
 <style>
+  /* === ESTILOS FICHA TÉCNICA PROFESIONAL === */
+  .ficha-tecnica-profesional {
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .ficha-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .ficha-item {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    transition: all 0.3s ease;
+    border-left: 4px solid #08341f;
+  }
+
+  .ficha-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    border-left-color: #e6b410;
+  }
+
+  .ficha-item.pros {
+    border-left-color: #28a745;
+    background: linear-gradient(135deg, #ffffff 0%, #f0fff4 100%);
+  }
+
+  .ficha-item.contras {
+    border-left-color: #dc3545;
+    background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+  }
+
+  .ficha-item.competencia {
+    border-left-color: #007bff;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
+  }
+
+  .ficha-label {
+    font-weight: 700;
+    color: #08341f;
+    margin-bottom: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .ficha-value {
+    color: #2c3e50;
+    font-size: 15px;
+    line-height: 1.6;
+    font-family: "Georgia", serif;
+  }
+
+  @media (max-width: 768px) {
+    .ficha-tecnica-profesional {
+      padding: 20px 15px;
+      margin: 20px 10px;
+    }
+
+    .ficha-grid {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .ficha-tecnica-profesional h2 {
+      font-size: 24px !important;
+    }
+  }
+  /* === FIN ESTILOS FICHA TÉCNICA PROFESIONAL === */
+
   body {
     margin: 0;
     padding: 0;

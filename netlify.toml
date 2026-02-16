@@ -11,7 +11,7 @@ environment = { NODE_VERSION = "16" }
 [dev]
   framework = "astro"
   targetPort = 4321 # 👈 puerto donde corre Astro en dev
-  port = 8888       # 👈 puerto que usará Netlify Dev
+  port = 9999       # 👈 puerto que usará Netlify Dev
   command = "npm run dev"
   publish = "dist"
   functions = "netlify/functions"

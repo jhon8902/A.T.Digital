@@ -106,32 +106,103 @@ import Layout from "../../layouts/Layout.astro";
     </section>
   </section>
 
-  <section class="resumen">
-    <h2>Resumen Técnico</h2>
-    <div class="grid">
-      <div class="item">
-        <strong>Motor:</strong> Híbrido enchufable T8 Twin Engine 2.0L Turbo + Eléctrico
+  <section class="ficha-tecnica-profesional">
+    <h2
+      style="font-size: 36px; font-weight: bold; color: #08341f; text-align: center; margin-bottom: 30px; font-family: 'Poppins', sans-serif;"
+    >
+      📋 Ficha Técnica Profesional - Volvo XC90 T8 Recharge
+    </h2>
+    <div class="ficha-grid">
+      <div class="ficha-item">
+        <div class="ficha-label">💰 Precio Estimado</div>
+        <div class="ficha-value">
+          Desde €85,000 / $380 millones COP (aprox.)
+        </div>
       </div>
-      <div class="item">
-        <strong>Autonomía:</strong> Hasta 77 km en modo eléctrico / más de 900 km
-        combinada
+      <div class="ficha-item">
+        <div class="ficha-label">🚗 Versiones</div>
+        <div class="ficha-value">
+          XC90 T8 Recharge Inscription, XC90 T8 Recharge R-Design, XC90 T8
+          Recharge Excellence
+        </div>
       </div>
-      <div class="item">
-        <strong>Consumo:</strong> 2.1 L/100km (combinado WLTP)
+      <div class="ficha-item">
+        <div class="ficha-label">⚙️ Motor</div>
+        <div class="ficha-value">
+          2.0L 4 cilindros Turbo + Supercharger + motor eléctrico trasero (PHEV
+          Twin Engine)
+        </div>
       </div>
-      <div class="item">
-        <strong>Conectividad:</strong> Google integrado, Apple CarPlay, Android Auto
+      <div class="ficha-item">
+        <div class="ficha-label">💪 Potencia</div>
+        <div class="ficha-value">
+          Combinada: 455 hp (Gasolina 310 hp + Eléctrico 145 hp)
+        </div>
       </div>
-      <div class="item">
-        <strong>Seguridad:</strong> Pilot Assist, City Safety, 7 airbags, asistencias
-        ADAS
+      <div class="ficha-item">
+        <div class="ficha-label">🔩 Torque</div>
+        <div class="ficha-value">709 Nm combinado</div>
       </div>
-      <div class="item">
-        <strong>Pantalla:</strong> Central táctil 9” + clúster digital 12,3”
+      <div class="ficha-item">
+        <div class="ficha-label">🔋 Batería y Autonomía Eléctrica</div>
+        <div class="ficha-value">
+          Batería Li-ion 18.8 kWh / Autonomía eléctrica: 71-77 km WLTP /
+          Autonomía total: 900+ km
+        </div>
+      </div>
+      <div class="ficha-item">
+        <div class="ficha-label">⚡ Aceleración</div>
+        <div class="ficha-value">0-100 km/h: 5.5 segundos</div>
+      </div>
+      <div class="ficha-item">
+        <div class="ficha-label">🔌 Consumo y Carga</div>
+        <div class="ficha-value">
+          Consumo mixto: 2.1 L/100km WLTP / Carga AC: 3.7 kW (100% en 5h) /
+          Carga rápida opcional: 6.4 kW (2.5h)
+        </div>
+      </div>
+      <div class="ficha-item">
+        <div class="ficha-label">🛡️ Seguridad</div>
+        <div class="ficha-value">
+          Pilot Assist semiautónomo, City Safety con frenado automático,
+          detección peatones/ciclistas, BLIS punto ciego, 7 airbags, control
+          crucero adaptativo
+        </div>
+      </div>
+      <div class="ficha-item">
+        <div class="ficha-label">🎯 Equipamiento Destacado</div>
+        <div class="ficha-value">
+          Google integrado nativo, pantalla central 9", cuadro digital 12.3",
+          sonido Bowers & Wilkins, suspensión neumática, asientos Nappa,
+          climatización 4 zonas, 7 plazas
+        </div>
+      </div>
+      <div class="ficha-item pros">
+        <div class="ficha-label">✅ Puntos Fuertes</div>
+        <div class="ficha-value">
+          • Potencia impresionante 455 hp combinados<br />• 0-100 en 5.5s con
+          SUV 7 plazas<br />• 71-77 km autonomía eléctrica pura<br />• Lujo
+          escandinavo premium<br />• Suspensión neumática ultra confortable
+        </div>
+      </div>
+      <div class="ficha-item contras">
+        <div class="ficha-label">❌ Áreas de Mejora</div>
+        <div class="ficha-value">
+          • Batería 18.8 kWh limitada vs competencia actual<br />• Carga AC
+          lenta 3.7 kW estándar<br />• Precio elevado en segmento PHEV<br />•
+          Consumo aumenta significativamente sin carga eléctrica
+        </div>
+      </div>
+      <div class="ficha-item competencia">
+        <div class="ficha-label">🏁 Competencia Directa</div>
+        <div class="ficha-value">
+          BMW X5 xDrive50e, Mercedes-Benz GLE 350 de 4MATIC, Audi Q7 TFSI e,
+          Land Rover Range Rover PHEV, Porsche Cayenne E-Hybrid
+        </div>
       </div>
     </div>
-  </section>
-</Layout>
+  </section></Layout
+>
 
 <style>
   body {
@@ -372,4 +443,85 @@ import Layout from "../../layouts/Layout.astro";
       font-weight: 600;
     }
   }
+
+  /* === ESTILOS FICHA TÉCNICA PROFESIONAL === */
+  .ficha-tecnica-profesional {
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .ficha-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .ficha-item {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    transition: all 0.3s ease;
+    border-left: 4px solid #08341f;
+  }
+
+  .ficha-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    border-left-color: #e6b410;
+  }
+
+  .ficha-item.pros {
+    border-left-color: #28a745;
+    background: linear-gradient(135deg, #ffffff 0%, #f0fff4 100%);
+  }
+
+  .ficha-item.contras {
+    border-left-color: #dc3545;
+    background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+  }
+
+  .ficha-item.competencia {
+    border-left-color: #007bff;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
+  }
+
+  .ficha-label {
+    font-weight: 700;
+    color: #08341f;
+    margin-bottom: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .ficha-value {
+    color: #2c3e50;
+    font-size: 15px;
+    line-height: 1.6;
+    font-family: "Georgia", serif;
+  }
+
+  @media (max-width: 768px) {
+    .ficha-tecnica-profesional {
+      padding: 20px 15px;
+      margin: 20px 10px;
+    }
+
+    .ficha-grid {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .ficha-tecnica-profesional h2 {
+      font-size: 24px !important;
+    }
+  }
+  /* === FIN ESTILOS FICHA TÉCNICA PROFESIONAL === */
 </style>

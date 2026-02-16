@@ -2,7 +2,6 @@
 import Layout from "../../layouts/Layout.astro";
 ---
 
-<meta charset="UTF-8" />
 <Layout title="nota-volvo-ex90" bodyClass="otras-page">
   <section class="nota-container">
     <div class="nota-header">
@@ -139,6 +138,86 @@ import Layout from "../../layouts/Layout.astro";
         />
       </div>
     </section>
+
+    <!-- Ficha Técnica Profesional -->
+    <section class="ficha-tecnica-profesional">
+      <h2>Ficha Técnica Completa - Volvo EX90 Eléctrico</h2>
+      <div class="ficha-grid">
+        <div class="ficha-item">
+          <strong>💰 Precio estimado:</strong>
+          <p>Desde $80,000 - $110,000 USD (disponibilidad Colombia 2026)</p>
+        </div>
+        <div class="ficha-item">
+          <strong>🚗 Versiones:</strong>
+          <p>EX90 Twin Motor (AWD) | EX90 Performance (AWD+)</p>
+        </div>
+        <div class="ficha-item">
+          <strong>⚙️ Motor:</strong>
+          <p>Dual eléctrico (tracción total AWD)</p>
+        </div>
+        <div class="ficha-item">
+          <strong>🔥 Potencia:</strong>
+          <p>Twin Motor: 408 HP | Performance: 517 HP</p>
+        </div>
+        <div class="ficha-item">
+          <strong>⚡ Torque:</strong>
+          <p>Twin Motor: 770 Nm | Performance: 910 Nm</p>
+        </div>
+        <div class="ficha-item">
+          <strong>🔋 Batería y Autonomía:</strong>
+          <p>111 kWh (107 kWh útiles) | Hasta 600 km (WLTP)</p>
+        </div>
+        <div class="ficha-item">
+          <strong>⏱️ Aceleración:</strong>
+          <p>
+            Twin Motor: 0-100 km/h en 5.9s | Performance: 4.9s | Velocidad
+            máxima: 180 km/h
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>🔌 Carga:</strong>
+          <p>
+            Rápida DC 250 kW: 10-80% en 30 min | Carga bidireccional (V2L/V2H)
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>🛡️ Seguridad:</strong>
+          <p>
+            8 airbags, Sistema de Detección LiDAR, Pilot Assist con conducción
+            semi-autónoma, Frenado Automático, Detección 360°, Monitoreo
+            Interior (cámaras + sensores)
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>📱 Equipamiento:</strong>
+          <p>
+            Google integrado, pantalla central vertical 14.5", HUD, sistema de
+            sonido Bowers & Wilkins, 7 plazas opcionales, climatización 4 zonas,
+            techo panorámico
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>✅ Pros:</strong>
+          <p>
+            Máxima seguridad (LiDAR), lujo escandinavo, gran espacio 7 plazas,
+            tecnología de punta, carga bidireccional
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>❌ Contras:</strong>
+          <p>
+            Precio premium, peso elevado (+2,800 kg), disponibilidad limitada
+            inicial, dependencia de software Google
+          </p>
+        </div>
+        <div class="ficha-item competidores">
+          <strong>🏁 Competidores Directos:</strong>
+          <p>
+            BMW iX, Mercedes EQS SUV, Audi e-tron, Tesla Model X, Rivian R1S
+          </p>
+        </div>
+      </div>
+    </section>
   </section>
 </Layout>
 
@@ -168,7 +247,7 @@ import Layout from "../../layouts/Layout.astro";
   .nota-header h1 {
     display: inline-block;
     font-size: 58px;
-    border-bottom: 2px solid black;
+
     text-transform: uppercase;
     font-weight: 600;
     font-family: "Georgia", serif;
@@ -387,6 +466,68 @@ import Layout from "../../layouts/Layout.astro";
     }
   }
 
+  /* Ficha Técnica Profesional */
+  .ficha-tecnica-profesional {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 40px 20px;
+    margin: 40px auto;
+    max-width: 1200px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+  .ficha-tecnica-profesional h2 {
+    text-align: center;
+    font-size: 32px;
+    color: #08341f;
+    margin-bottom: 30px;
+    border-bottom: 3px solid #e6b410;
+    padding-bottom: 15px;
+    font-family: "Georgia", serif;
+  }
+  .ficha-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .ficha-item {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #e6b410;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  .ficha-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(230, 180, 16, 0.2);
+  }
+  .ficha-item strong {
+    display: block;
+    font-size: 16px;
+    color: #08341f;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .ficha-item p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #444;
+    margin: 0;
+  }
+  .ficha-item.competidores {
+    grid-column: 1 / -1;
+    background: #08341f;
+    border-left: 4px solid #e6b410;
+  }
+  .ficha-item.competidores strong {
+    color: #e6b410;
+  }
+  .ficha-item.competidores p {
+    color: #fff;
+  }
+
   /* SOLO PARA ESCRITORIO */
   @media (min-width: 1024px) {
     .dynamic-item {
@@ -417,36 +558,4 @@ import Layout from "../../layouts/Layout.astro";
   }
 </style>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const observeElement = (selector) => {
-      const element = document.querySelector(selector);
-
-      if (!element) {
-        console.error(
-          `El elemento con la clase ${selector} no se encontró en el DOM.`
-        );
-        return;
-      }
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              element.classList.add("visible");
-            } else {
-              element.classList.remove("visible"); // Opcional: para reiniciar la animación
-            }
-          });
-        },
-        { threshold: 0.5 } // El 50% del elemento debe estar visible
-      );
-
-      observer.observe(element);
-    };
-
-    // Observa los títulos
-    observeElement(".feature-title-1");
-    observeElement(".feature-title");
-  });
-</script>
+<script src="/js/nota-animations.js" defer></script>

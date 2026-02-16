@@ -1,42 +1,88 @@
 ---
-// filepath: c:\Users\pc\Downloads\A.T.Digital\src\pages\notas\[id].astro
 import Layout from "../../layouts/Layout.astro";
 export const prerender = false;
+
+// ✅ Definimos la interfaz del tipo de nota
+interface Note {
+  id: number;
+  title: string;
+  subtitle?: string;
+  category?: string;
+  content: string;
+  created_at?: string;
+  image1?: string;
+  image2?: string;
+  image3?: string;
+  image4?: string;
+  image5?: string;
+}
+
+// ✅ Parámetro recibido desde la URL
 const { id } = Astro.params;
 
-let note: any = null;
+// ✅ Definimos note con tipo explícito
+let note: Note | null = null;
+
+// ✅ URL según entorno
+const baseUrl = import.meta.env.DEV
+  ? "http://localhost:8888"
+  : Astro.site?.origin || "";
 
 try {
-  const res = await fetch(
-    `http://localhost:8888/.netlify/functions/get-notes?id=${id}`
-  );
+  const res = await fetch(`${baseUrl}/.netlify/functions/get-notes?id=${id}`);
+
   if (res.ok) {
     note = await res.json();
+  } else {
+    console.error("⚠️ Error en respuesta del servidor:", res.status);
   }
+
+  console.log("🧠 Nota cargada:", note);
 } catch (err) {
-  console.error("Error cargando la nota:", err);
+  console.error("❌ Error al obtener nota:", err);
 }
+
+// ✅ Extraer primera imagen
+function extractFirstImage(html: string | undefined) {
+  if (!html) return null;
+  const match = html.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/i);
+  return match ? match[1] : null;
+}
+
+const coverImage = note?.image1 || extractFirstImage(note?.content) || null;
+const cleanedContent = note?.content || "";
 ---
 
-<Layout title={note ? note.title : "Nota no encontrada"} bodyClass="otras-page">
+<Layout
+  title={note?.title || "Nota no encontrada"}
+  bodyClass={`nota-${note?.category || "general"}`}
+>
   {
-    note ? (
-      <section class={`nota-container ${note.category || ""}`}>
-        <div class="nota-header">
-          <h1>{note.title}</h1>
-          {note.subtitle && <p class="subtitulo">{note.subtitle}</p>}
-        </div>
-        {note.image1 && (
-          <section class="feature-banner-1">
-            <img src={note.image1} alt={note.title} />
-          </section>
-        )}
-        <section class="dynamic-layout">
-          <div class="dynamic-item text-box">
-            <h2>Contenido</h2>
-            <p>{note.content}</p>
+    note?.title ? (
+      <section
+        class={`articulo-container ${note.category?.toLowerCase() || "general"}`}
+      >
+        <section class="bloque sin-imagen">
+          <div class="contenido-sin-imagen">
+            <Fragment set:html={cleanedContent} />
           </div>
         </section>
+<!--
+        <section class="resumen">
+          <h2>Resumen Técnico</h2>
+          <div class="grid">
+            <div class="item">
+              <strong>Categoría:</strong> {note.category}
+            </div>
+            <div class="item">
+              <strong>Fecha:</strong>{" "}
+              {note.created_at && !isNaN(new Date(note.created_at).getTime())
+                ? new Date(note.created_at).toLocaleDateString("es-CO")
+                : "Fecha no disponible"}
+            </div>
+          </div>
+        </section>
+        -->
       </section>
     ) : (
       <p>Nota no encontrada ❌</p>

@@ -2,7 +2,6 @@
 import Layout from "../../layouts/Layout.astro";
 ---
 
-<meta charset="UTF-8" />
 <Layout title="nota-renault-megane-etech" bodyClass="otras-page">
   <section class="nota-container">
     <div class="nota-header">
@@ -130,6 +129,90 @@ import Layout from "../../layouts/Layout.astro";
           src="/img/renault-megane-e-tech/renault-megane-lateral.webp"
           alt="Tecnología de seguridad del Renault Mégane E-Tech"
         />
+      </div>
+    </section>
+
+    <!-- Ficha Técnica Profesional -->
+    <section class="ficha-tecnica-profesional">
+      <h2>Ficha Técnica Completa - Renault Mégane E-Tech Eléctrico</h2>
+      <div class="ficha-grid">
+        <div class="ficha-item">
+          <strong>💰 Precio en Europa:</strong>
+          <p>
+            Desde €35,200 - €47,500 EUR (disponibilidad Colombia por confirmar)
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>🚗 Versiones:</strong>
+          <p>
+            EV40 (batería 40 kWh) | EV60 (batería 60 kWh) | Techno / Iconic /
+            Esprit Alpine
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>⚙️ Motor:</strong>
+          <p>Eléctrico síncrono de imanes permanentes</p>
+        </div>
+        <div class="ficha-item">
+          <strong>🔥 Potencia:</strong>
+          <p>EV40: 130 HP | EV60: 220 HP</p>
+        </div>
+        <div class="ficha-item">
+          <strong>⚡ Torque:</strong>
+          <p>EV40: 250 Nm | EV60: 300 Nm</p>
+        </div>
+        <div class="ficha-item">
+          <strong>🔋 Batería y Autonomía:</strong>
+          <p>40 kWh: 300 km (WLTP) | 60 kWh: 450-470 km (WLTP)</p>
+        </div>
+        <div class="ficha-item">
+          <strong>⏱️ Aceleración:</strong>
+          <p>
+            EV40: 0-100 km/h en 10s | EV60: 7.4s | Velocidad máxima: 160 km/h
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>🔌 Carga:</strong>
+          <p>Rápida DC 130 kW: 10-80% en 30 min | AC: completa en 5-9 hrs</p>
+        </div>
+        <div class="ficha-item">
+          <strong>🛡️ Seguridad:</strong>
+          <p>
+            6 airbags, Control Electrónico de Estabilidad, Frenado Automático de
+            Emergencia, Detección Peatones y Ciclistas, Control Crucero Adapt.,
+            Cámara 360°, Lane Assist
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>📱 Equipamiento:</strong>
+          <p>
+            OpenR Link con Google integrado, pantalla 12" vertical, Google
+            Maps/Assistant, carga inalámbrica, climatización automática, sistema
+            MULTI-SENSE
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>✅ Pros:</strong>
+          <p>
+            Diseño moderno tipo crossover-coupé, buen equilibrio
+            precio-autonomía, integración Google nativa, plataforma CMF-EV
+            eficiente
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>❌ Contras:</strong>
+          <p>
+            Autonomía EV40 limitada, maletero reducido vs SUVs convencionales
+            (440L), visibilidad trasera mejorable
+          </p>
+        </div>
+        <div class="ficha-item competidores">
+          <strong>🏁 Competidores Directos:</strong>
+          <p>
+            Volkswagen ID.3, Cupra Born, MG4 Electric, Hyundai Kona Electric,
+            Nissan Leaf
+          </p>
+        </div>
       </div>
     </section>
   </section>
@@ -380,6 +463,68 @@ import Layout from "../../layouts/Layout.astro";
     }
   }
 
+  /* Ficha Técnica Profesional */
+  .ficha-tecnica-profesional {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 40px 20px;
+    margin: 40px auto;
+    max-width: 1200px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+  .ficha-tecnica-profesional h2 {
+    text-align: center;
+    font-size: 32px;
+    color: #08341f;
+    margin-bottom: 30px;
+    border-bottom: 3px solid #e6b410;
+    padding-bottom: 15px;
+    font-family: "Georgia", serif;
+  }
+  .ficha-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .ficha-item {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #e6b410;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  .ficha-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(230, 180, 16, 0.2);
+  }
+  .ficha-item strong {
+    display: block;
+    font-size: 16px;
+    color: #08341f;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .ficha-item p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #444;
+    margin: 0;
+  }
+  .ficha-item.competidores {
+    grid-column: 1 / -1;
+    background: #08341f;
+    border-left: 4px solid #e6b410;
+  }
+  .ficha-item.competidores strong {
+    color: #e6b410;
+  }
+  .ficha-item.competidores p {
+    color: #fff;
+  }
+
   /* SOLO PARA ESCRITORIO */
   @media (min-width: 1024px) {
     .dynamic-item {
@@ -410,36 +555,4 @@ import Layout from "../../layouts/Layout.astro";
   }
 </style>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const observeElement = (selector) => {
-      const element = document.querySelector(selector);
-
-      if (!element) {
-        console.error(
-          `El elemento con la clase ${selector} no se encontró en el DOM.`
-        );
-        return;
-      }
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              element.classList.add("visible");
-            } else {
-              element.classList.remove("visible"); // Opcional: para reiniciar la animación
-            }
-          });
-        },
-        { threshold: 0.5 } // El 50% del elemento debe estar visible
-      );
-
-      observer.observe(element);
-    };
-
-    // Observa los títulos
-    observeElement(".feature-title-1");
-    observeElement(".feature-title");
-  });
-</script>
+<script src="/js/nota-animations.js" defer></script>

@@ -1,0 +1,219 @@
+ /* ==== ESTILOS CATEGORÍA LANZAMIENTOS ==== */
+  /* Estilos principales */
+  .noticia-detalle {
+    width: 100%;
+    margin: 0;
+    padding: 20px 0;
+    position: relative;
+    background: white;
+  }
+
+  /* Título subtitulo kia ev9 */
+  .noticia-detalle h1 {
+    font-size: 45px;
+    text-align: center;
+    color: black;
+    width: 90%;
+    font-weight: 600;
+    margin: 0 auto 5px;
+
+    border-bottom: 2px solid #595902;
+    padding: 15px;
+    font-family: "Georgia", serif;
+  }
+
+  /* Título principal */
+  .noticia-descripcion {
+    font-size: 48px;
+    font-weight: bolder;
+    text-align: center;
+    padding: 30px;
+    text-transform: none;
+    font-family: "Georgia", serif;
+
+    /* Animación */
+    opacity: 0;
+    animation: fadeSlideIn 1s ease-out forwards;
+    animation-delay: 0.3s; /* leve retraso opcional */
+  }
+
+  /* animacion titulo descripcion */
+
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px); /* empieza un poco abajo */
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0); /* termina en su lugar */
+    }
+  }
+
+  .noticia-portada {
+    width: 100%;
+    height: 900px;
+    object-fit: cover;
+    padding: 0;
+    transition: box-shadow 0.4s ease;
+  }
+
+  .noticia-portada:hover {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+  }
+
+  .noticia-bloque {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin: 30px auto;
+  }
+
+  .noticia-bloque img {
+    margin: 10px;
+    width: 48%;
+    height: auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+    transition: transform 0.9s ease;
+  }
+
+  .noticia-bloque img:hover {
+    transform: scale(1.05);
+  }
+
+  .noticia-bloque .noticia-texto {
+    flex: 1;
+    text-align: start;
+    padding: 20px;
+    border-radius: 12px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .noticia-titulo {
+    font-size: 36px;
+    font-weight: bolder;
+    color: black;
+    margin-bottom: 10px;
+    text-transform: none;
+    font-family: "Georgia", serif;
+  }
+
+  .noticia-bloque .noticia-parrafo {
+    font-size: 20px;
+    text-align: start;
+    color: #333;
+
+    font-family: "Poppins", sans-serif;
+    margin-bottom: 15px; /* Agrega espacio entre los párrafos */
+    line-height: 1.6; /* Mejora la legibilidad del texto */
+  }
+
+  .noticia-imagen-izquierda {
+    flex-direction: row;
+  }
+
+  .noticia-imagen-derecha {
+    flex-direction: row-reverse;
+  }
+
+  .ficha-tecnica {
+    background: #f7f7f7;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 30px auto;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: "Poppins", sans-serif;
+  }
+
+  .ficha-tecnica h2 {
+    font-size: 30px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #333;
+    font-weight: 600;
+    font-family: "Georgia", serif;
+  }
+
+  .ficha-tecnica ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  .ficha-tecnica li {
+    font-size: 20px;
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+
+  @media (max-width: 768px) {
+    .noticia-bloque {
+      flex-direction: column;
+    }
+
+    .noticia-detalle h1 {
+      font-size: 28px;
+      background: none;
+      color: black;
+      text-shadow: none;
+    }
+
+    .noticia-bloque img {
+      width: 100%;
+      height: auto;
+    }
+
+    .noticia-bloque .noticia-texto {
+      font-size: 20px;
+      text-align: start;
+      padding-top: 0;
+    }
+
+    .noticia-descripcion {
+      font-size: 28px;
+      font-weight: bolder;
+      padding: 15px;
+      text-align: start;
+      padding-top: 0;
+    }
+
+    .noticia-bloque .noticia-parrafo {
+      font-size: 18px;
+      color: black;
+      padding-top: 5px;
+    }
+
+    .noticia-bloque .noticia-texto {
+      width: 100%;
+    }
+
+    .noticia-titulo {
+      font-size: 24px;
+    }
+
+    .noticia-portada {
+      border-bottom: none;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+  }
+
+
+
+  
+
+
+
+ 

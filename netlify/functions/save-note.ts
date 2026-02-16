@@ -3,128 +3,75 @@ import type { Handler } from "@netlify/functions";
 
 const { Pool } = pkg;
 
-// 🔧 Conexión a la base de datos
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL?.includes("localhost")
+    ? false
+    : { rejectUnauthorized: false },
 });
 
-// 🚀 Función principal de Netlify
-export const handler: Handler = async (event, context) => {
+// 🔤 Función para limpiar y normalizar categorías
+function normalizeCategory(category: string): string {
+  if (!category) return "general";
+  return category
+    .toString()
+    .trim()
+    .toLowerCase()
+    .normalize("NFD") // separa letras y tildes
+    .replace(/[\u0300-\u036f]/g, ""); // elimina las tildes
+}
+
+export const handler: Handler = async (event) => {
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  };
+
   try {
-    // ✅ CORS preflight
+    // ✅ Preflight CORS
     if (event.httpMethod === "OPTIONS") {
-      return {
-        statusCode: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type",
-        },
-        body: "",
-      };
+      return { statusCode: 200, headers, body: "" };
     }
 
-    // ✅ Solo permitimos POST
+    // ✅ Solo POST permitido
     if (event.httpMethod !== "POST") {
-      return {
-        statusCode: 405,
-        body: JSON.stringify({ error: "Método no permitido" }),
-      };
+      return { statusCode: 405, headers, body: "Método no permitido" };
     }
 
-    // ✅ Parseamos el cuerpo del request
+    // ✅ Parsear body
     const body = JSON.parse(event.body || "{}");
-    console.log("📩 Datos recibidos en save-note:", body);
+    console.log("📩 Datos recibidos:", body);
 
-    // ✍️ Extraemos los campos
-    let {
-      title,
-      subtitle,
-      content,
-      category,
-      image1,
-      image2,
-      image3,
-      image4,
-      image5,
-      image6,
-      image7,
-      image8,
-      video1,
-      video2,
-      video3,
-      video4,
-      video5,
-      video6,
-      video7,
-    } = body;
+    let { title, subtitle, content, category, image1 } = body;
 
-    // 🧹 Normalizamos los datos
-    title = title?.trim();
-    subtitle = subtitle?.trim();
-    content = content?.trim();
-    category = category?.trim().toLowerCase(); // 👈 Aquí está la mejora clave
+    // ⚙️ Normalizamos la categoría antes de guardar
+    category = normalizeCategory(category);
 
-    console.log("🟢 Categoría normalizada:", category);
-
-    // 🗃️ Guardamos en la base de datos
+    // ✅ Insertar en base de datos
     const result = await pool.query(
-      `INSERT INTO notes (
-        title, subtitle, content, category,
-        image1, image2, image3, image4, image5, image6, image7, image8,
-        video1, video2, video3, video4, video5, video6, video7
-      )
-      VALUES (
-        $1, $2, $3, $4,
-        $5, $6, $7, $8, $9, $10, $11, $12,
-        $13, $14, $15, $16, $17, $18, $19
-      )
-      RETURNING id`,
-      [
-        title,
-        subtitle,
-        content,
-        category,
-        image1,
-        image2,
-        image3,
-        image4,
-        image5,
-        image6,
-        image7,
-        image8,
-        video1,
-        video2,
-        video3,
-        video4,
-        video5,
-        video6,
-        video7,
-      ]
+      `INSERT INTO notes (title, subtitle, content, category, image1)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING id, category`,
+      [title, subtitle, content, category, image1]
     );
 
-    // ✅ Respuesta de éxito
+    console.log("📝 Nota guardada correctamente:", result.rows[0]);
+
     return {
       statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type",
-      },
+      headers,
       body: JSON.stringify({
-        message: "Nota guardada con éxito",
+        message: "Nota guardada con éxito ✅",
         id: result.rows[0].id,
+        category: result.rows[0].category,
       }),
     };
-  } catch (err: unknown) {
+  } catch (err) {
     console.error("❌ Error en save-note:", err);
     return {
       statusCode: 500,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type",
-      },
+      headers,
       body: JSON.stringify({ error: "Error al guardar la nota" }),
     };
   }

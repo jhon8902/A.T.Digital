@@ -62,221 +62,390 @@ import Layout from "../../layouts/Layout.astro";
         <ul>
           <li>⚡ Autonomía: hasta 515 km</li>
           <li>🔋 Batería: estándar o extendida</li>
-          <li>💪 Potencia: hasta 580 hp</li>
-          <li>🚛 Capacidad de remolque: hasta 4,5 toneladas</li>
-          <li>🔌 Función: alimentar una casa entera</li>
+          <div class="ficha-grid">
+            <div class="ficha-item">
+              <div class="ficha-label">💰 Precio Estimado</div>
+              <div class="ficha-value">
+                Desde USD $62,995 / $280 millones COP (aprox.)
+              </div>
+            </div>
+            <div class="ficha-item">
+              <div class="ficha-label">🚗 Versiones</div>
+              <div class="ficha-value">
+                Lightning Pro, XLT, Lariat, Platinum, Extended Range
+              </div>
+            </div>
+            <div class="ficha-item">
+              <div class="ficha-label">⚙️ Motor</div>
+              <div class="ficha-value">
+                Dual motor eléctrico AWD permanente (delantero + trasero)
+              </div>
+            </div>
+            <div class="ficha-item">
+              <div class="ficha-label">💪 Potencia</div>
+              <div class="ficha-value">
+                Standard Range: 452 hp / Extended Range: 580 hp
+              </div>
+            </div>
+            <div class="ficha-item">
+              <div class="ficha-label">🔩 Torque</div>
+              <div class="ficha-value">
+                Standard: 775 Nm / Extended: 1,050 Nm
+              </div>
+            </div>
+            <div class="ficha-item">
+              <div class="ficha-label">🔋 Batería y Autonomía</div>
+              <div class="ficha-value">
+                Standard: 98 kWh (370 km) / Extended: 131 kWh (515 km EPA)
+              </div>
+            </div>
+            <div class="ficha-item">
+              <div class="ficha-label">⚡ Aceleración</div>
+              <div class="ficha-value">
+                0-100 km/h: Standard 5.5s / Extended 4.0s
+              </div>
+            </div>
+            <div class="ficha-item">
+              <div class="ficha-label">🔌 Carga y Remolque</div>
+              <div class="ficha-value">
+                Carga DC hasta 150 kW (10-80% en ~44 min) / Remolque: hasta
+                4,500 kg / Carga útil: 900 kg
+              </div>
+            </div>
+            <div class="ficha-item">
+              <div class="ficha-label">🛡️ Seguridad</div>
+              <div class="ficha-value">
+                Ford Co-Pilot360™ 2.0, Pre-Collision Assist, control de crucero
+                adaptativo, BLIS con remolque, cámara 360°, Intelligent Adaptive
+                Cruise Control
+              </div>
+            </div>
+            <div class="ficha-item">
+              <div class="ficha-label">🎯 Equipamiento Destacado</div>
+              <div class="ficha-value">
+                Mega Power Frunk delantero 400L, pantalla 15.5" SYNC 4, Pro
+                Power Onboard 9.6 kW, Intelligent Backup Power (alimentar casa),
+                escala integrada, BlueCruise manos libres
+              </div>
+            </div>
+            <div class="ficha-item pros">
+              <div class="ficha-label">✅ Puntos Fuertes</div>
+              <div class="ficha-value">
+                • Capacidad de remolque clase líder (4.5 ton)<br />• Frunk
+                delantero masivo 400L<br />• Pro Power Onboard alimenta
+                herramientas/casa<br />• 0-100 en 4s con Extended Range<br />•
+                Torque instantáneo 1,050 Nm
+              </div>
+            </div>
+            <div class="ficha-item contras">
+              <div class="ficha-label">❌ Áreas de Mejora</div>
+              <div class="ficha-value">
+                • Autonomía reducida al remolcar carga<br />• Precio elevado vs
+                F-150 convencional<br />• Infraestructura de carga para pickups
+                limitada<br />• Peso considerable (3+ toneladas)
+              </div>
+            </div>
+            <div class="ficha-item competencia">
+              <div class="ficha-label">🏁 Competencia Directa</div>
+              <div class="ficha-value">
+                Rivian R1T, Chevrolet Silverado EV, GMC Hummer EV Pickup, Tesla
+                Cybertruck, RAM 1500 REV
+              </div>
+            </div>
+          </div>
         </ul>
       </section>
     </article>
   </section>
-</Layout>
 
-<style>
-  /* Estilos principales */
-  .noticia-detalle {
-    width: 100%;
-    margin: 0;
-    padding: 20px 0;
-    position: relative;
-    background: white;
-    font-family: "Georgia", serif;
-  }
-
-  /* Título subtitulo kia ev9 */
-  .noticia-detalle h1 {
-    font-size: 45px;
-    text-align: center;
-    color: black;
-    width: 90%;
-    font-weight: 600;
-    margin: 0 auto 5px;
-
-    border-bottom: 2px solid #595902;
-    padding: 15px;
-  }
-
-  /* Título principal */
-  .noticia-descripcion {
-    font-size: 48px;
-    font-weight: bolder;
-    text-align: center;
-    padding: 30px;
-    text-transform: none;
-
-    /* Animación */
-    opacity: 0;
-    animation: fadeSlideIn 1s ease-out forwards;
-    animation-delay: 0.3s; /* leve retraso opcional */
-  }
-
-  /* animacion titulo descripcion */
-
-  @keyframes fadeSlideIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px); /* empieza un poco abajo */
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0); /* termina en su lugar */
-    }
-  }
-
-  .noticia-portada {
-    width: 100%;
-    height: 900px;
-    object-fit: cover;
-    padding: 0;
-    transition: box-shadow 0.4s ease;
-  }
-
-  .noticia-portada:hover {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-  }
-
-  .noticia-bloque {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    width: 100%;
-    margin: 30px auto;
-  }
-
-  .noticia-bloque img {
-    margin: 10px;
-    width: 48%;
-    height: auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
-    transition: transform 0.9s ease;
-  }
-
-  .noticia-bloque img:hover {
-    transform: scale(1.05);
-  }
-
-  .noticia-bloque .noticia-texto {
-    flex: 1;
-    text-align: start;
-    padding: 20px;
-    border-radius: 12px;
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .noticia-titulo {
-    font-size: 36px;
-    font-weight: bolder;
-    color: black;
-    margin-bottom: 10px;
-    text-transform: none;
-  }
-
-  .noticia-bloque .noticia-parrafo {
-    font-size: 20px;
-    text-align: start;
-    color: #333;
-
-    margin-bottom: 15px; /* Agrega espacio entre los párrafos */
-    line-height: 1.6; /* Mejora la legibilidad del texto */
-  }
-
-  .noticia-imagen-izquierda {
-    flex-direction: row;
-  }
-
-  .noticia-imagen-derecha {
-    flex-direction: row-reverse;
-  }
-
-  .ficha-tecnica {
-    background: #f7f7f7;
-    border-radius: 12px;
-    padding: 20px;
-    margin: 30px auto;
-    width: 90%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: "Poppins", sans-serif;
-  }
-
-  .ficha-tecnica h2 {
-    font-size: 30px;
-    margin-bottom: 15px;
-    text-align: center;
-    color: #333;
-    font-weight: 600;
-    font-family: "Georgia", serif;
-  }
-
-  .ficha-tecnica ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 10px;
-  }
-
-  .ficha-tecnica li {
-    font-size: 20px;
-    background: white;
-    padding: 12px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  }
-
-  @media (max-width: 768px) {
-    .noticia-bloque {
-      flex-direction: column;
+  <style>
+    /* === ESTILOS FICHA TÉCNICA PROFESIONAL === */
+    .ficha-tecnica-profesional {
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 30px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
+    .ficha-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .ficha-item {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+      transition: all 0.3s ease;
+      border-left: 4px solid #08341f;
+    }
+
+    .ficha-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+      border-left-color: #e6b410;
+    }
+
+    .ficha-item.pros {
+      border-left-color: #28a745;
+      background: linear-gradient(135deg, #ffffff 0%, #f0fff4 100%);
+    }
+
+    .ficha-item.contras {
+      border-left-color: #dc3545;
+      background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+    }
+
+    .ficha-item.competencia {
+      border-left-color: #007bff;
+      background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
+    }
+
+    .ficha-label {
+      font-weight: 700;
+      color: #08341f;
+      margin-bottom: 8px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: "Poppins", sans-serif;
+    }
+
+    .ficha-value {
+      color: #2c3e50;
+      font-size: 15px;
+      line-height: 1.6;
+      font-family: "Georgia", serif;
+    }
+
+    @media (max-width: 768px) {
+      .ficha-tecnica-profesional {
+        padding: 20px 15px;
+        margin: 20px 10px;
+      }
+
+      .ficha-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .ficha-tecnica-profesional h2 {
+        font-size: 24px !important;
+      }
+    }
+    /* === FIN ESTILOS FICHA TÉCNICA PROFESIONAL === */
+
+    /* Estilos principales */
+    .noticia-detalle {
+      width: 100%;
+      margin: 0;
+      padding: 20px 0;
+      position: relative;
+      background: white;
+      font-family: "Georgia", serif;
+    }
+
+    /* Título subtitulo kia ev9 */
     .noticia-detalle h1 {
-      font-size: 28px;
-      background: none;
+      font-size: 45px;
+      text-align: center;
       color: black;
-      text-shadow: none;
-    }
+      width: 90%;
+      font-weight: 600;
+      margin: 0 auto 5px;
 
-    .noticia-bloque img {
-      width: 100%;
-      height: auto;
-    }
-
-    .noticia-bloque .noticia-texto {
-      font-size: 20px;
-      text-align: start;
-      padding-top: 0;
-    }
-
-    .noticia-descripcion {
-      font-size: 28px;
-      font-weight: bolder;
+      border-bottom: 2px solid #595902;
       padding: 15px;
-      text-align: start;
-      padding-top: 0;
     }
 
-    .noticia-bloque .noticia-parrafo {
-      font-size: 18px;
-      color: black;
-      padding-top: 5px;
+    /* Título principal */
+    .noticia-descripcion {
+      font-size: 48px;
+      font-weight: bolder;
+      text-align: center;
+      padding: 30px;
+      text-transform: none;
+
+      /* Animación */
+      opacity: 0;
+      animation: fadeSlideIn 1s ease-out forwards;
+      animation-delay: 0.3s; /* leve retraso opcional */
     }
 
-    .noticia-bloque .noticia-texto {
-      width: 100%;
-    }
+    /* animacion titulo descripcion */
 
-    .noticia-titulo {
-      font-size: 24px;
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px); /* empieza un poco abajo */
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0); /* termina en su lugar */
+      }
     }
 
     .noticia-portada {
-      border-bottom: none;
       width: 100%;
-      height: auto;
+      height: 900px;
       object-fit: cover;
+      padding: 0;
+      transition: box-shadow 0.4s ease;
     }
-  }
-</style>
+
+    .noticia-portada:hover {
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+
+    .noticia-bloque {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+      margin: 30px auto;
+    }
+
+    .noticia-bloque img {
+      margin: 10px;
+      width: 48%;
+      height: auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+      transition: transform 0.9s ease;
+    }
+
+    .noticia-bloque img:hover {
+      transform: scale(1.05);
+    }
+
+    .noticia-bloque .noticia-texto {
+      flex: 1;
+      text-align: start;
+      padding: 20px;
+      border-radius: 12px;
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .noticia-titulo {
+      font-size: 36px;
+      font-weight: bolder;
+      color: black;
+      margin-bottom: 10px;
+      text-transform: none;
+    }
+
+    .noticia-bloque .noticia-parrafo {
+      font-size: 20px;
+      text-align: start;
+      color: #333;
+
+      margin-bottom: 15px; /* Agrega espacio entre los párrafos */
+      line-height: 1.6; /* Mejora la legibilidad del texto */
+    }
+
+    .noticia-imagen-izquierda {
+      flex-direction: row;
+    }
+
+    .noticia-imagen-derecha {
+      flex-direction: row-reverse;
+    }
+
+    .ficha-tecnica {
+      background: #f7f7f7;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 30px auto;
+      width: 90%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      font-family: "Poppins", sans-serif;
+    }
+
+    .ficha-tecnica h2 {
+      font-size: 30px;
+      margin-bottom: 15px;
+      text-align: center;
+      color: #333;
+      font-weight: 600;
+      font-family: "Georgia", serif;
+    }
+
+    .ficha-tecnica ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .ficha-tecnica li {
+      font-size: 20px;
+      background: white;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    @media (max-width: 768px) {
+      .noticia-bloque {
+        flex-direction: column;
+      }
+
+      .noticia-detalle h1 {
+        font-size: 28px;
+        background: none;
+        color: black;
+        text-shadow: none;
+      }
+
+      .noticia-bloque img {
+        width: 100%;
+        height: auto;
+      }
+
+      .noticia-bloque .noticia-texto {
+        font-size: 20px;
+        text-align: start;
+        padding-top: 0;
+      }
+
+      .noticia-descripcion {
+        font-size: 28px;
+        font-weight: bolder;
+        padding: 15px;
+        text-align: start;
+        padding-top: 0;
+      }
+
+      .noticia-bloque .noticia-parrafo {
+        font-size: 18px;
+        color: black;
+        padding-top: 5px;
+      }
+
+      .noticia-bloque .noticia-texto {
+        width: 100%;
+      }
+
+      .noticia-titulo {
+        font-size: 24px;
+      }
+
+      .noticia-portada {
+        border-bottom: none;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+      }
+    }
+  </style>
+</Layout>

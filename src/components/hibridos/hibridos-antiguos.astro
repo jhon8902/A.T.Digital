@@ -1,0 +1,120 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+let hibridos = [];
+
+try {
+  const baseUrl = import.meta.env.DEV
+    ? "http://localhost:8888"
+    : Astro.site?.origin || "";
+
+  const res = await fetch(`${baseUrl}/.netlify/functions/get-notes`);
+
+  if (res.ok) {
+    const data = await res.json();
+    // Filtramos todas las notas híbridas
+    hibridos = data
+      .filter((note) => note.category?.toLowerCase() === "hibridos")
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  }
+} catch (err) {
+  console.error("❌ Error cargando híbridos:", err);
+}
+---
+
+<Layout title="Modelos Híbridos | AutoTech Digital">
+  <section class="hibridos-antiguos">
+    <h1>Modelos Híbridos</h1>
+    <p>Explora todos los vehículos híbridos publicados en AutoTech Digital.</p>
+
+    {
+      hibridos.length > 0 ? (
+        <div class="grid-hibridos">
+          {hibridos.map((note) => (
+            <a href={`/notas/${note.id}`} class="hibrido-card">
+              <img src={note.image1 || "/img/default.jpg"} alt={note.title} />
+              <div class="card-content">
+                <h2>{note.title}</h2>
+                <p>{note.subtitle}</p>
+                <span class="fecha">
+                  {new Date(note.created_at).toLocaleDateString("es-CO")}
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p>No hay modelos híbridos disponibles por ahora.</p>
+      )
+    }
+  </section>
+</Layout>
+
+<style>
+  .hibridos-antiguos {
+    padding: 80px 20px;
+    background: #fff;
+    text-align: center;
+  }
+
+  .hibridos-antiguos h1 {
+    font-size: 2.2rem;
+    color: #222;
+    margin-bottom: 10px;
+  }
+
+  .hibridos-antiguos p {
+    color: #555;
+    margin-bottom: 40px;
+  }
+
+  .grid-hibridos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+  }
+
+  .hibrido-card {
+    background: #f9f9f9;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .hibrido-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  .hibrido-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+  }
+
+  .card-content {
+    padding: 15px;
+  }
+
+  .card-content h2 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+
+  .card-content p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 8px;
+  }
+
+  .fecha {
+    display: block;
+    font-size: 0.9rem;
+    color: #999;
+  }
+</style>

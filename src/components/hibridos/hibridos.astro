@@ -1,29 +1,53 @@
 ---
 let dynamicHibridos: any[] = [];
 
-// Traemos dinámicas desde Netlify
+// ✅ Función para extraer la primera imagen del HTML
+function extractFirstImage(html) {
+  if (!html) return null;
+  const match = html.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/i);
+  return match ? match[1] : null;
+}
+
+// ✅ Normaliza strings para comparar sin tildes ni mayúsculas
+function normalizeString(str) {
+  return str
+    ?.normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
+}
+
+// 🔹 Cargar notas dinámicas
 try {
   const res = await fetch("http://localhost:8888/.netlify/functions/get-notes");
   if (res.ok) {
     const data = await res.json();
 
-    // Filtramos solo los que son de categoría "hibridos"
     dynamicHibridos = data
-      .filter((note: any) => note.category?.toLowerCase() === "hibridos")
-      .map((note: any) => ({
-        href: `/notas/${note.id}`,
-        img: note.image1 || "/img/default.jpg",
-        alt: note.title,
-        title: note.title,
-        description: note.subtitle || "",
-        fecha: `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`,
-      }));
+      .filter((note) => normalizeString(note.category) === "hibridos")
+      .map((note) => {
+        const portada =
+          note.image1?.trim() ||
+          extractFirstImage(note.content) ||
+          "/img/default.jpg";
+
+        return {
+          href: `/notas/${note.id}`,
+          img: portada,
+          alt: note.title,
+          title: note.title,
+          description: note.subtitle || "",
+          fecha: note.created_at
+            ? `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`
+            : "",
+        };
+      });
   }
 } catch (err) {
-  console.error("Error cargando híbridos dinámicos:", err);
+  console.error("❌ Error cargando híbridos dinámicos:", err);
 }
 
-// Notas estáticas
+// 🔹 Notas estáticas
 const staticHibridos = [
   {
     href: "/notas-hibridos/nota-scape",
@@ -81,7 +105,7 @@ const staticHibridos = [
   },
 ];
 
-// Juntamos dinámicas + estáticas
+// ✅ Combinamos dinámicas + estáticas
 const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
 ---
 
@@ -89,9 +113,10 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
   <div class="central-content">
     <i class="fa-brands fa-megaport icono-central"></i>
     <h1>Carros Híbridos</h1>
+
     <p class="descripcion-hibridos">
       Modelos híbridos disponibles en el mercado nacional: consumo,
-      características y detalles técnicos
+      características y detalles técnicos.
     </p>
   </div>
 
@@ -111,11 +136,10 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
       ))
     }
   </div>
+  <div class="ver-mas-container">
+    <a href="/hibridos-antiguos" class="ver-mas-boton">Ver más Modelos</a>
+  </div>
 </section>
-
-<div class="ver-mas-container izquierda">
-  <a href="/hibridos-antiguos" class="ver-mas-boton">Ver más Modelos</a>
-</div>
 
 <!-- CSS -->
 <style>
@@ -142,7 +166,7 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
   .hibridos-container {
     width: 100%;
 
-    background: linear-gradient(rgb(13, 13, 13) 30%, #131212 70%);
+    background: rgb(221, 221, 221);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -162,37 +186,37 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
   }
 
   .icono-central {
-    font-size: 70px;
-    color: #0af2d7;
+    font-size: 60px;
+    color: #036697;
     animation: pulso-electrico 1.5s infinite ease-in-out;
   }
 
-  /* animacion icono titulo  */
+  /* animacion icono titulo 
   @keyframes pulso-electrico {
     0% {
       text-shadow:
-        0 0 2px #0af2d7,
-        0 0 4px #0af2d7;
+        0 0 2px #05aafc,
+        0 0 4px #05aafc;
       transform: scale(1);
     }
     50% {
       text-shadow:
-        0 0 6px #0af2d7,
-        0 0 10px #0af2d7;
+        0 0 6px #05aafc,
+        0 0 10px #05aafc;
       transform: scale(1.05);
     }
     100% {
       text-shadow:
-        0 0 2px #0af2d7,
-        0 0 4px #0af2d7;
+        0 0 2px #05aafc,
+        0 0 4px #05aafc;
       transform: scale(1);
     }
-  }
+  } */
 
   .central-content h1 {
     font-size: clamp(40px, 5vw, 60px);
-    font-weight: 700;
-    color: rgb(243, 241, 241);
+    font-weight: 500;
+    color: black;
     text-transform: uppercase;
     font-weight: bold;
     letter-spacing: 3px;
@@ -213,22 +237,44 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
     }
   }
 
+  .central-content h1 {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px; /* separación entre texto y líneas */
+
+    font-size: 32px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  /* Línea izquierda */
+  .central-content h1::before,
+  .central-content h1::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+    background-color: #036697; /* dorado similar al tuyo */
+    max-width: 650px;
+  }
+
+  /* Línea derecha */
+  .central-content h1::after {
+    /* nada extra, solo existe para simetría */
+  }
+
   .descripcion-hibridos {
-    font-size: 1.6rem;
-    color: rgb(215, 214, 214);
+    font-size: 1.4rem;
+    color: rgb(53, 52, 52);
     margin-top: 2px;
     font-family: "Georgia", serif;
-    font-weight: 600;
+    font-weight: 500;
     margin-top: -20px;
   }
 
   .animate-title {
     animation: fadeInUp 1s ease-out;
-  }
-
-  .central-content h1 {
-    opacity: 0; /* Inicialmente oculto */
-    transition: opacity 0.3s;
   }
 
   .imagenes-container {
@@ -276,19 +322,14 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
 
   .hibrido-imagen {
     width: 100%;
-    height: 300px;
+    height: 400px;
     object-fit: cover;
     display: block;
   }
 
   .hibrido-texto {
-    background: linear-gradient(
-      to bottom,
-      #2b2b2b,
-      #1a1a1a
-    ); /* Gris oscuro a negro */
+    background: #ecebeb; /* Gris oscuro a negro */
 
-    color: white;
     padding: 20px;
     text-align: start;
     flex-grow: 1;
@@ -298,11 +339,11 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
   }
 
   .hibrido-texto h2 {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 500;
     text-transform: uppercase;
-    border-bottom: 1px solid #76aea8;
-    color: #f6f7f7;
+    border-bottom: 1px solid #014668;
+    color: #012323;
 
     text-align: start; /* Cambia la alineación a la izquierda */
     position: relative; /* Necesario para el pseudo-elemento ::after */
@@ -312,31 +353,31 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
   }
 
   .hibrido-texto h2::first-letter {
-    font-size: 2.4rem;
+    font-size: 2.3rem;
     font-weight: bold;
-    color: #0af2d7;
+    color: #036697;
   }
 
   .hibrido-texto p {
-    font-size: clamp(1rem, 1.3vw, 1.2rem);
+    font-size: clamp(1rem, 1.3vw, 1.3rem);
     line-height: 1.6;
     margin: 0;
     text-align: start; /* Cambia la alineación a la izquierda */
-    color: #cacaca;
+    color: #012323;
     width: 90%;
     padding-top: 15px;
-    font-weight: 600;
+    font-weight: 500;
   }
 
   .texto-fecha {
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: #3e3d3dcc;
-    color: #d2fafa;
+    background-color: #e9e8e8cc;
+    color: #036697;
     padding: 6px 12px;
     font-size: 0.8rem;
-    font-weight: bold;
+    font-weight: 500;
     border-radius: 10px;
     font-family: "Roboto", sans-serif;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -344,20 +385,23 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
   }
 
   .ver-mas-container {
-    text-align: center; /* Centrar horizontalmente */
-    margin-bottom: 10px; /* Espacio debajo del botón */
-    padding: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 50px;
+    padding: 30px 0;
   }
 
   .ver-mas-boton {
-    background-color: #0af2d7;
-    color: black;
-    font-size: 22px;
+    text-align: start; /* Centrar horizontalmente */
+    background-color: #036697;
+    color: white;
+    font-size: 18px;
 
-    font-weight: 600;
+    font-weight: 500;
     border: none;
     border-radius: 50px;
-    padding: 14px 36px;
+    padding: 14px 33px;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: background 0.2s;
@@ -424,21 +468,27 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
     }
 
     .central-content h1 {
-      font-size: 30px;
+      font-size: 24px;
       letter-spacing: 0;
       padding: 15px;
+    }
+
+    /* Línea izquierda */
+    .central-content h1::before,
+    .central-content h1::after {
+      display: none; /* Oculta las líneas en móvil */
     }
 
     .descripcion-hibridos {
       width: 100%;
       padding: 20px 15px; /* espacio lateral */
       margin: 10px 0; /* espacio arriba y abajo */
-      font-size: 1.1rem;
+      font-size: 16px;
       text-align: center;
       line-height: 1.5; /* mejor lectura */
       display: block;
       box-sizing: border-box;
-      background: #0e0d0d;
+
       margin-top: -25px;
     }
 
@@ -449,7 +499,7 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
     }
 
     .hibrido-texto h2 {
-      font-size: 20px;
+      font-size: 18px;
       text-align: start;
       background: none;
       margin: 0;
@@ -457,7 +507,7 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
     }
 
     .hibrido-texto p {
-      font-size: 18px;
+      font-size: 16px;
       line-height: 1.4;
       margin-bottom: 25px;
       padding: 5px;
@@ -483,7 +533,7 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const tituloHibrido = document.querySelector(
-      "#hibridos .central-content h1"
+      "#hibridos .central-content h1",
     ) as HTMLElement;
 
     if (!tituloHibrido) return;
@@ -500,7 +550,7 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
 
     observerHibridos.observe(tituloHibrido);

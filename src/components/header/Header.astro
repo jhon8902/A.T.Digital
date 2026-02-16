@@ -29,11 +29,32 @@
     <nav id="menu-escritorio" class="menu-escritorio">
       <ul>
         <li><a href="/#inicio">Inicio</a></li>
-        <li><a href="/#noticias">Noticias</a></li>
-        <li><a href="/#lanzamientos">Lanzamientos</a></li>
-        <li><a href="/#hibridos">Híbridos</a></li>
-        <li><a href="/#electricos">Eléctricos</a></li>
-        <li><a href="/#test-drive">Pruebas</a></li>
+
+        <li>
+          <a href="/#noticias" data-section="noticias">Noticias</a>
+        </li>
+
+        <li>
+          <a href="/#lanzamientos" data-section="lanzamientos">Lanzamientos</a>
+        </li>
+
+        <li>
+          <a href="/#hibridos" data-section="hibridos">Híbridos</a>
+        </li>
+
+        <li>
+          <a href="/#electricos" data-section="electricos">Eléctricos</a>
+        </li>
+
+        <li>
+          <a href="/#deportes" data-section="deportes">Deportes</a>
+        </li>
+
+        <li>
+          <a href="/#pruebas" data-section="pruebas">Pruebas</a>
+        </li>
+
+        <li><a href="/#automatch">AutoMatch</a></li>
       </ul>
     </nav>
 
@@ -55,6 +76,11 @@
     </button>
   </div>
 
+  <!-- Tagline de Identidad Editorial -->
+  <div class="brand-tagline">
+    <p>Tecnología, emoción y futuro del automóvil en un solo lugar.</p>
+  </div>
+
   <section id="inicio">
     <a
       href="#inicio"
@@ -71,11 +97,17 @@
       >
       <ul>
         <li><a href="/#inicio">Inicio</a></li>
-        <li><a href="/#noticias">Noticias</a></li>
-        <li><a href="/#lanzamientos">Lanzamientos</a></li>
-        <li><a href="/#hibridos">Híbridos</a></li>
-        <li><a href="/#electricos">Eléctricos</a></li>
-        <li><a href="/#test-drive">Pruebas</a></li>
+
+        <li><a href="/#noticias" data-section="noticias">Noticias</a></li>
+        <li>
+          <a href="/#lanzamientos" data-section="lanzamientos">Lanzamientos</a>
+        </li>
+        <li><a href="/#hibridos" data-section="hibridos">Híbridos</a></li>
+        <li><a href="/#electricos" data-section="electricos">Eléctricos</a></li>
+        <li><a href="/#deportes" data-section="deportes">Deportes</a></li>
+        <li><a href="/#pruebas" data-section="pruebas">Pruebas</a></li>
+
+        <li><a href="/#automatch">AutoMatch</a></li>
       </ul>
     </div>
   </nav>
@@ -84,7 +116,10 @@
 <style>
   html {
     scroll-behavior: smooth;
-    scroll-margin-top: 100px; /* ajusta según el alto de tu menú sticky */
+  }
+
+  * {
+    scroll-margin-top: 280px; /* Espacio para el header sticky */
   }
 
   /* Estilo principal del header */
@@ -104,10 +139,26 @@
     background-position: center; /* Centra la imagen en el contenedor */
     opacity: 1; /* Hacer la imagen completamente visible */
     position: absolute;
-    top: 40px; /* mueve hacia abajo la imagen */
+    top: 50px; /* mueve hacia abajo la imagen */
     left: 0;
     width: 100%;
     height: 100%;
+    animation: welcomeLogo 0.8s ease-in-out forwards;
+  }
+
+  /* Animación de bienvenida para el logo */
+  @keyframes welcomeLogo {
+    0% {
+      opacity: 0;
+      transform: translateY(-30px) scale(0.8);
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
 
   /* icono casita de regreso */
@@ -197,6 +248,7 @@
     align-items: center;
     gap: 10px;
     font-size: 26px;
+    border-bottom: none;
   }
 
   /* Espacio interno y tamaño de los iconos */
@@ -397,6 +449,7 @@
 
     .header::after {
       background-size: 400px; /* Ajusta el tamaño de la imagen para pantallas medianas */
+      top: 50px;
     }
   }
 
@@ -590,6 +643,70 @@
   #sugerencias div {
     transition: background 0.2s;
   }
+
+  /* Transiciones suaves globales */
+  a {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Animación de scroll suave para enlaces */
+  html {
+    scroll-padding-top: 280px;
+  }
+
+  /* Tagline de Identidad Editorial */
+  .brand-tagline {
+    background: linear-gradient(135deg, #e8e6e0 0%, #efece5 100%);
+    color: black;
+    text-align: center;
+    padding: 20px 15px;
+    margin-top: 100px;
+    font-style: italic;
+    font-family: "Georgia", serif;
+    letter-spacing: 1px;
+    animation: fadeInDown 0.8s ease-in-out;
+  }
+
+  .brand-tagline p {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 500;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    color: black;
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .brand-tagline {
+      padding: 20px 15px;
+      margin-top: 100px;
+    }
+
+    .brand-tagline p {
+      font-size: 1rem;
+      letter-spacing: 0.5px;
+    }
+
+    * {
+      scroll-margin-top: 200px;
+    }
+  }
 </style>
 
 <script>
@@ -598,7 +715,7 @@
     // Menú hamburguesa
     // ---------------------------
     const botonHamburguesa = document.getElementById("boton-hamburguesa");
-    const menu = document.getElementById("menu-hamburguesa") as HTMLElement;
+    const menu = document.getElementById("menu-hamburguesa");
     const closeMenu = document.getElementById("close-menu");
     const overlay = document.getElementById("menu-overlay");
 
@@ -620,8 +737,8 @@
         document.body.style.overflow = "";
       });
     }
-    document.addEventListener("keydown", function (e: KeyboardEvent) {
-      if (e.key === "Escape" && menu.classList.contains("active")) {
+    document.addEventListener("keydown", function (e) {
+      if (menu && e.key === "Escape" && menu.classList.contains("active")) {
         menu.classList.remove("active");
         document.body.style.overflow = "";
       }
@@ -630,12 +747,10 @@
     // ---------------------------
     // Botón de búsqueda y input
     // ---------------------------
-    const searchButton = document.getElementById(
-      "search-button"
-    ) as HTMLButtonElement;
+    const searchButton = document.getElementById("search-button");
     const searchInput = document.getElementById(
-      "search-input"
-    ) as HTMLInputElement;
+      "search-input",
+    ) as HTMLInputElement | null;
 
     if (searchButton && searchInput) {
       searchInput.style.display = "none"; // oculto al inicio
@@ -664,24 +779,33 @@
 
     // Cerrar menú hamburguesa al hacer clic en un enlace
     const menuLinks = document.querySelectorAll(
-      "#menu-hamburguesa .menu-content ul li a"
+      "#menu-hamburguesa .menu-content ul li a",
     );
-    menuLinks.forEach(function (link) {
-      link.addEventListener("click", function () {
-        menu.classList.remove("active");
-        document.body.style.overflow = "";
+    if (menu) {
+      menuLinks.forEach(function (link) {
+        link.addEventListener("click", function () {
+          menu.classList.remove("active");
+          document.body.style.overflow = "";
+        });
       });
-    });
+    }
 
     // ---------------------------
     // Buscador con sugerencias
     // ---------------------------
+    if (!searchInput) {
+      return;
+    }
+    const searchInputEl = searchInput;
     const secciones = [
       { nombre: "Inicio", id: "#inicio" },
+      { nombre: "Noticias", id: "#noticias" },
       { nombre: "Lanzamientos", id: "#lanzamientos" },
       { nombre: "Híbridos", id: "#hibridos" },
       { nombre: "Eléctricos", id: "#electricos" },
-      { nombre: "Pruebas", id: "#test-drive" },
+      { nombre: "Deportes", id: "#deportes" },
+      { nombre: "Pruebas", id: "#pruebas" },
+      { nombre: "AutoMatch", id: "#automatch" },
     ];
 
     // Crear contenedor de sugerencias
@@ -699,15 +823,15 @@
 
     // Posicionar sugerencias debajo del input
     function posicionarSugerencias() {
-      const rect = searchInput.getBoundingClientRect();
+      const rect = searchInputEl.getBoundingClientRect();
       sugerencias.style.left = rect.left + "px";
       sugerencias.style.top = rect.bottom + window.scrollY + "px";
       sugerencias.style.width = rect.width + "px";
     }
 
     // Mostrar sugerencias mientras escribe
-    searchInput.addEventListener("input", function () {
-      const valor = searchInput.value.toLowerCase().trim();
+    searchInputEl.addEventListener("input", function () {
+      const valor = searchInputEl.value.toLowerCase().trim();
       sugerencias.innerHTML = "";
 
       if (!valor) {
@@ -716,7 +840,7 @@
       }
 
       const resultados = secciones.filter((sec) =>
-        sec.nombre.toLowerCase().includes(valor)
+        sec.nombre.toLowerCase().includes(valor),
       );
 
       if (resultados.length > 0) {
@@ -749,11 +873,11 @@
     });
 
     // Buscar con Enter
-    searchInput.addEventListener("keydown", function (event: KeyboardEvent) {
+    searchInputEl.addEventListener("keydown", function (event) {
       if (event.key === "Enter") {
-        const valor = searchInput.value.toLowerCase().trim();
+        const valor = searchInputEl.value.toLowerCase().trim();
         const resultado = secciones.find((sec) =>
-          sec.nombre.toLowerCase().includes(valor)
+          sec.nombre.toLowerCase().includes(valor),
         );
 
         if (resultado) {
@@ -766,9 +890,13 @@
     });
 
     // Ocultar sugerencias al hacer clic fuera
-    document.addEventListener("click", function (event: MouseEvent) {
-      const target = event.target as Node;
-      if (!searchInput.contains(target) && !sugerencias.contains(target)) {
+    document.addEventListener("click", function (event) {
+      const targetNode = event.target instanceof Node ? event.target : null;
+      if (
+        targetNode &&
+        !searchInputEl.contains(targetNode) &&
+        !sugerencias.contains(targetNode)
+      ) {
         sugerencias.style.display = "none";
       }
     });

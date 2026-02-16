@@ -1,0 +1,821 @@
+---
+// Array de videos con información
+const videoPruebas = [
+  {
+    id: 1,
+    title: "FORD F-150",
+    subtitle:
+      "En nuestra prueba destacada tenemos a la Ford F-150, una pick-up que te brinda todo lo que necesitas para esos viajes fuera de la ciudad. Descubre la emoción de nuestro modelo estrella.",
+    video: "/img/videos-pruebas/ford f-150.mp4",
+  },
+  {
+    id: 2,
+    title: "XIAOMI YU7",
+    subtitle:
+      "Diseño y tecnología en armonía, el carro de Xiaomi rompiendo récord como el más vendido en poco tiempo.",
+    video: "/img/videos-pruebas/xiaomi YU7.mp4",
+  },
+  {
+    id: 3,
+    title: "NISSAN QASHQAI",
+    subtitle:
+      "Con nueva parrilla, la Nissan Qashqai nos sorprende con sus cambios en tecnología y seguridad.",
+    video: "/img/videos-pruebas/nissan qashqai.mp4",
+  },
+  {
+    id: 4,
+    title: "MAZDA ICONIC",
+    subtitle:
+      "El diseño de este Mazda Iconic es muy moderno y elegante, destaca por sus líneas deportivas y detalles innovadores.",
+    video: "/img/videos-pruebas/prueba-mazda.mp4",
+  },
+  {
+    id: 5,
+    title: "DFSK E5",
+    subtitle:
+      "La SUV eléctrica para 7 pasajeros, confortable y espaciosa, nos sorprendió mucho y seguro que a ustedes también les gustará.",
+    video: "/img/videos-pruebas/video-dfsk.mp4",
+  },
+  {
+    id: 6,
+    title: "KIA K4 XLINE",
+    subtitle:
+      "La marca no quiere dejar los automóviles, por eso nos presenta el K4 Xline: deportivo, seguro y muy confortable.",
+    video: "/img/videos-pruebas/video-kia-k4.mp4",
+  },
+  {
+    id: 7,
+    title: "ZEEKR 007 GT",
+    subtitle:
+      "El ZEEKR 007 GT fue lanzado en China en abril del 2025 y a Europa llegará como 007 GT.",
+    video: "/img/videos-pruebas/video-zeekr.mp4",
+  },
+];
+
+const destacada = videoPruebas[0];
+const resto = videoPruebas.slice(1);
+---
+
+<section id="pruebas" class="pruebas-container">
+  <div class="pruebas-header">
+    <div class="pruebas-icono">
+      <i class="fa-solid fa-video"></i>
+    </div>
+    <h1 class="pruebas-titulo">TEST DRIVE VIDEOS</h1>
+    <p class="descripcion-pruebas">
+      Ponemos a prueba todos los vehículos, te contamos lo más relevante de cada
+      una de las marcas.
+    </p>
+  </div>
+
+  {
+    destacada && (
+      <div class="prueba-destacada-container">
+        <div class="prueba-destacada-video">
+          <video width="100%" height="auto" controls>
+            <source src={destacada.video} type="video/mp4" />
+            Tu navegador no soporta videos HTML5.
+          </video>
+        </div>
+        <div class="prueba-destacada-texto">
+          <h2>{destacada.title}</h2>
+          <p>{destacada.subtitle}</p>
+          <a href="#" class="btn-ver-video">
+            +VIDEOS
+          </a>
+        </div>
+      </div>
+    )
+  }
+
+  <div class="pruebas-grid">
+    {
+      resto.map((prueba, index) => (
+        <div class="prueba-card" style={`--i: ${index}`}>
+          <div class="prueba-imagen-wrapper">
+            <video width="100%" height="auto" controls>
+              <source src={prueba.video} type="video/mp4" />
+              Tu navegador no soporta videos HTML5.
+            </video>
+          </div>
+          <div class="prueba-info">
+            <h3>{prueba.title}</h3>
+            <p>{prueba.subtitle}</p>
+            <a href="/notas" class="prueba-link">
+              Ver más →
+            </a>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="ver-mas-videos-container">
+    <a href="/notas" class="ver-mas-videos-btn">Ver más videos</a>
+  </div>
+</section>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&display=swap");
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .pruebas-container {
+    --sport-bg: #0b0f14;
+    --sport-panel: #141b23;
+    --sport-panel-2: #1a2430;
+    --sport-accent: #39ff88;
+    --sport-accent-2: #f19f1b;
+    --sport-text: #e9eef5;
+    --sport-muted: #aab3bf;
+    width: 100%;
+    background:
+      radial-gradient(
+        1200px 600px at 10% -10%,
+        rgba(57, 255, 136, 0.18),
+        transparent 60%
+      ),
+      radial-gradient(
+        1000px 500px at 90% 0%,
+        rgba(255, 95, 31, 0.18),
+        transparent 55%
+      ),
+      linear-gradient(135deg, #0b0f14 0%, #111823 100%);
+    padding: 80px 0 90px;
+    border-bottom: 4px solid var(--sport-accent-2);
+    color: var(--sport-text);
+    font-family: "Barlow", "Segoe UI", sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pruebas-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(120deg, rgba(57, 255, 136, 0.08), transparent 40%),
+      repeating-linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.04) 0 1px,
+        transparent 1px 12px
+      );
+    pointer-events: none;
+  }
+
+  .pruebas-header {
+    text-align: center;
+    margin-bottom: 60px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+    animation: fade-rise 0.8s ease both;
+  }
+
+  .pruebas-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 86px;
+    height: 86px;
+    background: linear-gradient(
+      135deg,
+      var(--sport-accent) 0%,
+      var(--sport-accent-2) 100%
+    );
+    border-radius: 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 12px 30px rgba(57, 255, 136, 0.25);
+    transform: rotate(-6deg);
+  }
+
+  .pruebas-icono i {
+    font-size: 38px;
+    color: #0b0f14;
+  }
+
+  .pruebas-titulo {
+    font-family: "Bebas Neue", "Barlow", sans-serif;
+    font-size: clamp(46px, 6vw, 72px);
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #f5f8ff;
+    letter-spacing: 1.2px;
+  }
+
+  .descripcion-pruebas {
+    font-size: 18px;
+    color: var(--sport-muted);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  .prueba-destacada-container {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 50px;
+    padding: 60px;
+    max-width: 1600px;
+    margin: 0 auto 60px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    animation: fade-rise 0.9s ease both;
+  }
+
+  .prueba-destacada-video {
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(57, 255, 136, 0.2);
+    background: var(--sport-panel);
+    aspect-ratio: 4 / 3;
+  }
+
+  .prueba-destacada-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background-color: #0b0f14;
+  }
+
+  .prueba-destacada-texto h2 {
+    font-family: "Bebas Neue", "Barlow", sans-serif;
+    font-size: clamp(42px, 5vw, 60px);
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    color: var(--sport-accent);
+    letter-spacing: 1px;
+  }
+
+  .prueba-destacada-texto p {
+    font-size: 18px;
+    line-height: 1.75;
+    margin-bottom: 28px;
+    color: var(--sport-muted);
+    font-weight: 400;
+  }
+
+  .btn-ver-video {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(
+      135deg,
+      var(--sport-accent) 0%,
+      var(--sport-accent-2) 100%
+    );
+    color: #0b0f14;
+    padding: 14px 40px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 999px;
+    text-decoration: none;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 10px 28px rgba(57, 255, 136, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .btn-ver-video:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 16px 40px rgba(57, 255, 136, 0.45);
+  }
+
+  /* Grid de pruebas */
+  .pruebas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    padding: 0 60px;
+    margin-bottom: 60px;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .prueba-card {
+    background: linear-gradient(
+      160deg,
+      var(--sport-panel) 0%,
+      var(--sport-panel-2) 100%
+    );
+    border-radius: 18px;
+    overflow: hidden;
+    transition:
+      transform 0.35s ease,
+      box-shadow 0.35s ease,
+      border-color 0.35s ease;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+    animation: card-rise 0.7s ease both;
+    animation-delay: calc(var(--i) * 80ms);
+  }
+
+  .prueba-card:hover {
+    transform: translateY(-10px) scale(1.01);
+    border-color: rgba(57, 255, 136, 0.5);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  .prueba-imagen-wrapper {
+    width: 100%;
+    aspect-ratio: 6 / 6;
+    overflow: hidden;
+    background: #0f141b;
+  }
+
+  .prueba-imagen-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background-color: #0b0f14;
+  }
+
+  .prueba-imagen-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Miniatura con overlay y "play" para indicar video */
+  .prueba-thumb {
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .prueba-thumb::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 40%,
+      rgba(0, 0, 0, 0.28) 100%
+    );
+    transition: background 0.25s ease;
+    pointer-events: none;
+  }
+
+  .prueba-thumb::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-40%, -50%);
+    width: 0;
+    height: 0;
+    border-left: 18px solid rgba(255, 255, 255, 0.95);
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    pointer-events: none;
+  }
+
+  .prueba-thumb:hover::before {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 30%,
+      rgba(0, 0, 0, 0.45) 100%
+    );
+  }
+
+  .prueba-thumb:hover::after {
+    transform: translate(-40%, -50%) scale(1.05);
+  }
+
+  .prueba-info {
+    padding: 26px 26px 30px;
+  }
+
+  .prueba-info h3 {
+    font-family: "Bebas Neue", "Barlow", sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--sport-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .prueba-info p {
+    font-size: 15px;
+    color: var(--sport-muted);
+    margin-bottom: 18px;
+    line-height: 1.6;
+  }
+
+  .prueba-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .prueba-link::after {
+    content: "";
+    width: 24px;
+    height: 2px;
+    background: var(--sport-accent);
+    transition: width 0.3s ease;
+  }
+
+  .prueba-link:hover {
+    color: var(--sport-accent);
+  }
+
+  .prueba-link:hover::after {
+    width: 36px;
+  }
+
+  /* Botón Ver más videos */
+  .ver-mas-videos-container {
+    display: flex;
+    justify-content: center;
+    padding: 0 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ver-mas-videos-btn {
+    background: #0b0f14;
+    color: #ffffff;
+    padding: 16px 48px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 999px;
+    text-decoration: none;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+    cursor: pointer;
+    border: 2px solid var(--sport-accent);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .ver-mas-videos-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+    border-color: var(--sport-accent-2);
+  }
+
+  @keyframes fade-rise {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes card-rise {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* Responsive - Tablet Large (1024px) */
+  @media (max-width: 1024px) {
+    .pruebas-header {
+      margin-bottom: 50px;
+      padding: 0 30px;
+    }
+
+    .prueba-destacada-container {
+      grid-template-columns: 1fr;
+      padding: 40px 30px;
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .prueba-destacada-texto h2 {
+      font-size: 40px;
+      margin-bottom: 15px;
+    }
+
+    .pruebas-grid {
+      grid-template-columns: repeat(2, 1fr);
+      padding: 0 30px;
+      gap: 25px;
+    }
+
+    .prueba-info {
+      padding: 20px;
+    }
+
+    .prueba-info h3 {
+      font-size: 20px;
+    }
+
+    .btn-ver-video {
+      padding: 14px 36px;
+      font-size: 16px;
+    }
+  }
+
+  /* Responsive - Tablet (768px) */
+  @media (max-width: 768px) {
+    .pruebas-container {
+      padding: 50px 0;
+    }
+
+    .pruebas-header {
+      margin-bottom: 40px;
+      padding: 0 20px;
+    }
+
+    .pruebas-icono {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 15px;
+    }
+
+    .pruebas-icono i {
+      font-size: 30px;
+    }
+
+    .pruebas-titulo {
+      font-size: 40px;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .descripcion-pruebas {
+      font-size: 16px;
+      max-width: 100%;
+    }
+
+    .prueba-destacada-container {
+      grid-template-columns: 1fr;
+      padding: 25px 20px;
+      gap: 20px;
+      margin-bottom: 35px;
+    }
+
+    .prueba-destacada-video {
+      border-radius: 12px;
+    }
+
+    .prueba-destacada-video video {
+      width: 100%;
+    }
+
+    .prueba-destacada-texto h2 {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .prueba-destacada-texto p {
+      font-size: 16px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .btn-ver-video {
+      padding: 12px 28px;
+      font-size: 15px;
+    }
+
+    .pruebas-grid {
+      grid-template-columns: 1fr;
+      padding: 0 20px;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .prueba-card {
+      border-radius: 12px;
+    }
+
+    .prueba-imagen-wrapper {
+      aspect-ratio: 4 / 3;
+    }
+
+    .prueba-info {
+      padding: 18px;
+    }
+
+    .prueba-info h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .prueba-info p {
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    .prueba-link {
+      font-size: 14px;
+      gap: 4px;
+    }
+
+    .ver-mas-videos-container {
+      padding: 0 20px;
+    }
+
+    .ver-mas-videos-btn {
+      padding: 12px 28px;
+      font-size: 15px;
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+
+  /* Responsive - Mobile (480px) */
+  @media (max-width: 480px) {
+    .pruebas-container {
+      padding: 35px 0;
+    }
+
+    .pruebas-header {
+      margin-bottom: 30px;
+      padding: 0 15px;
+    }
+
+    .pruebas-icono {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 12px;
+    }
+
+    .pruebas-icono i {
+      font-size: 24px;
+    }
+
+    .pruebas-titulo {
+      font-size: 28px;
+      letter-spacing: 0;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .descripcion-pruebas {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .prueba-destacada-container {
+      padding: 15px;
+      margin-bottom: 30px;
+      gap: 15px;
+    }
+
+    .prueba-destacada-video {
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .prueba-destacada-texto h2 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .prueba-destacada-texto p {
+      font-size: 14px;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+
+    .btn-ver-video {
+      padding: 11px 22px;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    .pruebas-grid {
+      padding: 0 15px;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .prueba-card {
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .prueba-imagen-wrapper {
+      aspect-ratio: 4 / 3;
+    }
+
+    .prueba-info {
+      padding: 15px;
+    }
+
+    .prueba-info h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .prueba-info p {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .prueba-link {
+      font-size: 13px;
+      gap: 3px;
+    }
+
+    .prueba-link:hover {
+      gap: 6px;
+    }
+
+    .ver-mas-videos-container {
+      padding: 0 15px;
+    }
+
+    .ver-mas-videos-btn {
+      padding: 11px 22px;
+      font-size: 14px;
+      width: 100%;
+    }
+  }
+
+  /* Responsive - Small Mobile (320px) */
+  @media (max-width: 360px) {
+    .pruebas-titulo {
+      font-size: 22px;
+    }
+
+    .descripcion-pruebas {
+      font-size: 13px;
+    }
+
+    .prueba-destacada-texto h2 {
+      font-size: 20px;
+    }
+
+    .prueba-destacada-texto p {
+      font-size: 13px;
+    }
+
+    .btn-ver-video,
+    .ver-mas-videos-btn {
+      font-size: 13px;
+      padding: 10px 18px;
+    }
+
+    .prueba-info h3 {
+      font-size: 15px;
+    }
+
+    .prueba-info p {
+      font-size: 13px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const seccion = document.getElementById("pruebas");
+    const titulo = document.querySelector(".pruebas-titulo");
+
+    if (!seccion || !titulo) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            titulo.classList.add("in-view");
+          }
+        });
+      },
+      { threshold: 0.12 },
+    );
+
+    observer.observe(seccion);
+  });
+</script>

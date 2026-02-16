@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+const { categoria, titulo } = Astro.props;
+
+let claseCategoria = "";
+switch (categoria?.toLowerCase()) {
+  case "hibridos":
+  case "eléctricos":
+  case "electricos":
+  case "pruebas":
+  case "lanzamientos":
+  case "noticias":
+    claseCategoria = categoria.toLowerCase();
+    break;
+  default:
+    claseCategoria = "general";
+}
+---
+
+<Layout title={titulo} bodyClass={`nota-${claseCategoria}`}>
+  <section class={`articulo-container ${claseCategoria}`}>
+    <slot />
+  </section>
+</Layout>

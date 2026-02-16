@@ -4,21 +4,152 @@ import SectionInfo from "../components/Section-Info/Section-Info.astro";
 import Hibridos from "../components/hibridos/hibridos.astro";
 import Noticias from "../components/section-noticias/noticias.astro";
 import Electricos from "../components/electricos/Electricos.astro";
-import TestDrive from "../components/test-drive/test-drive.astro";
 import SliderLogos from "../components/slider-logos/slider-logos.astro";
 import Revista from "../components/revista/revista.astro";
 import Deportes from "../components/deportes/deportes.astro";
+import Pruebas from "../components/pruebas/pruebas.astro";
+import AutoMatch from "../components/automatch/automatch.astro";
+import AdBanner from "../components/advertising/AdBanner.astro";
+
+let autos: any[] = [];
+
+try {
+  const res = await fetch("http://localhost:8888/.netlify/functions/get-notes");
+  if (res.ok) {
+    const data = await res.json();
+    autos = data
+      .filter((note: any) => note.category?.toLowerCase() === "automatch")
+      .map((note: any) => ({
+        id: note.id,
+        nombre: note.title,
+        descripcion: note.subtitle || note.content.substring(0, 100),
+        imagenes: [
+          note.image1,
+          note.image2,
+          note.image3,
+          note.image4,
+          note.image5,
+        ].filter(Boolean),
+      }));
+  }
+} catch (err) {
+  console.error("Error cargando autos:", err);
+}
 ---
 
-<Layout title="Auto-Tech-Digital.">
-  <!-- Aquí puedes agregar más contenido específico de la página principal si lo deseas -->
+<Layout title="Auto-Tech-Digital 🚗✨" class="home-page">
+  <!-- ✅ SECCIONES VISIBLES -->
+  <div class="extra-sections" id="extra-sections">
+    <SectionInfo />
+    <AdBanner variant="mazda" />
+    <!-- 🔽 AutoMatch ahora va después de Noticias -->
+    <section id="automatch" class="automatch-destacado">
+      <AutoMatch autos={autos} />
+    </section>
+    <Noticias />
+    <!-- 📢 Anuncio 1: Entre Noticias y Eléctricos -->
+    <AdBanner />
+    <Hibridos />
 
-  <SectionInfo />
-  <Noticias />
-  <Hibridos />
-  <Electricos />
-  <TestDrive />
-  <Deportes />
-  <SliderLogos />
-  <Revista />
+    <Electricos />
+    <Deportes />
+    <Pruebas />
+    <SliderLogos />
+    <Revista />
+  </div>
 </Layout>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const sectionLinks = document.querySelectorAll("a[data-section]");
+
+    /* -----------------------------------------
+       Cuando se hace clic en un enlace <a data-section="">
+    ------------------------------------------ */
+    sectionLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        const targetId = link.getAttribute("data-section");
+        if (!targetId) return;
+
+        // Scroll suave hacia la sección con offset dinámico
+        const target = document.getElementById(targetId);
+        if (target) {
+          const headerHeight = 280; // Altura del header
+          const targetPosition =
+            target.getBoundingClientRect().top + window.scrollY - headerHeight;
+
+          window.scrollTo({
+            top: targetPosition,
+            behavior: "smooth",
+          });
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  /* Animación suave de entrada para secciones */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .automatch-destacado {
+    margin-bottom: 1rem;
+    animation: fadeInUp 0.7s ease-out;
+  }
+
+  /* Secciones siempre visibles con transiciones suaves */
+  .extra-sections {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: none;
+    overflow: visible;
+    background: white;
+  }
+
+  .extra-sections > * {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+  }
+
+  .extra-sections > *:nth-child(1) {
+    animation-delay: 0.15s;
+  }
+
+  .extra-sections > *:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+
+  .extra-sections > *:nth-child(3) {
+    animation-delay: 0.45s;
+  }
+
+  .extra-sections > *:nth-child(4) {
+    animation-delay: 0.6s;
+  }
+
+  .extra-sections > *:nth-child(5) {
+    animation-delay: 0.75s;
+  }
+
+  .extra-sections > *:nth-child(6) {
+    animation-delay: 0.9s;
+  }
+
+  .extra-sections > *:nth-child(7) {
+    animation-delay: 1.05s;
+  }
+
+  .extra-sections > *:nth-child(8) {
+    animation-delay: 1.2s;
+  }
+</style>

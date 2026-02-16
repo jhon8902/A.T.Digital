@@ -1,0 +1,870 @@
+---
+const autos = [
+  {
+    id: "tesla-model-3",
+    nombre: "Maserati GranCabrio",
+    descripcion: "Sedán eléctrico con más de 500 km de autonomía.",
+    imagenes: [
+      "/img/automatch/maserati grancabrio.jpg",
+      "/img/automatch/maserati grancabrio1.jpg",
+      "/img/automatch/maserati grancabrio2.jpg",
+      "/img/automatch/maserati-grancabrio3.jpg",
+    ],
+  },
+  {
+    id: "bmw-i4",
+    nombre: "Aston Martin Volante DB12",
+    descripcion: "Deportividad, lujo y potencia totalmente eléctrica.",
+    imagenes: [
+      "/img/automatch/Aston MartinDB12 Volante.jpg",
+      "/img/automatch/maserati grancabrio1.jpg",
+      "/img/automatch/maserati grancabrio2.jpg",
+      "/img/automatch/maserati-grancabrio3.jpg",
+    ],
+  },
+  {
+    id: "porsche-taycan",
+    nombre: "Renault Filante Concept",
+    descripcion: "El auto eléctrico más emocionante del mundo.",
+    imagenes: [
+      "/img/automatch/renault concept.webp",
+      "/img/automatch/maserati grancabrio1.jpg",
+      "/img/automatch/maserati grancabrio2.jpg",
+      "/img/automatch/maserati-grancabrio3.jpg",
+    ],
+  },
+];
+---
+
+<section class="automatch-section">
+  <h2 class="titulo">AutoMatch 🚗💘</h2>
+  <p class="subtitulo">Descubre, comenta y dale like a tus autos favoritos.</p>
+
+  <div class="cards">
+    {
+      autos.map((auto) => (
+        <article class="auto-card" data-id={auto.id}>
+          <div class="auto-carousel">
+            {auto.imagenes.map((img, index) => (
+              <img
+                src={img}
+                alt={auto.nombre}
+                class={`auto-img ${index === 0 ? "visible" : "hidden"}`}
+              />
+            ))}
+            <button class="prev">❮</button>
+            <button class="next">❯</button>
+          </div>
+
+          <h3>{auto.nombre}</h3>
+          <p>{auto.descripcion}</p>
+
+          <div class="acciones">
+            <button class="btn-like" data-id={auto.id}>
+              👍 <span>0</span>
+            </button>
+            <button class="btn-corazon" data-id={auto.id}>
+              ❤️ <span>0</span>
+            </button>
+          </div>
+
+          <div class="comentarios">
+            <h4>
+              Comentarios 💬 <span class="contador-comentarios">(0)</span>
+            </h4>
+            <ul class="lista-comentarios" />
+            <button class="btn-expand-comentarios" style="display: none;">
+              Ver más comentarios ⬇️
+            </button>
+
+            <form class="form-comentario" data-id={auto.id}>
+              <input
+                type="text"
+                name="nombre"
+                placeholder="Tu nombre"
+                required
+              />
+              <textarea
+                name="mensaje"
+                placeholder="Escribe tu comentario..."
+                required
+              />
+              <button type="submit">Enviar ✨</button>
+            </form>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<section class="automatch-section">
+  <h2>Encuentra tu AutoMatch 🚗❤️</h2>
+  <p>
+    Usa nuestra herramienta inteligente para descubrir el auto perfecto para ti.
+  </p>
+
+  <a href="/automatch-find" class="btn-automatch"> Probar AutoMatch 🔍 </a>
+</section>
+
+<style>
+  /* ========== SECCIÓN AUTOMATCH PRINCIPAL ========== */
+
+  .automatch-section {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+    border-radius: 1.2rem;
+    margin: 3rem 0;
+    font-size: 1.4rem;
+    box-shadow: 0 8px 32px rgba(225, 163, 7, 0.1);
+    animation: slideInSection 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes slideInSection {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .automatch-section h2 {
+    font-size: 3.2rem;
+    color: #08341f;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  .automatch-section p {
+    color: #1f1f1f;
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+  }
+
+  /* ========== TÍTULO CON LÍNEAS ========== */
+  .titulo {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #02350f;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .titulo::before,
+  .titulo::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+    background-color: #1b5e3f;
+    max-width: 650px;
+  }
+
+  .subtitulo {
+    color: #555;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  /* ========== GRID DE TARJETAS ========== */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    font-size: 1.1rem;
+    text-align: start;
+    margin-bottom: 2rem;
+  }
+
+  .auto-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 1rem 1.5rem;
+    transition:
+      transform 0.3s,
+      box-shadow 0.3s;
+    border: 1px solid rgba(225, 163, 7, 0.1);
+  }
+
+  .auto-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-color: rgba(225, 163, 7, 0.3);
+  }
+
+  /* ========== CARRUSEL DE IMÁGENES ========== */
+  .auto-carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #f0f0f0;
+  }
+
+  .auto-img {
+    width: 100%;
+    border-radius: 12px;
+    display: none;
+    transition: opacity 0.3s;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  .auto-img.visible {
+    display: block;
+  }
+
+  .prev,
+  .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    padding: 0.5rem 0.7rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 10;
+  }
+
+  .prev:hover,
+  .next:hover {
+    background: #e1a307;
+    color: white;
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .prev {
+    left: 10px;
+  }
+
+  .next {
+    right: 10px;
+  }
+
+  /* ========== ACCIONES (LIKES Y CORAZONES) ========== */
+  .acciones {
+    display: flex;
+    justify-content: start;
+    gap: 1rem;
+    margin-top: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-like,
+  .btn-corazon {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition:
+      transform 0.2s,
+      color 0.2s;
+  }
+
+  .btn-like:hover {
+    color: #0077ff;
+    transform: scale(1.3);
+  }
+
+  .btn-corazon:hover {
+    color: #e63946;
+    transform: scale(1.3);
+  }
+
+  .btn-like.activo,
+  .btn-corazon.activo {
+    transform: scale(1.4);
+    animation: pulse 0.3s ease;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1.4);
+    }
+  }
+
+  /* ========== SECCIÓN DE COMENTARIOS ========== */
+  .comentarios {
+    margin-top: 1rem;
+    text-align: left;
+  }
+
+  .comentarios h4 {
+    margin-bottom: 0.5rem;
+    color: #1b5e3f;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .contador-comentarios {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #1b5e3f;
+  }
+
+  .lista-comentarios {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0.8rem;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .lista-comentarios li {
+    background: #f7f8fa;
+    margin-bottom: 0.4rem;
+    padding: 0.5rem 0.8rem;
+    border-left: 4px solid #1b5e3f;
+    border-radius: 6px;
+    transition:
+      background 0.3s,
+      border-color 0.3s;
+    font-size: 0.9rem;
+  }
+
+  .lista-comentarios li.nuevo {
+    background: #fffbf0;
+    border-color: #e1a307;
+    animation: slideInComment 0.5s ease;
+  }
+
+  .lista-comentarios li.hidden {
+    display: none;
+  }
+
+  .btn-expand-comentarios {
+    background: transparent;
+    color: #1b5e3f;
+    border: 1px solid #1b5e3f;
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+    margin-top: 0.6rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+
+  .btn-expand-comentarios:hover {
+    background: #1b5e3f;
+    color: white;
+  }
+
+  .btn-expand-comentarios.collapsed {
+    background: #1b5e3f;
+    color: white;
+  }
+
+  @keyframes slideInComment {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .lista-comentarios li strong {
+    color: #111;
+    font-weight: 600;
+  }
+
+  .lista-comentarios li .fecha {
+    float: right;
+    font-size: 0.75rem;
+    color: #888;
+  }
+
+  /* ========== FORMULARIO DE COMENTARIOS ========== */
+  .form-comentario {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: #1a1a2e;
+  }
+
+  .form-comentario input,
+  .form-comentario textarea {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 0.9rem;
+    resize: none;
+    background: #fafafa;
+    font-family: inherit;
+    transition:
+      border 0.3s,
+      background 0.3s;
+  }
+
+  .form-comentario input:focus,
+  .form-comentario textarea:focus {
+    outline: none;
+    border-color: #e1a307;
+    background: white;
+  }
+
+  .form-comentario button {
+    background: #1b5e3f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+  }
+
+  .form-comentario button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(225, 163, 7, 0.3);
+  }
+
+  .form-comentario button:active {
+    transform: scale(0.98);
+  }
+
+  /* ========== BOTÓN AUTOMATCH ========== */
+  .btn-automatch {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    background: #1b5e3f;
+    color: white;
+    text-decoration: none;
+    border-radius: 0.8rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 20px rgba(225, 163, 7, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-automatch::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #1b5e3f;
+    transition: left 0.4s ease;
+    z-index: 1;
+  }
+
+  .btn-automatch:hover {
+    background: linear-gradient(135deg, #d4932e 0%, #c17f1a 100%);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 30px rgba(225, 163, 7, 0.4);
+  }
+
+  .btn-automatch:hover::before {
+    left: 100%;
+  }
+
+  .btn-automatch:active {
+    transform: translateY(-1px) scale(1.02);
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 1024px) {
+    .cards {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .titulo {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .automatch-section {
+      padding: 2rem 1rem;
+      margin: 2rem 0;
+    }
+
+    .automatch-section h2 {
+      font-size: 28px;
+    }
+
+    .titulo {
+      font-size: 1.6rem;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .titulo::before,
+    .titulo::after {
+      display: none;
+    }
+
+    .automatch-section h2 {
+      font-size: 1.6rem;
+    }
+
+    .automatch-section p {
+      font-size: 1rem;
+    }
+
+    .cards {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .auto-card {
+      padding: 1rem;
+    }
+
+    .form-comentario {
+      gap: 0.4rem;
+    }
+
+    .form-comentario input,
+    .form-comentario textarea {
+      padding: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .btn-automatch {
+      padding: 0.8rem 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .lista-comentarios {
+      max-height: 200px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .automatch-section {
+      padding: 1.5rem 0.75rem;
+      margin: 1.5rem 0;
+      border-radius: 0.8rem;
+    }
+
+    .titulo {
+      font-size: 1.4rem;
+    }
+
+    .subtitulo {
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cards {
+      gap: 1rem;
+    }
+
+    .auto-card {
+      padding: 0.75rem;
+      border-radius: 12px;
+    }
+
+    .auto-img {
+      aspect-ratio: 16 / 10;
+    }
+
+    .prev,
+    .next {
+      padding: 0.4rem 0.5rem;
+      font-size: 1rem;
+    }
+
+    .acciones {
+      gap: 0.8rem;
+    }
+
+    .btn-like,
+    .btn-corazon {
+      font-size: 1.2rem;
+    }
+
+    .comentarios h4 {
+      font-size: 0.95rem;
+    }
+
+    .lista-comentarios li {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.8rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .form-comentario button {
+      padding: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .btn-automatch {
+      padding: 0.75rem 1.2rem;
+      font-size: 0.9rem;
+    }
+
+    .lista-comentarios {
+      max-height: 150px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const likes = JSON.parse(localStorage.getItem("automatchLikes") || "{}");
+    const comentarios: Record<string, unknown[]> = JSON.parse(
+      localStorage.getItem("automatchComentarios") || "{}",
+    );
+
+    // Inicializar contadores
+    document
+      .querySelectorAll(".btn-like, .btn-corazon")
+      .forEach((btn: Element) => {
+        const htmlBtn = btn as HTMLElement;
+        const id = htmlBtn.dataset.id;
+        const tipo = htmlBtn.classList.contains("btn-like")
+          ? "like"
+          : "corazon";
+        const key = `${id}-${tipo}`;
+        const span = htmlBtn.querySelector("span") as HTMLElement | null;
+        if (span) span.textContent = likes[key] || 0;
+      });
+
+    // Clicks
+    document.addEventListener("click", (e: Event) => {
+      const target = e.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      // Carrusel
+      if (target.matches(".next, .prev")) {
+        const carousel = target.closest(".auto-carousel") as HTMLElement | null;
+        if (!carousel) return;
+        const images = carousel.querySelectorAll(".auto-img");
+        let current = Array.from(images).findIndex((img) =>
+          (img as HTMLElement).classList.contains("visible"),
+        );
+        images[current].classList.remove("visible");
+        images[current].classList.add("hidden");
+
+        const nextIndex = target.matches(".next")
+          ? (current + 1) % images.length
+          : (current - 1 + images.length) % images.length;
+
+        images[nextIndex].classList.remove("hidden");
+        images[nextIndex].classList.add("visible");
+      }
+
+      // Likes / Corazones
+      if (target.matches(".btn-like, .btn-corazon")) {
+        const id = target.dataset.id;
+        const tipo = target.classList.contains("btn-like") ? "like" : "corazon";
+        const key = `${id}-${tipo}`;
+        likes[key] = (likes[key] || 0) + 1;
+        localStorage.setItem("automatchLikes", JSON.stringify(likes));
+        const span = target.querySelector("span") as HTMLElement | null;
+        if (span) span.textContent = likes[key];
+        target.classList.add("activo");
+        setTimeout(() => target.classList.remove("activo"), 300);
+      }
+    });
+
+    // Cargar votos desde localStorage
+    const commentVotes = JSON.parse(
+      localStorage.getItem("automatchCommentVotes") || "{}",
+    );
+
+    // Mostrar comentarios guardados
+    for (const [autoId, lista] of Object.entries(comentarios)) {
+      const ul = document.querySelector(
+        `.auto-card[data-id="${autoId}"] .lista-comentarios`,
+      ) as HTMLElement | null;
+      if (!ul || !Array.isArray(lista)) continue;
+      const btnExpand = ul.parentElement?.querySelector(
+        ".btn-expand-comentarios",
+      ) as HTMLElement | null;
+      const contador = ul.parentElement?.querySelector(
+        ".contador-comentarios",
+      ) as HTMLElement | null;
+
+      if (contador) {
+        contador.textContent = `(${lista.length})`;
+      }
+      lista.forEach((c: any, index) => {
+        const commentId = `${autoId}-${index}-${c.fecha}`;
+        const votes = commentVotes[commentId] || 0;
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <div class="content">
+            <strong>${c.nombre}</strong> <span class="fecha">${c.fecha}</span><br>${c.mensaje}
+          </div>
+          <button class="btn-vote-comment" data-comment-id="${commentId}" title="Me gusta este comentario">
+            👍 <span>${votes}</span>
+          </button>
+        `;
+        if (index >= 2) {
+          li.classList.add("hidden");
+        }
+        ul.appendChild(li);
+      });
+
+      if (lista.length > 2 && btnExpand) {
+        btnExpand.style.display = "block";
+      }
+    }
+
+    // 🆕 Sistema de votación de comentarios
+    document.addEventListener("click", (e: Event) => {
+      const target = e.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      if (target.matches(".btn-vote-comment")) {
+        const commentId = target.dataset.commentId;
+        if (!commentId) return;
+
+        const currentVotes = parseInt(
+          (target.querySelector("span") as HTMLElement)?.textContent || "0",
+        );
+        const newVotes = currentVotes + 1;
+
+        // Guardar voto
+        const votes = JSON.parse(
+          localStorage.getItem("automatchCommentVotes") || "{}",
+        );
+        votes[commentId] = newVotes;
+        localStorage.setItem("automatchCommentVotes", JSON.stringify(votes));
+
+        // Actualizar UI
+        const span = target.querySelector("span") as HTMLElement | null;
+        if (span) {
+          span.textContent = newVotes;
+        }
+        target.classList.add("voted");
+        target.disabled = true;
+      }
+    });
+
+    // Nuevo comentario
+    document.querySelectorAll(".form-comentario").forEach((form: Element) => {
+      const htmlForm = form as HTMLFormElement;
+      htmlForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const idValue = htmlForm.dataset.id;
+        if (!idValue) return;
+        const id: string = idValue;
+        const nombre = (htmlForm.nombre as any)?.value?.trim() || "";
+        const mensaje = (htmlForm.mensaje as any)?.value?.trim() || "";
+        if (!nombre || !mensaje) return;
+
+        const fecha = new Date().toLocaleString("es-ES", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        const nuevo = { nombre, mensaje, fecha };
+        if (!comentarios[id]) comentarios[id] = [];
+        (comentarios[id] as any[]).push(nuevo);
+        localStorage.setItem(
+          "automatchComentarios",
+          JSON.stringify(comentarios),
+        );
+
+        const ul = htmlForm.parentElement?.querySelector(
+          ".lista-comentarios",
+        ) as HTMLElement | null;
+        const contador = htmlForm.parentElement?.querySelector(
+          ".contador-comentarios",
+        ) as HTMLElement | null;
+        const btnExpand = htmlForm.parentElement?.querySelector(
+          ".btn-expand-comentarios",
+        ) as HTMLElement | null;
+
+        if (!ul) return;
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${nombre}</strong> <span class="fecha">${fecha}</span><br>${mensaje}`;
+        li.classList.add("nuevo");
+        ul.appendChild(li);
+
+        // Actualizar contador
+        if (contador) {
+          contador.textContent = `(${(comentarios[id] as any[]).length})`;
+        }
+
+        // Mostrar botón expandir si hay más de 2 comentarios
+        if ((comentarios[id] as any[]).length > 2 && btnExpand) {
+          btnExpand.style.display = "block";
+        }
+
+        htmlForm.reset();
+        setTimeout(() => li.classList.remove("nuevo"), 800);
+      });
+    });
+
+    // Expandir comentarios
+    document
+      .querySelectorAll(".btn-expand-comentarios")
+      .forEach((btn: Element) => {
+        const htmlBtn = btn as HTMLElement;
+        htmlBtn.addEventListener("click", () => {
+          const parentEl = htmlBtn.parentElement;
+          if (!parentEl) return;
+          const ul = parentEl.querySelector(
+            ".lista-comentarios",
+          ) as HTMLElement | null;
+          if (!ul) return;
+          const items = ul.querySelectorAll("li");
+
+          if (htmlBtn.classList.contains("collapsed")) {
+            htmlBtn.classList.remove("collapsed");
+            htmlBtn.textContent = "Ver más comentarios ⬇️";
+            items.forEach((item, index) => {
+              if (index >= 2) {
+                (item as HTMLElement).classList.add("hidden");
+              }
+            });
+          } else {
+            htmlBtn.classList.add("collapsed");
+            htmlBtn.textContent = "Ver menos comentarios ⬆️";
+            items.forEach((item) => {
+              (item as HTMLElement).classList.remove("hidden");
+            });
+          }
+        });
+      });
+    async function registrarMatch(autoId: string, decision: string) {
+      await fetch("/.netlify/functions/api-automatch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ auto_id: autoId, decision }),
+      });
+    }
+  });
+</script>

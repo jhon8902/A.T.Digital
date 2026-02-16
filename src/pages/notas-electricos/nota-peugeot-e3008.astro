@@ -1,9 +1,9 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import "../../../public/css/electricos.css";
 ---
 
-<meta charset="UTF-8" />
-<Layout title="nota-peugeot-e3008" bodyClass="otras-page">
+<Layout title="nota-peugeot-e3008" bodyClass="nota-page">
   <section class="nota-container">
     <div class="nota-header">
       <h1>Peugeot E-3008 Eléctrico</h1>
@@ -136,6 +136,92 @@ import Layout from "../../layouts/Layout.astro";
           src="/img/peugeot-3008-electrica/interior-2-peugeot-3008.jpeg"
           alt="Tecnología de seguridad del Peugeot E-3008"
         />
+      </div>
+    </section>
+
+    <!-- Ficha Técnica Profesional -->
+    <section class="ficha-tecnica-profesional">
+      <h2>Ficha Técnica Completa - Peugeot E-3008 Eléctrico</h2>
+      <div class="ficha-grid">
+        <div class="ficha-item">
+          <strong>💰 Precio en Europa:</strong>
+          <p>
+            Desde €48,990 - €56,990 (disponibilidad en Colombia por confirmar)
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>🚗 Versiones:</strong>
+          <p>
+            E-3008 Long Range (batería de 73 kWh) | E-3008 Extended Range (98
+            kWh)
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>⚙️ Motor:</strong>
+          <p>Eléctrico de imanes permanentes (RWD o AWD según versión)</p>
+        </div>
+        <div class="ficha-item">
+          <strong>🔥 Potencia:</strong>
+          <p>Long Range: 231 HP | Extended Range: 326 HP</p>
+        </div>
+        <div class="ficha-item">
+          <strong>⚡ Torque:</strong>
+          <p>Long Range: 345 Nm | Extended Range: 520 Nm</p>
+        </div>
+        <div class="ficha-item">
+          <strong>🔋 Batería y Autonomía:</strong>
+          <p>73 kWh: hasta 525 km (WLTP) | 98 kWh: hasta 700 km (WLTP)</p>
+        </div>
+        <div class="ficha-item">
+          <strong>⏱️ Aceleración:</strong>
+          <p>
+            Long Range: 0-100 km/h en 8.8s | Extended: 6.4s | Velocidad máxima:
+            170 km/h
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>🔌 Carga:</strong>
+          <p>
+            Rápida DC 160 kW: 20-80% en 30 min | AC 11 kW: completa en 7-10 hrs
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>🛡️ Seguridad:</strong>
+          <p>
+            10 airbags, Control de Estabilidad ESP, Frenado Automático con
+            Detección Peatones, Control Crucero Adaptativo Stop&Go, Cámara 360°,
+            Asistente Punto Ciego
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>📱 Equipamiento:</strong>
+          <p>
+            Peugeot i-Cockpit 3D (pantalla 21" panorámica), Head-Up Display
+            holográfico, carga inalámbrica, climatización trizona, asientos
+            masajeadores
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>✅ Pros:</strong>
+          <p>
+            Autonomía líder en segmento, diseño distintivo, i-Cockpit innovador,
+            gran confort, tecnología de punta
+          </p>
+        </div>
+        <div class="ficha-item">
+          <strong>❌ Contras:</strong>
+          <p>
+            Precio premium, disponibilidad limitada, ergonomía del volante
+            pequeño puede no gustar a todos
+          </p>
+        </div>
+        <div class="ficha-item competidores">
+          <strong>🏁 Competidores Directos:</strong>
+          <p>
+            Tesla Model Y, Volkswagen ID.4, Skoda Enyaq iV, Nissan Ariya, Kia
+            EV6
+          </p>
+        </div>
       </div>
     </section>
   </section>
@@ -386,6 +472,68 @@ import Layout from "../../layouts/Layout.astro";
     }
   }
 
+  /* Ficha Técnica Profesional */
+  .ficha-tecnica-profesional {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 40px 20px;
+    margin: 40px auto;
+    max-width: 1200px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+  .ficha-tecnica-profesional h2 {
+    text-align: center;
+    font-size: 32px;
+    color: #08341f;
+    margin-bottom: 30px;
+    border-bottom: 3px solid #e6b410;
+    padding-bottom: 15px;
+    font-family: "Georgia", serif;
+  }
+  .ficha-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .ficha-item {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #e6b410;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  .ficha-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(230, 180, 16, 0.2);
+  }
+  .ficha-item strong {
+    display: block;
+    font-size: 16px;
+    color: #08341f;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .ficha-item p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #444;
+    margin: 0;
+  }
+  .ficha-item.competidores {
+    grid-column: 1 / -1;
+    background: #08341f;
+    border-left: 4px solid #e6b410;
+  }
+  .ficha-item.competidores strong {
+    color: #e6b410;
+  }
+  .ficha-item.competidores p {
+    color: #fff;
+  }
+
   /* SOLO PARA ESCRITORIO */
   @media (min-width: 1024px) {
     .dynamic-item {
@@ -416,36 +564,4 @@ import Layout from "../../layouts/Layout.astro";
   }
 </style>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const observeElement = (selector) => {
-      const element = document.querySelector(selector);
-
-      if (!element) {
-        console.error(
-          `El elemento con la clase ${selector} no se encontró en el DOM.`
-        );
-        return;
-      }
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              element.classList.add("visible");
-            } else {
-              element.classList.remove("visible"); // Opcional: para reiniciar la animación
-            }
-          });
-        },
-        { threshold: 0.5 } // El 50% del elemento debe estar visible
-      );
-
-      observer.observe(element);
-    };
-
-    // Observa los títulos
-    observeElement(".feature-title-1");
-    observeElement(".feature-title");
-  });
-</script>
+<script src="/js/nota-animations.js" defer></script>

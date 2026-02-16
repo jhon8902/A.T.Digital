@@ -96,27 +96,78 @@ import Layout from "../../layouts/Layout.astro";
     </section>
   </section>
 
-  <section class="resumen">
-    <h2>Resumen Técnico</h2>
-    <div class="grid">
-      <div class="item">
-        <strong>Motor:</strong> Híbrido enchufable 3.0L TFSI + Eléctrico
+  <!-- Ficha Técnica Profesional -->
+  <section class="ficha-tecnica-profesional">
+    <h2>Ficha Técnica Completa - Audi Q7 55 TFSI e Quattro</h2>
+    <div class="ficha-grid">
+      <div class="ficha-item">
+        <strong>💰 Precio estimado:</strong>
+        <p>Desde €75,000 - €85,000 EUR (disponibilidad Colombia limitada)</p>
       </div>
-      <div class="item">
-        <strong>Autonomía:</strong> Hasta 40 km en modo eléctrico / más de 800 km
-        combinada
+      <div class="ficha-item">
+        <strong>🚗 Versiones:</strong>
+        <p>Q7 55 TFSI e Quattro (PHEV)</p>
       </div>
-      <div class="item">
-        <strong>Consumo:</strong> 2.8 L/100km (combinado)
+      <div class="ficha-item">
+        <strong>⚙️ Motor:</strong>
+        <p>3.0L V6 TFSI Turbo (gasolina) + Motor Eléctrico integrado</p>
       </div>
-      <div class="item">
-        <strong>Conectividad:</strong> Apple CarPlay, Android Auto, pantalla táctil
+      <div class="ficha-item">
+        <strong>🔥 Potencia:</strong>
+        <p>340 HP (gasolina) + 94 HP (eléctrico) = 381 HP combinados</p>
       </div>
-      <div class="item">
-        <strong>Seguridad:</strong> Asistencias avanzadas, 8 airbags, sistemas ADAS
+      <div class="ficha-item">
+        <strong>⚡ Torque:</strong>
+        <p>450 Nm (gasolina) + 350 Nm (eléctrico) = 600 Nm combinados</p>
       </div>
-      <div class="item">
-        <strong>Pantalla:</strong> Central táctil + clúster digital
+      <div class="ficha-item">
+        <strong>🔋 Batería y Autonomía:</strong>
+        <p>17.3 kWh | Hasta 40-45 km eléctrico (WLTP) | +800 km combinados</p>
+      </div>
+      <div class="ficha-item">
+        <strong>⏱️ Aceleración y Consumo:</strong>
+        <p>0-100 km/h en 5.7s | Consumo: 2.8-3.1 L/100km (WLTP combinado)</p>
+      </div>
+      <div class="ficha-item">
+        <strong>🔌 Carga y Transmisión:</strong>
+        <p>
+          AC 7.4 kW: completa en 2.5 hrs | Tiptronic 8 velocidades + Quattro AWD
+        </p>
+      </div>
+      <div class="ficha-item">
+        <strong>🛡️ Seguridad:</strong>
+        <p>
+          8 airbags, Audi Pre Sense, Control Crucero Adaptativo con Stop&Go,
+          Asistente Carril, Exit Warning, 360° cámaras, Night Vision
+        </p>
+      </div>
+      <div class="ficha-item">
+        <strong>📱 Equipamiento:</strong>
+        <p>
+          MMI Touch Response dual, Virtual Cockpit Plus 12.3", Bang & Olufsen
+          Premium 3D, Matrix LED, climatización 4 zonas, 7 plazas
+        </p>
+      </div>
+      <div class="ficha-item">
+        <strong>✅ Pros:</strong>
+        <p>
+          Lujo premium Audi, potencia V6 + híbrido, tecnología MMI avanzada,
+          Quattro AWD, 7 plazas reales, bajo consumo combinado
+        </p>
+      </div>
+      <div class="ficha-item">
+        <strong>❌ Contras:</strong>
+        <p>
+          Precio muy elevado, autonomía eléctrica limitada, peso alto (+2,500
+          kg), disponibilidad limitada mercado colombiano
+        </p>
+      </div>
+      <div class="ficha-item competidores">
+        <strong>🏁 Competidores Directos:</strong>
+        <p>
+          BMW X5 xDrive45e, Mercedes GLE 400e, Volvo XC90 T8 Recharge, Porsche
+          Cayenne E-Hybrid
+        </p>
       </div>
     </div>
   </section>
@@ -292,6 +343,68 @@ import Layout from "../../layouts/Layout.astro";
     height: auto;
     display: block;
     margin: 0 auto;
+  }
+
+  /* Ficha Técnica Profesional */
+  .ficha-tecnica-profesional {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 40px 20px;
+    margin: 40px auto;
+    max-width: 1200px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+  .ficha-tecnica-profesional h2 {
+    text-align: center;
+    font-size: 32px;
+    color: #08341f;
+    margin-bottom: 30px;
+    border-bottom: 3px solid #e6b410;
+    padding-bottom: 15px;
+    font-family: "Georgia", serif;
+  }
+  .ficha-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .ficha-item {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #e6b410;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  .ficha-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(230, 180, 16, 0.2);
+  }
+  .ficha-item strong {
+    display: block;
+    font-size: 16px;
+    color: #08341f;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .ficha-item p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #444;
+    margin: 0;
+  }
+  .ficha-item.competidores {
+    grid-column: 1 / -1;
+    background: #08341f;
+    border-left: 4px solid #e6b410;
+  }
+  .ficha-item.competidores strong {
+    color: #e6b410;
+  }
+  .ficha-item.competidores p {
+    color: #fff;
   }
 
   @media (max-width: 768px) {

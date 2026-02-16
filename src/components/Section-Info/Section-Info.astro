@@ -15,7 +15,7 @@ try {
 
     // 2️⃣ Filtramos solo las notas de la categoría "noticias"
     const filtered = data.filter(
-      (note: any) => note.category?.toLowerCase() === "noticias"
+      (note: any) => note.category?.toLowerCase() === "noticias",
     );
 
     // 3️⃣ Normalizamos formato para el carrusel
@@ -79,10 +79,11 @@ const allNotes = [...dynamicNotes, ...staticNotes].slice(0, 5);
 <section id="noticias" class="section-info w-full py-30">
   <div class="info-header">
     <h1 class="info-titulo anim-titulo">
-      Noticias sobre ruedas
+      <!-- Botón Ver más noticias 
       <span class="icono-rueda">
-        <i class="fa-solid fa-gauge-high"></i>
-      </span>
+        <i class="fa-solid fa-circle"></i>
+      </span>-->
+      Noticias
     </h1>
     <p class="info-descripcion">
       La actualidad del sector automotor colombiano: lanzamientos, regulaciones,
@@ -91,34 +92,31 @@ const allNotes = [...dynamicNotes, ...staticNotes].slice(0, 5);
   </div>
 
   <div class="container mx-auto px-2">
-    <div id="carousel" class="relative flex overflow-hidden">
+    <div class="news-grid">
       {
-        allNotes.map((nota) => (
-          <a
-            href={nota.href}
-            class="carousel-item relative w-full transition-opacity duration-[1400ms] hover:opacity-75"
-          >
-            <img
-              src={nota.img}
-              alt={nota.alt}
-              class="w-full h-full object-cover"
-            />
-            <div class="carousel-caption">
-              {nota.caption}
-              <span class="fecha-publicacion">{nota.fecha}</span>
-            </div>
-          </a>
+        allNotes.map((nota, index) => (
+          <>
+            <article class="news-card">
+              <a href={nota.href} class="news-card-link">
+                <div class="news-card-image">
+                  <img
+                    src={nota.img}
+                    alt={nota.alt}
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <div class="news-card-content">
+                  <span class="news-tag">Noticias</span>
+                  <h3 class="news-title">{nota.caption}</h3>
+                  <p class="news-date">{nota.fecha}</p>
+                  <span class="news-read-more">Ver más →</span>
+                </div>
+              </a>
+            </article>
+          </>
         ))
       }
     </div>
-
-    <!-- Botones de navegación -->
-    <button id="prevBtn" class="carousel-control-prev" aria-label="Anterior"
-      >❮</button
-    >
-    <button id="nextBtn" class="carousel-control-next" aria-label="Siguiente"
-      >❯</button
-    >
 
     <!-- Botón Ver más noticias -->
     <div class="ver-mas-noticias-section">
@@ -140,43 +138,42 @@ const allNotes = [...dynamicNotes, ...staticNotes].slice(0, 5);
   }
 
   .container {
-    width: 100%; /* Asegura que ocupe todo el ancho */
+    width: 95%; /* Asegura que ocupe todo el ancho */
     max-width: 100%; /* Evita restricciones de ancho */
     margin: 0 auto; /* Centra el contenido */
-    padding: 0; /* Elimina padding innecesario */
+    padding: 40px; /* Elimina padding innecesario */
     font-family: "Georgia", serif;
+    background: #fbf7f2;
   }
 
   .section-info {
-    background: black;
-  }
-
-  @keyframes fadeInTitle {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes fadeIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    background: linear-gradient(
+      to bottom,
+      #fafaf8 0%,
+      #f3f2f2 50%,
+      white 50%,
+      white 100%
+    );
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
   }
 
   .info-header {
-    background: linear-gradient(90deg, #fbcb1d 86%, #232323 76%);
-    padding: 38px 0 24px 0;
+    background: white;
+    padding: 40px 20px 30px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 18px; /* Espacio uniforme entre todos los hijos */
+    gap: 18px;
+    width: 100%;
+    margin: 0 auto;
+    border-bottom: 2px solid #ddd;
   }
 
   .info-titulo {
-    color: black;
-    font-size: 90px;
+    color: #1a1a1a;
+    font-size: 1.8em;
     letter-spacing: 2px;
     font-family: "Georgia", serif;
     text-transform: uppercase;
@@ -186,54 +183,160 @@ const allNotes = [...dynamicNotes, ...staticNotes].slice(0, 5);
     opacity: 1;
     background: none;
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    position: relative;
+  }
+
+  .info-titulo::before {
+    content: "";
+    width: 650px;
+    height: 2px;
+    background: linear-gradient(90deg, #000, #d4a742);
+  }
+
+  .info-titulo::after {
+    content: "";
+    width: 650px;
+    height: 2px;
+    background: linear-gradient(90deg, #d4a742, #000);
   }
 
   .info-descripcion {
-    color: rgb(16, 16, 16);
-
-    font-size: 1.9rem;
-    font-weight: 600;
-    text-align: center;
-    background: none;
-    max-width: 1000px;
-    line-height: 1.4;
-    margin: 0;
-    padding: 0;
+    font-size: 1.3rem;
+    color: #2f2f2f;
+    font-family: "Roboto", Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 900px;
   }
 
   @media (max-width: 600px) {
     .info-header {
-      padding: 18px 0 10px 0;
+      padding: 20px 10px 20px 10px;
+      background: white;
+      border-bottom: 2px solid #ddd;
     }
     .info-icono {
       font-size: 1.7rem;
       margin-bottom: 10px;
     }
     .info-titulo {
-      font-size: 28px;
+      font-size: 32px;
       margin-bottom: 8px;
       text-align: center;
+      flex-direction: row;
+      gap: 15px;
+    }
+    .info-titulo::before,
+    .info-titulo::after {
+      display: none;
     }
     .info-descripcion {
-      color: #2b2502;
-      max-width: 80%; /* o 85%, según se vea mejor */
-      text-align: start;
-      font-size: 1rem;
-      padding: 0 8px;
-      /* text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);  mejora legibilidad */
-    }
-    .info-header {
-      background: linear-gradient(120deg, #fbcb1d 75%, #232323 65%);
+      display: none;
     }
   }
 
   .icono-rueda {
-    color: #f6f5f3; /* Amarillo de tu paleta */
-    font-size: 1.4em;
-    margin-left: 18px;
-    filter: drop-shadow(0 2px 4px #0008);
-    display: inline-flex;
-    align-items: center;
+    display: inline-block;
+    position: relative;
+    width: 60px;
+    height: 60px;
+  }
+
+  .icono-rueda i {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 4px solid #d69a0c; /* aro exterior dorado */
+    border-radius: 50%;
+    background: radial-gradient(circle at center, #222 40%, #000 100%);
+    position: relative;
+    box-shadow:
+      inset 0 0 10px #000,
+      0 0 8px #d69a0c;
+  }
+
+  /* Divisiones tipo rayos del rin */
+  .icono-rueda i::before,
+  .icono-rueda i::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 55%;
+    height: 3px;
+    background-color: #d69a0c;
+    transform-origin: center;
+  }
+
+  .icono-rueda i::before {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  .icono-rueda i::after {
+    transform: translate(-50%, -50%) rotate(60deg);
+  }
+
+  /* Creamos más divisiones con pseudo-elementos extra */
+  .icono-rueda::before,
+  .icono-rueda::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 55%;
+    height: 3px;
+    background-color: #d69a0c;
+    transform-origin: center;
+  }
+
+  .icono-rueda::before {
+    transform: translate(-50%, -50%) rotate(120deg);
+  }
+
+  .icono-rueda::after {
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+
+  /* Efecto central tipo tuerca */
+  .icono-rueda i span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background: #d69a0c;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 4px #000 inset;
+  }
+
+  /* Efecto hover: giro del rin */
+  .icono-rueda:hover i {
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* ⚙️ Ajuste en pantallas pequeñas */
+  @media (max-width: 768px) {
+    .icono-rueda {
+      --tamano-rin: 45px; /* más pequeño */
+    }
+
+    .icono-rueda i {
+      border-width: 2px;
+      font-size: 0.6rem;
+    }
   }
 
   .descripcion-noticias {
@@ -251,194 +354,127 @@ const allNotes = [...dynamicNotes, ...staticNotes].slice(0, 5);
     animation-delay: 0.3s; /* Para que aparezca justo después del h1 */
   }
 
-  #carousel {
-    position: relative;
-    width: 100%; /* Asegura que ocupe todo el ancho */
-    height: 100vh;
+  /* Grid de Noticias */
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 35px;
+    padding: 10px 20px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .news-card {
+    background: white;
+    border-radius: 12px;
     overflow: hidden;
-    margin: 0 auto; /* Centra el carrusel si hay espacio adicional */
-    padding: 0;
-    border-bottom: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
   }
 
-  .carousel-item {
-    position: absolute;
-    top: 0;
-    left: 0;
+  .news-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .news-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .news-card-image {
     width: 100%;
-    height: 100vh;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-    z-index: 0;
+    height: 320px;
+    overflow: hidden;
+    position: relative;
   }
 
-  .carousel-item.active {
-    opacity: 1;
-    z-index: 1;
-  }
-
-  .carousel-item img {
+  .news-card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    transition: transform 2.9s ease;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
-    background: rgba(0, 0, 0, 0.8);
+    transition: transform 0.4s ease;
   }
 
-  .carousel-item:hover img {
-    transform: scale(1.1) translateY(-10px);
+  .news-card:hover .news-card-image img {
+    transform: scale(1.1);
   }
 
-  /* Agrega este bloque al final de tu <style> */
-  .fecha-publicacion {
-    display: block;
-    font-size: 0.5em;
-    color: #dbad06;
-    margin-top: 6px;
-    font-weight: 300;
-    letter-spacing: 0.5px;
+  .news-card-content {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
 
-  .sticky-container {
-    position: relative;
-  }
-
-  .sticky-titulo {
-    position: relative;
-    top: 0;
-    z-index: 100;
-  }
-
-  /* Carrusel: caption con degradado */
-  .carousel-caption {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    background: linear-gradient(
-      180deg,
-      rgba(20, 14, 1, 0) 0%,
-      rgba(20, 14, 1, 0.85) 100%
-    );
-    color: #fff;
-    font-size: 2.6rem;
-    padding: 18px 40px 12px 40px;
+  .news-tag {
+    display: inline-block;
+    background: #f8ca26;
+    color: #1a1a1a;
+    font-size: 12px;
     font-weight: 600;
-    text-align: center;
-    z-index: 5;
-    border: none;
-    box-shadow: none;
-    opacity: 0;
-    pointer-events: none;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    width: fit-content;
   }
 
-  .carousel-item.active .carousel-caption {
-    opacity: 1;
-    animation: captionFade 2.6s ease forwards;
-    pointer-events: auto;
-  }
-  @keyframes captionFade {
-    0% {
-      opacity: 0;
-      transform: translateY(20px) translateX(-50%);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) translateX(-50%);
-    }
+  .news-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.4;
+    margin: 0;
+    font-family: "Georgia", serif;
   }
 
-  .carousel-item a {
-    display: flex;
-    position: absolute;
-    text-align: center;
-    margin: 25px auto;
-    background-color: #19354b;
-    color: white;
-    font-size: 1.25rem;
-    border-radius: 10px;
-    text-decoration: none;
-    transition: transform 0.3s ease;
-    bottom: -25px;
-    width: auto;
-    max-width: fit-content;
-    padding: 8px 24px;
+  .news-date {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 400;
+    margin: 0;
   }
 
-  .carousel-item a:hover {
-    transform: scale(1.07);
-    background-color: rgb(154, 117, 8);
-    color: white;
-    transition: background-color 0.6s ease;
+  .news-read-more {
+    color: #f8ca26;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-top: 8px;
+    transition: color 0.2s ease;
   }
 
-  /* Centrar botones prev/next sobre la imagen */
-  .carousel-control-prev,
-  .carousel-control-next {
-    position: absolute;
-    top: 130%;
-    transform: translateY(-50%);
-    background-color: white;
-    color: black;
-    border: none;
-    font-size: 45px;
-    cursor: pointer;
-    z-index: 10;
-    border-radius: 50%;
-    padding: 12px;
-    width: 58px;
-    height: 68px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    transition:
-      background-color 0.3s ease,
-      color 0.3s ease,
-      transform 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .carousel-control-prev {
-    left: 15px;
-  }
-
-  .carousel-control-next {
-    right: 15px;
-  }
-
-  .carousel-control-prev:hover,
-  .carousel-control-next:hover {
-    background-color: white;
-    color: rgb(20, 55, 81);
-    transform: translateY(-50%) scale(1.15);
+  .news-card:hover .news-read-more {
+    color: #d4a742;
   }
 
   .ver-mas-noticias-section {
     display: flex;
-    justify-content: center;
-    margin: 30px 0 0 0;
+    justify-content: start;
+    padding-left: 70px;
+    margin-top: 20px;
   }
   .ver-mas-noticias-btn {
     background: #f8ca26;
     color: #181818;
-    font-size: 22px;
-    margin-bottom: 40px;
+    font-size: 18px;
     font-weight: 600;
     border: none;
     border-radius: 50px;
-    padding: 14px 36px;
+    padding: 14px 40px;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     text-decoration: none;
-    transition: background 0.2s;
+    transition: all 0.2s;
   }
   .ver-mas-noticias-btn:hover {
-    background: #e9c02d;
+    background: #d4a742;
     color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
   /* animacion titulo pricipal h1*/
@@ -460,55 +496,52 @@ const allNotes = [...dynamicNotes, ...staticNotes].slice(0, 5);
   }
 
   @media (max-width: 768px) {
+    .container {
+      width: 100%;
+      padding: 20px 12px;
+    }
+
+    .section-info {
+      background: white;
+      padding: 20px 0;
+    }
+
     #noticias {
-      scroll-margin-top: 100px !important; /* móvil, ajusta según el alto del menú hamburguesa */
+      scroll-margin-top: 100px !important;
     }
 
     h1 {
       font-size: 1.6rem;
     }
 
-    .carousel-caption {
-      font-size: 1.6rem;
-      padding: 8px;
+    .news-grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding: 20px 16px;
     }
 
-    .carousel-item a {
-      padding: 6px 20px;
-      font-size: 1rem;
+    .news-card-image {
+      height: 240px;
     }
 
-    #carousel,
-    .carousel-item {
-      height: 60vh;
+    .news-card-content {
+      padding: 24px;
     }
 
-    .carousel-item img {
-      height: 60vh;
-    }
-
-    .carousel-control-prev,
-    .carousel-control-next {
-      top: 70%;
-      width: 50px;
-      height: 58px;
-      font-size: 32px;
-    }
-
-    .carousel-control-prev {
-      left: 10px;
-    }
-
-    .carousel-control-next {
-      right: 10px;
+    .news-title {
+      font-size: 1.2rem;
     }
   }
 
   @media (max-width: 480px) {
+    .container {
+      padding: 16px 10px;
+    }
+
     .info-header {
       display: flex;
       flex-direction: column;
-      gap: 6px; /* espacio entre el título y la descripción */
+      gap: 6px;
       align-items: flex-start;
     }
 
@@ -527,88 +560,39 @@ const allNotes = [...dynamicNotes, ...staticNotes].slice(0, 5);
       line-height: 1.3;
       max-width: 100%;
       color: #0e0e0e;
-      background-color: rgba(
-        255,
-        255,
-        255,
-        0.1
-      ); /* blanco con 60% de opacidad */
-      border-radius: 8px; /* opcional: esquinas redondeadas */
-      display: inline-block; /* para que el fondo se ajuste al tamaño del texto */
+      display: inline-block;
       margin-bottom: 10px;
     }
 
-    p {
-      background-color: none;
+    .news-grid {
+      padding: 16px;
+      gap: 20px;
     }
 
-    .ford,
-    .mazda,
-    .bmw,
-    .audi,
-    .byd {
-      font-size: 1.25rem;
+    .news-card-image {
+      height: 180px;
     }
 
-    .carousel-caption {
-      font-size: 1.2rem;
-      padding: 10px;
-      text-transform: none;
-      top: auto;
+    .news-card-content {
+      padding: 16px;
     }
 
-    .carousel-item a {
-      padding: 10px 20px;
+    .news-title {
       font-size: 1rem;
     }
 
-    /* altura contenedor imagenes carrusel */
-    #carousel,
-    .carousel-item {
-      height: 48vh;
-    }
-
-    /* altura imagenes */
-    .carousel-item img {
-      height: 34vh;
-    }
-
-    .carousel-control-prev,
-    .carousel-control-next {
-      width: 34px;
-      height: 40px;
-      top: 75%;
-      font-size: 26px;
-      color: black;
-      background-color: white;
-      text-transform: uppercase;
-    }
-
-    .carousel-control-prev {
-      left: 15px;
-    }
-
-    .carousel-control-next {
-      right: 15px;
-    }
-
-    .fecha-publicacion {
-      font-size: 0.6em;
-      color: #dbad06;
-      margin-top: 4px;
-      font-weight: 300;
-      letter-spacing: 0.5px;
-    }
-
     .ver-mas-noticias-btn {
-      font-size: 18px;
-
-      padding: 10px 24px;
+      font-size: 12px;
+      padding: 10px 30px;
     }
   }
-
+  font-size: 0.98rem;
+  padding: 16px 12px;
+  text-transform: none;
+  text-align: start;
+  justify-content: flex-start;
   #noticias {
-    scroll-margin-top: 120px; /* Ajusta este valor al alto real de tu menú */
+    scroll-margin-top: 120px;
   }
 </style>
 
@@ -622,80 +606,18 @@ const allNotes = [...dynamicNotes, ...staticNotes].slice(0, 5);
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               titulo.classList.remove("visible");
-              // Forzar reflujo para reiniciar animación
               void (titulo as HTMLElement).offsetWidth;
               titulo.classList.add("visible");
             }
           });
         },
-        { threshold: 0.3 } // Ajusta el umbral según necesites
+        { threshold: 0.3 },
       );
       observer.observe(seccion);
 
-      // 👇 Fuerza la animación si ya está visible al cargar
       if (seccion.getBoundingClientRect().top < window.innerHeight) {
         titulo.classList.add("visible");
       }
-    }
-
-    const carousel = document.getElementById("carousel");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-
-    if (carousel && prevBtn && nextBtn) {
-      const items = Array.from(
-        carousel.getElementsByClassName("carousel-item")
-      );
-      let currentIndex = 0;
-      let autoInterval: any = null;
-      const AUTO_TIME = 5000; // 5 segundos
-
-      function showItem(index: number) {
-        items.forEach((item, i) => {
-          item.classList.remove("active");
-          const caption = item.querySelector(".carousel-caption");
-          if (caption) {
-            (caption as HTMLElement).classList.remove("animate-caption");
-            void (caption as HTMLElement).offsetWidth;
-            (caption as HTMLElement).classList.add("animate-caption");
-          }
-          const button = item.querySelector("a");
-          if (button) {
-            (button as HTMLElement).classList.remove("animate-caption");
-            void (button as HTMLElement).offsetWidth;
-            (button as HTMLElement).classList.add("animate-caption");
-          }
-        });
-        items[index].classList.add("active");
-      }
-
-      function nextItem() {
-        currentIndex = (currentIndex + 1) % items.length;
-        showItem(currentIndex);
-      }
-
-      function prevItem() {
-        currentIndex = (currentIndex - 1 + items.length) % items.length;
-        showItem(currentIndex);
-      }
-
-      function startAuto() {
-        if (autoInterval) clearInterval(autoInterval);
-        autoInterval = setInterval(nextItem, AUTO_TIME);
-      }
-
-      prevBtn.addEventListener("click", () => {
-        prevItem();
-        startAuto(); // Reinicia el temporizador al navegar manualmente
-      });
-
-      nextBtn.addEventListener("click", () => {
-        nextItem();
-        startAuto();
-      });
-
-      showItem(currentIndex);
-      startAuto();
     }
   });
 </script>

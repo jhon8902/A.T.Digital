@@ -45,7 +45,7 @@
         <input type="text" name="image3" placeholder="URL Imagen 3" />
         <input type="text" name="image4" placeholder="URL Imagen 4" />
         <input type="text" name="image5" placeholder="URL Imagen 5" />
-        <input type="text" name="image6" placeholder="URL Imagen 5" />
+        <input type="text" name="image6" placeholder="URL Imagen 6" />
       </fieldset>
 
       <!-- Videos -->
@@ -168,15 +168,61 @@
       const form = document.getElementById("noteForm");
       const msg = document.getElementById("msg");
 
+      // Convierte HTML string a texto plano (quita tags)
+      function stripHtml(html) {
+        const tmp = document.createElement("div");
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || "";
+      }
+
+      // Extrae la primera imagen src de un HTML string
+      function extractFirstImageFromHtml(html) {
+        if (!html) return null;
+        // Intentamos buscar <img src="..."> o <img data-src="...">
+        const imgRegex = /<img[^>]+(?:src|data-src)=["']([^"']+)["'][^>]*>/i;
+        const match = html.match(imgRegex);
+        return match ? match[1] : null;
+      }
+
+      // Genera un resumen técnico simple: primer texto no vacío hasta N chars
+      function generateSummaryFromHtml(html, maxChars = 160) {
+        const text = stripHtml(html).trim();
+        if (!text) return "";
+        // Tomamos hasta maxChars y evitamos cortar palabras: buscamos último espacio
+        if (text.length <= maxChars) return text;
+        const snippet = text.slice(0, maxChars);
+        const lastSpace = snippet.lastIndexOf(" ");
+        return snippet.slice(0, lastSpace > 40 ? lastSpace : maxChars) + "...";
+      }
+
       if (form) {
         form.addEventListener("submit", async (e) => {
           e.preventDefault();
 
           const formData = new FormData(form);
+          // Si hay campos de imagen y el usuario los dejó vacíos, los omitimos.
           const data = Object.fromEntries(formData.entries());
 
-          console.log("📤 Datos enviados:", data);
-          console.log("📌 Categoría seleccionada:", data.category);
+          // Si estás permitiendo HTML en <textarea name="content">, extrae la primera imagen
+          const contentHtml = data.content || "";
+          const firstImg = extractFirstImageFromHtml(contentHtml);
+
+          // Si image1 está vacío y extrajimos una img del content, asignamos image1
+          if ((!data.image1 || data.image1.trim() === "") && firstImg) {
+            data.image1 = firstImg;
+          }
+
+          // Generar resumen técnico si el usuario no lo proporcionó
+          if (!data.summary || data.summary.trim() === "") {
+            data.summary = generateSummaryFromHtml(contentHtml, 180);
+          }
+
+          // Opción: si decidiste eliminar los campos image2..image6 en el servidor,
+          // podemos borrarlos del objeto para no mandarlos:
+          // delete data.image2; delete data.image3; ... etc.
+          // Pero dejo como comentario: si el backend los espera, dejalos.
+
+          console.log("📤 Datos enviados (pre):", data);
 
           try {
             const res = await fetch(
@@ -192,7 +238,7 @@
             console.log("📥 Respuesta del servidor:", result);
 
             if (msg) {
-              msg.textContent = result.message || "Error al guardar";
+              msg.textContent = result.message || "Guardado";
               msg.style.color = res.ok ? "green" : "red";
             }
           } catch (error) {

@@ -62,19 +62,181 @@ import Layout from "../../layouts/Layout.astro";
 
       <section class="ficha-tecnica">
         <h2>Ficha Técnica</h2>
-        <ul>
-          <li>⚡ Autonomía: hasta 600 km (EV)</li>
-          <li>🔋 Batería: 68,8 kWh</li>
-          <li>💪 Potencia: 258 hp (EV)</li>
-          <li>🔌 También disponible en versión EREV</li>
-          <li>⚖️ Distribución de peso 50/50</li>
-        </ul>
+        <div class="ficha-grid">
+          <div class="ficha-item">
+            <div class="ficha-label">💰 Precio Estimado</div>
+            <div class="ficha-value">
+              Desde $150 millones COP (aprox. mercado asiático)
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🚗 Versiones</div>
+            <div class="ficha-value">
+              EZ-6 EV Pure (100% eléctrico), EZ-6 EREV (eléctrico con extensor
+              de autonomía)
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">⚙️ Motor</div>
+            <div class="ficha-value">
+              EV: Motor eléctrico trasero / EREV: Motor eléctrico + generador
+              1.5L gasolina
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">💪 Potencia</div>
+            <div class="ficha-value">EV: 258 hp / EREV: 215 hp</div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🔩 Torque</div>
+            <div class="ficha-value">EV: 320 Nm / EREV: 310 Nm</div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🔋 Batería y Autonomía</div>
+            <div class="ficha-value">
+              EV: 68.8 kWh (600 km CLTC) / EREV: 18.9 kWh + tanque gasolina
+              (1,000+ km combinado)
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">⚡ Aceleración</div>
+            <div class="ficha-value">0-100 km/h: EV ~7.6s / EREV ~7.9s</div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🔌 Carga</div>
+            <div class="ficha-value">
+              EV: Carga rápida DC (10-80% en ~30 min) / EREV: Recarga AC +
+              repostaje gasolina
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🛡️ Seguridad</div>
+            <div class="ficha-value">
+              Mazda i-Activsense, multiple airbags, frenado autónomo de
+              emergencia, control de crucero adaptativo, detección de punto
+              ciego
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🎯 Equipamiento Destacado</div>
+            <div class="ficha-value">
+              Pantalla central 14.6", cuadro digital 10.2", sonido premium,
+              distribución de peso 50/50, diseño Kodo EVolucionado, techo
+              panorámico
+            </div>
+          </div>
+          <div class="ficha-item pros">
+            <div class="ficha-label">✅ Puntos Fuertes</div>
+            <div class="ficha-value">
+              • Diseño Mazda elegante y deportivo<br />• Versión EREV elimina
+              ansiedad de autonomía<br />• Distribución perfecta de peso 50/50<br
+              />• Hasta 600 km autonomía eléctrica pura<br />• Balance dinámico
+              característico de Mazda
+            </div>
+          </div>
+          <div class="ficha-item contras">
+            <div class="ficha-label">❌ Áreas de Mejora</div>
+            <div class="ficha-value">
+              • Disponibilidad limitada (inicialmente China)<br />• Precio
+              estimado competitivo pero aún sin confirmar en Latinoamérica<br
+              />• Red de servicio EREV aún por establecer<br />• Autonomía CLTC
+              vs WLTP requiere validación
+            </div>
+          </div>
+          <div class="ficha-item competencia">
+            <div class="ficha-label">🏁 Competencia Directa</div>
+            <div class="ficha-value">
+              BYD Han EV, Tesla Model 3, BYD Seal, Nio ET5, Xpeng P7
+            </div>
+          </div>
+        </div>
       </section>
     </article>
   </section>
 </Layout>
 
 <style>
+  /* === ESTILOS FICHA TÉCNICA PROFESIONAL === */
+  .ficha-tecnica-profesional {
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .ficha-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .ficha-item {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    transition: all 0.3s ease;
+    border-left: 4px solid #08341f;
+  }
+
+  .ficha-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    border-left-color: #e6b410;
+  }
+
+  .ficha-item.pros {
+    border-left-color: #28a745;
+    background: linear-gradient(135deg, #ffffff 0%, #f0fff4 100%);
+  }
+
+  .ficha-item.contras {
+    border-left-color: #dc3545;
+    background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+  }
+
+  .ficha-item.competencia {
+    border-left-color: #007bff;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
+  }
+
+  .ficha-label {
+    font-weight: 700;
+    color: #08341f;
+    margin-bottom: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .ficha-value {
+    color: #2c3e50;
+    font-size: 15px;
+    line-height: 1.6;
+    font-family: "Georgia", serif;
+  }
+
+  @media (max-width: 768px) {
+    .ficha-tecnica-profesional {
+      padding: 20px 15px;
+      margin: 20px 10px;
+    }
+
+    .ficha-grid {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .ficha-tecnica-profesional h2 {
+      font-size: 24px !important;
+    }
+  }
+  /* === FIN ESTILOS FICHA TÉCNICA PROFESIONAL === */
+
   /* Estilos principales */
   .noticia-detalle {
     width: 100%;

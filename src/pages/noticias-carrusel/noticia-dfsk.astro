@@ -121,11 +121,189 @@ import Layout from "../../layouts/Layout.astro";
           </p>
         </div>
       </div>
+
+      <!-- Ficha Técnica Profesional -->
+      <section class="ficha-tecnica-profesional">
+        <h2
+          style="font-size: 36px; font-weight: bold; color: #08341f; text-align: center; margin-bottom: 30px; font-family: 'Poppins', sans-serif;"
+        >
+          📋 Ficha Técnica Profesional - DFSK Seres E5
+        </h2>
+        <div class="ficha-grid">
+          <div class="ficha-item">
+            <div class="ficha-label">💰 Precio Estimado</div>
+            <div class="ficha-value">
+              Desde $145 millones COP (aprox. mercado colombiano)
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🚗 Versiones</div>
+            <div class="ficha-value">
+              Seres E5 Comfort PHEV, Seres E5 Premium PHEV, 7 pasajeros
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">⚙️ Motor</div>
+            <div class="ficha-value">
+              1.5L Turbo gasolina + motor eléctrico (sistema híbrido enchufable
+              PHEV)
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">💪 Potencia</div>
+            <div class="ficha-value">
+              Combinada: 255 hp (Gasolina 150 hp + Eléctrico 105 hp)
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🔩 Torque</div>
+            <div class="ficha-value">Combinado: 490 Nm</div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🔋 Batería y Autonomía Eléctrica</div>
+            <div class="ficha-value">
+              Batería ternaria 31.18 kWh / Autonomía eléctrica: 150 km NEDC /
+              1,000+ km combinado
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">⚡ Aceleración</div>
+            <div class="ficha-value">0-100 km/h: 8.5 segundos</div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🔌 Transmisión</div>
+            <div class="ficha-value">
+              CVT automática / Tracción delantera FWD
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🛡️ Seguridad</div>
+            <div class="ficha-value">
+              6 airbags, control de estabilidad ESP, frenado autónomo de
+              emergencia AEB, asistente de mantenimiento de carril, cámara 360°,
+              sensores de estacionamiento
+            </div>
+          </div>
+          <div class="ficha-item">
+            <div class="ficha-label">🎯 Equipamiento Destacado</div>
+            <div class="ficha-value">
+              Pantalla central 12.3", cuadro digital 10.25", techo panorámico,
+              climatización automática dual, carga inalámbrica, asientos
+              eléctricos, purificador de aire PM2.5, 7 plazas
+            </div>
+          </div>
+          <div class="ficha-item pros">
+            <div class="ficha-label">✅ Puntos Fuertes</div>
+            <div class="ficha-value">
+              • Capacidad para 7 pasajeros<br />• 150 km autonomía eléctrica
+              pura<br />• 1,000+ km autonomía combinada<br />• Precio
+              competitivo en segmento PHEV<br />• Batería 31.18 kWh grande para
+              PHEV
+            </div>
+          </div>
+          <div class="ficha-item contras">
+            <div class="ficha-label">❌ Áreas de Mejora</div>
+            <div class="ficha-value">
+              • Marca menos reconocida en Colombia<br />• Red de servicio aún en
+              desarrollo<br />• Reventa incierta vs marcas establecidas<br />•
+              Tracción solo delantera (sin AWD)
+            </div>
+          </div>
+          <div class="ficha-item competencia">
+            <div class="ficha-label">🏁 Competencia Directa</div>
+            <div class="ficha-value">
+              BYD Song Plus DM-i, Mitsubishi Outlander PHEV, Toyota Highlander
+              Hybrid, Haval H6 PHEV
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </section>
 </Layout>
 
 <style>
+  /* === ESTILOS FICHA TÉCNICA PROFESIONAL === */
+  .ficha-tecnica-profesional {
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .ficha-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .ficha-item {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    transition: all 0.3s ease;
+    border-left: 4px solid #08341f;
+  }
+
+  .ficha-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    border-left-color: #e6b410;
+  }
+
+  .ficha-item.pros {
+    border-left-color: #28a745;
+    background: linear-gradient(135deg, #ffffff 0%, #f0fff4 100%);
+  }
+
+  .ficha-item.contras {
+    border-left-color: #dc3545;
+    background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+  }
+
+  .ficha-item.competencia {
+    border-left-color: #007bff;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
+  }
+
+  .ficha-label {
+    font-weight: 700;
+    color: #08341f;
+    margin-bottom: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .ficha-value {
+    color: #2c3e50;
+    font-size: 15px;
+    line-height: 1.6;
+    font-family: "Georgia", serif;
+  }
+
+  @media (max-width: 768px) {
+    .ficha-tecnica-profesional {
+      padding: 20px 15px;
+      margin: 20px 10px;
+    }
+
+    .ficha-grid {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .ficha-tecnica-profesional h2 {
+      font-size: 24px !important;
+    }
+  }
+  /* === FIN ESTILOS FICHA TÉCNICA PROFESIONAL === */
+
   body {
     margin: 0;
     padding: 0;

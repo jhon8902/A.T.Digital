@@ -1,0 +1,273 @@
+/* ==== ESTILOS CATEGORÍA ELÉCTRICOS (AISLADOS) ==== */
+.electricos * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.electricos {
+  background: #ffffff;
+}
+
+/* CONTENEDORES PRINCIPALES */
+.electricos .nota-container,
+.electricos .articulo-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* CABECERA */
+.electricos .nota-header,
+.electricos .articulo-container {
+  text-align: center;
+  padding: 30px 20px;
+  background: white;
+  color: black;
+}
+
+.electricos .nota-header h1 {
+  font-size: 58px;
+  display: inline-block;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-family: "Georgia", serif;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadein 2s forwards;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.electricos .nota-header .subtitulo {
+  font-size: 1.5rem;
+  margin-top: 10px;
+}
+
+/* DISEÑO FLEXIBLE */
+.electricos .dynamic-layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1800px;
+}
+
+.electricos .dynamic-layout.reverse {
+  flex-direction: row-reverse;
+}
+
+.electricos .dynamic-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.electricos .dynamic-item img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  max-width: 100%;
+}
+
+.electricos .text-box {
+  width: 100%;
+  padding: 60px 20px;
+  background: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.electricos .text-box h2 {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  text-align: start;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-bottom: 2px solid black;
+  font-family: "Georgia", serif;
+}
+
+.electricos .text-box p {
+  font-size: 1.2rem;
+  text-align: start;
+  padding: 20px 0;
+}
+
+/* SECCIÓN "CARGA ULTRARÁPIDA" */
+.electricos .feature-banner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 100px 20px 80px;
+  background: #f8f8f8;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.electricos .feature-title {
+  font-size: 3rem;
+  color: #e6b410;
+  font-weight: 700;
+  font-family: "Georgia", serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+  padding: 0;
+  opacity: 1;
+  transform: none;
+  transition: none;
+  animation: fadeSlideIn 1s ease forwards;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.electricos .feature-content {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.electricos .feature-paragraph {
+  font-size: 1.6rem;
+  color: #555;
+  width: 100%;
+  padding: 25px;
+  text-align: center;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .electricos .dynamic-layout,
+  .electricos .dynamic-layout.reverse {
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .electricos .dynamic-item {
+    width: 100%;
+    min-height: auto;
+  }
+
+  .electricos .nota-header {
+    padding: 30px 20px;
+  }
+
+  .electricos .nota-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: start;
+  }
+
+  .electricos .nota-header .subtitulo {
+    font-size: 1.1rem;
+    margin-top: 15px;
+    text-align: start;
+  }
+
+  .electricos .feature-banner {
+    padding: 60px 10px;
+  }
+
+  .electricos .feature-title {
+    font-size: 1.8rem;
+    line-height: 1.3;
+    padding: 0 10px;
+  }
+
+  .electricos .feature-paragraph {
+    font-size: 1.1rem;
+  }
+
+  .electricos .text-box {
+    padding: 20px;
+  }
+
+  .electricos .text-box h2 {
+    font-size: 1.3rem;
+    border-bottom: none;
+    margin-bottom: 10px;
+  }
+
+  .electricos .text-box p {
+    font-size: 1.1rem;
+    padding: 10px 0;
+  }
+}
+
+/* ESCRITORIO */
+@media (min-width: 1024px) {
+  .electricos .dynamic-item {
+    flex: 1;
+    max-width: 50%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .electricos .dynamic-item img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  .electricos .text-box {
+    padding: 40px;
+  }
+
+  .electricos .text-box h2 {
+    font-size: 1.8rem;
+  }
+
+  .electricos .text-box p {
+    font-size: 1.2rem;
+  }
+}
+/* ==== CORRECCIÓN DE IMAGEN PRINCIPAL EN NOTAS ==== */
+.articulo-container img:first-of-type {
+  width: 100%;
+  max-width: 100%;
+  height: 800px;            /* 👈 Cambia esto */
+  display: block;
+  margin: 0 auto 20px;
+  object-fit: cover;
+  border-radius: 12px;     /* opcional: da un toque más moderno */
+}
+
+/* 📱 Ajuste adicional para pantallas pequeñas */
+@media (max-width: 768px) {
+  .articulo-container img:first-of-type {
+    height: auto;          /* se adapta al contenido */
+    margin-bottom: 16px;
+  }
+}

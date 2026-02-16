@@ -2,12 +2,45 @@
 interface Props {
   title: string;
   bodyClass?: string;
+  class?: string; // ✅ aceptar "class" como prop también
 }
 
-const { title, bodyClass } = Astro.props;
+const { title, bodyClass, class: classProp } = Astro.props;
 
+// ✅ Si pasas class, úsalo como bodyClass
+const finalBodyClass = bodyClass ?? classProp;
+
+// 🔹 Detectamos si el bodyClass corresponde a una nota
+let categoria = "";
+if (finalBodyClass && finalBodyClass.startsWith("nota-")) {
+  categoria = finalBodyClass.replace("nota-", "").toLowerCase();
+}
+
+// 🔹 Definimos el CSS de categoría que se cargará dinámicamente
+let categoriaCSS = "";
+switch (categoria) {
+  case "electricos":
+  case "eléctricos":
+    categoriaCSS = "/css/electricos.css";
+    break;
+  case "hibridos":
+    categoriaCSS = "/css/hibridos.css";
+    break;
+  case "noticias":
+    categoriaCSS = "/css/noticias.css";
+    break;
+  case "lanzamientos":
+    categoriaCSS = "/css/lanzamientos.css";
+    break;
+  case "automatch":
+    categoriaCSS = "/css/automatch.css";
+    break;
+  default:
+    categoriaCSS = "";
+    break;
+}
 import Header from "../components/header/Header.astro";
-import Footer from "../components/footer/Footer.astro";
+import Footer from "../components/footer/footer.astro";
 import "swiper/css";
 import "swiper/css/pagination";
 ---
@@ -18,7 +51,6 @@ import "swiper/css/pagination";
     <meta charset="UTF-8" />
     <meta name="description" content="Auto-Tech-Digital" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!-- Tailwind CSS -->
     <link
@@ -40,24 +72,53 @@ import "swiper/css/pagination";
       rel="stylesheet"
     />
 
-    <!-- Importa Font Awesome en el <head> -->
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
     <!-- Estilos globales -->
-    <link rel="stylesheet" href="/styles/global.css" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/common.css" />
+
+    <!-- Estilos específicos según la categoría (solo para notas) -->
+    {categoriaCSS && <link rel="stylesheet" href={categoriaCSS} />}
+
+    <!-- Estilos del footer -->
+    <link rel="stylesheet" href="/css/footer.css" />
 
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
 
-  <body class={bodyClass}>
+  <body class={finalBodyClass}>
     <Header />
     <main>
       <slot />
     </main>
     <Footer />
+    <script>
+      // Observador global para animar títulos principales (h1, h2)
+      document.addEventListener("DOMContentLoaded", function () {
+        const targets = document.querySelectorAll("h1, h2");
+        if (!targets || targets.length === 0) return;
+
+        targets.forEach((el) => el.classList.add("animated-title"));
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("in-view");
+              }
+            });
+          },
+          { threshold: 0.15 },
+        );
+
+        targets.forEach((el) => io.observe(el));
+      });
+    </script>
   </body>
 </html>
