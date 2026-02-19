@@ -4,8 +4,6 @@ import SectionInfo from "../components/Section-Info/Section-Info.astro";
 import Hibridos from "../components/hibridos/hibridos.astro";
 import Noticias from "../components/section-noticias/noticias.astro";
 import Electricos from "../components/electricos/Electricos.astro";
-import SliderLogos from "../components/slider-logos/slider-logos.astro";
-import Revista from "../components/revista/revista.astro";
 import Deportes from "../components/deportes/deportes.astro";
 import Pruebas from "../components/pruebas/pruebas.astro";
 import AutoMatch from "../components/automatch/automatch.astro";
@@ -42,20 +40,15 @@ try {
   <div class="extra-sections" id="extra-sections">
     <SectionInfo />
     <AdBanner variant="mazda" />
-    <!-- 🔽 AutoMatch ahora va después de Noticias -->
+    <Noticias />
     <section id="automatch" class="automatch-destacado">
       <AutoMatch autos={autos} />
     </section>
-    <Noticias />
-    <!-- 📢 Anuncio 1: Entre Noticias y Eléctricos -->
     <AdBanner />
-    <Hibridos />
-
     <Electricos />
+    <Hibridos />
     <Deportes />
     <Pruebas />
-    <SliderLogos />
-    <Revista />
   </div>
 </Layout>
 
@@ -151,5 +144,9 @@ try {
 
   .extra-sections > *:nth-child(8) {
     animation-delay: 1.2s;
+  }
+
+  .extra-sections > *:nth-child(9) {
+    animation-delay: 1.35s;
   }
 </style>
