@@ -482,25 +482,50 @@
     }
 
     .top-bar {
-      padding: 05px 02px;
-      gap: 3px;
+      padding: 8px 10px;
+      gap: 5px;
+      justify-content: space-between;
+    }
+
+    .top-bar .spacer {
+      display: none;
     }
 
     .social-icons {
-      gap: 5px;
-      font-size: 30px;
+      gap: 4px;
+      font-size: 26px;
     }
 
     /* Espacio interno y tamaño de los iconos */
     .social-icons a {
       display: inline-block;
-      height: 36px;
-      width: 36px;
-      padding: 5px; /* Ampliamos el espacio interno */
-      padding-top: 9px;
-      border-radius: 10px; /* Si deseas bordes redondeados */
+      height: 32px;
+      width: 32px;
+      padding: 4px;
+      padding-top: 7px;
+      border-radius: 8px;
       text-align: center;
-      line-height: 15px; /* Centra el icono verticalmente */
+      line-height: 15px;
+    }
+
+    .auth-buttons {
+      gap: 5px;
+      font-size: 11px;
+    }
+
+    .register-button {
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+
+    #search-button {
+      padding: 6px 10px;
+      font-size: 24px;
+    }
+
+    .boton-hamburguesa {
+      padding: 6px;
+      font-size: 26px;
     }
   }
 
@@ -680,9 +705,7 @@
     letter-spacing: 2px;
     animation: fadeInDown 0.8s ease-in-out;
     position: relative;
-    box-shadow:
-      0 10px 30px rgba(0, 0, 0, 0.08),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   }
 
   /* Líneas decorativas */
