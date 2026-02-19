@@ -78,7 +78,7 @@
 
   <!-- Tagline de Identidad Editorial -->
   <div class="brand-tagline">
-    <p>Tecnología, emoción y futuro del automóvil en un solo lugar.</p>
+    <p>Tecnología, emoción y futuro del automóvil en</p>
   </div>
 
   <section id="inicio">
@@ -247,17 +247,17 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 26px;
+    font-size: 32px;
     border-bottom: none;
   }
 
   /* Espacio interno y tamaño de los iconos */
   .social-icons a {
     display: inline-block;
-    height: 36px;
-    width: 36px;
-    padding: 5px; /* Ampliamos el espacio interno */
-    padding-top: 10px;
+    height: 44px;
+    width: 44px;
+    padding: 6px; /* Ampliamos el espacio interno */
+    padding-top: 12px;
     border-radius: 10px; /* Si deseas bordes redondeados */
     text-align: center;
     line-height: 15px; /* Centra el icono verticalmente */
@@ -433,11 +433,12 @@
   /* Media query para pantallas pequeñas */
   @media (max-width: 600px) {
     .header {
-      height: 210px; /* Ajusta la altura del header en pantallas pequeñas */
+      height: 180px; /* Ajusta la altura del header en pantallas pequeñas */
     }
 
     .header::after {
-      background-size: 300px; /* Reduce el tamaño de la imagen en pantallas pequeñas */
+      background-size: 280px; /* Reduce el tamaño de la imagen en pantallas pequeñas */
+      top: 30px;
     }
   }
 
@@ -480,18 +481,23 @@
       display: none;
     }
 
+    .top-bar {
+      padding: 05px 02px;
+      gap: 3px;
+    }
+
     .social-icons {
       gap: 5px;
-      font-size: 22px;
+      font-size: 30px;
     }
 
     /* Espacio interno y tamaño de los iconos */
     .social-icons a {
       display: inline-block;
-      height: 30px;
-      width: 30px;
+      height: 36px;
+      width: 36px;
       padding: 5px; /* Ampliamos el espacio interno */
-      padding-top: 7px;
+      padding-top: 9px;
       border-radius: 10px; /* Si deseas bordes redondeados */
       text-align: center;
       line-height: 15px; /* Centra el icono verticalmente */
@@ -596,6 +602,10 @@
       color: #111;
       transform: scale(1.05);
     }
+
+    .social-icons {
+      padding: 0;
+    }
   }
   @media (max-width: 767px) {
     .menu-escritorio {
@@ -660,25 +670,79 @@
 
   /* Tagline de Identidad Editorial */
   .brand-tagline {
-    background: linear-gradient(135deg, #e8e6e0 0%, #efece5 100%);
-    color: black;
+    background: linear-gradient(135deg, #121212 0%, #201701 100%);
+    color: white;
     text-align: center;
-    padding: 20px 15px;
+    padding: 40px 20px;
     margin-top: 100px;
     font-style: italic;
     font-family: "Georgia", serif;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     animation: fadeInDown 0.8s ease-in-out;
+    position: relative;
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  /* Líneas decorativas */
+  .brand-tagline::before,
+  .brand-tagline::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0%;
+    max-width: 900px;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      #b98f04 20%,
+      #e1a307 50%,
+      #b98f04 80%,
+      transparent 100%
+    );
+    opacity: 0;
+    z-index: 0;
+  }
+
+  .brand-tagline::before {
+    top: 15px;
+    animation: expandFromCenter 1s ease-in-out 0.3s forwards;
+  }
+
+  .brand-tagline::after {
+    bottom: 15px;
+    animation: expandFromCenter 1s ease-in-out 0.5s forwards;
+  }
+
+  @keyframes expandFromCenter {
+    0% {
+      width: 0%;
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.7;
+    }
+    100% {
+      width: 80%;
+      opacity: 0.7;
+    }
   }
 
   .brand-tagline p {
     margin: 0;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 500;
     max-width: 900px;
     margin-left: auto;
     margin-right: auto;
-    color: black;
+    color: white;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    letter-spacing: 1px;
   }
 
   @keyframes fadeInDown {
@@ -694,8 +758,8 @@
 
   @media (max-width: 768px) {
     .brand-tagline {
-      padding: 20px 15px;
-      margin-top: 100px;
+      padding: 25px 15px;
+      margin-top: 70px;
     }
 
     .brand-tagline p {
@@ -703,8 +767,14 @@
       letter-spacing: 0.5px;
     }
 
+    .brand-tagline::before,
+    .brand-tagline::after {
+      width: 90%;
+      height: 1.5px;
+    }
+
     * {
-      scroll-margin-top: 200px;
+      scroll-margin-top: 180px;
     }
   }
 </style>
