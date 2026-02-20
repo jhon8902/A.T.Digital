@@ -6,7 +6,7 @@
   <!-- Sección Superior: Redes Sociales, Búsqueda y Autenticación -->
   <div class="top-bar">
     <!-- Redes Sociales a la Izquierda -->
-    <div class="social-icons">
+    <div class="header-social-icons">
       <a
         href="https://wa.me/573001112233?text=Hola%2C%20quiero%20información%20sobre%20los%20vehículos"
         class="fa-brands fa-whatsapp"
@@ -188,7 +188,7 @@
   .top-bar {
     display: flex;
     align-items: center;
-    padding: 20px;
+    padding: 28px;
     gap: 10px;
     position: fixed; /* Fija la barra */
     top: 0; /* Pegada arriba */
@@ -198,6 +198,7 @@
     box-sizing: border-box; /* Incluye padding en el width */
     z-index: 1000; /* Para que quede por encima del contenido */
     background-color: #000; /* O el color que uses en tu header */
+    overflow-x: hidden; /* Evita scroll horizontal */
   }
 
   /* Espaciadores para centrar el menú */
@@ -244,7 +245,7 @@
 
   /* Redes sociales icono */
 
-  .social-icons {
+  .header-social-icons {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -254,7 +255,7 @@
   }
 
   /* Espacio interno y tamaño de los iconos */
-  .social-icons a {
+  .header-social-icons a {
     display: inline-block;
     height: 44px;
     width: 44px;
@@ -266,26 +267,26 @@
   }
 
   /* WhatsApp */
-  .social-icons a.fa-whatsapp {
+  .header-social-icons a.fa-whatsapp {
     text-decoration: none;
     background-color: #25d366; /* Verde de WhatsApp */
     transition: transform 0.3s ease;
   }
-  .social-icons a.fa-whatsapp:hover {
+  .header-social-icons a.fa-whatsapp:hover {
     transform: scale(1.2); /* Efecto de pulso */
   }
 
   /* Facebook */
-  .social-icons a.fa-facebook {
+  .header-social-icons a.fa-facebook {
     background-color: #1877f2; /* Azul de Facebook */
     transition: transform 0.3s ease;
   }
-  .social-icons a.fa-facebook:hover {
+  .header-social-icons a.fa-facebook:hover {
     transform: scale(1.2); /* Efecto de pulso */
   }
 
   /* Instagram */
-  .social-icons a.fa-instagram {
+  .header-social-icons a.fa-instagram {
     background: radial-gradient(
       circle at 30% 30%,
       #feda77,
@@ -296,32 +297,64 @@
     ); /* Gradiente de Instagram */
     transition: transform 0.3s ease;
   }
-  .social-icons a.fa-instagram:hover {
+  .header-social-icons a.fa-instagram:hover {
     transform: scale(1.2); /* Efecto de pulso */
   }
 
   /* TikTok */
-  .social-icons a.fa-tiktok {
+  .header-social-icons a.fa-tiktok {
     background-color: #343333; /* Negro de TikTok */
     transition: transform 0.3s ease;
     color: white;
   }
-  .social-icons a.fa-tiktok:hover {
+  .header-social-icons a.fa-tiktok:hover {
     transform: scale(1.2); /* Efecto de pulso */
   }
   /* Botón hamburguesa */
 
   .boton-hamburguesa {
-    color: #b98f04;
+    color: #e1a307;
     font-size: 30px;
-    border: none;
+    border: 2px solid rgba(225, 163, 7, 0.3);
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
     z-index: 3;
-    padding: 10px;
+    padding: 8px 12px;
     flex-shrink: 0; /* Evita que se comprima en móviles */
-    background-color: transparent;
+    background: linear-gradient(
+      135deg,
+      rgba(225, 163, 7, 0.15),
+      rgba(185, 143, 4, 0.1)
+    );
+    border-radius: 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-width: 46px;
+    min-height: 46px;
+  }
+
+  .boton-hamburguesa:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(225, 163, 7, 0.25),
+      rgba(185, 143, 4, 0.2)
+    );
+    border-color: rgba(225, 163, 7, 0.5);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(225, 163, 7, 0.2);
+  }
+
+  .boton-hamburguesa:active {
+    transform: scale(0.95);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  }
+
+  .boton-hamburguesa span {
+    display: block;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
 
   .menu-hamburguesa {
@@ -339,7 +372,7 @@
   }
 
   .menu-overlay {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
@@ -349,7 +382,7 @@
   }
 
   .menu-content {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 80vw;
@@ -468,7 +501,7 @@
       background-size: 600px; /* Ajusta el tamaño de la imagen a 600px pantallas grandes */
     }
 
-    .social-icons {
+    .header-social-icons {
       gap: 10px;
     }
 
@@ -486,49 +519,67 @@
     }
 
     .top-bar {
-      padding: 8px 10px;
-      gap: 8px;
+      padding: 10px 12px;
+      gap: 6px;
+      justify-content: flex-start;
+      align-items: center;
     }
 
     .top-bar .spacer {
       display: none;
     }
 
-    .social-icons {
-      gap: 4px;
-      font-size: 26px;
+    /* Redes sociales: ancho específico */
+    .header-social-icons {
+      gap: 6px;
+      font-size: 24px;
+      min-width: 130px;
+      flex-shrink: 0;
     }
 
     /* Espacio interno y tamaño de los iconos */
-    .social-icons a {
-      display: inline-block;
-      height: 32px;
-      width: 32px;
-      padding: 4px;
-      padding-top: 7px;
+    .header-social-icons a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 36px;
+      width: 36px;
+      padding: 0;
       border-radius: 8px;
       text-align: center;
-      line-height: 15px;
+      line-height: 1;
     }
 
+    /* Botones de autenticación: empujar hacia la derecha */
     .auth-buttons {
-      gap: 5px;
+      gap: 6px;
       font-size: 11px;
+      margin-left: auto;
+      flex-shrink: 0;
+      align-items: center;
     }
 
     .register-button {
-      padding: 6px 10px;
-      font-size: 11px;
+      padding: 8px 12px;
+      font-size: 12px;
+      white-space: nowrap;
     }
 
     #search-button {
-      padding: 6px 10px;
-      font-size: 24px;
+      padding: 8px 10px;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .boton-hamburguesa {
-      padding: 6px;
+      padding: 6px 10px;
       font-size: 26px;
+      flex-shrink: 0;
+      margin-left: 6px;
+      min-width: 42px;
+      min-height: 42px;
     }
   }
 
@@ -591,10 +642,10 @@
     opacity: 1;
   }
 
-  .social-icons a.fa-whatsapp,
-  .social-icons a.fa-facebook,
-  .social-icons a.fa-instagram,
-  .social-icons a.fa-tiktok {
+  .header-social-icons a.fa-whatsapp,
+  .header-social-icons a.fa-facebook,
+  .header-social-icons a.fa-instagram,
+  .header-social-icons a.fa-tiktok {
     color: white !important; /* Fuerza el color blanco en los íconos */
   }
 
