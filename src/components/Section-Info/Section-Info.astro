@@ -227,11 +227,15 @@ const allNotes = [...dynamicNotes, ...staticNotes].slice(0, 5);
       margin-bottom: 8px;
       text-align: center;
       flex-direction: row;
-      gap: 15px;
+      gap: 10px;
+      display: flex;
+      justify-content: center;
     }
     .info-titulo::before,
     .info-titulo::after {
-      display: none;
+      width: 80px;
+      height: 2px;
+      flex-shrink: 0;
     }
     .info-descripcion {
       display: none;

@@ -183,13 +183,29 @@ if (form) {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const presupuesto =
-      parseInt(document.getElementById("presupuesto").value) * 1000000;
+    // Procesar presupuesto desde el select de rangos
+    const presupuestoValue = document.getElementById("presupuesto").value;
+    let presupuesto;
+    
+    if (presupuestoValue.includes("-")) {
+      // Rango: calcular promedio (ej: "20-40" → 30 millones)
+      const [min, max] = presupuestoValue.split("-").map(n => parseInt(n));
+      presupuesto = ((min + max) / 2) * 1000000;
+    } else if (presupuestoValue.includes("+")) {
+      // Más de X millones (ej: "200+" → 250 millones como referencia)
+      const baseValue = parseInt(presupuestoValue.replace("+", ""));
+      presupuesto = (baseValue + 50) * 1000000; // Agregar 50M como margen
+    } else {
+      // Valor único por si acaso
+      presupuesto = parseInt(presupuestoValue) * 1000000;
+    }
+    
     const uso = document.getElementById("uso").value;
     const tipo = document.getElementById("tipo").value;
+    const condicion = document.getElementById("condicion").value;
     const ciudad = document.getElementById("ciudad").value.toLowerCase();
 
-    // Base de datos de autos (igual que antes)
+    // Base de datos de autos (nuevos y usados)
     const autos = [
       {
         id: 1,
@@ -200,6 +216,15 @@ if (form) {
         ciudad: "bogotá",
         imagen: "/img/renault-megane-e-tech/renault-megane-principal.webp",
         seccion: "electricos",
+        condicion: "nuevo",
+        año: 2024,
+        concesionario: {
+          nombre: "Renault Bogotá",
+          telefono: "+57 1 234 5678",
+          whatsapp: "573001234567",
+          email: "ventas@renaultbogota.com",
+          direccion: "Av. Caracas #45-67, Bogotá"
+        }
       },
       {
         id: 2,
@@ -380,6 +405,137 @@ if (form) {
         ciudad: "medellín",
         imagen: "/img/bmw-330e/bmw.webp",
         seccion: "lanzamientos",
+        condicion: "nuevo",
+        año: 2024,
+        concesionario: {
+          nombre: "BMW Medellín Premium",
+          telefono: "+57 4 567 8901",
+          whatsapp: "573105678901",
+          email: "ventas@bmwmedellin.com",
+          direccion: "Cra 43A #1-50, Medellín"
+        }
+      },
+      
+      // ========== VEHÍCULOS USADOS Y SEMINUEVOS ==========
+      {
+        id: 20,
+        nombre: "Toyota Prado 2021 (Seminuevo)",
+        tipo: "gasolina",
+        uso: "familiar",
+        precio: 52000000,
+        ciudad: "bogotá",
+        imagen: "/img/toyota-prado/toyota-prado-copia.jpg",
+        seccion: "hibridos",
+        condicion: "seminuevo",
+        año: 2021,
+        kilometraje: 35000,
+        concesionario: {
+          nombre: "AutoUsados Premium Bogotá",
+          telefono: "+57 1 345 6789",
+          whatsapp: "573123456789",
+          email: "contacto@autousadospremium.com",
+          direccion: "Calle 100 #15-20, Bogotá"
+        }
+      },
+      {
+        id: 21,
+        nombre: "Mazda CX-5 2020 (Usado)",
+        tipo: "gasolina",
+        uso: "familiar",
+        precio: 35000000,
+        ciudad: "medellín",
+        imagen: "/img/mazda-ez6/mazda-ez6-portada.jpg",
+        seccion: "lanzamientos",
+        condicion: "usado",
+        año: 2020,
+        kilometraje: 65000,
+        concesionario: {
+          nombre: "Carros Usados Medellín",
+          telefono: "+57 4 234 5678",
+          whatsapp: "573009876543",
+          email: "ventas@carrosusadosmedellin.com",
+          direccion: "Av. El Poblado #25-45, Medellín"
+        }
+      },
+      {
+        id: 22,
+        nombre: "Chevrolet Tracker 2022 (Seminuevo)",
+        tipo: "gasolina",
+        uso: "urbano",
+        precio: 28000000,
+        ciudad: "bogotá",
+        imagen: "/img/jeep-avenger/jeep-avenger-portada.webp",
+        seccion: "deportes",
+        condicion: "seminuevo",
+        año: 2022,
+        kilometraje: 25000,
+        concesionario: {
+          nombre: "Chevrolet Seminuevos",
+          telefono: "+57 1 456 7890",
+          whatsapp: "573156789012",
+          email: "seminuevos@chevrolet.com.co",
+          direccion: "Autopista Norte Km 5, Bogotá"
+        }
+      },
+      {
+        id: 23,
+        nombre: "Hyundai Tucson 2019 (Usado)",
+        tipo: "gasolina",
+        uso: "familiar",
+        precio: 32000000,
+        ciudad: "cali",
+        imagen: "/img/kona-hibrida/kona-portada.webp",
+        seccion: "hibridos",
+        condicion: "usado",
+        año: 2019,
+        kilometraje: 80000,
+        concesionario: {
+          nombre: "Hyundai Usados Cali",
+          telefono: "+57 2 345 6789",
+          whatsapp: "573187654321",
+          email: "usados@hyundaicali.com",
+          direccion: "Av. 6a Norte #23-50, Cali"
+        }
+      },
+      {
+        id: 24,
+        nombre: "Renault Koleos 2021 (Seminuevo)",
+        tipo: "gasolina",
+        uso: "familiar",
+        precio: 38000000,
+        ciudad: "bogotá",
+        imagen: "/img/renault-megane-e-tech/renault-megane-principal.webp",
+        seccion: "electricos",
+        condicion: "seminuevo",
+        año: 2021,
+        kilometraje: 40000,
+        concesionario: {
+          nombre: "Renault Certified",
+          telefono: "+57 1 567 8901",
+          whatsapp: "573167890123",
+          email: "certified@renault.com.co",
+          direccion: "Av. Boyacá #80-45, Bogotá"
+        }
+      },
+      {
+        id: 25,
+        nombre: "Nissan Qashqai 2020 (Usado)",
+        tipo: "gasolina",
+        uso: "urbano",
+        precio: 30000000,
+        ciudad: "medellín",
+        imagen: "/img/nissan-xtrail-hibrida/nissan-x-trail.webp",
+        seccion: "hibridos",
+        condicion: "usado",
+        año: 2020,
+        kilometraje: 55000,
+        concesionario: {
+          nombre: "Nissan Seminuevos Medellín",
+          telefono: "+57 4 678 9012",
+          whatsapp: "573198765432",
+          email: "seminuevos@nissanmedellin.com",
+          direccion: "Cra 70 #33-15, Medellín"
+        }
       },
     ];
 
@@ -391,6 +547,13 @@ if (form) {
 
     autos.forEach((auto) => {
       let score = 0;
+
+      // FILTRO: Condición del vehículo (nuevo/seminuevo/usado/ambos)
+      if (condicion !== "ambos") {
+        if (auto.condicion !== condicion) {
+          return; // Excluir si no coincide con la condición seleccionada
+        }
+      }
 
       // Prioridad: Tipo (40)
       if (auto.tipo === tipo) score += 40;
@@ -444,13 +607,31 @@ if (form) {
 
       const matchPercentage = Math.min(mejorMatch, 100);
       const currentUrl = window.location.origin + window.location.pathname;
+      
+      // Información de condición y concesionario
+      const condicionLabel = mejorAuto.condicion === "nuevo" ? "0 km" : 
+                             mejorAuto.condicion === "seminuevo" ? `${mejorAuto.año} - ${mejorAuto.kilometraje?.toLocaleString()} km` :
+                             `${mejorAuto.año} - ${mejorAuto.kilometraje?.toLocaleString()} km`;
+      
+      const condicionBadge = mejorAuto.condicion === "nuevo" ? "🆕 Nuevo" :
+                             mejorAuto.condicion === "seminuevo" ? "⭐ Seminuevo" :
+                             "✅ Usado Certificado";
 
       resultado.innerHTML = `
         <div class="auto-card" style="animation: fadeIn 0.6s ease;">
           <img src="${mejorAuto.imagen}" alt="${mejorAuto.nombre}" />
+          
+          <div class="condicion-badge ${mejorAuto.condicion}">
+            ${condicionBadge}
+          </div>
+          
           <h3>${mejorAuto.nombre}</h3>
-          <p><strong>Tipo:</strong> ${mejorAuto.tipo.charAt(0).toUpperCase() + mejorAuto.tipo.slice(1)} | <strong>Uso:</strong> ${mejorAuto.uso.charAt(0).toUpperCase() + mejorAuto.uso.slice(1)}</p>
-          <p><strong>Precio:</strong> $${mejorAuto.precio.toLocaleString()} COP</p>
+          <div class="auto-details">
+            <p><strong>Tipo:</strong> ${mejorAuto.tipo.charAt(0).toUpperCase() + mejorAuto.tipo.slice(1)} | <strong>Uso:</strong> ${mejorAuto.uso.charAt(0).toUpperCase() + mejorAuto.uso.slice(1)}</p>
+            <p><strong>Condición:</strong> ${condicionLabel}</p>
+            <p class="precio-destacado"><strong>Precio:</strong> $${mejorAuto.precio.toLocaleString()} COP</p>
+          </div>
+          
           <div class="match-bar">
             <div class="match-fill" style="width: 0%; animation: fillBar 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;"></div>
           </div>
@@ -459,7 +640,34 @@ if (form) {
           </div>
           <span class="match-score">¡Este es tu AutoMatch perfecto!</span>
           
-          <!-- 🆕 BOTONES DE COMPARTIR -->
+          <!-- 🆕 INFORMACIÓN DEL CONCESIONARIO -->
+          ${mejorAuto.concesionario ? `
+          <div class="concesionario-info">
+            <h4>📍 Disponible en:</h4>
+            <div class="concesionario-details">
+              <p><strong>${mejorAuto.concesionario.nombre}</strong></p>
+              <p>📍 ${mejorAuto.concesionario.direccion}</p>
+              <p>📞 ${mejorAuto.concesionario.telefono}</p>
+              <p>✉️ ${mejorAuto.concesionario.email}</p>
+            </div>
+            <div class="concesionario-actions">
+              <a href="https://wa.me/${mejorAuto.concesionario.whatsapp}?text=Hola,%20me%20interesa%20el%20${encodeURIComponent(mejorAuto.nombre)}%20que%20encontré%20en%20AutoMatch" 
+                 class="btn-contact whatsapp" target="_blank" rel="noopener">
+                💬 Contactar por WhatsApp
+              </a>
+              <a href="mailto:${mejorAuto.concesionario.email}?subject=Consulta%20sobre%20${encodeURIComponent(mejorAuto.nombre)}&body=Hola,%20me%20gustaría%20obtener%20más%20información%20sobre%20este%20vehículo." 
+                 class="btn-contact email">
+                ✉️ Enviar Email
+              </a>
+              <a href="tel:${mejorAuto.concesionario.telefono}" 
+                 class="btn-contact phone">
+                📞 Llamar Ahora
+              </a>
+            </div>
+          </div>
+          ` : ""}
+          
+          <!-- BOTONES DE COMPARTIR -->
           <div class="share-buttons">
             <button class="btn-share btn-share-whatsapp" onclick="shareWhatsApp('${mejorAuto.nombre}', ${matchPercentage}, '${currentUrl}')">
               📱 Compartir en WhatsApp
