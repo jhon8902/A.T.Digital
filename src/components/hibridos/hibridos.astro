@@ -1,4 +1,6 @@
 ---
+import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+
 let dynamicHibridos: any[] = [];
 
 // ✅ Función para extraer la primera imagen del HTML
@@ -19,10 +21,10 @@ function normalizeString(str) {
 
 // 🔹 Cargar notas dinámicas
 try {
-  const res = await fetch("http://localhost:8888/.netlify/functions/get-notes");
-  if (res.ok) {
-    const data = await res.json();
+  const apiUrl = getApiUrl("get-notes");
+  const data = await fetchWithTimeout(apiUrl);
 
+  if (data && Array.isArray(data)) {
     dynamicHibridos = data
       .filter((note) => normalizeString(note.category) === "hibridos")
       .map((note) => {
@@ -125,7 +127,13 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
       allHibridos.map((nota) => (
         <a href={nota.href} class="hibrido">
           <div class="imagen-wrapper">
-            <img src={nota.img} alt={nota.alt} class="hibrido-imagen" />
+            <img
+              src={nota.img}
+              alt={nota.alt}
+              class="hibrido-imagen"
+              loading="lazy"
+              decoding="async"
+            />
             <div class="texto-fecha">{nota.fecha}</div>
           </div>
           <div class="hibrido-texto">
@@ -229,7 +237,7 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
   @keyframes fadeInUp {
     from {
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(0);
     }
     to {
       opacity: 1;

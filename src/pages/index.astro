@@ -8,13 +8,15 @@ import Deportes from "../components/deportes/deportes.astro";
 import Pruebas from "../components/pruebas/pruebas.astro";
 import AutoMatch from "../components/automatch/automatch.astro";
 import AdBanner from "../components/advertising/AdBanner.astro";
+import { getApiUrl, fetchWithTimeout } from "../lib/api";
 
 let autos: any[] = [];
 
 try {
-  const res = await fetch("http://localhost:8888/.netlify/functions/get-notes");
-  if (res.ok) {
-    const data = await res.json();
+  const apiUrl = getApiUrl("get-notes");
+  const data = await fetchWithTimeout(apiUrl);
+
+  if (data && Array.isArray(data)) {
     autos = data
       .filter((note: any) => note.category?.toLowerCase() === "automatch")
       .map((note: any) => ({
@@ -38,13 +40,17 @@ try {
 <Layout title="Auto-Tech-Digital 🚗✨" class="home-page">
   <!-- ✅ SECCIONES VISIBLES -->
   <div class="extra-sections" id="extra-sections">
+    <AdBanner />
     <SectionInfo />
+
     <AdBanner variant="mazda" />
-    <Noticias />
+
     <section id="automatch" class="automatch-destacado">
       <AutoMatch autos={autos} />
     </section>
-    <AdBanner />
+
+    <Noticias />
+
     <Electricos />
     <Hibridos />
     <Deportes />

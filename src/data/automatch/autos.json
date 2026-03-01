@@ -1,0 +1,191 @@
+[
+  {
+    "id": 1,
+    "nombre": "Renault Megane E-Tech",
+    "tipo": "eléctrico",
+    "uso": "urbano",
+    "precio": 48000000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/renault-megane-e-tech/renault-megane-principal.webp",
+    "galeria": [
+      "/img/renault-megane-e-tech/renault-megane-principal.webp",
+      "/img/renault-megane-e-tech/renault-megane-2.webp",
+      "/img/renault-megane-e-tech/renault-megane-3.webp",
+      "/img/renault-megane-e-tech/renault-megane-interior.webp"
+    ],
+    "descripcion": "Sedán eléctrico compacto y ágil, perfecto para ciudad. Batería de 52 kWh, autonomía de 470 km EPA.",
+    "especificaciones_id": "renault-megane",
+    "concesionario": {
+      "nombre": "Renault Bogotá Centro",
+      "direccion": "Av. Caracas #45-67, Bogotá",
+      "telefono": "+57 1 234 5678",
+      "whatsapp": "573001234567",
+      "email": "ventas@renaultbogota.com",
+      "horario": "Lunes-Viernes 9:00-18:00 | Sábados 10:00-14:00"
+    }
+  },
+  {
+    "id": 2,
+    "nombre": "BMW 330e",
+    "tipo": "híbrido",
+    "uso": "deportivo",
+    "precio": 65000000,
+    "ciudad": "medellín",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/bmw-330e/bmw.webp",
+    "galeria": [
+      "/img/bmw-330e/bmw.webp",
+      "/img/bmw-330e/bmw-2.webp",
+      "/img/bmw-330e/bmw-interior.webp",
+      "/img/bmw-330e/bmw-detalles.webp"
+    ],
+    "descripcion": "Sedán deportivo híbrido enchufable con 252 hp combinados. Diseño premium y alto desempeño.",
+    "especificaciones_id": "bmw-330e",
+    "concesionario": {
+      "nombre": "BMW Medellín Premium",
+      "direccion": "Cra 43A #1-50, Medellín",
+      "telefono": "+57 4 567 8901",
+      "whatsapp": "573105678901",
+      "email": "ventas@bmwmedellin.com",
+      "horario": "Lunes-Viernes 9:00-18:30 | Sábados 10:00-16:00"
+    }
+  },
+  {
+    "id": 3,
+    "nombre": "Mini Cooper SE Eléctrico",
+    "tipo": "eléctrico",
+    "uso": "urbano",
+    "precio": 45000000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/mini-cooper-electrico/mini-cooper-portada.webp",
+    "galeria": [
+      "/img/mini-cooper-electrico/mini-cooper-portada.webp",
+      "/img/mini-cooper-electrico/mini-cooper-2.webp",
+      "/img/mini-cooper-electrico/mini-cooper-3.webp",
+      "/img/mini-cooper-electrico/mini-cooper-interior.webp"
+    ],
+    "descripcion": "Icónico y eléctrico. Perfecto para ciudad con su tamaño compacto y autonomía de 280 km.",
+    "especificaciones_id": "mini-cooper-se",
+    "concesionario": {
+      "nombre": "Mini Bogotá Oficial",
+      "direccion": "Av. 72 #11-45, Bogotá",
+      "telefono": "+57 1 345 6789",
+      "whatsapp": "573123456789",
+      "email": "contacto@minibogota.com",
+      "horario": "Lunes-Viernes 9:00-18:00 | Sábados 10:00-15:00"
+    }
+  },
+  {
+    "id": 4,
+    "nombre": "Toyota Prado Híbrido 2.8L",
+    "tipo": "híbrido",
+    "uso": "familiar",
+    "precio": 65000000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/toyota-prado/toyota-prado-copia.jpg",
+    "galeria": [
+      "/img/toyota-prado/toyota-prado-copia.jpg",
+      "/img/toyota-prado/toyota-prado-2.jpg",
+      "/img/toyota-prado/toyota-prado-interior.jpg",
+      "/img/toyota-prado/toyota-prado-detalles.jpg"
+    ],
+    "descripcion": "SUV de lujo y confiabilidad Toyota. Motor híbrido de 326 hp, perfecto para familia con gran capacidad.",
+    "especificaciones_id": "toyota-prado",
+    "concesionario": {
+      "nombre": "Toyota Bogotá Principal",
+      "direccion": "Cra 15 #80-30, Bogotá",
+      "telefono": "+57 1 456 7890",
+      "whatsapp": "573134567890",
+      "email": "ventas@toyotabogota.com",
+      "horario": "Lunes-Viernes 9:00-18:00 | Sábados 10:00-14:00"
+    }
+  },
+  {
+    "id": 5,
+    "nombre": "Volvo EX90 100% Eléctrico",
+    "tipo": "eléctrico",
+    "uso": "familiar",
+    "precio": 80000000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/volvo-ex90-electrico/volvo-ex90-portada.webp",
+    "galeria": [
+      "/img/volvo-ex90-electrico/volvo-ex90-portada.webp",
+      "/img/volvo-ex90-electrico/volvo-ex90-2.webp",
+      "/img/volvo-ex90-electrico/volvo-ex90-interior.webp",
+      "/img/volvo-ex90-electrico/volvo-ex90-detalles.webp"
+    ],
+    "descripcion": "Lujo y sostenibilidad. SUV eléctrico premium con 600 km de autonomía y tecnología escandinava.",
+    "especificaciones_id": "volvo-ex90",
+    "concesionario": {
+      "nombre": "Volvo Bogotá Autorizado",
+      "direccion": "Av. Paseo de la República #2000, Bogotá",
+      "telefono": "+57 1 567 8901",
+      "whatsapp": "573145678901",
+      "email": "ventas@volvobogota.com",
+      "horario": "Lunes-Viernes 9:00-19:00 | Sábados 10:00-16:00"
+    }
+  },
+  {
+    "id": 6,
+    "nombre": "Nissan X-Trail Híbrida",
+    "tipo": "híbrido",
+    "uso": "familiar",
+    "precio": 52000000,
+    "ciudad": "cali",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/nissan-xtrail-hibrida/nissan-x-trail.webp",
+    "galeria": [
+      "/img/nissan-xtrail-hibrida/nissan-x-trail.webp",
+      "/img/nissan-xtrail-hibrida/nissan-x-trail-2.webp",
+      "/img/nissan-xtrail-hibrida/nissan-x-trail-interior.webp",
+      "/img/nissan-xtrail-hibrida/nissan-x-trail-detalles.webp"
+    ],
+    "descripcion": "Versátil y eficiente. SUV compacto híbrido con espacio para 7 personas y tracción inteligente.",
+    "especificaciones_id": "nissan-xtrail",
+    "concesionario": {
+      "nombre": "Nissan Cali Centro",
+      "direccion": "Av. Paseo Mayurasqui #2-15, Cali",
+      "telefono": "+57 2 345 6789",
+      "whatsapp": "573287654321",
+      "email": "ventas@nissancali.com",
+      "horario": "Lunes-Viernes 9:00-18:00 | Sábados 10:00-14:00"
+    }
+  },
+  {
+    "id": 7,
+    "nombre": "Ford Bronco 4x4 Gasolina",
+    "tipo": "gasolina",
+    "uso": "deportivo",
+    "precio": 85000000,
+    "ciudad": "medellín",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/ford-bronco/ford-bronco-portada.jpg",
+    "galeria": [
+      "/img/ford-bronco/ford-bronco-portada.jpg",
+      "/img/ford-bronco/ford-bronco-2.jpg",
+      "/img/ford-bronco/ford-bronco-interior.jpg",
+      "/img/ford-bronco/ford-bronco-detalles.jpg"
+    ],
+    "descripcion": "Legendario y aventurero. Motor 4.0L EcoBoost, tracción 4x4, diseño robusto y capaz.",
+    "especificaciones_id": "ford-bronco",
+    "concesionario": {
+      "nombre": "Ford Medellín Oficial",
+      "direccion": "Cra 70 #33-15, Medellín",
+      "telefono": "+57 4 678 9012",
+      "whatsapp": "573198765432",
+      "email": "ventas@fordmedellin.com",
+      "horario": "Lunes-Viernes 9:00-18:30 | Sábados 10:00-15:00"
+    }
+  }
+]

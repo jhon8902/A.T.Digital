@@ -1,0 +1,348 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const trends = [
+  {
+    tag: "Electromovilidad",
+    title: "Infraestructura de carga en ciudades intermedias",
+    summary:
+      "Crecen los proyectos de carga rapida en corredores urbanos y regionales, con nuevos actores privados.",
+    date: "Feb 2026",
+    metric: "+32% estaciones nuevas",
+  },
+  {
+    tag: "ADAS",
+    title: "Seguridad activa como estandar de compra",
+    summary:
+      "Los compradores priorizan frenado autonomo, mantenimiento de carril y sensores 360 en la comparacion.",
+    date: "Feb 2026",
+    metric: "3 de cada 5 lo exige",
+  },
+  {
+    tag: "Hibridos",
+    title: "Mezcla ideal entre autonomia y costo",
+    summary:
+      "La adopcion de hibridos sube en flotas y familias por ahorro en combustible y menor ansiedad de carga.",
+    date: "Ene 2026",
+    metric: "+18% en ventas",
+  },
+  {
+    tag: "Normativa",
+    title: "Incentivos locales para tecnologias limpias",
+    summary:
+      "Nuevos beneficios tributarios y facilidades de circulacion impulsan la demanda de modelos electrificados.",
+    date: "Ene 2026",
+    metric: "4 ciudades con cambios",
+  },
+  {
+    tag: "Conectividad",
+    title: "Software definido para la experiencia a bordo",
+    summary:
+      "Los fabricantes integran actualizaciones OTA para mejorar rendimiento, entretenimiento y seguridad.",
+    date: "Dic 2025",
+    metric: "60% con OTA",
+  },
+  {
+    tag: "Mercado",
+    title: "Lanzamientos compactos para Colombia",
+    summary:
+      "El segmento compacto electrificado gana terreno con precios mas accesibles y mayor disponibilidad.",
+    date: "Dic 2025",
+    metric: "+22% en consultas",
+  },
+];
+---
+
+<Layout title="Tendencias del sector" bodyClass="tendencias-page">
+  <section class="tendencias-hero">
+    <div class="hero-inner">
+      <span class="hero-kicker">Radar del sector</span>
+      <h1>Tendencias clave del mercado automotor en Colombia</h1>
+      <p>
+        Un resumen visual y editorial de lo que esta moviendo la industria:
+        tecnologias, regulaciones y senales de compra.
+      </p>
+      <div class="hero-actions">
+        <a class="cta-primary" href="/#noticias">Ver noticias</a>
+        <a class="cta-secondary" href="#tendencias-grid">Explorar tendencias</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-value">6</span>
+          <span class="stat-label">focos activos</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">12</span>
+          <span class="stat-label">semanas de analisis</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">2026</span>
+          <span class="stat-label">actualizacion</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tendencias-grid" class="tendencias-grid">
+    {trends.map((trend) => (
+      <article class="trend-card">
+        <div class="trend-card-top">
+          <span class="trend-tag">{trend.tag}</span>
+          <span class="trend-date">{trend.date}</span>
+        </div>
+        <h2>{trend.title}</h2>
+        <p>{trend.summary}</p>
+        <div class="trend-metric">{trend.metric}</div>
+      </article>
+    ))}
+  </section>
+
+  <section class="tendencias-cta">
+    <div class="cta-content">
+      <h3>Quieres mas contexto en tiempo real</h3>
+      <p>
+        Revisa las ultimas notas y actualizaciones para entender como se
+        materializan estas tendencias en el mercado local.
+      </p>
+      <a class="cta-primary" href="/#noticias">Ir a noticias</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .tendencias-hero {
+    background: radial-gradient(
+        circle at 20% 20%,
+        rgba(212, 167, 66, 0.18),
+        transparent 55%
+      ),
+      linear-gradient(135deg, #111827, #0f172a 60%, #111827 100%);
+    color: #f8fafc;
+    padding: 80px 24px 60px;
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #f8ca26;
+  }
+
+  .tendencias-hero h1 {
+    font-size: clamp(2.2rem, 3vw, 3.4rem);
+    font-family: "Georgia", serif;
+    margin: 0;
+    line-height: 1.1;
+    color: #f8fafc !important;
+  }
+
+  .tendencias-hero p {
+    font-size: 1.1rem;
+    max-width: 720px;
+    line-height: 1.7;
+    color: rgba(248, 250, 252, 0.85);
+    font-family: "Poppins", sans-serif;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .cta-primary,
+  .cta-secondary {
+    text-decoration: none;
+    font-weight: 700;
+    padding: 12px 26px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cta-primary {
+    background: #f8ca26;
+    color: #111827;
+    box-shadow: 0 12px 24px rgba(248, 202, 38, 0.25);
+  }
+
+  .cta-secondary {
+    border: 1px solid rgba(248, 202, 38, 0.6);
+    color: #f8ca26;
+  }
+
+  .cta-primary:hover,
+  .cta-secondary:hover {
+    transform: translateY(-2px);
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+  }
+
+  .stat {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(248, 202, 38, 0.2);
+    border-radius: 16px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #f8ca26;
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(248, 250, 252, 0.7);
+  }
+
+  .tendencias-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    background: #f8f7f4;
+  }
+
+  .trend-card {
+    background: #111827;
+    border: 1px solid rgba(248, 202, 38, 0.2);
+    border-radius: 18px;
+    padding: 26px;
+    color: #f8fafc;
+    box-shadow: 0 12px 30px rgba(17, 24, 39, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .trend-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(248, 202, 38, 0.12), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .trend-card:hover::after {
+    opacity: 1;
+  }
+
+  .trend-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: rgba(248, 250, 252, 0.7) !important;
+  }
+
+  .trend-tag {
+    background: rgba(248, 202, 38, 0.15);
+    color: #f8ca26;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+
+  .trend-date {
+    color: rgba(248, 250, 252, 0.7) !important;
+  }
+
+  .trend-card h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-family: "Georgia", serif;
+    color: #ffffff !important;
+  }
+
+  .trend-card p {
+    margin: 0;
+    line-height: 1.6;
+    color: rgba(248, 250, 252, 0.8) !important;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .trend-metric {
+    margin-top: auto;
+    font-weight: 700;
+    color: #f8ca26;
+  }
+
+  .tendencias-cta {
+    padding: 60px 24px 80px;
+    background: #f8f7f4;
+  }
+
+  .cta-content {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #111827;
+    border-radius: 20px;
+    padding: 40px;
+    color: #f8fafc;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .cta-content h3 {
+    margin: 0;
+    font-size: 2rem;
+    font-family: "Georgia", serif;
+    color: #ffffff !important;
+  }
+
+  .cta-content p {
+    margin: 0;
+    color: rgba(248, 250, 252, 0.8);
+    font-family: "Poppins", sans-serif;
+  }
+
+  @media (max-width: 768px) {
+    .tendencias-hero {
+      padding: 60px 20px 40px;
+    }
+
+    .tendencias-grid {
+      padding: 40px 20px;
+    }
+
+    .cta-content {
+      padding: 32px 24px;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

@@ -5,32 +5,33 @@ const autos = [
     nombre: "Maserati GranCabrio",
     descripcion: "Sedán eléctrico con más de 500 km de autonomía.",
     imagenes: [
-      "/img/automatch/maserati grancabrio.jpg",
-      "/img/automatch/maserati grancabrio1.jpg",
-      "/img/automatch/maserati grancabrio2.jpg",
-      "/img/automatch/maserati-grancabrio3.jpg",
+      "/img/automatch/maseratti-grancabrio.webp",
+      "/img/automatch/maserati-grancabrio1.webp",
+      "/img/automatch/maserati-grancabrio2.webp",
+      "/img/automatch/maserati-grancabrio3.webp",
     ],
   },
   {
     id: "bmw-i4",
-    nombre: "Aston Martin Volante DB12",
-    descripcion: "Deportividad, lujo y potencia totalmente eléctrica.",
+    nombre: "Subaru BRZ",
+    descripcion:
+      "Deportivo de alto rendimiento: potencia, precisión y emociones al máximo.",
     imagenes: [
-      "/img/automatch/Aston MartinDB12 Volante.jpg",
-      "/img/automatch/maserati grancabrio1.jpg",
-      "/img/automatch/maserati grancabrio2.jpg",
-      "/img/automatch/maserati-grancabrio3.jpg",
+      "/img/automatch/subaru brz 1.webp",
+      "/img/automatch/subaru brz.webp",
+      "/img/automatch/subaru brz 2.webp",
+      "/img/automatch/subaru brz 3.webp",
     ],
   },
   {
     id: "porsche-taycan",
-    nombre: "Renault Filante Concept",
+    nombre: "Bugatti Chiron",
     descripcion: "El auto eléctrico más emocionante del mundo.",
     imagenes: [
-      "/img/automatch/renault concept.webp",
-      "/img/automatch/maserati grancabrio1.jpg",
-      "/img/automatch/maserati grancabrio2.jpg",
-      "/img/automatch/maserati-grancabrio3.jpg",
+      "/img/automatch/bugatti.webp",
+      "/img/automatch/bugatti1.webp",
+      "/img/automatch/bugatti2.webp",
+      "/img/automatch/bugatti3.webp",
     ],
   },
 ];
@@ -50,6 +51,8 @@ const autos = [
                 src={img}
                 alt={auto.nombre}
                 class={`auto-img ${index === 0 ? "visible" : "hidden"}`}
+                loading="lazy"
+                decoding="async"
               />
             ))}
             <button class="prev">❮</button>
@@ -74,7 +77,7 @@ const autos = [
             </h4>
             <ul class="lista-comentarios" />
             <button class="btn-expand-comentarios" style="display: none;">
-              Ver más comentarios ⬇️
+              Ver comentarios ⬇️
             </button>
 
             <form class="form-comentario" data-id={auto.id}>
@@ -204,14 +207,30 @@ const autos = [
     position: relative;
     overflow: hidden;
     border-radius: 12px;
-    background: #f0f0f0;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+  }
+
+  @keyframes skeleton-loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  .auto-carousel.loaded {
+    background: none;
+    animation: none;
   }
 
   .auto-img {
     width: 100%;
     border-radius: 12px;
     display: none;
-    transition: opacity 0.3s;
+    transition: opacity 0.4s ease;
     aspect-ratio: 16 / 10;
     object-fit: cover;
   }
@@ -237,9 +256,10 @@ const autos = [
 
   .prev:hover,
   .next:hover {
-    background: #e1a307;
+    background: #1b5e3f;
     color: white;
-    transform: translateY(-50%) scale(1.1);
+    transform: translateY(-50%) scale(1.15);
+    box-shadow: 0 4px 12px rgba(27, 94, 63, 0.4);
   }
 
   .prev {
@@ -335,14 +355,28 @@ const autos = [
     border-radius: 6px;
     transition:
       background 0.3s,
-      border-color 0.3s;
+      border-color 0.3s,
+      transform 0.3s;
     font-size: 0.9rem;
   }
 
   .lista-comentarios li.nuevo {
-    background: #fffbf0;
-    border-color: #e1a307;
-    animation: slideInComment 0.5s ease;
+    animation: highlightComment 0.6s ease;
+  }
+
+  @keyframes highlightComment {
+    0% {
+      background: #fff8dc;
+      transform: translateX(-10px);
+    }
+    50% {
+      background: #fffb00;
+      transform: translateX(0);
+    }
+    100% {
+      background: #f7f8fa;
+      transform: translateX(0);
+    }
   }
 
   .lista-comentarios li.hidden {
@@ -367,7 +401,7 @@ const autos = [
     color: white;
   }
 
-  .btn-expand-comentarios.collapsed {
+  .btn-expand-comentarios.expanded {
     background: #1b5e3f;
     color: white;
   }
@@ -394,12 +428,45 @@ const autos = [
     color: #888;
   }
 
+  .btn-vote-comment {
+    background: transparent;
+    color: #0077ff;
+    border: 1px solid #0077ff;
+    border-radius: 6px;
+    padding: 0.2rem 0.6rem;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    margin-top: 0.4rem;
+  }
+
+  .btn-vote-comment:hover:not(:disabled) {
+    background: #0077ff;
+    color: white;
+    transform: scale(1.1);
+  }
+
+  .btn-vote-comment:disabled {
+    background: #e0e0e0;
+    color: #888;
+    border-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  .btn-vote-comment.voted::before {
+    content: "✓ ";
+    font-weight: 700;
+    margin-right: 0.2rem;
+  }
+
   /* ========== FORMULARIO DE COMENTARIOS ========== */
   .form-comentario {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     color: #1a1a2e;
+    margin-top: 1rem;
   }
 
   .form-comentario input,
@@ -415,6 +482,12 @@ const autos = [
     transition:
       border 0.3s,
       background 0.3s;
+  }
+
+  .form-comentario input::placeholder,
+  .form-comentario textarea::placeholder {
+    color: #555;
+    opacity: 1;
   }
 
   .form-comentario input:focus,
@@ -665,6 +738,8 @@ const autos = [
       if (target.matches(".next, .prev")) {
         const carousel = target.closest(".auto-carousel") as HTMLElement | null;
         if (!carousel) return;
+        // Marcar carrusel como cargado después de interactuar
+        carousel.classList.add("loaded");
         const images = carousel.querySelectorAll(".auto-img");
         let current = Array.from(images).findIndex((img) =>
           (img as HTMLElement).classList.contains("visible"),
@@ -699,6 +774,17 @@ const autos = [
       localStorage.getItem("automatchCommentVotes") || "{}",
     );
 
+    // Marcar imágenes como cargadas para remover skeleton loader
+    document.querySelectorAll(".auto-img").forEach((img: Element) => {
+      const htmlImg = img as HTMLImageElement;
+      if (htmlImg.complete) {
+        htmlImg.closest(".auto-carousel")?.classList.add("loaded");
+      }
+      htmlImg.addEventListener("load", () => {
+        htmlImg.closest(".auto-carousel")?.classList.add("loaded");
+      });
+    });
+
     // Mostrar comentarios guardados
     for (const [autoId, lista] of Object.entries(comentarios)) {
       const ul = document.querySelector(
@@ -718,37 +804,55 @@ const autos = [
       lista.forEach((c: any, index) => {
         const commentId = `${autoId}-${index}-${c.fecha}`;
         const votes = commentVotes[commentId] || 0;
+        const isVoted = !!commentVotes[commentId];
         const li = document.createElement("li");
         li.innerHTML = `
           <div class="content">
             <strong>${c.nombre}</strong> <span class="fecha">${c.fecha}</span><br>${c.mensaje}
           </div>
-          <button class="btn-vote-comment" data-comment-id="${commentId}" title="Me gusta este comentario">
+          <button class="btn-vote-comment ${isVoted ? "voted" : ""}" data-comment-id="${commentId}" title="Me gusta este comentario" ${isVoted ? "disabled" : ""}>
             👍 <span>${votes}</span>
           </button>
         `;
-        if (index >= 2) {
-          li.classList.add("hidden");
-        }
+        // Ocultar todos los comentarios inicialmente
+        li.classList.add("hidden");
         ul.appendChild(li);
       });
 
-      if (lista.length > 2 && btnExpand) {
+      // Mostrar botón si hay al menos 1 comentario
+      if (lista.length > 0 && btnExpand) {
         btnExpand.style.display = "block";
       }
     }
 
     // 🆕 Sistema de votación de comentarios
+    const commentVotesData = JSON.parse(
+      localStorage.getItem("automatchCommentVotes") || "{}",
+    );
+
+    // Marcar botones votados al cargar
+    document.querySelectorAll(".btn-vote-comment").forEach((btn: Element) => {
+      const htmlBtn = btn as HTMLButtonElement;
+      const commentId = htmlBtn.dataset.commentId;
+      if (commentId && commentVotesData[commentId]) {
+        htmlBtn.disabled = true;
+        htmlBtn.classList.add("voted");
+      }
+    });
+
     document.addEventListener("click", (e: Event) => {
       const target = e.target;
       if (!(target instanceof HTMLElement)) return;
 
       if (target.matches(".btn-vote-comment")) {
-        const commentId = target.dataset.commentId;
+        const htmlTarget = target as HTMLButtonElement;
+        if (htmlTarget.disabled) return;
+
+        const commentId = htmlTarget.dataset.commentId;
         if (!commentId) return;
 
         const currentVotes = parseInt(
-          (target.querySelector("span") as HTMLElement)?.textContent || "0",
+          (htmlTarget.querySelector("span") as HTMLElement)?.textContent || "0",
         );
         const newVotes = currentVotes + 1;
 
@@ -760,12 +864,12 @@ const autos = [
         localStorage.setItem("automatchCommentVotes", JSON.stringify(votes));
 
         // Actualizar UI
-        const span = target.querySelector("span") as HTMLElement | null;
+        const span = htmlTarget.querySelector("span") as HTMLElement | null;
         if (span) {
-          span.textContent = newVotes;
+          span.textContent = newVotes.toString();
         }
-        target.classList.add("voted");
-        target.disabled = true;
+        htmlTarget.classList.add("voted");
+        htmlTarget.disabled = true;
       }
     });
 
@@ -818,17 +922,34 @@ const autos = [
           contador.textContent = `(${(comentarios[id] as any[]).length})`;
         }
 
-        // Mostrar botón expandir si hay más de 2 comentarios
-        if ((comentarios[id] as any[]).length > 2 && btnExpand) {
+        // Mostrar botón expandir si hay al menos 1 comentario
+        if ((comentarios[id] as any[]).length > 0 && btnExpand) {
           btnExpand.style.display = "block";
+          // Auto-expandir para mostrar el nuevo comentario
+          if (!btnExpand.classList.contains("expanded")) {
+            btnExpand.classList.add("expanded");
+            btnExpand.textContent = "Ocultar comentarios ⬆️";
+            const items = ul.querySelectorAll("li");
+            items.forEach((item) => {
+              (item as HTMLElement).classList.remove("hidden");
+            });
+          }
         }
 
+        li.classList.remove("hidden");
         htmlForm.reset();
-        setTimeout(() => li.classList.remove("nuevo"), 800);
+
+        // Scroll suave al nuevo comentario
+        setTimeout(() => {
+          li.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          li.classList.remove("nuevo");
+        }, 100);
       });
     });
 
     // Expandir comentarios
+    let expandedCard: string | null = null;
+
     document
       .querySelectorAll(".btn-expand-comentarios")
       .forEach((btn: Element) => {
@@ -841,24 +962,79 @@ const autos = [
           ) as HTMLElement | null;
           if (!ul) return;
           const items = ul.querySelectorAll("li");
+          const card = htmlBtn.closest(".auto-card") as HTMLElement | null;
+          const cardId = card?.dataset.id || null;
 
-          if (htmlBtn.classList.contains("collapsed")) {
-            htmlBtn.classList.remove("collapsed");
-            htmlBtn.textContent = "Ver más comentarios ⬇️";
-            items.forEach((item, index) => {
-              if (index >= 2) {
-                (item as HTMLElement).classList.add("hidden");
-              }
+          if (htmlBtn.classList.contains("expanded")) {
+            // Ocultar todos los comentarios
+            htmlBtn.classList.remove("expanded");
+            htmlBtn.textContent = "Ver comentarios ⬇️";
+            items.forEach((item) => {
+              (item as HTMLElement).classList.add("hidden");
             });
+            expandedCard = null;
           } else {
-            htmlBtn.classList.add("collapsed");
-            htmlBtn.textContent = "Ver menos comentarios ⬆️";
+            // Cerrar otros comentarios abiertos
+            if (expandedCard && expandedCard !== cardId) {
+              const otherBtn = document.querySelector(
+                `.auto-card[data-id="${expandedCard}"] .btn-expand-comentarios`,
+              ) as HTMLElement | null;
+              if (otherBtn && otherBtn.classList.contains("expanded")) {
+                otherBtn.classList.remove("expanded");
+                otherBtn.textContent = "Ver comentarios ⬇️";
+                const otherItems = document.querySelectorAll(
+                  `.auto-card[data-id="${expandedCard}"] .lista-comentarios li`,
+                );
+                otherItems.forEach((item) => {
+                  (item as HTMLElement).classList.add("hidden");
+                });
+              }
+            }
+            // Mostrar todos los comentarios
+            htmlBtn.classList.add("expanded");
+            htmlBtn.textContent = "Ocultar comentarios ⬆️";
             items.forEach((item) => {
               (item as HTMLElement).classList.remove("hidden");
             });
+            expandedCard = cardId;
           }
         });
       });
+
+    // Auto-cerrar comentarios al hacer scroll
+    let scrollTimeout: NodeJS.Timeout;
+    window.addEventListener(
+      "scroll",
+      () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          if (expandedCard) {
+            const card = document.querySelector(
+              `.auto-card[data-id="${expandedCard}"]`,
+            ) as HTMLElement | null;
+            if (!card) return;
+
+            const rect = card.getBoundingClientRect();
+            // Si la tarjeta salió del viewport (más de 20px fuera)
+            if (rect.bottom < -20 || rect.top > window.innerHeight + 20) {
+              const btn = card.querySelector(
+                ".btn-expand-comentarios",
+              ) as HTMLElement | null;
+              if (btn && btn.classList.contains("expanded")) {
+                btn.classList.remove("expanded");
+                btn.textContent = "Ver comentarios ⬇️";
+                const items = card.querySelectorAll(".lista-comentarios li");
+                items.forEach((item) => {
+                  (item as HTMLElement).classList.add("hidden");
+                });
+                expandedCard = null;
+              }
+            }
+          }
+        }, 150);
+      },
+      { passive: true },
+    );
     async function registrarMatch(autoId: string, decision: string) {
       await fetch("/.netlify/functions/api-automatch", {
         method: "POST",

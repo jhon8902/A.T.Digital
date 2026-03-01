@@ -10,7 +10,7 @@
 
   /* Título subtitulo kia ev9 */
   .noticia-detalle h1 {
-    font-size: 45px;
+    font-size: 42px;
     text-align: center;
     color: black;
     width: 90%;
@@ -24,12 +24,12 @@
 
   /* Título principal */
   .noticia-descripcion {
-    font-size: 48px;
-    font-weight: bolder;
+    font-size: 24px;
+    font-weight: 600;
     text-align: center;
     padding: 30px;
     text-transform: none;
-    font-family: "Georgia", serif;
+    font-family: "Poppins", sans-serif;
 
     /* Animación */
     opacity: 0;
@@ -94,7 +94,7 @@
   }
 
   .noticia-titulo {
-    font-size: 36px;
+    font-size: 26px;
     font-weight: bolder;
     color: black;
     margin-bottom: 10px;
@@ -103,7 +103,7 @@
   }
 
   .noticia-bloque .noticia-parrafo {
-    font-size: 20px;
+    font-size: 18px;
     text-align: start;
     color: #333;
 
@@ -131,7 +131,7 @@
   }
 
   .ficha-tecnica h2 {
-    font-size: 30px;
+    font-size: 24px;
     margin-bottom: 15px;
     text-align: center;
     color: #333;
@@ -139,7 +139,8 @@
     font-family: "Georgia", serif;
   }
 
-  .ficha-tecnica ul {
+  .ficha-tecnica ul,
+  .ficha-tecnica .ficha-grid {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -148,8 +149,9 @@
     gap: 10px;
   }
 
-  .ficha-tecnica li {
-    font-size: 20px;
+  .ficha-tecnica li,
+  .ficha-tecnica .ficha-item {
+    font-size: 16px;
     background: white;
     padding: 12px;
     border-radius: 8px;
@@ -163,7 +165,7 @@
     }
 
     .noticia-detalle h1 {
-      font-size: 28px;
+      font-size: 26px;
       background: none;
       color: black;
       text-shadow: none;
@@ -181,15 +183,15 @@
     }
 
     .noticia-descripcion {
-      font-size: 28px;
-      font-weight: bolder;
+      font-size: 20px;
+      font-weight: 600;
       padding: 15px;
       text-align: start;
       padding-top: 0;
     }
 
     .noticia-bloque .noticia-parrafo {
-      font-size: 18px;
+      font-size: 16px;
       color: black;
       padding-top: 5px;
     }
@@ -199,7 +201,7 @@
     }
 
     .noticia-titulo {
-      font-size: 24px;
+      font-size: 20px;
     }
 
     .noticia-portada {

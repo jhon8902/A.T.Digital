@@ -48,6 +48,17 @@
     <div class="copyright">
       <p>&copy; 2025 AutoTechDigital. Todos los derechos reservados.</p>
     </div>
+
+    <!-- Enlaces legales y acceso -->
+    <div class="footer-links">
+      <a href="/politica-privacidad" class="link-legal"
+        >Política de Privacidad</a
+      >
+      <span class="separator">|</span>
+      <a href="/dashboard-concesionario" class="link-dashboard"
+        >🔐 Acceso Concesionarios</a
+      >
+    </div>
   </div>
 </footer>
 
@@ -186,6 +197,54 @@
     padding-left: 80px;
   }
 
+  /* Enlaces legales y acceso al final del footer */
+  .footer-links {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .footer-links .link-legal {
+    color: #bbb;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+  }
+
+  .footer-links .link-legal:hover {
+    color: #d69a0c;
+  }
+
+  .footer-links .separator {
+    color: #555;
+    font-size: 14px;
+  }
+
+  .footer-links .link-dashboard {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 8px 15px;
+    border-radius: 8px;
+    color: white !important;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+
+  .footer-links .link-dashboard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #764ba2, #667eea);
+  }
+
   /* Tagline de marca en footer */
   .footer-tagline {
     width: 100%;
@@ -224,6 +283,16 @@
 
     .copyright p {
       padding-left: 0;
+    }
+
+    .footer-links {
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 10px;
+    }
+
+    .footer-links .separator {
+      display: none;
     }
 
     .footer-tagline {

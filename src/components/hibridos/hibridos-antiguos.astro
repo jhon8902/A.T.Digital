@@ -32,7 +32,12 @@ try {
         <div class="grid-hibridos">
           {hibridos.map((note) => (
             <a href={`/notas/${note.id}`} class="hibrido-card">
-              <img src={note.image1 || "/img/default.jpg"} alt={note.title} />
+              <img
+                src={note.image1 || "/img/default.jpg"}
+                alt={note.title}
+                loading="lazy"
+                decoding="async"
+              />
               <div class="card-content">
                 <h2>{note.title}</h2>
                 <p>{note.subtitle}</p>

@@ -1,12 +1,14 @@
 ---
+import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+
 let dynamicLanzamientos: any[] = [];
 
 // Traemos notas dinámicas desde Netlify
 try {
-  const res = await fetch("http://localhost:8888/.netlify/functions/get-notes");
-  if (res.ok) {
-    const data = await res.json();
+  const apiUrl = getApiUrl("get-notes");
+  const data = await fetchWithTimeout(apiUrl);
 
+  if (data && Array.isArray(data)) {
     // Filtramos solo las de categoría "lanzamientos"
     dynamicLanzamientos = data
       .filter((note: any) => note.category?.toLowerCase() === "lanzamientos")
@@ -110,6 +112,8 @@ const resto = mezcladas.slice(1, 5);
           src={destacada.img}
           alt={destacada.alt}
           class="noticia-avenger-imagen"
+          loading="lazy"
+          decoding="async"
         />
       </a>
     )
@@ -119,7 +123,13 @@ const resto = mezcladas.slice(1, 5);
     resto.map((nota) => (
       <a href={nota.href} class="noticia-container">
         <div class="noticia-imagen-wrapper">
-          <img src={nota.img} alt={nota.alt} class="noticia-imagen" />
+          <img
+            src={nota.img}
+            alt={nota.alt}
+            class="noticia-imagen"
+            loading="lazy"
+            decoding="async"
+          />
         </div>
         <div class="noticia-texto">
           <h3 class="noticia-texto-titulo">{nota.title}</h3>
@@ -221,23 +231,23 @@ const resto = mezcladas.slice(1, 5);
 
   .noticias-titulo {
     opacity: 0;
-    transform: scale(0.7) translateY(-40px);
-    transition: none;
+    transform: translateY(0);
+    transition: opacity 0.3s;
   }
 
   .noticias-titulo.visible {
-    animation: zoomInFade 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: fadeInUp 1s ease-out;
   }
 
-  .descripcion-lanzamientos {
-    font-size: 1.2rem;
-    text-align: center;
-    color: black;
-    padding: 20px; /* Top reducido, laterales igual, bottom cero */
-    font-family: "Georgia", serif;
-    margin-top: -10px; /* (Opcional) más pegado aún si lo ves necesario */
-    background: white;
-    font-weight: 500;
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .noticias-icono {
@@ -639,25 +649,30 @@ const resto = mezcladas.slice(1, 5);
 
 <script>
   document.addEventListener("DOMContentLoaded", async function () {
-    const titulo = document.querySelector(".noticias-titulo");
-    if (!titulo) return;
+    const tituloLanzamientos = document.querySelector(
+      "#lanzamientos .noticias-titulo",
+    ) as HTMLElement;
 
-    // Animación con IntersectionObserver (ya la tenías)
-    const observer = new IntersectionObserver(
+    if (!tituloLanzamientos) return;
+
+    // Animación con IntersectionObserver - MISMO PATRÓN QUE HÍBRIDOS
+    const observerLanzamientos = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            titulo.classList.add("visible");
+            tituloLanzamientos.classList.add("visible");
+            tituloLanzamientos.style.opacity = "1";
           } else {
-            titulo.classList.remove("visible");
+            tituloLanzamientos.classList.remove("visible");
+            tituloLanzamientos.style.opacity = "0";
           }
         });
       },
-      { threshold: 0.1 },
+      { threshold: 0.5 },
     );
-    observer.observe(titulo);
+    observerLanzamientos.observe(tituloLanzamientos);
 
-    // 🚀 Nuevo: cargar noticias dinámicamente
+    // 🚀 Cargar noticias dinámicamente
     try {
       const res = await fetch("/.netlify/functions/get-notes");
       const notas = await res.json();

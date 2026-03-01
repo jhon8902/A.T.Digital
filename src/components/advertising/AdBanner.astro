@@ -48,7 +48,13 @@ const currentAd = ads[variant];
     class="ad-content"
     style={`background-color: ${currentAd.bg}; color: ${currentAd.textColor};`}
   >
-    <img class="ad-car" src={currentAd.image} alt={currentAd.title} />
+    <img
+      class="ad-car"
+      src={currentAd.image}
+      alt={currentAd.title}
+      loading="lazy"
+      decoding="async"
+    />
     <div class="ad-banner">
       <div class="ad-text">
         {currentAd.brand && <span class="ad-brand">{currentAd.brand}</span>}

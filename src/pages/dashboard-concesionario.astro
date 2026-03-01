@@ -1,0 +1,175 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<link rel="stylesheet" href="/css/dashboard-concesionario.css" />
+
+<Layout title="Dashboard Concesionario | A.T.Digital">
+  <div id="app">
+    <!-- SECCIÓN LOGIN -->
+    <section id="login-section" class="login-section">
+      <div class="login-container">
+        <div class="login-card">
+          <h1>🏢 Panel de Concesionarios</h1>
+          <p class="subtitle">Acceda a su dashboard de leads y comisiones</p>
+
+          <form id="login-form" class="login-form">
+            <div class="form-group">
+              <label for="dealer-email">Email</label>
+              <input
+                type="email"
+                id="dealer-email"
+                placeholder="correo@concesionario.com"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="dealer-password">Contraseña</label>
+              <input
+                type="password"
+                id="dealer-password"
+                placeholder="Tu contraseña"
+                required
+              />
+            </div>
+
+            <button type="submit" class="btn-login"
+              >Ingresar al Dashboard</button
+            >
+          </form>
+
+          <p class="login-note">
+            💡 Contacta a A.T.Digital para obtener tus credenciales
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DASHBOARD -->
+    <section
+      id="dashboard-section"
+      class="dashboard-section"
+      style="display: none;"
+    >
+      <!-- Header del Dashboard -->
+      <header class="dashboard-header">
+        <div class="header-content">
+          <div class="brand">
+            <h1>🚗 A.T.Digital Dashboard</h1>
+            <p id="dealer-name" class="dealer-name">Cargando...</p>
+          </div>
+          <button id="btn-logout" class="btn-logout">Cerrar Sesión</button>
+        </div>
+      </header>
+
+      <!-- Contenido Principal -->
+      <main class="dashboard-main">
+        <!-- Cards de Estadísticas -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">📊</div>
+            <div class="stat-content">
+              <h3>Leads Total</h3>
+              <p id="total-leads" class="stat-value">0</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-content">
+              <h3>Este Mes</h3>
+              <p id="month-leads" class="stat-value">0</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">💰</div>
+            <div class="stat-content">
+              <h3>Comisión Acumulada</h3>
+              <p id="total-commission" class="stat-value">$0</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-content">
+              <h3>Contactos Confirmados</h3>
+              <p id="confirmed-contacts" class="stat-value">0</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla de Leads -->
+        <div class="leads-section">
+          <div class="section-header">
+            <h2>📋 Historial de Leads</h2>
+            <div class="filter-group">
+              <select id="filter-status" class="filter-select">
+                <option value="all">Todos los estados</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="contactado">Contactado</option>
+                <option value="confirmado">Confirmado</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table class="leads-table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Nombre</th>
+                  <th>Email</th>
+                  <th>Teléfono</th>
+                  <th>Vehículo</th>
+                  <th>Estado</th>
+                  <th>Comisión</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="leads-tbody">
+                <tr class="loading-row">
+                  <td colspan="8">Cargando datos...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div id="empty-state" class="empty-state" style="display: none;">
+            <div class="empty-icon">📭</div>
+            <p>No hay leads disponibles</p>
+          </div>
+        </div>
+
+        <!-- Sección de Comisiones -->
+        <div class="commission-section">
+          <h2>💵 Detalles de Comisiones</h2>
+          <div class="commission-grid">
+            <div class="commission-card">
+              <h3>Por contacto confirmado</h3>
+              <p class="commission-amount">$50,000 COP</p>
+              <p class="commission-desc">
+                Por cada lead que confirmas contacto
+              </p>
+            </div>
+
+            <div class="commission-card">
+              <h3>Límite mensual</h3>
+              <p class="commission-amount">Sin límite</p>
+              <p class="commission-desc">Gana cuanto puedas</p>
+            </div>
+
+            <div class="commission-card">
+              <h3>Próximo pago</h3>
+              <p class="commission-amount">Fin de mes</p>
+              <p class="commission-desc">Transferencia automática</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </section>
+  </div>
+
+  <script src="/js/dashboard-concesionario.js" defer></script>
+</Layout>

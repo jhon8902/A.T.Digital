@@ -26,7 +26,7 @@
 }
 
 .electricos .nota-header h1 {
-  font-size: 58px;
+  font-size: 42px;
   display: inline-block;
   text-transform: uppercase;
   font-weight: 600;
@@ -48,8 +48,9 @@
 }
 
 .electricos .nota-header .subtitulo {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   margin-top: 10px;
+  font-family: "Poppins", sans-serif;
 }
 
 /* DISEÑO FLEXIBLE */
@@ -95,7 +96,7 @@
 }
 
 .electricos .text-box h2 {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   margin-bottom: 15px;
   text-align: start;
   font-weight: 600;
@@ -105,9 +106,10 @@
 }
 
 .electricos .text-box p {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   text-align: start;
   padding: 20px 0;
+  font-family: "Poppins", sans-serif;
 }
 
 /* SECCIÓN "CARGA ULTRARÁPIDA" */
@@ -126,7 +128,7 @@
 }
 
 .electricos .feature-title {
-  font-size: 3rem;
+  font-size: 2.2rem;
   color: #e6b410;
   font-weight: 700;
   font-family: "Georgia", serif;
@@ -159,11 +161,12 @@
 }
 
 .electricos .feature-paragraph {
-  font-size: 1.6rem;
+  font-size: 1.1rem;
   color: #555;
   width: 100%;
   padding: 25px;
   text-align: center;
+  font-family: "Poppins", sans-serif;
 }
 
 /* RESPONSIVE */
@@ -184,13 +187,13 @@
   }
 
   .electricos .nota-header h1 {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 600;
     text-align: start;
   }
 
   .electricos .nota-header .subtitulo {
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin-top: 15px;
     text-align: start;
   }
@@ -200,13 +203,13 @@
   }
 
   .electricos .feature-title {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     line-height: 1.3;
     padding: 0 10px;
   }
 
   .electricos .feature-paragraph {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .electricos .text-box {
@@ -214,13 +217,13 @@
   }
 
   .electricos .text-box h2 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     border-bottom: none;
     margin-bottom: 10px;
   }
 
   .electricos .text-box p {
-    font-size: 1.1rem;
+    font-size: 1rem;
     padding: 10px 0;
   }
 }
@@ -246,11 +249,11 @@
   }
 
   .electricos .text-box h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .electricos .text-box p {
-    font-size: 1.2rem;
+    font-size: 1.05rem;
   }
 }
 /* ==== CORRECCIÓN DE IMAGEN PRINCIPAL EN NOTAS ==== */

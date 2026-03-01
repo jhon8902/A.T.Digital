@@ -1,4 +1,6 @@
 ---
+import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+
 let dynamicElectricos: any[] = [];
 
 // ✅ Función para extraer la primera imagen del HTML (para portada si no hay image1)
@@ -9,11 +11,10 @@ function extractFirstImage(html) {
 }
 
 try {
-  const res = await fetch("http://localhost:8888/.netlify/functions/get-notes");
+  const apiUrl = getApiUrl("get-notes");
+  const data = await fetchWithTimeout(apiUrl);
 
-  if (res.ok) {
-    const data = await res.json();
-
+  if (data && Array.isArray(data)) {
     // ✅ Filtramos solo categoría "electricos"
     dynamicElectricos = data
       .filter((note) => note.category?.toLowerCase() === "electricos")
@@ -119,6 +120,8 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
               src={allElectricos[0].img}
               alt={allElectricos[0].alt}
               class="electrico-imagen"
+              loading="lazy"
+              decoding="async"
             />
           </div>
           <div class="texto-destacado">
@@ -137,7 +140,7 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     allElectricos.slice(1).map((nota) => (
       <div class="imagen-card">
         <a href={nota.href}>
-          <img src={nota.img} alt={nota.alt} />
+          <img src={nota.img} alt={nota.alt} loading="lazy" decoding="async" />
           <h2>{nota.title}</h2>
           <p>{nota.description}</p>
           <p class="texto-f">{nota.fecha}</p>
@@ -177,7 +180,7 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
   @keyframes fadeInUp {
     from {
       opacity: 0;
-      transform: translateY(40px);
+      transform: translateY(0);
     }
     to {
       opacity: 1;
@@ -185,7 +188,6 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     }
   }
 
-  /* Título */
   .central-content h2 {
     display: flex;
     align-items: center;
@@ -205,7 +207,12 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     margin-top: 10px;
 
     opacity: 0;
-    animation: fadeInUp 1s 0.2s both;
+    transform: translateY(0);
+    transition: opacity 0.3s;
+  }
+
+  .central-content h2.animate-title {
+    animation: fadeInUp 1s ease-out;
   }
 
   .central-content h2 {
@@ -568,37 +575,27 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const seccion = document.getElementById("electricos");
-    const titulo = document.querySelector(".titulo-electricos");
+    const tituloElectricos = document.querySelector(
+      ".electrico-container .central-content h2",
+    ) as HTMLElement;
 
-    if (!seccion || !(titulo instanceof HTMLElement)) return;
+    if (!tituloElectricos) return;
 
-    const observer = new IntersectionObserver(
+    const observerElectricos = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            titulo.classList.remove("inicial");
-            titulo.style.animation = "fadeInUp 1s 0.2s both";
+            tituloElectricos.classList.add("animate-title");
+            tituloElectricos.style.opacity = "1";
           } else {
-            titulo.classList.add("inicial");
-            titulo.style.animation = "none";
+            tituloElectricos.classList.remove("animate-title");
+            tituloElectricos.style.opacity = "0";
           }
         });
       },
-      { threshold: 0.1 },
+      { threshold: 0.5 },
     );
 
-    observer.observe(seccion);
-
-    // Si ya está en viewport al cargar
-    function isInViewport(element) {
-      const rect = element.getBoundingClientRect();
-      return rect.top < window.innerHeight && rect.bottom > 0;
-    }
-
-    if (isInViewport(seccion)) {
-      titulo.classList.remove("inicial");
-      titulo.style.animation = "fadeInUp 1s 0.2s both";
-    }
+    observerElectricos.observe(tituloElectricos);
   });
 </script>

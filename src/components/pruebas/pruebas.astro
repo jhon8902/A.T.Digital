@@ -205,6 +205,13 @@ const resto = videoPruebas.slice(1);
     margin-bottom: 12px;
     color: #f5f8ff;
     letter-spacing: 1.2px;
+    opacity: 0;
+    transform: translateY(0);
+    transition: none;
+  }
+
+  .pruebas-titulo.in-view {
+    animation: fadeInUp 1s ease-out;
   }
 
   .descripcion-pruebas {
@@ -492,6 +499,28 @@ const resto = videoPruebas.slice(1);
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes zoomInFade {
+    from {
+      opacity: 0;
+      transform: scale(0.7) translateY(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
     }
   }
 
@@ -800,22 +829,27 @@ const resto = videoPruebas.slice(1);
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const seccion = document.getElementById("pruebas");
-    const titulo = document.querySelector(".pruebas-titulo");
+    const tituloPruebas = document.querySelector(
+      "#pruebas .pruebas-titulo",
+    ) as HTMLElement;
 
-    if (!seccion || !titulo) return;
+    if (!tituloPruebas) return;
 
-    const observer = new IntersectionObserver(
+    const observerPruebas = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            titulo.classList.add("in-view");
+            tituloPruebas.classList.add("in-view");
+            tituloPruebas.style.opacity = "1";
+          } else {
+            tituloPruebas.classList.remove("in-view");
+            tituloPruebas.style.opacity = "0";
           }
         });
       },
-      { threshold: 0.12 },
+      { threshold: 0.5 },
     );
 
-    observer.observe(seccion);
+    observerPruebas.observe(tituloPruebas);
   });
 </script>
