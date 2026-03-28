@@ -1,0 +1,121 @@
+---
+// Banner provisional para mostrar estado de AutoMatch
+---
+
+<div class="automatch-banner">
+  <div class="banner-content">
+    <div class="banner-icon">🚀</div>
+    <div class="banner-text">
+      <h3>AutoMatch - Fase Inicial</h3>
+      <p>
+        Estamos mejorando nuestro algoritmo de recomendaciones con datos reales
+        de concesionarios. Prueba la herramienta y ayúdanos a perfeccionarla.
+      </p>
+    </div>
+    <button
+      class="banner-close"
+      onclick="this.parentElement.parentElement.style.display='none'"
+    >
+      ✕
+    </button>
+  </div>
+</div>
+
+<style>
+  .automatch-banner {
+    background: linear-gradient(135deg, #1b5e3f 0%, #08341f 100%);
+    border-left: 4px solid #25d366;
+    margin: 1.5rem 0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    animation: slideIn 0.4s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .banner-content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+  }
+
+  .banner-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+  }
+
+  .banner-text {
+    flex-grow: 1;
+  }
+
+  .banner-text h3 {
+    color: #25d366;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: "Georgia", serif;
+  }
+
+  .banner-text p {
+    color: #ccc;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .banner-close {
+    background: none;
+    border: none;
+    color: #25d366;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+    flex-shrink: 0;
+  }
+
+  .banner-close:hover {
+    background: rgba(37, 211, 102, 0.1);
+    transform: scale(1.15);
+  }
+
+  @media (max-width: 768px) {
+    .automatch-banner {
+      padding: 1rem;
+    }
+
+    .banner-content {
+      gap: 1rem;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .banner-icon {
+      font-size: 2rem;
+    }
+
+    .banner-text h3 {
+      font-size: 1.1rem;
+    }
+
+    .banner-text p {
+      font-size: 0.9rem;
+    }
+  }
+</style>

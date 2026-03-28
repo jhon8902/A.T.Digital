@@ -37,20 +37,22 @@ try {
 }
 ---
 
-<Layout title="Auto-Tech-Digital 🚗✨" class="home-page">
+<Layout
+  title="Auto-Tech-Digital | Autos Eléctricos, Híbridos y Noticias Automotrices en Colombia"
+  description="Descubre los mejores autos eléctricos, híbridos y lanzamientos en Colombia. Pruebas de manejo, fichas técnicas y noticias del mundo automotriz."
+  class="home-page"
+>
   <!-- ✅ SECCIONES VISIBLES -->
   <div class="extra-sections" id="extra-sections">
     <AdBanner />
     <SectionInfo />
-
-    <AdBanner variant="mazda" />
 
     <section id="automatch" class="automatch-destacado">
       <AutoMatch autos={autos} />
     </section>
 
     <Noticias />
-
+    <AdBanner variant="mazda" />
     <Electricos />
     <Hibridos />
     <Deportes />

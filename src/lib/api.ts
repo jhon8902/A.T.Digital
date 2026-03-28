@@ -4,9 +4,24 @@
  * Netlify Dev maneja automáticamente el enrutamiento correcto
  */
 
+function getServerBaseUrl(): string {
+  if (typeof window !== "undefined") return "";
+
+  const fromEnv = import.meta.env.API_BASE_URL || process.env.URL;
+  if (fromEnv) return fromEnv;
+
+  const port = process.env.PORT || "4321";
+  return `http://localhost:${port}`;
+}
+
 export function getApiUrl(endpoint: string): string {
-  // Usar rutas relativas - funcionan en dev y producción
-  return `/.netlify/functions/${endpoint}`;
+  const path = `/api/${endpoint}`;
+
+  if (typeof window !== "undefined") {
+    return path;
+  }
+
+  return new URL(path, getServerBaseUrl()).toString();
 }
 
 export async function fetchWithTimeout(url: string, timeout: number = 5000) {

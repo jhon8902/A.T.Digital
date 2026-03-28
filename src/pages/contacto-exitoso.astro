@@ -1,0 +1,90 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Contacto enviado | Auto-Tech-Digital">
+  <section class="contacto-ok-page">
+    <div class="contacto-ok-card">
+      <p class="contacto-ok-kicker">Mensaje enviado</p>
+      <h1>Recibimos tu mensaje correctamente</h1>
+      <p>
+        Gracias por contactarnos. Nuestro equipo revisará la información y te
+        responderá lo antes posible.
+      </p>
+      <div class="contacto-ok-actions">
+        <a href="/">Volver al inicio</a>
+        <a href="/contacto">Enviar otro mensaje</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contacto-ok-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 210px 20px 80px;
+    background:
+      radial-gradient(circle at top, rgba(225, 163, 7, 0.2), transparent 24%),
+      linear-gradient(180deg, #f8f3ea 0%, #efe8dc 100%);
+  }
+
+  .contacto-ok-card {
+    width: min(92%, 760px);
+    padding: 36px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(140, 104, 22, 0.14);
+    box-shadow: 0 22px 60px rgba(42, 29, 8, 0.1);
+    text-align: center;
+  }
+
+  .contacto-ok-kicker {
+    font-size: 0.78rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #8b6d1f;
+    margin-bottom: 12px;
+  }
+
+  .contacto-ok-card h1 {
+    padding: 0;
+    font-size: clamp(2rem, 3.2vw, 3.2rem);
+    margin-bottom: 14px;
+    color: #18130b;
+  }
+
+  .contacto-ok-card p {
+    color: #4c4235;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .contacto-ok-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .contacto-ok-actions a {
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: #17120c;
+    color: #fff;
+    border: 1px solid #17120c;
+  }
+
+  @media (max-width: 768px) {
+    .contacto-ok-page {
+      padding: 190px 14px 60px;
+    }
+
+    .contacto-ok-card {
+      padding: 24px 18px;
+      border-radius: 24px;
+    }
+  }
+</style>

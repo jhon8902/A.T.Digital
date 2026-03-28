@@ -2,20 +2,37 @@
 import Layout from "../../layouts/Layout.astro";
 ---
 
-<Layout title="MAZDA EZ-6" bodyClass="otras-page">
+<Layout title="MAZDA EZ-6" bodyClass="nota-page">
   <section class="noticia-detalle">
-    <p class="noticia-descripcion">
-      ‘Skyactiv’ Tecnología que optimiza el rendimiento y la eficiencia del
-      motor híbrido, Mazda fue pionera en el uso del motor rotativo.
-    </p>
+    <h1>
+      Mazda EZ-6: El sedán eléctrico y extensor de rango que combina diseño Kodo
+      con hasta 600 km de autonomía
+    </h1>
+
+    <div class="datos-destacados">
+      <div class="dato-item">
+        <span class="dato-icono">🎯</span>
+        <p class="dato-texto">Coeficiente aerodinámico Cd de solo 0.21</p>
+      </div>
+      <div class="dato-item">
+        <span class="dato-icono">🖥️</span>
+        <p class="dato-texto">
+          Sistema de triple pantalla panorámica integrada
+        </p>
+      </div>
+      <div class="dato-item">
+        <span class="dato-icono">🔇</span>
+        <p class="dato-texto">
+          Cabina ultra silenciosa con solo 36 dB de ruido
+        </p>
+      </div>
+    </div>
 
     <img
       src="/img/mazda-ez6/mazda-ez6-portada.webp"
       alt="Portada de la noticia: MAZDA EZ-6"
       class="noticia-portada"
     />
-
-    <h1>MAZDA EZ-6</h1>
 
     <article>
       <div class="noticia-bloque noticia-imagen-izquierda">
@@ -56,6 +73,49 @@ import Layout from "../../layouts/Layout.astro";
         <img
           src="/img/mazda-ez6/mazda-ez6-cola.webp"
           alt="Mazda EZ-6 tecnología"
+          class="noticia-imagen"
+        />
+      </div>
+
+      <div class="noticia-bloque noticia-imagen-izquierda">
+        <div class="noticia-texto">
+          <h3 class="noticia-titulo">Interior Moderno y Tecnológico</h3>
+          <p class="noticia-parrafo">
+            El EZ-6 ofrece un habitáculo completamente rediseñado con pantalla
+            central de 14.6 pulgadas, cuadro digital de 10.2" y materiales de
+            primera calidad que reflejan la identidad premium de Mazda.
+          </p>
+          <p class="noticia-parrafo">
+            Posee amplios espacios de almacenamiento, conectividad completa con
+            Apple CarPlay y Android Auto, y un sistema de sonido premium
+            envolvente que complementan la experiencia de conducción eléctrica.
+          </p>
+        </div>
+        <img
+          src="/img/mazda-ez6/mazda-ez6-interior.webp"
+          alt="Interior Mazda EZ-6"
+          class="noticia-imagen"
+        />
+      </div>
+
+      <div class="noticia-bloque noticia-imagen-derecha">
+        <div class="noticia-texto">
+          <h3 class="noticia-titulo">Perfil Dinámico y Aerodinámico</h3>
+          <p class="noticia-parrafo">
+            El EZ-6 presenta líneas laterales fluidas y dinámicas que destacan
+            su naturaleza equilibrada de sedán deportivo-SUV, con cintura de
+            ventanilla elevada y un perfil que evoca movimiento incluso estando
+            estacionado.
+          </p>
+          <p class="noticia-parrafo">
+            Su coeficiente aerodinámico optimizado permite una eficiencia
+            energética superior, reduciendo el consumo y mejorando el rango de
+            autonomía en todas las condiciones de conducción.
+          </p>
+        </div>
+        <img
+          src="/img/mazda-ez6/mazda-ez6-lateral.webp"
+          alt="Perfil Lateral Mazda EZ-6"
           class="noticia-imagen"
         />
       </div>
@@ -341,7 +401,7 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .noticia-bloque .noticia-parrafo {
-    font-size: 18px;
+    font-size: 22px;
     text-align: start;
     color: #333;
 

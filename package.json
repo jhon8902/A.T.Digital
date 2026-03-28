@@ -11,7 +11,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "dev:netlify": "netlify dev --port=8888"
+    "dev:netlify": "netlify dev --port=8888",
+    "db:schema": "node ./scripts/apply-db-schema.cjs"
   },
   "dependencies": {
     "@astrojs/netlify": "^6.5.10",
@@ -26,7 +27,8 @@
     "swiper": "^11.1.15"
   },
   "devDependencies": {
+    "@astrojs/sitemap": "^3.7.2",
     "@types/pg": "^8.15.5",
-    "netlify-cli": "^20.1.1"
+    "netlify-cli": "^17.38.1"
   }
 }

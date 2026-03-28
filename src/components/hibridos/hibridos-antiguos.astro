@@ -1,21 +1,19 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { getApiUrl, fetchWithTimeout } from "../../lib/api";
 
-let hibridos = [];
+let hibridos: any[] = [];
 
 try {
-  const baseUrl = import.meta.env.DEV
-    ? "http://localhost:8888"
-    : Astro.site?.origin || "";
-
-  const res = await fetch(`${baseUrl}/.netlify/functions/get-notes`);
-
-  if (res.ok) {
-    const data = await res.json();
+  const data = await fetchWithTimeout(getApiUrl("get-notes"));
+  if (data && Array.isArray(data)) {
     // Filtramos todas las notas híbridas
     hibridos = data
       .filter((note) => note.category?.toLowerCase() === "hibridos")
-      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      .sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      );
   }
 } catch (err) {
   console.error("❌ Error cargando híbridos:", err);

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Bloquear rutas de admin y APIs
+Disallow: /admin/
+Disallow: /api/
+Disallow: /.netlify/
+
+Sitemap: https://autotechdigital.netlify.app/sitemap-index.xml

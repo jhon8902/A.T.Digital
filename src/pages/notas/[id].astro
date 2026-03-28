@@ -15,6 +15,35 @@ interface Note {
   image3?: string;
   image4?: string;
   image5?: string;
+  image6?: string;
+  video1?: string;
+  video2?: string;
+  video3?: string;
+  video4?: string;
+  video5?: string;
+  video6?: string;
+  video7?: string;
+  spec_segmento?: string;
+  spec_origen?: string;
+  spec_precio_estimado?: string;
+  spec_versiones?: string;
+  spec_motorizacion?: string;
+  spec_potencia_hp?: string;
+  spec_torque_nm?: string;
+  spec_bateria_autonomia?: string;
+  spec_bateria_kwh?: string;
+  spec_autonomia_km?: string;
+  spec_carga?: string;
+  spec_carga_ac_kw?: string;
+  spec_carga_dc_kw?: string;
+  spec_aceleracion_0_100?: string;
+  spec_seguridad?: string;
+  spec_equipamiento?: string;
+  spec_pros?: string;
+  spec_contras?: string;
+  spec_competidores?: string;
+  spec_traccion?: string;
+  spec_precio_cop?: string;
 }
 
 // ✅ Parámetro recibido desde la URL
@@ -23,21 +52,36 @@ const { id } = Astro.params;
 // ✅ Definimos note con tipo explícito
 let note: Note | null = null;
 
-// ✅ URL según entorno
-const baseUrl = import.meta.env.DEV
-  ? "http://localhost:8888"
-  : Astro.site?.origin || "";
+async function fetchNoteWithFallback(noteId: string | undefined): Promise<Note | null> {
+  if (!noteId) return null;
 
-try {
-  const res = await fetch(`${baseUrl}/.netlify/functions/get-notes?id=${id}`);
+  const endpoints = [
+    `/api/get-notes?id=${noteId}`,
+    `/.netlify/functions/get-notes?id=${noteId}`,
+  ];
 
-  if (res.ok) {
-    note = await res.json();
-  } else {
-    console.error("⚠️ Error en respuesta del servidor:", res.status);
+  for (const endpoint of endpoints) {
+    try {
+      const url = new URL(endpoint, Astro.url).toString();
+      const response = await fetch(url);
+
+      if (response.ok) {
+        return (await response.json()) as Note;
+      }
+
+      if (response.status === 404) {
+        return null;
+      }
+    } catch {
+      // Intentamos el siguiente endpoint disponible
+    }
   }
 
-  console.log("🧠 Nota cargada:", note);
+  return null;
+}
+
+try {
+  note = await fetchNoteWithFallback(id);
 } catch (err) {
   console.error("❌ Error al obtener nota:", err);
 }
@@ -49,24 +93,241 @@ function extractFirstImage(html: string | undefined) {
   return match ? match[1] : null;
 }
 
-const coverImage = note?.image1 || extractFirstImage(note?.content) || null;
-const cleanedContent = note?.content || "";
+function normalizeMediaUrl(url: string | undefined) {
+  if (!url) return null;
+  const cleaned = url.trim().replace(/^['\"]+|['\"]+$/g, "");
+  if (!cleaned) return null;
+  if (cleaned.startsWith("img/")) return `/${cleaned}`;
+  return cleaned;
+}
+
+const coverImage =
+  normalizeMediaUrl(note?.image1) ||
+  normalizeMediaUrl(extractFirstImage(note?.content) || undefined) ||
+  null;
+const contentText = (note?.content || "").trim();
+
+const contentParagraphs = contentText
+  .replace(/<\/(p|div|article|section|h1|h2|h3|h4|h5|h6|li)>/gi, "\n\n")
+  .replace(/<br\s*\/?\s*>/gi, "\n")
+  .replace(/<[^>]*>/g, "")
+  .split(/\r?\n+/)
+  .map((block) => block.trim())
+  .filter(Boolean);
+
+const galleryImages = [
+  note?.image2,
+  note?.image3,
+  note?.image4,
+  note?.image5,
+  note?.image6,
+]
+  .map((img) => normalizeMediaUrl(img))
+  .filter((img): img is string => Boolean(img));
+
+const galleryVideos = [
+  note?.video1,
+  note?.video2,
+  note?.video3,
+  note?.video4,
+  note?.video5,
+  note?.video6,
+  note?.video7,
+].filter((video): video is string => Boolean(video && video.trim()));
+
+const remainingImages = galleryImages.slice(contentParagraphs.length);
+
+function isDirectVideoFile(url: string) {
+  return /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url);
+}
+
+function makeBlockTitle(text: string, index: number) {
+  const firstSentence = text.split(/[.!?]/)[0]?.trim() || "";
+  if (firstSentence.length >= 20 && firstSentence.length <= 80) {
+    return firstSentence;
+  }
+  return `Sección ${index + 1}`;
+}
+
+function combineText(...values: Array<string | undefined>) {
+  return values
+    .map((value) => value?.trim())
+    .filter((value): value is string => Boolean(value && value.length > 0))
+    .join(" | ");
+}
+
+const batteryAutonomy =
+  note?.spec_bateria_autonomia ||
+  combineText(
+    note?.spec_bateria_kwh
+      ? `${note.spec_bateria_kwh} kWh`
+      : undefined,
+    note?.spec_autonomia_km
+      ? `Hasta ${note.spec_autonomia_km} km`
+      : undefined
+  );
+
+const chargingSpec =
+  note?.spec_carga ||
+  combineText(
+    note?.spec_carga_ac_kw
+      ? `AC ${note.spec_carga_ac_kw} kW`
+      : undefined,
+    note?.spec_carga_dc_kw
+      ? `DC ${note.spec_carga_dc_kw} kW`
+      : undefined
+  );
+
+const priceSpec =
+  note?.spec_precio_estimado ||
+  note?.spec_precio_cop ||
+  undefined;
+
+const technicalSpecCards = [
+  { label: "💰 Precio estimado:", value: priceSpec },
+  { label: "🚗 Versiones:", value: note?.spec_versiones },
+  { label: "⚙️ Motor:", value: note?.spec_motorizacion },
+  { label: "🔥 Potencia:", value: note?.spec_potencia_hp },
+  { label: "⚡ Torque:", value: note?.spec_torque_nm },
+  { label: "🔋 Batería y Autonomía:", value: batteryAutonomy },
+  { label: "⏱️ Aceleración:", value: note?.spec_aceleracion_0_100 },
+  { label: "🔌 Carga:", value: chargingSpec },
+  { label: "🛡️ Seguridad:", value: note?.spec_seguridad },
+  { label: "📱 Equipamiento:", value: note?.spec_equipamiento },
+  { label: "✅ Pros:", value: note?.spec_pros },
+  { label: "❌ Contras:", value: note?.spec_contras },
+  {
+    label: "🏁 Competidores Directos:",
+    value: note?.spec_competidores,
+    className: "competidores",
+  },
+].filter((item) => Boolean(item.value && item.value.trim()));
 ---
 
 <Layout
   title={note?.title || "Nota no encontrada"}
-  bodyClass={`nota-${note?.category || "general"}`}
+  bodyClass={`nota-page nota-${note?.category || "general"}`}
 >
   {
     note?.title ? (
       <section
         class={`articulo-container ${note.category?.toLowerCase() || "general"}`}
       >
-        <section class="bloque sin-imagen">
-          <div class="contenido-sin-imagen">
-            <Fragment set:html={cleanedContent} />
-          </div>
-        </section>
+        <article class="noticia-detalle">
+          <h1>{note.title}</h1>
+
+          {note.subtitle && <p class="noticia-descripcion">{note.subtitle}</p>}
+
+          {
+            coverImage && (
+              <img
+                class="noticia-portada"
+                src={coverImage}
+                alt={note.title}
+                loading="lazy"
+                decoding="async"
+              />
+            )
+          }
+
+          {
+            contentParagraphs.length > 0 ? (
+              contentParagraphs.map((paragraph, index) => {
+                const blockImage = galleryImages[index];
+                return (
+                  <section class="noticia-bloque">
+                    <div class="noticia-texto">
+                      <h2 class="noticia-titulo">{makeBlockTitle(paragraph, index)}</h2>
+                      <p class="noticia-parrafo">{paragraph}</p>
+                    </div>
+                    {
+                      blockImage && (
+                        <img
+                          src={blockImage}
+                          alt={`${note.title} imagen ${index + 2}`}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      )
+                    }
+                  </section>
+                );
+              })
+            ) : (
+              <section class="noticia-bloque">
+                <div class="noticia-texto">
+                  <p class="noticia-parrafo">Sin contenido disponible.</p>
+                </div>
+              </section>
+            )
+          }
+
+          {
+            technicalSpecCards.length > 0 && (
+              <section class="ficha-tecnica-profesional">
+                <h2>Ficha Técnica Completa - {note.title}</h2>
+                <div class="ficha-grid">
+                  {technicalSpecCards.map((item) => (
+                    <div class={`ficha-item ${item.className || ""}`.trim()}>
+                      <strong>{item.label}</strong>
+                      <p>{item.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )
+          }
+
+          {
+            remainingImages.length > 0 &&
+              remainingImages.map((imgSrc, index) => (
+                <section class="noticia-bloque">
+                  <div class="noticia-texto">
+                    <h2 class="noticia-titulo">Galería {index + 1}</h2>
+                    <p class="noticia-parrafo">Imagen complementaria de la nota.</p>
+                  </div>
+                  <img
+                    src={imgSrc}
+                    alt={`${note.title} imagen adicional ${index + 1}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </section>
+              ))
+          }
+
+          {
+            galleryVideos.length > 0 && (
+              <section class="noticia-bloque noticia-bloque-full">
+                <div class="noticia-texto">
+                  <h2 class="noticia-titulo">Videos</h2>
+                  <div class="noticia-parrafo">
+                    {galleryVideos.map((videoSrc, index) => (
+                      <div style="margin-bottom: 18px;">
+                        {isDirectVideoFile(videoSrc) ? (
+                          <video
+                            controls
+                            preload="metadata"
+                            style="width: 100%; border-radius: 12px; background: #000;"
+                          >
+                            <source src={videoSrc} />
+                            Tu navegador no soporta la reproducción de video.
+                          </video>
+                        ) : (
+                          <p>
+                            <a href={videoSrc} target="_blank" rel="noreferrer">
+                              Ver video {index + 1}
+                            </a>
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            )
+          }
+        </article>
 <!--
         <section class="resumen">
           <h2>Resumen Técnico</h2>

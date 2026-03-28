@@ -2,20 +2,37 @@
 import Layout from "../../layouts/Layout.astro";
 ---
 
-<Layout title="FORD F-150 Lightning" bodyClass="otras-page">
+<Layout title="FORD F-150 Lightning" bodyClass="nota-page">
   <section class="noticia-detalle">
-    <p class="noticia-descripcion">
-      La Ford F-150 Lightning puede alimentar una casa entera durante un corte
-      de energía gracias a su batería de alta capacidad.
-    </p>
+    <h1>
+      Ford F-150 Lightning: La pick-up eléctrica de trabajo que ofrece hasta 580
+      hp y 530 km de autonomía
+    </h1>
+
+    <div class="datos-destacados">
+      <div class="dato-item">
+        <span class="dato-icono">⚡</span>
+        <p class="dato-texto">
+          Puede alimentar una casa hasta 10 días con batería extendida
+        </p>
+      </div>
+      <div class="dato-item">
+        <span class="dato-icono">🔧</span>
+        <p class="dato-texto">
+          11 tomas de corriente integradas en toda la camioneta
+        </p>
+      </div>
+      <div class="dato-item">
+        <span class="dato-icono">🚀</span>
+        <p class="dato-texto">Aceleración más rápida que la F-150 a gasolina</p>
+      </div>
+    </div>
 
     <img
-      src="/img/ford-f150/ford-f150-3.jpg"
+      src="/img/ford-f150/ford-f150-3.webp"
       alt="Portada de la noticia: FORD F-150 Lightning"
       class="noticia-portada"
     />
-
-    <h1>FORD F-150 Lightning</h1>
 
     <article>
       <div class="noticia-bloque noticia-imagen-izquierda">
@@ -346,11 +363,10 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     .noticia-bloque .noticia-parrafo {
-      font-size: 18px;
+      font-size: 22px;
       text-align: start;
       color: #333;
 
-      font-family: "Poppins", sans-serif;
       margin-bottom: 15px; /* Agrega espacio entre los párrafos */
       line-height: 1.6; /* Mejora la legibilidad del texto */
     }

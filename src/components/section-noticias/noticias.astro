@@ -57,7 +57,7 @@ const staticLanzamientos = [
   },
   {
     href: "./noticias-nacionales/noticia-toyota-prado",
-    img: "/img/toyota-prado/toyota-prado-copia.jpg",
+    img: "/img/toyota-prado/toyota-prado-copia.webp",
     alt: "TOYOTA PRADO",
     title: "TOYOTA PRADO",
     description:
@@ -66,7 +66,7 @@ const staticLanzamientos = [
   },
   {
     href: "./noticias-nacionales/noticia-ford-f150",
-    img: "/img/ford-f150/ford-f150-2.jpg",
+    img: "/img/ford-f150/ford-f150-2.webp",
     alt: "FORD F-150",
     title: "FORD F-150",
     description:
@@ -143,7 +143,8 @@ const resto = mezcladas.slice(1, 5);
   }
 
   <div class="ver-mas-noticias-container">
-    <button class="ver-mas-noticias-btn">Ver más lanzamientos</button>
+    <a href="/lanzamientos" class="ver-mas-noticias-btn">Ver más lanzamientos</a
+    >
   </div>
 </section>
 
@@ -276,42 +277,22 @@ const resto = mezcladas.slice(1, 5);
     border-radius: 5px;
     overflow: hidden;
     display: flex;
+
     flex-direction: column;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .noticia-container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   }
 
   .noticia-imagen-wrapper {
     position: relative;
     overflow: hidden;
-  }
-
-  .noticia-container .noticia-imagen-wrapper::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      rgba(207, 1, 1, 0) 0%,
-      rgba(255, 255, 255, 0.5) 50%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .noticia-imagen-wrapper:hover::before {
-    animation: light-pass 1.5s ease;
-  }
-
-  @keyframes light-pass {
-    from {
-      left: -100%;
-    }
-    to {
-      left: 100%;
-    }
   }
 
   .noticia-imagen,
@@ -320,6 +301,12 @@ const resto = mezcladas.slice(1, 5);
     height: 260px;
     object-fit: cover;
     display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .noticia-container:hover .noticia-imagen,
+  .noticia-avenger-container:hover .noticia-avenger-imagen {
+    transform: scale(1.1);
   }
 
   .noticia-texto {
@@ -364,13 +351,20 @@ const resto = mezcladas.slice(1, 5);
     flex-direction: row;
     align-items: stretch;
     margin-bottom: 30px;
-
     border-radius: 10px;
     overflow: hidden;
-
     width: 100%;
     max-width: 100%;
     min-height: 350px;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .noticia-avenger-container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   }
   .noticia-avenger-texto {
     padding: 40px 30px 20px 30px;
@@ -468,29 +462,34 @@ const resto = mezcladas.slice(1, 5);
 
   /* Botón Ver más noticias */
   .ver-mas-noticias-container {
-    grid-column: 1 / -1; /* Hace que ocupe todo el ancho del grid */
+    grid-column: 1 / -1;
     display: flex;
-    justify-content: start;
-    margin: 50px 0 30px 0;
+    justify-content: flex-start;
+    padding: 30px 20px;
+    box-sizing: border-box;
   }
 
   .ver-mas-noticias-btn {
     background: #8e8054e7;
     color: white;
     font-size: 18px;
-    margin-left: 20px;
     font-weight: 600;
     border: none;
     border-radius: 50px;
     padding: 12px 32px;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: background 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: all 0.25s ease;
   }
 
   .ver-mas-noticias-btn:hover {
-    background: #c6b583e7;
-    color: white;
+    background: #6b6038e7;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(142, 128, 84, 0.35);
   }
 
   @media (max-width: 900px) {
@@ -642,7 +641,9 @@ const resto = mezcladas.slice(1, 5);
 
     .ver-mas-noticias-btn {
       font-size: 14px;
-      padding: 10px 20px;
+      padding: 12px 24px;
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>
@@ -671,59 +672,5 @@ const resto = mezcladas.slice(1, 5);
       { threshold: 0.5 },
     );
     observerLanzamientos.observe(tituloLanzamientos);
-
-    // 🚀 Cargar noticias dinámicamente
-    try {
-      const res = await fetch("/.netlify/functions/get-notes");
-      const notas = await res.json();
-
-      // Filtrar solo las de categoría "lanzamientos"
-      const lanzamientos = notas.filter(
-        (n) => n.category?.toLowerCase() === "lanzamientos",
-      );
-
-      const contenedor = document.getElementById("lista-noticias")!;
-      contenedor.innerHTML = "";
-
-      lanzamientos.forEach((nota, index) => {
-        // La primera noticia será la "destacada"
-        if (index === 0) {
-          contenedor.innerHTML += `
-            <a href="#" class="noticia-avenger-container">
-              <div class="noticia-avenger-texto">
-                <h3 class="noticia-texto-titulo">${nota.title}</h3>
-                <p class="noticia-descripcion">${nota.subtitle || ""}</p>
-                <span class="noticia-fecha">Publicado: ${
-                  nota.created_at.split("T")[0]
-                }</span>
-              </div>
-              <img src="${
-                nota.image1 || "/img/placeholder.jpg"
-              }" alt="${nota.title}" class="noticia-avenger-imagen"/>
-            </a>
-          `;
-        } else {
-          // El resto normales
-          contenedor.innerHTML += `
-            <a href="#" class="noticia-container">
-              <div class="noticia-imagen-wrapper">
-                <img src="${
-                  nota.image1 || "/img/placeholder.jpg"
-                }" alt="${nota.title}" class="noticia-imagen"/>
-              </div>
-              <div class="noticia-texto">
-                <h3 class="noticia-texto-titulo">${nota.title}</h3>
-                <p class="noticia-descripcion">${nota.subtitle || ""}</p>
-                <span class="noticia-fecha">Publicado: ${
-                  nota.created_at.split("T")[0]
-                }</span>
-              </div>
-            </a>
-          `;
-        }
-      });
-    } catch (err) {
-      console.error("Error cargando lanzamientos:", err);
-    }
   });
 </script>

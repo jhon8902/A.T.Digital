@@ -28,12 +28,22 @@
 
     <div class="social-container">
       <div class="social-icons">
-        <a href="https://web.whatsapp.com/" class="fa-brands fa-whatsapp"></a>
-        <a href="https://es-la.facebook.com/" class="fa-brands fa-facebook"></a>
+        <a href="/contacto" class="fa-solid fa-envelope" title="Contacto"></a>
+        <a
+          href="https://www.facebook.com/profile.php?id=61564010935908"
+          class="fa-brands fa-facebook"
+          target="_blank"
+          rel="noopener noreferrer"></a>
         <a
           href="https://www.instagram.com/autotechdigital/"
-          class="fa-brands fa-instagram"></a>
-        <a href="https://www.tiktok.com/es/" class="fa-brands fa-tiktok"></a>
+          class="fa-brands fa-instagram"
+          target="_blank"
+          rel="noopener noreferrer"></a>
+        <a
+          href="https://www.tiktok.com/@autotechdigital"
+          class="fa-brands fa-tiktok"
+          target="_blank"
+          rel="noopener noreferrer"></a>
       </div>
       <p>nuestras redes sociales</p>
     </div>
@@ -145,38 +155,56 @@
     line-height: 50px;
     text-align: center;
     font-size: 25px;
-    background-color: #222;
     border-radius: 50%;
     color: white;
     text-decoration: none;
-    transition: background 0.3s;
+    transition: all 0.3s;
   }
 
-  /* WhatsApp */
-  .social-icons a.fa-whatsapp:hover {
-    background-color: #25d366; /* Verde de WhatsApp */
+  /* Contacto */
+  .social-icons a.fa-envelope {
+    background-color: #25d366; /* Verde contacto */
+  }
+
+  .social-icons a.fa-envelope:hover {
+    background-color: #1fae52;
+    transform: scale(1.1);
   }
 
   /* Facebook */
-  .social-icons a.fa-facebook:hover {
+  .social-icons a.fa-facebook {
     background-color: #1877f2; /* Azul de Facebook */
   }
 
+  .social-icons a.fa-facebook:hover {
+    background-color: #0d66d0;
+    transform: scale(1.1);
+  }
+
   /* Instagram */
-  .social-icons a.fa-instagram:hover {
-    background: radial-gradient(
-      circle at 30% 30%,
-      #feda77,
+  .social-icons a.fa-instagram {
+    background: linear-gradient(
+      135deg,
       #f58529,
       #dd2a7b,
-      #8134af,
-      #515bd4
-    ); /* Gradiente de Instagram */
+      #8134af
+    ); /* Gradiente Instagram */
+  }
+
+  .social-icons a.fa-instagram:hover {
+    background: linear-gradient(135deg, #dd2a7b, #8134af, #515bd4);
+    transform: scale(1.1);
   }
 
   /* TikTok */
+  .social-icons a.fa-tiktok {
+    background-color: #010101; /* Negro de TikTok */
+  }
+
   .social-icons a.fa-tiktok:hover {
-    background-color: #010101; /* Negro de TikTok (puedes ajustar según el estilo de la marca) */
+    background-color: #25f4ee;
+    color: #010101;
+    transform: scale(1.1);
   }
 
   .social-container p {

@@ -1,0 +1,40 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CategoryArchive from "../components/archive/CategoryArchive.astro";
+
+const staticNotes = [
+  {
+    href: "/notas-deportes/nota-deportes-motos",
+    img: "/img/img-deportes/deportes-motos-portada1.jpg",
+    alt: "Deportes motorizados",
+    title: "Adrenalina sobre ruedas",
+    description: "Cobertura de motociclismo y automovilismo de alto nivel.",
+    fecha: "Nota: 12-mar",
+  },
+  {
+    href: "/notas-deportes/nota-deportes1",
+    img: "/img/img-deportes/subportada-deporte.webp",
+    alt: "Máquinas de alto rendimiento",
+    title: "Máquinas de alto rendimiento",
+    description: "Ingeniería extrema aplicada a la velocidad y la pista.",
+    fecha: "Nota: 13-mar",
+  },
+  {
+    href: "/notas-deportes/nota-deportes2",
+    img: "/img/img-deportes/deporte-2.webp",
+    alt: "Tecnología en deportes",
+    title: "Tecnología de última generación",
+    description: "Materiales, telemetría y evolución técnica en competencia.",
+    fecha: "Nota: 15-mar",
+  },
+];
+---
+
+<Layout title="Deportes motor | Auto-Tech-Digital">
+  <CategoryArchive
+    category="deportes"
+    title="Más notas de deportes"
+    description="Todas las publicaciones de automovilismo y motociclismo en un solo lugar."
+    staticNotes={staticNotes}
+  />
+</Layout>

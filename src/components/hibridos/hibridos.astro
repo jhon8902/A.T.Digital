@@ -53,7 +53,7 @@ try {
 const staticHibridos = [
   {
     href: "/notas-hibridos/nota-scape",
-    img: "../img/ford-scape-hibrida/ford-s.jpg",
+    img: "../img/ford-scape-hibrida/ford-s.webp",
     alt: "ford-scape",
     title: "Ford Escape",
     description:
@@ -134,10 +134,10 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
               loading="lazy"
               decoding="async"
             />
-            <div class="texto-fecha">{nota.fecha}</div>
           </div>
           <div class="hibrido-texto">
             <h2>{nota.title}</h2>
+            <div class="texto-fecha">{nota.fecha}</div>
             <p>{nota.description}</p>
           </div>
         </a>
@@ -145,7 +145,7 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
     }
   </div>
   <div class="ver-mas-container">
-    <a href="/hibridos-antiguos" class="ver-mas-boton">Ver más Modelos</a>
+    <a href="/hibridos" class="ver-mas-boton">Ver más Modelos</a>
   </div>
 </section>
 
@@ -173,8 +173,12 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
 
   .hibridos-container {
     width: 100%;
-
-    background: rgb(221, 221, 221);
+    background: linear-gradient(
+      to bottom,
+      #fafaf8 0%,
+      #f3f2f2 50%,
+      #fbf7f2 100%
+    );
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -250,26 +254,21 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px; /* separación entre texto y líneas */
-
+    gap: 20px;
     font-size: 32px;
+    color: black;
+    text-shadow: 0 4px 8px rgba(236, 220, 200, 0.5);
     opacity: 0;
     transition: opacity 0.3s;
   }
 
-  /* Línea izquierda */
   .central-content h1::before,
   .central-content h1::after {
     content: "";
     flex: 1;
     height: 2px;
-    background-color: #036697; /* dorado similar al tuyo */
+    background-color: #036697;
     max-width: 650px;
-  }
-
-  /* Línea derecha */
-  .central-content h1::after {
-    /* nada extra, solo existe para simetría */
   }
 
   .descripcion-hibridos {
@@ -310,17 +309,19 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
   .hibrido {
     background-color: #f9f9f9;
     color: black;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease;
-
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
     width: 100%;
   }
 
   .hibrido:hover {
-    transform: translateY(-10px);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   }
 
   .imagen-wrapper {
@@ -333,11 +334,15 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
     height: 400px;
     object-fit: cover;
     display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .hibrido:hover .hibrido-imagen {
+    transform: scale(1.1);
   }
 
   .hibrido-texto {
-    background: #ecebeb; /* Gris oscuro a negro */
-
+    background: #f3f4f6;
     padding: 20px;
     text-align: start;
     flex-grow: 1;
@@ -348,16 +353,16 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
 
   .hibrido-texto h2 {
     font-size: 22px;
-    font-weight: 500;
+    font-weight: 600;
     text-transform: uppercase;
-    border-bottom: 1px solid #014668;
     color: #012323;
-
-    text-align: start; /* Cambia la alineación a la izquierda */
-    position: relative; /* Necesario para el pseudo-elemento ::after */
-
-    display: inline-block;
+    text-align: start;
+    position: relative;
+    display: block;
     width: 85%;
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #014668;
   }
 
   .hibrido-texto h2::first-letter {
@@ -378,46 +383,54 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
   }
 
   .texto-fecha {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #e9e8e8cc;
-    color: #036697;
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    border-radius: 10px;
-    font-family: "Roboto", sans-serif;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    z-index: 10;
+    position: static;
+    display: block;
+    background-color: transparent;
+    color: #666;
+    padding: 0;
+    margin-top: 12px;
+    margin-bottom: 10px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    border-radius: 0;
+    font-family: "Georgia", serif;
+    z-index: auto;
+  }
+
+  .texto-fecha::before {
+    display: none;
   }
 
   .ver-mas-container {
     width: 100%;
     display: flex;
     justify-content: flex-start;
-    margin-left: 50px;
-    padding: 30px 0;
+    padding: 30px 20px;
+    box-sizing: border-box;
   }
 
   .ver-mas-boton {
-    text-align: start; /* Centrar horizontalmente */
     background-color: #036697;
     color: white;
     font-size: 18px;
-
-    font-weight: 500;
+    font-weight: 600;
     border: none;
     border-radius: 50px;
-    padding: 14px 33px;
+    padding: 12px 32px;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: background 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: all 0.25s ease;
   }
 
   /* Efecto hover simple */
   .ver-mas-boton:hover {
-    background-color: #09d2b9;
+    background-color: #024d73;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(3, 102, 151, 0.35);
   }
 
   /* Ocultar icono y texto-hover original */
@@ -457,11 +470,21 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
     }
 
     .texto-fecha {
-      font-size: 14px;
-      padding: 4px 8px;
-      text-transform: none;
-      right: 28px; /* <-- Ajusta el margen derecho */
-      top: 8px; /* <-- Ajusta el margen superior */
+      display: block;
+      position: static;
+      background-color: transparent;
+      color: #666;
+      padding: 0;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      margin-left: 0;
+      font-size: 12px;
+      font-weight: 400;
+      border-radius: 0;
+    }
+
+    .texto-fecha::before {
+      display: none;
     }
 
     .icono-central {
@@ -512,6 +535,11 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
       background: none;
       margin: 0;
       font-weight: 600;
+      display: block;
+      width: 100%;
+      border-bottom: 1px solid #014668;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
     }
 
     .hibrido-texto p {
@@ -527,13 +555,16 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
     }
 
     .ver-mas-boton {
-      padding: 12px 24px; /* Un poco más de área táctil */
-      font-size: 1.1rem;
+      padding: 12px 28px;
+      font-size: 1rem;
+      width: 100%;
+      justify-content: center;
     }
 
     .ver-mas-container {
-      margin-bottom: 0; /* Más aire en móviles */
-      padding: 40px;
+      padding: 20px 16px;
+      margin: 0;
+      justify-content: center;
     }
   }
 </style>

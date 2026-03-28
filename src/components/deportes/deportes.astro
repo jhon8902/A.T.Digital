@@ -96,7 +96,7 @@
       </a>
     </div>
     <div class="ver-mas-container">
-      <a href="/deportes-antiguos" class="ver-mas-boton">Ver mas </a>
+      <a href="/deportes" class="ver-mas-boton">Ver mas </a>
     </div>
   </section>
 </section>
@@ -344,28 +344,32 @@
     width: 100%;
     display: flex;
     justify-content: flex-start;
-    margin-left: 50px;
-    padding: 30px 0;
+    padding: 30px 20px;
+    box-sizing: border-box;
   }
 
   .ver-mas-boton {
-    text-align: start; /* Centrar horizontalmente */
     background-color: #ebc460;
     color: rgb(32, 32, 32);
     font-size: 18px;
-
-    font-weight: 500;
+    font-weight: 600;
     border: none;
     border-radius: 50px;
-    padding: 14px 33px;
+    padding: 12px 32px;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: background 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: all 0.25s ease;
   }
 
   /* Efecto hover simple */
   .ver-mas-boton:hover {
-    background-color: #ebc460;
+    background-color: #c49930;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(235, 196, 96, 0.4);
   }
 
   /* Responsive */
@@ -522,6 +526,19 @@
       font-size: 0.75rem;
       margin: 15px 12px 6px 12px;
       padding: 6px 10px;
+    }
+
+    .ver-mas-container {
+      padding: 20px 16px;
+      margin: 0;
+      justify-content: center;
+    }
+
+    .ver-mas-boton {
+      padding: 12px 28px;
+      font-size: 1rem;
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>

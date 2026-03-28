@@ -2,18 +2,47 @@
 interface Props {
   title: string;
   bodyClass?: string;
-  class?: string; // ✅ aceptar "class" como prop también
+  class?: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: string;
+  canonical?: string;
 }
 
-const { title, bodyClass, class: classProp } = Astro.props;
+const {
+  title,
+  bodyClass,
+  class: classProp,
+  description = "Auto-Tech-Digital: la guía más completa sobre autos eléctricos, híbridos, lanzamientos y noticias automotrices en Colombia.",
+  ogImage = "/img/og-default.webp",
+  ogType = "website",
+  canonical,
+} = Astro.props;
+
+const siteUrl = "https://autotechdigital.netlify.app";
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).href;
+const ogImageUrl = ogImage.startsWith("http")
+  ? ogImage
+  : `${siteUrl}${ogImage}`;
 
 // ✅ Si pasas class, úsalo como bodyClass
 const finalBodyClass = bodyClass ?? classProp;
 
 // 🔹 Detectamos si el bodyClass corresponde a una nota
 let categoria = "";
-if (finalBodyClass && finalBodyClass.startsWith("nota-")) {
-  categoria = finalBodyClass.replace("nota-", "").toLowerCase();
+if (finalBodyClass) {
+  const classTokens = finalBodyClass
+    .split(/\s+/)
+    .map((token) => token.trim())
+    .filter(Boolean);
+
+  const noteCategoryToken = classTokens.find(
+    (token) => token.startsWith("nota-") && token !== "nota-page",
+  );
+
+  if (noteCategoryToken) {
+    categoria = noteCategoryToken.replace("nota-", "").toLowerCase();
+  }
 }
 
 // 🔹 Definimos el CSS de categoría que se cargará dinámicamente
@@ -49,8 +78,32 @@ import "swiper/css/pagination";
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Auto-Tech-Digital" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+
+    <!-- SEO Básico -->
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Auto-Tech-Digital" />
+    <meta name="theme-color" content="#08341f" />
+
+    <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="Auto-Tech-Digital" />
+    <meta property="og:locale" content="es_CO" />
+
+    <!-- Twitter / X Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:site" content="@autotechdigital" />
 
     <!-- Tailwind CSS -->
     <link
@@ -87,9 +140,6 @@ import "swiper/css/pagination";
 
     <!-- Estilos del footer -->
     <link rel="stylesheet" href="/css/footer.css" />
-
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
   </head>
 
   <body class={finalBodyClass}>

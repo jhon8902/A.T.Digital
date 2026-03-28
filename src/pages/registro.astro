@@ -1,0 +1,242 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Registro | Auto-Tech-Digital">
+  <section class="registro-page">
+    <div class="registro-shell">
+      <aside class="registro-intro">
+        <p class="registro-kicker">Registro</p>
+        <h1>Conecta tu marca o tu perfil con Auto-Tech-Digital</h1>
+        <p>
+          Este formulario deja funcionando el boton del header sin tocar su
+          diseno. Puedes usarlo para registro de marcas, aliados, lectores o
+          interesados en colaboraciones y novedades.
+        </p>
+        <ul>
+          <li>Recibir novedades editoriales</li>
+          <li>Solicitar contacto comercial</li>
+          <li>Explorar alianzas o cobertura de marca</li>
+        </ul>
+      </aside>
+
+      <section class="registro-card">
+        <form
+          name="registro-header"
+          method="POST"
+          action="/registro-exitoso"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="registro-form"
+        >
+          <input type="hidden" name="form-name" value="registro-header" />
+          <input type="hidden" name="bot-field" />
+
+          <div class="field-grid">
+            <label>
+              Nombre completo
+              <input type="text" name="nombre" required />
+            </label>
+
+            <label>
+              Correo electronico
+              <input type="email" name="email" required />
+            </label>
+
+            <label>
+              Tipo de registro
+              <select name="tipo_registro" required>
+                <option value="">Selecciona una opcion</option>
+                <option value="lector">Lector</option>
+                <option value="marca">Marca</option>
+                <option value="concesionario">Concesionario</option>
+                <option value="aliado">Aliado comercial</option>
+                <option value="prensa">Prensa / medios</option>
+              </select>
+            </label>
+
+            <label>
+              Telefono
+              <input type="tel" name="telefono" />
+            </label>
+
+            <label class="full">
+              Ciudad o pais
+              <input type="text" name="ubicacion" />
+            </label>
+
+            <label class="full">
+              Mensaje
+              <textarea
+                name="mensaje"
+                rows="5"
+                placeholder="Cuentanos que te interesa o como quieres vincularte."
+              ></textarea>
+            </label>
+          </div>
+
+          <label class="consentimiento">
+            <input type="checkbox" name="acepta_contacto" required />
+            <span>Acepto ser contactado por Auto-Tech-Digital.</span>
+          </label>
+
+          <button type="submit">Enviar registro</button>
+        </form>
+      </section>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .registro-page {
+    min-height: 100vh;
+    padding: 210px 20px 80px;
+    background:
+      radial-gradient(
+        circle at right top,
+        rgba(225, 163, 7, 0.18),
+        transparent 28%
+      ),
+      linear-gradient(180deg, #f7f2e8 0%, #efe7d8 100%);
+  }
+
+  .registro-shell {
+    width: min(94%, 1180px);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 0.92fr 1.08fr;
+    gap: 22px;
+  }
+
+  .registro-intro,
+  .registro-card {
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(140, 104, 22, 0.14);
+    box-shadow: 0 22px 60px rgba(42, 29, 8, 0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  .registro-intro {
+    padding: 32px;
+  }
+
+  .registro-kicker {
+    font-size: 0.76rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #8b6d1f;
+    margin-bottom: 12px;
+  }
+
+  .registro-intro h1 {
+    padding: 0;
+    font-size: clamp(2rem, 3.2vw, 3.3rem);
+    margin-bottom: 14px;
+    color: #18130b;
+  }
+
+  .registro-intro p,
+  .registro-intro li {
+    color: #4c4235;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .registro-intro ul {
+    margin-top: 18px;
+    padding-left: 18px;
+  }
+
+  .registro-card {
+    padding: 28px;
+  }
+
+  .registro-form {
+    display: grid;
+    gap: 16px;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .field-grid label,
+  .consentimiento {
+    display: grid;
+    gap: 8px;
+    color: #241c11;
+    font-size: 0.98rem;
+  }
+
+  .field-grid label.full {
+    grid-column: 1 / -1;
+  }
+
+  .field-grid input,
+  .field-grid select,
+  .field-grid textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid #d8c6a2;
+    background: #fffefb;
+    font-family: "Georgia", serif;
+    font-size: 1rem;
+    color: #1f180d;
+  }
+
+  .consentimiento {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .consentimiento input {
+    width: 18px;
+    height: 18px;
+  }
+
+  .registro-form button {
+    justify-self: start;
+    padding: 14px 22px;
+    border-radius: 999px;
+    background: #17120c;
+    color: #fff;
+    border: 1px solid #17120c;
+    font-size: 0.98rem;
+  }
+
+  @media (max-width: 900px) {
+    .registro-shell {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .registro-page {
+      padding: 190px 14px 60px;
+    }
+
+    .registro-intro,
+    .registro-card {
+      padding: 20px;
+      border-radius: 22px;
+    }
+
+    .field-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .field-grid label.full {
+      grid-column: auto;
+    }
+
+    .registro-form button {
+      width: 100%;
+      justify-self: stretch;
+    }
+  }
+</style>

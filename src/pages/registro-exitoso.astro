@@ -1,0 +1,90 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Registro enviado | Auto-Tech-Digital">
+  <section class="registro-ok-page">
+    <div class="registro-ok-card">
+      <p class="registro-ok-kicker">Registro enviado</p>
+      <h1>Tu informacion fue recibida correctamente</h1>
+      <p>
+        Gracias por registrarte. El boton del header ahora lleva a un flujo
+        funcional y con destino real dentro del sitio.
+      </p>
+      <div class="registro-ok-actions">
+        <a href="/">Volver al inicio</a>
+        <a href="/noticias">Seguir explorando noticias</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .registro-ok-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 210px 20px 80px;
+    background:
+      radial-gradient(circle at top, rgba(225, 163, 7, 0.2), transparent 24%),
+      linear-gradient(180deg, #f8f3ea 0%, #efe8dc 100%);
+  }
+
+  .registro-ok-card {
+    width: min(92%, 760px);
+    padding: 36px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(140, 104, 22, 0.14);
+    box-shadow: 0 22px 60px rgba(42, 29, 8, 0.1);
+    text-align: center;
+  }
+
+  .registro-ok-kicker {
+    font-size: 0.78rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #8b6d1f;
+    margin-bottom: 12px;
+  }
+
+  .registro-ok-card h1 {
+    padding: 0;
+    font-size: clamp(2rem, 3.2vw, 3.2rem);
+    margin-bottom: 14px;
+    color: #18130b;
+  }
+
+  .registro-ok-card p {
+    color: #4c4235;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .registro-ok-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .registro-ok-actions a {
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: #17120c;
+    color: #fff;
+    border: 1px solid #17120c;
+  }
+
+  @media (max-width: 768px) {
+    .registro-ok-page {
+      padding: 190px 14px 60px;
+    }
+
+    .registro-ok-card {
+      padding: 24px 18px;
+      border-radius: 24px;
+    }
+  }
+</style>

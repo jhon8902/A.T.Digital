@@ -1,0 +1,351 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getApiUrl, fetchWithTimeout } from "../lib/api";
+
+type PruebaItem = {
+  title: string;
+  subtitle: string;
+  video?: string;
+  image?: string;
+  href?: string;
+  fecha?: string;
+  sortDate: number;
+};
+
+const staticPruebas: PruebaItem[] = [
+  {
+    title: "FORD F-150",
+    subtitle:
+      "En nuestra prueba destacada tenemos a la Ford F-150, una pick-up que te brinda todo lo que necesitas para esos viajes fuera de la ciudad.",
+    video: "/img/videos-pruebas/ford f-150.mp4",
+    fecha: "Publicado: 10/08/2025",
+    sortDate: new Date("2025-08-10").getTime(),
+  },
+  {
+    title: "XIAOMI YU7",
+    subtitle:
+      "Diseño y tecnología en armonía, el carro de Xiaomi rompiendo récord como el más vendido en poco tiempo.",
+    video: "/img/videos-pruebas/xiaomi YU7.mp4",
+    fecha: "Publicado: 09/08/2025",
+    sortDate: new Date("2025-08-09").getTime(),
+  },
+  {
+    title: "NISSAN QASHQAI",
+    subtitle:
+      "Con nueva parrilla, la Nissan Qashqai nos sorprende con sus cambios en tecnología y seguridad.",
+    video: "/img/videos-pruebas/nissan qashqai.mp4",
+    fecha: "Publicado: 08/08/2025",
+    sortDate: new Date("2025-08-08").getTime(),
+  },
+  {
+    title: "MAZDA ICONIC",
+    subtitle:
+      "El diseño de este Mazda Iconic es muy moderno y elegante, destaca por sus líneas deportivas y detalles innovadores.",
+    video: "/img/videos-pruebas/prueba-mazda.mp4",
+    fecha: "Publicado: 07/08/2025",
+    sortDate: new Date("2025-08-07").getTime(),
+  },
+  {
+    title: "DFSK E5",
+    subtitle:
+      "La SUV eléctrica para 7 pasajeros, confortable y espaciosa, nos sorprendió mucho y seguro que a ustedes también les gustará.",
+    video: "/img/videos-pruebas/video-dfsk.mp4",
+    fecha: "Publicado: 06/08/2025",
+    sortDate: new Date("2025-08-06").getTime(),
+  },
+  {
+    title: "KIA K4 XLINE",
+    subtitle:
+      "La marca no quiere dejar los automóviles, por eso nos presenta el K4 Xline: deportivo, seguro y muy confortable.",
+    video: "/img/videos-pruebas/video-kia-k4.mp4",
+    fecha: "Publicado: 05/08/2025",
+    sortDate: new Date("2025-08-05").getTime(),
+  },
+  {
+    title: "ZEEKR 007 GT",
+    subtitle:
+      "El ZEEKR 007 GT fue lanzado en China en abril del 2025 y a Europa llegará como 007 GT.",
+    video: "/img/videos-pruebas/video-zeekr.mp4",
+    fecha: "Publicado: 04/08/2025",
+    sortDate: new Date("2025-08-04").getTime(),
+  },
+];
+
+let dynamicPruebas: PruebaItem[] = [];
+
+try {
+  const apiUrl = getApiUrl("get-notes");
+  const data = await fetchWithTimeout(apiUrl);
+
+  if (data && Array.isArray(data)) {
+    dynamicPruebas = data
+      .filter((note: any) => note.category?.toLowerCase() === "pruebas")
+      .map((note: any) => ({
+        title: note.title || "Sin título",
+        subtitle: note.subtitle || "",
+        video: note.video1?.trim() || undefined,
+        image: note.image1?.trim() || undefined,
+        href: `/notas/${note.id}`,
+        fecha: note.created_at
+          ? `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`
+          : "",
+        sortDate: note.created_at ? new Date(note.created_at).getTime() : 0,
+      }));
+  }
+} catch (err) {
+  console.error("Error cargando pruebas dinámicas:", err);
+}
+
+const HOME_VISIBLE_COUNT = staticPruebas.length;
+const ITEMS_PER_PAGE = 8;
+
+const allPruebas = [...dynamicPruebas, ...staticPruebas].sort(
+  (a, b) => b.sortDate - a.sortDate,
+);
+
+const archivePruebas = allPruebas.slice(HOME_VISIBLE_COUNT);
+
+const totalPages = Math.max(
+  1,
+  Math.ceil(archivePruebas.length / ITEMS_PER_PAGE),
+);
+const requestedPage = Number(Astro.url.searchParams.get("page") || "1");
+const currentPage =
+  Number.isFinite(requestedPage) && requestedPage > 0
+    ? Math.min(requestedPage, totalPages)
+    : 1;
+
+const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+const paginatedPruebas = archivePruebas.slice(
+  startIndex,
+  startIndex + ITEMS_PER_PAGE,
+);
+
+function pageHref(page: number) {
+  return page <= 1 ? "?" : `?page=${page}`;
+}
+---
+
+<Layout
+  title="Videos de Pruebas de Manejo | Auto-Tech-Digital"
+  description="Mira los mejores videos de pruebas de manejo de autos eléctricos, híbridos y de alto rendimiento en Colombia. Opiniones honestas y análisis en detalle."
+>
+  <section class="pruebas-archivo">
+    <div class="archivo-header">
+      <h1>Más videos de pruebas</h1>
+      <p>
+        Archivo de test drives: aquí aparecen los videos/notas que ya salieron
+        de la portada principal.
+      </p>
+    </div>
+
+    {
+      archivePruebas.length === 0 && allPruebas.length > 0 && (
+        <p class="archivo-empty">
+          Los videos más recientes están en la página principal. Aquí verás los
+          anteriores a medida que publiques nuevos.
+        </p>
+      )
+    }
+
+    {
+      allPruebas.length === 0 && (
+        <p class="archivo-empty">Aún no hay videos de pruebas disponibles.</p>
+      )
+    }
+
+    <div class="archivo-grid">
+      {
+        paginatedPruebas.map((item) => (
+          <article class="archivo-card">
+            <div class="archivo-media">
+              {item.video ? (
+                <video controls preload="metadata">
+                  <source src={item.video} type="video/mp4" />
+                  Tu navegador no soporta videos HTML5.
+                </video>
+              ) : item.image ? (
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : (
+                <div class="archivo-placeholder">Sin media</div>
+              )}
+            </div>
+
+            <div class="archivo-content">
+              <h2>{item.title}</h2>
+              {item.fecha && <p class="archivo-date">{item.fecha}</p>}
+              {item.subtitle && <p class="archivo-desc">{item.subtitle}</p>}
+              {item.href && (
+                <a href={item.href} class="archivo-link">
+                  Ver nota completa →
+                </a>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    {
+      totalPages > 1 && (
+        <div class="archivo-pagination">
+          <a
+            href={pageHref(currentPage - 1)}
+            class={`archivo-page-btn ${currentPage === 1 ? "is-disabled" : ""}`}
+            aria-disabled={currentPage === 1}
+          >
+            ← Anterior
+          </a>
+
+          <span class="archivo-page-indicator">
+            Página {currentPage} de {totalPages}
+          </span>
+
+          <a
+            href={pageHref(currentPage + 1)}
+            class={`archivo-page-btn ${currentPage === totalPages ? "is-disabled" : ""}`}
+            aria-disabled={currentPage === totalPages}
+          >
+            Siguiente →
+          </a>
+        </div>
+      )
+    }
+  </section>
+</Layout>
+
+<style>
+  .pruebas-archivo {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px 70px;
+    font-family: "Barlow", "Segoe UI", sans-serif;
+  }
+
+  .archivo-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .archivo-header h1 {
+    font-size: clamp(30px, 4vw, 44px);
+    margin-bottom: 10px;
+  }
+
+  .archivo-header p {
+    max-width: 760px;
+    margin: 0 auto;
+    color: #4d5661;
+    font-size: 18px;
+  }
+
+  .archivo-empty {
+    text-align: center;
+    margin: 20px auto 30px;
+    max-width: 760px;
+    font-size: 18px;
+    color: #4d5661;
+  }
+
+  .archivo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 20px;
+  }
+
+  .archivo-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  }
+
+  .archivo-media {
+    width: 100%;
+    background: #0f1720;
+    min-height: 180px;
+  }
+
+  .archivo-media video,
+  .archivo-media img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .archivo-placeholder {
+    display: grid;
+    place-items: center;
+    height: 180px;
+    color: #b0bac5;
+    font-size: 14px;
+  }
+
+  .archivo-content {
+    padding: 16px;
+  }
+
+  .archivo-content h2 {
+    font-size: 24px;
+    margin-bottom: 6px;
+    color: #0f1720;
+  }
+
+  .archivo-date {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 8px;
+  }
+
+  .archivo-desc {
+    color: #374151;
+    line-height: 1.45;
+    margin-bottom: 10px;
+  }
+
+  .archivo-link {
+    color: #0b5ed7;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .archivo-link:hover {
+    text-decoration: underline;
+  }
+
+  .archivo-pagination {
+    margin-top: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .archivo-page-btn {
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 9px 14px;
+    text-decoration: none;
+    color: #111827;
+    background: #fff;
+  }
+
+  .archivo-page-btn.is-disabled {
+    pointer-events: none;
+    opacity: 0.45;
+  }
+
+  .archivo-page-indicator {
+    color: #374151;
+    font-weight: 600;
+  }
+</style>

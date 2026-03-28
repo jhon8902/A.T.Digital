@@ -1,0 +1,60 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CategoryArchive from "../components/archive/CategoryArchive.astro";
+
+const staticNotes = [
+  {
+    href: "/notas-electricos/nota-volvo-ex90",
+    img: "/img/volvo-ex90-electrico/volvo-ex90-portada.webp",
+    alt: "Volvo EX90",
+    title: "Volvo EX90",
+    description: "SUV eléctrico premium con gran autonomía y seguridad.",
+    fecha: "Nota: 10-feb",
+  },
+  {
+    href: "/notas-electricos/nota-mini-cooper",
+    img: "/img/mini-cooper-electrico/mini-cooper-portada.webp",
+    alt: "Mini Cooper",
+    title: "Mini Cooper",
+    description: "Compacto eléctrico con enfoque urbano, diseño y confort.",
+    fecha: "Nota: 13-mar",
+  },
+  {
+    href: "/notas-electricos/nota-byd-sealion7",
+    img: "/img/byd-sealion-7/byd-sealion7-principal.webp",
+    alt: "BYD Sealion 7",
+    title: "BYD Sealion 7",
+    description: "SUV deportivo con propuesta tecnológica y eficiente.",
+    fecha: "Nota: 13-mar",
+  },
+  {
+    href: "/notas-electricos/nota-peugeot-e3008",
+    img: "/img/peugeot-3008-electrica/carga-peugeot.webp",
+    alt: "Peugeot E-3008",
+    title: "Peugeot E-3008",
+    description: "Diseño moderno y rendimiento eléctrico para uso diario.",
+    fecha: "Nota: 24-mar",
+  },
+  {
+    href: "/notas-electricos/nota-renault-megane",
+    img: "/img/renault-megane-e-tech/renault-megane-principal.webp",
+    alt: "Renault Megane",
+    title: "Renault Megane",
+    description: "Compacto eléctrico equilibrado entre autonomía y confort.",
+    fecha: "Nota: 20-abril",
+  },
+];
+---
+
+<Layout
+  title="Autos Eléctricos en Colombia 2025 | Auto-Tech-Digital"
+  description="Explora los mejores autos eléctricos disponibles en Colombia: Volvo EX90, Kia EV9, BYD, Peugeot e-2008 y más. Fichas técnicas, precios y reseñas."
+>
+  <CategoryArchive
+    category="electricos"
+    title="Más modelos eléctricos"
+    description="Listado completo de notas sobre movilidad eléctrica en Colombia."
+    staticNotes={staticNotes}
+    skipFirst={5}
+  />
+</Layout>

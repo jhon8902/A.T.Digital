@@ -5,18 +5,33 @@ import "../../../public/css/lanzamientos.css";
 
 <Layout title="JEEP AVENGER" bodyClass="nota-page">
   <section class="noticia-detalle">
-    <p class="noticia-descripcion">
-      ¿Sabías que el Jeep Avenger fue el primer modelo 100% eléctrico de la
-      marca lanzado en Europa, ganando el premio 'Car of the Year 2023'?
-    </p>
+    <h1>
+      Jeep Avenger: El primer SUV 100% eléctrico de la marca que ganó el Car of
+      the Year 2023
+    </h1>
+
+    <div class="datos-destacados">
+      <div class="dato-item">
+        <span class="dato-icono">🏆</span>
+        <p class="dato-texto">
+          Primer Jeep eléctrico ganador Car of the Year Europa
+        </p>
+      </div>
+      <div class="dato-item">
+        <span class="dato-icono">🌊</span>
+        <p class="dato-texto">Capacidad de vadeo hasta 400mm de profundidad</p>
+      </div>
+      <div class="dato-item">
+        <span class="dato-icono">⚡</span>
+        <p class="dato-texto">Carga rápida DC 100 kW (0-80% en 40 minutos)</p>
+      </div>
+    </div>
 
     <img
       src="/img/jeep-avenger/jeep-avenger-portada.webp"
       alt="Portada de la noticia: JEEP AVENGER"
       class="noticia-portada"
     />
-
-    <h1>JEEP AVENGER</h1>
 
     <article>
       <div class="noticia-bloque noticia-imagen-izquierda">
@@ -33,27 +48,68 @@ import "../../../public/css/lanzamientos.css";
           </p>
         </div>
         <img
-          src="/img/jeep-avenger/jeep-avenger.interior.jpg"
+          src="/img/jeep-avenger/jeep-avenger.interior.webp"
           alt="Exterior Jeep Avenger"
+          class="noticia-imagen"
+        />
+      </div>
+
+      <div class="noticia-bloque noticia-imagen-izquierda">
+        <div class="noticia-texto">
+          <h3 class="noticia-titulo">Diseño y Estilo Jeep</h3>
+          <p class="noticia-parrafo">
+            El Avenger mantiene la identidad visual característica de Jeep con
+            su icónica parrilla frontal y faros LED con firma luminosa
+            distintiva.
+          </p>
+          <p class="noticia-parrafo">
+            Las líneas musculares del cuerpo y el techo bi-tono le dan un
+            aspecto deportivo y moderno, perfecto para el mercado urbano actual.
+          </p>
+        </div>
+        <img
+          src="/img/jeep-avenger/jepp-avenger-diseño.webp"
+          alt="Diseño Jeep Avenger"
           class="noticia-imagen"
         />
       </div>
 
       <div class="noticia-bloque noticia-imagen-derecha">
         <div class="noticia-texto">
-          <h3 class="noticia-titulo">Confort y diseño</h3>
+          <h3 class="noticia-titulo">Sistema de Propulsión Eléctrico</h3>
           <p class="noticia-parrafo">
-            A pesar de ser compacto, ofrece un interior bien distribuido, buena
-            pantalla de info-entretenimiento y asistencias al conductor.
+            Equipado con un motor eléctrico síncrono de imanes permanentes que
+            entrega 156 hp y 260 Nm de torque de forma inmediata.
           </p>
           <p class="noticia-parrafo">
-            Su tamaño lo hace ideal para movilidad eléctrica práctica, con
-            espacio para pasajeros y estilo moderno.
+            La batería LFP de 54 kWh garantiza una autonomía de 400 km en ciclo
+            WLTP, con capacidad de carga rápida DC hasta 100 kW.
           </p>
         </div>
         <img
-          src="/img/jeep-avenger/jepp-avenger-trasero.webp"
-          alt="Interior Jeep Avenger"
+          src="/img/jeep-avenger/jepp-avenger-motor.webp"
+          alt="Sistema de Motor Eléctrico"
+          class="noticia-imagen"
+        />
+      </div>
+
+      <div class="noticia-bloque noticia-imagen-izquierda">
+        <div class="noticia-texto">
+          <h3 class="noticia-titulo">Interior Tecnológico</h3>
+          <p class="noticia-parrafo">
+            El habitáculo del Avenger combina funcionalidad con tecnología de
+            punta, incluyendo una pantalla táctil de 10.25" y cuadro digital de
+            7".
+          </p>
+          <p class="noticia-parrafo">
+            Sistema de climatización automática, conectividad Apple CarPlay y
+            Android Auto inalámbrico, cámara trasera y múltiples espacios de
+            almacenamiento inteligente.
+          </p>
+        </div>
+        <img
+          src="/img/jeep-avenger/geep-avenger-interior.webp"
+          alt="Interior Tecnológico Jeep Avenger"
           class="noticia-imagen"
         />
       </div>
@@ -340,11 +396,10 @@ import "../../../public/css/lanzamientos.css";
     }
 
     .noticia-bloque .noticia-parrafo {
-      font-size: 18px;
+      font-size: 22px;
       text-align: start;
       color: #333;
 
-      font-family: "Poppins", sans-serif;
       margin-bottom: 15px; /* Agrega espacio entre los párrafos */
       line-height: 1.6; /* Mejora la legibilidad del texto */
     }

@@ -2,20 +2,39 @@
 import Layout from "../../layouts/Layout.astro";
 ---
 
-<Layout title="TOYOTA PRADO" bodyClass="otras-page">
+<Layout title="TOYOTA PRADO" bodyClass="nota-page">
   <section class="noticia-detalle">
-    <p class="noticia-descripcion">
-      La Toyota Prado es famosa por su durabilidad en algunos países, es el
-      vehículo preferido para condiciones extremas.
-    </p>
+    <h1>
+      Nueva Toyota Land Cruiser Prado 2026: El legendario 4x4 que combina
+      durabilidad off-road con tecnología híbrida
+    </h1>
+
+    <div class="datos-destacados">
+      <div class="dato-item">
+        <span class="dato-icono">🌍</span>
+        <p class="dato-texto">
+          Disponible en más de 170 países alrededor del mundo
+        </p>
+      </div>
+      <div class="dato-item">
+        <span class="dato-icono">🏆</span>
+        <p class="dato-texto">
+          Más de 3.8 millones de unidades vendidas globalmente
+        </p>
+      </div>
+      <div class="dato-item">
+        <span class="dato-icono">🛠️</span>
+        <p class="dato-texto">
+          Intervalos de mantenimiento extendidos cada 15,000 km
+        </p>
+      </div>
+    </div>
 
     <img
-      src="/img/toyota-prado/toyota-prado-copia1.jpg"
+      src="/img/toyota-prado/toyota-prado-copia1.webp"
       alt="Portada de la noticia: TOYOTA PRADO"
       class="noticia-portada"
     />
-
-    <h1>TOYOTA PRADO</h1>
 
     <article>
       <div class="noticia-bloque noticia-imagen-izquierda">
@@ -33,7 +52,7 @@ import Layout from "../../layouts/Layout.astro";
           </p>
         </div>
         <img
-          src="/img/toyota-prado/toyota-prado-copia2.jpg"
+          src="/img/toyota-prado/toyota-prado-copia2.webp"
           alt="Toyota Prado en ruta"
           class="noticia-imagen"
         />
@@ -54,7 +73,7 @@ import Layout from "../../layouts/Layout.astro";
           </p>
         </div>
         <img
-          src="/img/toyota-prado/toyota-prado-copia3.jpg"
+          src="/img/toyota-prado/toyota-prado-copia3.webp"
           alt="Interior Toyota Prado"
           class="noticia-imagen"
         />
@@ -337,11 +356,10 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   .noticia-bloque .noticia-parrafo {
-    font-size: 18px;
+    font-size: 22px;
     text-align: start;
     color: #333;
 
-    font-family: "Poppins", sans-serif;
     margin-bottom: 15px; /* Agrega espacio entre los párrafos */
     line-height: 1.6; /* Mejora la legibilidad del texto */
   }

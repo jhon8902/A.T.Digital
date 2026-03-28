@@ -1,0 +1,294 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { fetchWithTimeout, getApiUrl } from "../lib/api";
+import {
+  STATIC_SEARCH_ENTRIES,
+  filterSearchEntries,
+  mapNoteToSearchEntry,
+  type SearchEntry,
+} from "../lib/search";
+
+export const prerender = false;
+
+interface Note {
+  id: number;
+  title?: string;
+  subtitle?: string;
+  category?: string;
+  content?: string;
+}
+
+const query = (Astro.url.searchParams.get("q") || "").trim();
+let dynamicEntries: SearchEntry[] = [];
+
+if (query) {
+  const notes = await fetchWithTimeout(getApiUrl("get-notes"), 8000);
+  if (Array.isArray(notes)) {
+    dynamicEntries = (notes as Note[]).map((note) =>
+      mapNoteToSearchEntry(note),
+    );
+  }
+}
+
+const results = query
+  ? filterSearchEntries(
+      query,
+      [...STATIC_SEARCH_ENTRIES, ...dynamicEntries],
+      30,
+    )
+  : [];
+---
+
+<Layout title={query ? `Busqueda: ${query}` : "Buscar | Auto-Tech-Digital"}>
+  <section class="search-page">
+    <div class="search-shell">
+      <header class="search-hero">
+        <p class="search-kicker">Buscador del sitio</p>
+        <h1>Encuentra notas, secciones y paginas</h1>
+        <p class="search-copy">
+          Busca contenido editorial, categorias del sitio y notas destacadas sin
+          cambiar el header ni su diseno.
+        </p>
+
+        <form class="search-form" action="/buscar" method="GET">
+          <input
+            type="search"
+            name="q"
+            value={query}
+            placeholder="Ejemplo: BMW, Ford Bronco, hibridos, electricos"
+          />
+          <button type="submit">Buscar</button>
+        </form>
+      </header>
+
+      {
+        query ? (
+          <div class="search-results-block">
+            <p class="search-count">
+              {results.length > 0
+                ? `${results.length} resultado${results.length === 1 ? "" : "s"} para "${query}"`
+                : `No se encontraron resultados para "${query}"`}
+            </p>
+
+            {results.length > 0 ? (
+              <div class="results-grid">
+                {results.map((result) => (
+                  <a class="result-card" href={result.href}>
+                    <span class="result-meta">
+                      {result.type} | {result.category}
+                    </span>
+                    <h2>{result.title}</h2>
+                    <p>{result.description}</p>
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <div class="empty-state">
+                <p>
+                  Prueba con nombres de marcas, modelos o categorias. Por
+                  ejemplo: BMW, DFSK E5, hibridos, electricos o pruebas.
+                </p>
+                <div class="empty-links">
+                  <a href="/noticias">Ir a noticias</a>
+                  <a href="/hibridos">Ir a hibridos</a>
+                  <a href="/electricos">Ir a electricos</a>
+                  <a href="/deportes">Ir a deportes</a>
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div class="search-results-block">
+            <p class="search-count">Escribe algo para empezar a buscar.</p>
+            <div class="quick-links">
+              {STATIC_SEARCH_ENTRIES.slice(0, 8).map((entry) => (
+                <a href={entry.href}>{entry.title}</a>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .search-page {
+    min-height: 100vh;
+    padding: 220px 20px 80px;
+    background:
+      radial-gradient(
+        circle at top left,
+        rgba(225, 163, 7, 0.16),
+        transparent 30%
+      ),
+      linear-gradient(180deg, #f8f2e8 0%, #f3ede2 100%);
+  }
+
+  .search-shell {
+    width: min(92%, 1200px);
+    margin: 0 auto;
+  }
+
+  .search-hero,
+  .search-results-block {
+    background: rgba(255, 255, 255, 0.84);
+    border: 1px solid rgba(146, 114, 31, 0.16);
+    border-radius: 28px;
+    box-shadow: 0 22px 60px rgba(42, 29, 8, 0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  .search-hero {
+    padding: 34px;
+    margin-bottom: 24px;
+  }
+
+  .search-kicker {
+    font-size: 0.78rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #8b6d1f;
+    margin-bottom: 12px;
+  }
+
+  .search-hero h1 {
+    padding: 0;
+    font-size: clamp(2rem, 3.3vw, 3.3rem);
+    margin-bottom: 12px;
+    color: #18130b;
+  }
+
+  .search-copy {
+    max-width: 700px;
+    font-size: 1.05rem;
+    color: #493e31;
+    margin-bottom: 22px;
+  }
+
+  .search-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+  }
+
+  .search-form input {
+    min-width: 0;
+    padding: 16px 18px;
+    border-radius: 16px;
+    border: 1px solid #d5c29b;
+    background: #fffdf9;
+    font-size: 1rem;
+    font-family: "Georgia", serif;
+  }
+
+  .search-form button {
+    padding: 16px 24px;
+    border-radius: 16px;
+    background: #16110b;
+    color: #fff;
+    border: 1px solid #16110b;
+    font-size: 0.98rem;
+  }
+
+  .search-results-block {
+    padding: 28px;
+  }
+
+  .search-count {
+    font-size: 1rem;
+    color: #5f523f;
+    margin-bottom: 20px;
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .result-card {
+    display: block;
+    padding: 22px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, #fffefb 0%, #f6f0e5 100%);
+    border: 1px solid #e6dac0;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .result-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 34px rgba(52, 36, 10, 0.12);
+  }
+
+  .result-meta {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #8b6d1f;
+  }
+
+  .result-card h2 {
+    padding: 0;
+    font-size: 1.35rem;
+    margin-bottom: 10px;
+    color: #18130b;
+  }
+
+  .result-card p {
+    color: #51473a;
+    line-height: 1.6;
+    font-size: 0.98rem;
+  }
+
+  .empty-state {
+    padding: 14px 0 4px;
+  }
+
+  .empty-links,
+  .quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .empty-links a,
+  .quick-links a {
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid #d6c29a;
+    background: #fffdf8;
+    color: #32281c;
+  }
+
+  @media (max-width: 1024px) {
+    .results-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    .search-page {
+      padding: 190px 14px 60px;
+    }
+
+    .search-hero,
+    .search-results-block {
+      padding: 20px;
+      border-radius: 22px;
+    }
+
+    .search-form {
+      grid-template-columns: 1fr;
+    }
+
+    .results-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

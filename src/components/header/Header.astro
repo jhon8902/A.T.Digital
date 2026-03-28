@@ -1,5 +1,9 @@
 ---
+import { STATIC_SEARCH_ENTRIES } from "../../lib/search";
 
+const headerSearchData = encodeURIComponent(
+  JSON.stringify(STATIC_SEARCH_ENTRIES),
+);
 ---
 
 <header class="header">
@@ -7,20 +11,24 @@
   <div class="top-bar">
     <!-- Redes Sociales a la Izquierda -->
     <div class="header-social-icons">
-      <a
-        href="https://wa.me/573001112233?text=Hola%2C%20quiero%20información%20sobre%20los%20vehículos"
-        class="fa-brands fa-whatsapp"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a href="/contacto" class="fa-solid fa-envelope" aria-label="Contacto">
       </a>
 
       <a
-        href="https://www.facebook.com/autotechdigital/"
-        class="fa-brands fa-facebook"></a>
+        href="https://www.facebook.com/profile.php?id=61564010935908"
+        class="fa-brands fa-facebook"
+        target="_blank"
+        rel="noopener noreferrer"></a>
       <a
         href="https://www.instagram.com/autotechdigital/"
-        class="fa-brands fa-instagram"></a>
+        class="fa-brands fa-instagram"
+        target="_blank"
+        rel="noopener noreferrer"></a>
+      <a
+        href="https://www.tiktok.com/@autotechdigital"
+        class="fa-brands fa-tiktok"
+        target="_blank"
+        rel="noopener noreferrer"></a>
     </div>
 
     <div class="spacer"></div>
@@ -58,8 +66,13 @@
         type="text"
         id="search-input"
         class="search-input"
-        placeholder="Buscar..."
+        placeholder="Busca marcas, modelos o categorias"
       />
+      <button
+        id="search-close"
+        class="search-close"
+        aria-label="Cerrar búsqueda">&times;</button
+      >
 
       <button class="register-button">Registro</button>
     </div>
@@ -104,6 +117,8 @@
     </div>
   </nav>
 </header>
+
+<div id="header-search-data" data-search={headerSearchData} hidden></div>
 
 <style>
   /* Reset de box-sizing para todos los elementos */
@@ -161,7 +176,7 @@
   }
 
   /* icono casita de regreso */
-  .fa-solid {
+  .fa-solid.boton-inicio {
     position: fixed;
     bottom: 30px;
     right: 30px;
@@ -178,7 +193,7 @@
     font-weight: 600;
   }
 
-  .fa-solid:hover {
+  .fa-solid.boton-inicio:hover {
     background-color: #555; /* Cambio de color en hover */
     color: white;
   }
@@ -267,12 +282,12 @@
   }
 
   /* WhatsApp */
-  .header-social-icons a.fa-whatsapp {
+  .header-social-icons a.fa-envelope {
     text-decoration: none;
-    background-color: #25d366; /* Verde de WhatsApp */
+    background-color: #25d366;
     transition: transform 0.3s ease;
   }
-  .header-social-icons a.fa-whatsapp:hover {
+  .header-social-icons a.fa-envelope:hover {
     transform: scale(1.2); /* Efecto de pulso */
   }
 
@@ -628,21 +643,77 @@
   /* Estilos para el input de búsqueda */
   .search-input {
     display: none; /* Inicialmente oculto */
-    padding: 8px 16px;
-    font-size: 16px;
+    padding: 12px 16px;
+    font-size: 14px;
     border-radius: 5px;
-    border: 1px solid rgb(171, 129, 4);
-    margin-left: 10px;
+    border: 2px solid rgb(171, 129, 4);
     transition: opacity 0.3s ease-in-out;
+    color: #333;
+    background-color: #fff;
+    width: 380px;
+    font-family: Arial, sans-serif;
+    position: fixed;
+    top: 95px;
+    right: 20px;
+    z-index: 9999;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .search-input::placeholder {
+    color: #999;
+    font-size: 13px;
   }
 
   /* Estilo opcional para que el campo de búsqueda se vea mejor cuando está visible */
   .search-input.show {
-    display: inline-block; /* Aparece cuando se le agrega la clase .show */
+    display: block; /* Aparece cuando se le agrega la clase .show */
     opacity: 1;
   }
 
-  .header-social-icons a.fa-whatsapp,
+  /* Responsive para pantallas pequeñas */
+  @media (max-width: 480px) {
+    .search-input {
+      width: calc(100vw - 40px);
+      max-width: 100%;
+    }
+  }
+
+  /* Botón X para cerrar búsqueda */
+  .search-close {
+    display: none;
+    position: fixed;
+    top: 100px;
+    right: 26px;
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    color: #666;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 10000;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    transition:
+      color 0.2s,
+      background 0.2s,
+      border-color 0.2s;
+    padding: 0;
+  }
+
+  .search-close:hover {
+    color: #111;
+    background: #fff;
+    border-color: #e6b410;
+  }
+
+  .search-close.visible {
+    display: flex;
+  }
+
+  .header-social-icons a.fa-envelope,
   .header-social-icons a.fa-facebook,
   .header-social-icons a.fa-instagram,
   .header-social-icons a.fa-tiktok {
@@ -899,20 +970,199 @@
     const searchInput = document.getElementById(
       "search-input",
     ) as HTMLInputElement | null;
+    const searchDataScript = document.getElementById("header-search-data");
+
+    type HeaderSearchEntry = {
+      title: string;
+      description: string;
+      href: string;
+      category: string;
+      type: "seccion" | "pagina" | "nota";
+      keywords?: string[];
+    };
+
+    const encodedSearchData =
+      searchDataScript?.getAttribute("data-search") || "";
+    const staticSearchEntries: HeaderSearchEntry[] = encodedSearchData
+      ? JSON.parse(decodeURIComponent(encodedSearchData))
+      : [];
+    let dynamicSearchEntries: HeaderSearchEntry[] = [];
+    let dynamicSearchPromise: Promise<HeaderSearchEntry[]> | null = null;
+
+    function normalizeSearchText(value: string) {
+      return value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9\s/-]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function stripHtml(value: string) {
+      return value
+        .replace(/<br\s*\/?\s*>/gi, " ")
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function buildHaystack(entry: HeaderSearchEntry) {
+      return normalizeSearchText(
+        [
+          entry.title,
+          entry.description,
+          entry.category,
+          ...(entry.keywords || []),
+        ].join(" "),
+      );
+    }
+
+    function scoreEntry(query: string, entry: HeaderSearchEntry) {
+      const normalizedQuery = normalizeSearchText(query);
+      if (!normalizedQuery) return 0;
+
+      const title = normalizeSearchText(entry.title);
+      const description = normalizeSearchText(entry.description);
+      const category = normalizeSearchText(entry.category);
+      const haystack = buildHaystack(entry);
+      const tokens = normalizedQuery.split(" ").filter(Boolean);
+
+      let score = 0;
+
+      if (title === normalizedQuery) score += 140;
+      if (title.startsWith(normalizedQuery)) score += 100;
+      if (title.includes(normalizedQuery)) score += 70;
+      if (description.includes(normalizedQuery)) score += 35;
+      if (category.includes(normalizedQuery)) score += 20;
+      if (haystack.includes(normalizedQuery)) score += 15;
+
+      tokens.forEach((token) => {
+        if (title.startsWith(token)) score += 18;
+        if (title.includes(token)) score += 12;
+        if (description.includes(token)) score += 6;
+        if (category.includes(token)) score += 5;
+        if (haystack.includes(token)) score += 3;
+      });
+
+      return score;
+    }
+
+    function findMatches(
+      query: string,
+      entries: HeaderSearchEntry[],
+      limit = 8,
+    ) {
+      const seen = new Set<string>();
+
+      return entries
+        .map((entry) => ({ entry, score: scoreEntry(query, entry) }))
+        .filter(({ score }) => score > 0)
+        .sort(
+          (a, b) =>
+            b.score - a.score || a.entry.title.localeCompare(b.entry.title),
+        )
+        .map(({ entry }) => entry)
+        .filter((entry) => {
+          if (seen.has(entry.href)) return false;
+          seen.add(entry.href);
+          return true;
+        })
+        .slice(0, limit);
+    }
+
+    function goToSearchTarget(href: string) {
+      window.location.href = href;
+    }
+
+    async function loadDynamicSearchEntries() {
+      if (dynamicSearchEntries.length > 0) {
+        return dynamicSearchEntries;
+      }
+
+      if (!dynamicSearchPromise) {
+        dynamicSearchPromise = fetch("/api/get-notes")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`Search fetch failed: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((notes) => {
+            if (!Array.isArray(notes)) {
+              return [];
+            }
+
+            dynamicSearchEntries = notes.map((note) => ({
+              title: note.title?.trim() || "Nota sin titulo",
+              description:
+                note.subtitle?.trim() ||
+                stripHtml(note.content || "").slice(0, 180) ||
+                "Nota editorial de Auto-Tech-Digital.",
+              href: `/notas/${note.id}`,
+              category: note.category?.trim() || "general",
+              type: "nota",
+              keywords: [note.category || "", note.subtitle || ""],
+            }));
+
+            return dynamicSearchEntries;
+          })
+          .catch((error) => {
+            console.error(
+              "No fue posible cargar las notas del buscador:",
+              error,
+            );
+            return [];
+          });
+      }
+
+      return dynamicSearchPromise;
+    }
+
+    const searchCloseBtn = document.getElementById("search-close");
+
+    function abrirBuscador() {
+      const inputEl = document.getElementById(
+        "search-input",
+      ) as HTMLInputElement | null;
+      if (!inputEl) return;
+      inputEl.classList.add("show");
+      searchCloseBtn?.classList.add("visible");
+      inputEl.focus();
+      loadDynamicSearchEntries();
+    }
+
+    function cerrarBuscador() {
+      const inputEl = document.getElementById(
+        "search-input",
+      ) as HTMLInputElement | null;
+      if (!inputEl) return;
+      inputEl.classList.remove("show");
+      searchCloseBtn?.classList.remove("visible");
+      inputEl.value = "";
+      const sugerenciasEl = document.getElementById("sugerencias");
+      if (sugerenciasEl) {
+        sugerenciasEl.style.display = "none";
+        sugerenciasEl.innerHTML = "";
+      }
+    }
 
     if (searchButton && searchInput) {
-      searchInput.style.display = "none"; // oculto al inicio
-
       searchButton.addEventListener("click", function () {
-        if (searchInput.style.display === "none") {
-          searchInput.style.display = "inline-block";
-          searchInput.focus();
+        if (searchInput.classList.contains("show")) {
+          cerrarBuscador();
         } else {
-          searchInput.style.display = "none";
+          abrirBuscador();
         }
       });
     } else {
       console.error("Los elementos de búsqueda no se encuentran en el DOM.");
+    }
+
+    if (searchCloseBtn) {
+      searchCloseBtn.addEventListener("click", function () {
+        cerrarBuscador();
+      });
     }
 
     // ---------------------------
@@ -921,7 +1171,7 @@
     const registerButton = document.querySelector(".register-button");
     if (registerButton) {
       registerButton.addEventListener("click", function () {
-        alert("Redirigiendo al registro.");
+        window.location.href = "/registro";
       });
     }
 
@@ -945,95 +1195,244 @@
       return;
     }
     const searchInputEl = searchInput;
-    const secciones = [
-      { nombre: "Inicio", id: "#inicio" },
-      { nombre: "Noticias", id: "#noticias" },
-      { nombre: "Lanzamientos", id: "#lanzamientos" },
-      { nombre: "Híbridos", id: "#hibridos" },
-      { nombre: "Eléctricos", id: "#electricos" },
-      { nombre: "Deportes", id: "#deportes" },
-      { nombre: "Pruebas", id: "#pruebas" },
-      { nombre: "AutoMatch", id: "#automatch" },
-    ];
+    let orientacionTimeout: ReturnType<typeof setTimeout> | null = null;
 
     // Crear contenedor de sugerencias
     const sugerencias = document.createElement("div");
     sugerencias.id = "sugerencias";
-    sugerencias.style.position = "absolute";
+    sugerencias.style.position = "fixed";
     sugerencias.style.background = "#fff";
     sugerencias.style.border = "1px solid #ccc";
-    sugerencias.style.width = "200px";
-    sugerencias.style.maxHeight = "150px";
+    sugerencias.style.width = "380px";
+    sugerencias.style.maxHeight = "400px";
     sugerencias.style.overflowY = "auto";
     sugerencias.style.display = "none";
-    sugerencias.style.zIndex = "10000";
+    sugerencias.style.zIndex = "9998";
+    sugerencias.style.borderRadius = "10px";
+    sugerencias.style.boxShadow = "0 12px 40px rgba(0, 0, 0, 0.18)";
     document.body.appendChild(sugerencias);
 
-    // Posicionar sugerencias debajo del input
+    // Posicionar sugerencias debajo del input fijo
     function posicionarSugerencias() {
-      const rect = searchInputEl.getBoundingClientRect();
-      sugerencias.style.left = rect.left + "px";
-      sugerencias.style.top = rect.bottom + window.scrollY + "px";
-      sugerencias.style.width = rect.width + "px";
+      sugerencias.style.top = "148px";
+      sugerencias.style.right = "20px";
+      sugerencias.style.left = "auto";
+    }
+
+    function limpiarTimerOrientacion() {
+      if (orientacionTimeout) {
+        clearTimeout(orientacionTimeout);
+        orientacionTimeout = null;
+      }
+    }
+
+    function programarOcultarOrientacion() {
+      limpiarTimerOrientacion();
+      orientacionTimeout = setTimeout(() => {
+        // Solo ocultar si el input sigue vacío (significa que no escribió nada)
+        if (!searchInputEl.value.trim()) {
+          sugerencias.style.display = "none";
+          sugerencias.innerHTML = "";
+        }
+      }, 3500);
+    }
+
+    function renderSuggestions(results: HeaderSearchEntry[]) {
+      sugerencias.innerHTML = "";
+
+      if (results.length === 0) {
+        const emptyState = document.createElement("div");
+        emptyState.style.padding = "12px";
+        emptyState.style.background = "#fff";
+
+        const emptyTitle = document.createElement("div");
+        emptyTitle.textContent = "No hubo coincidencias directas";
+        emptyTitle.style.fontSize = "13px";
+        emptyTitle.style.fontWeight = "700";
+        emptyTitle.style.color = "#18130b";
+        emptyTitle.style.marginBottom = "4px";
+
+        const emptyText = document.createElement("div");
+        emptyText.textContent =
+          "Prueba con marcas, modelos o categorias como BMW, Ford Bronco, hibridos o electricos.";
+        emptyText.style.fontSize = "12px";
+        emptyText.style.color = "#51473a";
+        emptyText.style.lineHeight = "1.45";
+
+        emptyState.append(emptyTitle, emptyText);
+        sugerencias.appendChild(emptyState);
+        sugerencias.style.display = "block";
+        posicionarSugerencias();
+        return;
+      }
+
+      results.forEach((result) => {
+        const item = document.createElement("button");
+        item.type = "button";
+        item.style.display = "block";
+        item.style.width = "100%";
+        item.style.padding = "10px 12px";
+        item.style.textAlign = "left";
+        item.style.borderBottom = "1px solid #ece7dd";
+        item.style.background = "#fff";
+        item.style.cursor = "pointer";
+
+        const meta = document.createElement("div");
+        meta.textContent = `${result.type.toUpperCase()} | ${result.category}`;
+        meta.style.fontSize = "11px";
+        meta.style.color = "#7a6e57";
+        meta.style.marginBottom = "4px";
+        meta.style.letterSpacing = "0.04em";
+
+        const title = document.createElement("div");
+        title.textContent = result.title;
+        title.style.fontSize = "14px";
+        title.style.fontWeight = "700";
+        title.style.color = "#18130b";
+        title.style.marginBottom = "2px";
+
+        const description = document.createElement("div");
+        description.textContent = result.description;
+        description.style.fontSize = "12px";
+        description.style.color = "#51473a";
+        description.style.lineHeight = "1.4";
+
+        item.append(meta, title, description);
+
+        item.addEventListener("click", () => {
+          cerrarBuscador();
+          goToSearchTarget(result.href);
+        });
+
+        item.addEventListener("mouseover", () => {
+          item.style.background = "#f8f2e8";
+        });
+
+        item.addEventListener("mouseout", () => {
+          item.style.background = "#fff";
+        });
+
+        sugerencias.appendChild(item);
+      });
+
+      const lastElement = sugerencias.lastElementChild as HTMLElement | null;
+      if (lastElement) {
+        lastElement.style.borderBottom = "0";
+      }
+
+      sugerencias.style.display = "block";
+      posicionarSugerencias();
+    }
+
+    async function updateSuggestions() {
+      limpiarTimerOrientacion(); // Cancelar timeout anterior
+      const value = searchInputEl.value.trim();
+      if (!value) {
+        sugerencias.style.display = "none";
+        sugerencias.innerHTML = "";
+        return;
+      }
+
+      await loadDynamicSearchEntries();
+      const results = findMatches(value, [
+        ...staticSearchEntries,
+        ...dynamicSearchEntries,
+      ]);
+      renderSuggestions(results);
+      // NO programar timeout aquí - solo es para orientación inicial
     }
 
     // Mostrar sugerencias mientras escribe
     searchInputEl.addEventListener("input", function () {
-      const valor = searchInputEl.value.toLowerCase().trim();
-      sugerencias.innerHTML = "";
+      updateSuggestions();
+    });
 
-      if (!valor) {
-        sugerencias.style.display = "none";
-        return;
-      }
+    searchInputEl.addEventListener("focus", function () {
+      limpiarTimerOrientacion();
+      if (!searchInputEl.value.trim()) {
+        sugerencias.innerHTML = "";
 
-      const resultados = secciones.filter((sec) =>
-        sec.nombre.toLowerCase().includes(valor),
-      );
+        const hintState = document.createElement("div");
+        hintState.style.padding = "12px";
+        hintState.style.background = "#fff";
 
-      if (resultados.length > 0) {
-        resultados.forEach((sec) => {
-          const item = document.createElement("div");
-          item.textContent = sec.nombre;
-          item.style.padding = "8px";
-          item.style.cursor = "pointer";
+        const hintTitle = document.createElement("div");
+        hintTitle.textContent = "Puedes buscar por:";
+        hintTitle.style.fontSize = "13px";
+        hintTitle.style.fontWeight = "700";
+        hintTitle.style.color = "#18130b";
+        hintTitle.style.marginBottom = "4px";
 
-          item.addEventListener("click", () => {
-            window.location.href = sec.id;
-            sugerencias.style.display = "none";
-          });
+        const hintText = document.createElement("div");
+        hintText.textContent =
+          "Marcas, modelos o categorias. Ejemplos: BMW, DFSK E5, hibridos, electricos, pruebas.";
+        hintText.style.fontSize = "12px";
+        hintText.style.color = "#51473a";
+        hintText.style.lineHeight = "1.45";
 
-          item.addEventListener("mouseover", () => {
-            item.style.background = "#eee";
-          });
-
-          item.addEventListener("mouseout", () => {
-            item.style.background = "#fff";
-          });
-
-          sugerencias.appendChild(item);
-        });
+        hintState.append(hintTitle, hintText);
+        sugerencias.appendChild(hintState);
         sugerencias.style.display = "block";
         posicionarSugerencias();
+        programarOcultarOrientacion(); // Solo timeout para la orientación inicial
       } else {
-        sugerencias.style.display = "none";
+        // Si ya hay text, mostrar resultados de búsqueda
+        updateSuggestions();
       }
     });
 
+    searchInputEl.addEventListener("blur", function () {
+      // Al perder foco, ocultar sugerencias pero NO cerrar el input (permite seguir escribiendo)
+      setTimeout(() => {
+        limpiarTimerOrientacion();
+        sugerencias.style.display = "none";
+        sugerencias.innerHTML = "";
+      }, 200);
+    });
+
+    sugerencias.addEventListener("mouseenter", function () {
+      limpiarTimerOrientacion();
+    });
+
+    sugerencias.addEventListener("mouseleave", function () {
+      // No hacer nada aquí - el blur del input o click fuera manejará la ocultación
+      limpiarTimerOrientacion();
+    });
+
     // Buscar con Enter
-    searchInputEl.addEventListener("keydown", function (event) {
+    searchInputEl.addEventListener("keydown", async function (event) {
       if (event.key === "Enter") {
-        const valor = searchInputEl.value.toLowerCase().trim();
-        const resultado = secciones.find((sec) =>
-          sec.nombre.toLowerCase().includes(valor),
+        const value = searchInputEl.value.trim();
+        if (!value) {
+          sugerencias.style.display = "none";
+          return;
+        }
+
+        await loadDynamicSearchEntries();
+        const results = findMatches(value, [
+          ...staticSearchEntries,
+          ...dynamicSearchEntries,
+        ]);
+        const normalizedValue = normalizeSearchText(value);
+        const exactMatch = results.find(
+          (result) => normalizeSearchText(result.title) === normalizedValue,
         );
 
-        if (resultado) {
-          window.location.href = resultado.id;
-        } else {
-          alert("No se encontró ninguna sección.");
+        // Cerrar el input antes de navegar
+        cerrarBuscador();
+
+        if (exactMatch) {
+          goToSearchTarget(exactMatch.href);
+          return;
         }
-        sugerencias.style.display = "none";
+
+        window.location.href = `/buscar?q=${encodeURIComponent(value)}`;
+      }
+    });
+
+    window.addEventListener("resize", function () {
+      if (sugerencias.style.display === "block") {
+        posicionarSugerencias();
       }
     });
 
@@ -1043,9 +1442,12 @@
       if (
         targetNode &&
         !searchInputEl.contains(targetNode) &&
-        !sugerencias.contains(targetNode)
+        !sugerencias.contains(targetNode) &&
+        !searchButton?.contains(targetNode) &&
+        !searchCloseBtn?.contains(targetNode)
       ) {
-        sugerencias.style.display = "none";
+        limpiarTimerOrientacion();
+        cerrarBuscador();
       }
     });
   });

@@ -1,59 +1,98 @@
 ---
-// Array de videos con información
-const videoPruebas = [
+import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+
+type PruebaItem = {
+  title: string;
+  subtitle: string;
+  video?: string;
+  image?: string;
+  href?: string;
+  sortDate: number;
+};
+
+// Base estática de videos
+const staticPruebas: PruebaItem[] = [
   {
-    id: 1,
     title: "FORD F-150",
     subtitle:
       "En nuestra prueba destacada tenemos a la Ford F-150, una pick-up que te brinda todo lo que necesitas para esos viajes fuera de la ciudad. Descubre la emoción de nuestro modelo estrella.",
     video: "/img/videos-pruebas/ford f-150.mp4",
+    sortDate: new Date("2025-08-10").getTime(),
   },
   {
-    id: 2,
     title: "XIAOMI YU7",
     subtitle:
       "Diseño y tecnología en armonía, el carro de Xiaomi rompiendo récord como el más vendido en poco tiempo.",
     video: "/img/videos-pruebas/xiaomi YU7.mp4",
+    sortDate: new Date("2025-08-09").getTime(),
   },
   {
-    id: 3,
     title: "NISSAN QASHQAI",
     subtitle:
       "Con nueva parrilla, la Nissan Qashqai nos sorprende con sus cambios en tecnología y seguridad.",
     video: "/img/videos-pruebas/nissan qashqai.mp4",
+    sortDate: new Date("2025-08-08").getTime(),
   },
   {
-    id: 4,
     title: "MAZDA ICONIC",
     subtitle:
       "El diseño de este Mazda Iconic es muy moderno y elegante, destaca por sus líneas deportivas y detalles innovadores.",
     video: "/img/videos-pruebas/prueba-mazda.mp4",
+    sortDate: new Date("2025-08-07").getTime(),
   },
   {
-    id: 5,
     title: "DFSK E5",
     subtitle:
       "La SUV eléctrica para 7 pasajeros, confortable y espaciosa, nos sorprendió mucho y seguro que a ustedes también les gustará.",
     video: "/img/videos-pruebas/video-dfsk.mp4",
+    sortDate: new Date("2025-08-06").getTime(),
   },
   {
-    id: 6,
     title: "KIA K4 XLINE",
     subtitle:
       "La marca no quiere dejar los automóviles, por eso nos presenta el K4 Xline: deportivo, seguro y muy confortable.",
     video: "/img/videos-pruebas/video-kia-k4.mp4",
+    sortDate: new Date("2025-08-05").getTime(),
   },
   {
-    id: 7,
     title: "ZEEKR 007 GT",
     subtitle:
       "El ZEEKR 007 GT fue lanzado en China en abril del 2025 y a Europa llegará como 007 GT.",
     video: "/img/videos-pruebas/video-zeekr.mp4",
+    sortDate: new Date("2025-08-04").getTime(),
   },
 ];
 
-const destacada = videoPruebas[0];
-const resto = videoPruebas.slice(1);
+let dynamicPruebas: PruebaItem[] = [];
+
+try {
+  const apiUrl = getApiUrl("get-notes");
+  const data = await fetchWithTimeout(apiUrl);
+
+  if (data && Array.isArray(data)) {
+    dynamicPruebas = data
+      .filter((note: any) => note.category?.toLowerCase() === "pruebas")
+      .map((note: any) => ({
+        title: note.title || "Sin título",
+        subtitle: note.subtitle || "",
+        video: note.video1?.trim() || undefined,
+        image: note.image1?.trim() || undefined,
+        href: `/notas/${note.id}`,
+        sortDate: note.created_at ? new Date(note.created_at).getTime() : 0,
+      }));
+  }
+} catch (err) {
+  console.error("Error cargando pruebas dinámicas:", err);
+}
+
+const HOME_VISIBLE_COUNT = staticPruebas.length;
+const allPruebas = [...dynamicPruebas, ...staticPruebas].sort(
+  (a, b) => b.sortDate - a.sortDate,
+);
+
+const homePruebas = allPruebas.slice(0, HOME_VISIBLE_COUNT);
+const destacada = homePruebas[0];
+const resto = homePruebas.slice(1);
 ---
 
 <section id="pruebas" class="pruebas-container">
@@ -80,8 +119,8 @@ const resto = videoPruebas.slice(1);
         <div class="prueba-destacada-texto">
           <h2>{destacada.title}</h2>
           <p>{destacada.subtitle}</p>
-          <a href="#" class="btn-ver-video">
-            +VIDEOS
+          <a href="/pruebas" class="btn-ver-video">
+            Ver más videos
           </a>
         </div>
       </div>
@@ -101,9 +140,6 @@ const resto = videoPruebas.slice(1);
           <div class="prueba-info">
             <h3>{prueba.title}</h3>
             <p>{prueba.subtitle}</p>
-            <a href="/notas" class="prueba-link">
-              Ver más →
-            </a>
           </div>
         </div>
       ))
@@ -111,13 +147,11 @@ const resto = videoPruebas.slice(1);
   </div>
 
   <div class="ver-mas-videos-container">
-    <a href="/notas" class="ver-mas-videos-btn">Ver más videos</a>
+    <a href="/pruebas" class="ver-mas-videos-btn">Ver más videos</a>
   </div>
 </section>
 
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&display=swap");
-
   * {
     margin: 0;
     padding: 0;
@@ -125,30 +159,19 @@ const resto = videoPruebas.slice(1);
   }
 
   .pruebas-container {
-    --sport-bg: #0b0f14;
-    --sport-panel: #141b23;
-    --sport-panel-2: #1a2430;
-    --sport-accent: #39ff88;
+    --sport-bg: #f7f8fa;
+    --sport-panel: #ffffff;
+    --sport-panel-2: #f2f4f7;
+    --sport-accent: #08341f;
     --sport-accent-2: #f19f1b;
-    --sport-text: #e9eef5;
-    --sport-muted: #aab3bf;
+    --sport-text: #0f172a;
+    --sport-muted: #4b5563;
     width: 100%;
-    background:
-      radial-gradient(
-        1200px 600px at 10% -10%,
-        rgba(57, 255, 136, 0.18),
-        transparent 60%
-      ),
-      radial-gradient(
-        1000px 500px at 90% 0%,
-        rgba(255, 95, 31, 0.18),
-        transparent 55%
-      ),
-      linear-gradient(135deg, #0b0f14 0%, #111823 100%);
+    background: linear-gradient(180deg, #fafbfc 0%, #f2f5f8 100%);
     padding: 80px 0 90px;
     border-bottom: 4px solid var(--sport-accent-2);
     color: var(--sport-text);
-    font-family: "Barlow", "Segoe UI", sans-serif;
+    font-family: Georgia, "Times New Roman", serif;
     position: relative;
     overflow: hidden;
   }
@@ -158,10 +181,10 @@ const resto = videoPruebas.slice(1);
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(120deg, rgba(57, 255, 136, 0.08), transparent 40%),
+      linear-gradient(120deg, rgba(8, 52, 31, 0.04), transparent 40%),
       repeating-linear-gradient(
         135deg,
-        rgba(255, 255, 255, 0.04) 0 1px,
+        rgba(8, 52, 31, 0.03) 0 1px,
         transparent 1px 12px
       );
     pointer-events: none;
@@ -195,16 +218,15 @@ const resto = videoPruebas.slice(1);
 
   .pruebas-icono i {
     font-size: 38px;
-    color: #0b0f14;
+    color: #ffffff;
   }
 
   .pruebas-titulo {
-    font-family: "Bebas Neue", "Barlow", sans-serif;
-    font-size: clamp(46px, 6vw, 72px);
+    font-size: clamp(50px, 6vw, 76px);
     font-weight: 700;
-    margin-bottom: 12px;
-    color: #f5f8ff;
-    letter-spacing: 1.2px;
+    margin-bottom: 14px;
+    color: var(--sport-accent);
+    letter-spacing: 0;
     opacity: 0;
     transform: translateY(0);
     transition: none;
@@ -215,11 +237,11 @@ const resto = videoPruebas.slice(1);
   }
 
   .descripcion-pruebas {
-    font-size: 18px;
+    font-size: 21px;
     color: var(--sport-muted);
-    max-width: 620px;
+    max-width: 760px;
     margin: 0 auto;
-    line-height: 1.7;
+    line-height: 1.85;
     font-weight: 400;
   }
 
@@ -239,8 +261,8 @@ const resto = videoPruebas.slice(1);
   .prueba-destacada-video {
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
-    border: 1px solid rgba(57, 255, 136, 0.2);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
+    border: 1px solid #dbe2ea;
     background: var(--sport-panel);
     aspect-ratio: 4 / 3;
   }
@@ -250,22 +272,21 @@ const resto = videoPruebas.slice(1);
     height: 100%;
     object-fit: cover;
     display: block;
-    background-color: #0b0f14;
+    background-color: #edf2f7;
   }
 
   .prueba-destacada-texto h2 {
-    font-family: "Bebas Neue", "Barlow", sans-serif;
-    font-size: clamp(42px, 5vw, 60px);
+    font-size: clamp(40px, 5vw, 58px);
     font-weight: 700;
     margin-bottom: 16px;
-    text-transform: uppercase;
     color: var(--sport-accent);
-    letter-spacing: 1px;
+    letter-spacing: 0;
+    line-height: 1.15;
   }
 
   .prueba-destacada-texto p {
-    font-size: 18px;
-    line-height: 1.75;
+    font-size: 21px;
+    line-height: 1.85;
     margin-bottom: 28px;
     color: var(--sport-muted);
     font-weight: 400;
@@ -280,9 +301,9 @@ const resto = videoPruebas.slice(1);
       var(--sport-accent) 0%,
       var(--sport-accent-2) 100%
     );
-    color: #0b0f14;
+    color: #ffffff;
     padding: 14px 40px;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
     border-radius: 999px;
     text-decoration: none;
@@ -291,14 +312,14 @@ const resto = videoPruebas.slice(1);
       box-shadow 0.3s ease;
     cursor: pointer;
     border: none;
-    box-shadow: 0 10px 28px rgba(57, 255, 136, 0.35);
+    box-shadow: 0 10px 24px rgba(8, 52, 31, 0.22);
     text-transform: uppercase;
     letter-spacing: 1px;
   }
 
   .btn-ver-video:hover {
     transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 16px 40px rgba(57, 255, 136, 0.45);
+    box-shadow: 0 16px 34px rgba(8, 52, 31, 0.26);
   }
 
   /* Grid de pruebas */
@@ -316,34 +337,30 @@ const resto = videoPruebas.slice(1);
   }
 
   .prueba-card {
-    background: linear-gradient(
-      160deg,
-      var(--sport-panel) 0%,
-      var(--sport-panel-2) 100%
-    );
+    background: linear-gradient(160deg, #ffffff 0%, var(--sport-panel-2) 100%);
     border-radius: 18px;
     overflow: hidden;
     transition:
       transform 0.35s ease,
       box-shadow 0.35s ease,
       border-color 0.35s ease;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
     animation: card-rise 0.7s ease both;
     animation-delay: calc(var(--i) * 80ms);
   }
 
   .prueba-card:hover {
     transform: translateY(-10px) scale(1.01);
-    border-color: rgba(57, 255, 136, 0.5);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    border-color: rgba(8, 52, 31, 0.35);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.16);
   }
 
   .prueba-imagen-wrapper {
     width: 100%;
     aspect-ratio: 6 / 6;
     overflow: hidden;
-    background: #0f141b;
+    background: #edf2f7;
   }
 
   .prueba-imagen-wrapper video {
@@ -351,7 +368,7 @@ const resto = videoPruebas.slice(1);
     height: 100%;
     object-fit: cover;
     display: block;
-    background-color: #0b0f14;
+    background-color: #edf2f7;
   }
 
   .prueba-imagen-wrapper img {
@@ -412,49 +429,20 @@ const resto = videoPruebas.slice(1);
   }
 
   .prueba-info h3 {
-    font-family: "Bebas Neue", "Barlow", sans-serif;
-    font-size: 26px;
+    font-size: 32px;
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     color: var(--sport-accent);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.2;
   }
 
   .prueba-info p {
-    font-size: 15px;
+    font-size: 19px;
     color: var(--sport-muted);
-    margin-bottom: 18px;
-    line-height: 1.6;
-  }
-
-  .prueba-link {
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 700;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .prueba-link::after {
-    content: "";
-    width: 24px;
-    height: 2px;
-    background: var(--sport-accent);
-    transition: width 0.3s ease;
-  }
-
-  .prueba-link:hover {
-    color: var(--sport-accent);
-  }
-
-  .prueba-link:hover::after {
-    width: 36px;
+    margin-bottom: 0;
+    line-height: 1.75;
   }
 
   /* Botón Ver más videos */
@@ -467,10 +455,10 @@ const resto = videoPruebas.slice(1);
   }
 
   .ver-mas-videos-btn {
-    background: #0b0f14;
-    color: #ffffff;
+    background: #ffffff;
+    color: var(--sport-accent);
     padding: 16px 48px;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
     border-radius: 999px;
     text-decoration: none;
@@ -480,14 +468,14 @@ const resto = videoPruebas.slice(1);
       border-color 0.3s ease;
     cursor: pointer;
     border: 2px solid var(--sport-accent);
-    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
     text-transform: uppercase;
     letter-spacing: 1px;
   }
 
   .ver-mas-videos-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.18);
     border-color: var(--sport-accent-2);
   }
 
@@ -550,7 +538,7 @@ const resto = videoPruebas.slice(1);
     }
 
     .prueba-destacada-texto h2 {
-      font-size: 40px;
+      font-size: 42px;
       margin-bottom: 15px;
     }
 
@@ -565,12 +553,16 @@ const resto = videoPruebas.slice(1);
     }
 
     .prueba-info h3 {
-      font-size: 20px;
+      font-size: 28px;
+    }
+
+    .prueba-info p {
+      font-size: 18px;
     }
 
     .btn-ver-video {
       padding: 14px 36px;
-      font-size: 16px;
+      font-size: 17px;
     }
   }
 
@@ -596,13 +588,13 @@ const resto = videoPruebas.slice(1);
     }
 
     .pruebas-titulo {
-      font-size: 40px;
-      letter-spacing: -0.5px;
+      font-size: 44px;
+      letter-spacing: 0;
       margin-bottom: 12px;
     }
 
     .descripcion-pruebas {
-      font-size: 16px;
+      font-size: 18px;
       max-width: 100%;
     }
 
@@ -622,19 +614,19 @@ const resto = videoPruebas.slice(1);
     }
 
     .prueba-destacada-texto h2 {
-      font-size: 28px;
+      font-size: 32px;
       margin-bottom: 12px;
     }
 
     .prueba-destacada-texto p {
-      font-size: 16px;
+      font-size: 18px;
       margin-bottom: 20px;
       line-height: 1.6;
     }
 
     .btn-ver-video {
       padding: 12px 28px;
-      font-size: 15px;
+      font-size: 16px;
     }
 
     .pruebas-grid {
@@ -657,18 +649,13 @@ const resto = videoPruebas.slice(1);
     }
 
     .prueba-info h3 {
-      font-size: 18px;
+      font-size: 24px;
       margin-bottom: 10px;
     }
 
     .prueba-info p {
-      font-size: 15px;
+      font-size: 17px;
       margin-bottom: 12px;
-    }
-
-    .prueba-link {
-      font-size: 14px;
-      gap: 4px;
     }
 
     .ver-mas-videos-container {
@@ -677,7 +664,7 @@ const resto = videoPruebas.slice(1);
 
     .ver-mas-videos-btn {
       padding: 12px 28px;
-      font-size: 15px;
+      font-size: 16px;
       width: 100%;
       max-width: 400px;
     }
@@ -705,14 +692,14 @@ const resto = videoPruebas.slice(1);
     }
 
     .pruebas-titulo {
-      font-size: 28px;
+      font-size: 32px;
       letter-spacing: 0;
       margin-bottom: 10px;
       font-weight: 700;
     }
 
     .descripcion-pruebas {
-      font-size: 14px;
+      font-size: 16px;
       line-height: 1.6;
     }
 
@@ -728,19 +715,19 @@ const resto = videoPruebas.slice(1);
     }
 
     .prueba-destacada-texto h2 {
-      font-size: 22px;
+      font-size: 26px;
       margin-bottom: 10px;
     }
 
     .prueba-destacada-texto p {
-      font-size: 14px;
+      font-size: 16px;
       margin-bottom: 15px;
       line-height: 1.5;
     }
 
     .btn-ver-video {
       padding: 11px 22px;
-      font-size: 14px;
+      font-size: 15px;
       width: 100%;
     }
 
@@ -764,22 +751,13 @@ const resto = videoPruebas.slice(1);
     }
 
     .prueba-info h3 {
-      font-size: 16px;
+      font-size: 22px;
       margin-bottom: 8px;
     }
 
     .prueba-info p {
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-
-    .prueba-link {
-      font-size: 13px;
-      gap: 3px;
-    }
-
-    .prueba-link:hover {
-      gap: 6px;
+      font-size: 17px;
+      margin-bottom: 0;
     }
 
     .ver-mas-videos-container {
@@ -788,7 +766,7 @@ const resto = videoPruebas.slice(1);
 
     .ver-mas-videos-btn {
       padding: 11px 22px;
-      font-size: 14px;
+      font-size: 15px;
       width: 100%;
     }
   }
@@ -796,33 +774,33 @@ const resto = videoPruebas.slice(1);
   /* Responsive - Small Mobile (320px) */
   @media (max-width: 360px) {
     .pruebas-titulo {
-      font-size: 22px;
+      font-size: 26px;
     }
 
     .descripcion-pruebas {
-      font-size: 13px;
+      font-size: 15px;
     }
 
     .prueba-destacada-texto h2 {
-      font-size: 20px;
+      font-size: 22px;
     }
 
     .prueba-destacada-texto p {
-      font-size: 13px;
+      font-size: 15px;
     }
 
     .btn-ver-video,
     .ver-mas-videos-btn {
-      font-size: 13px;
+      font-size: 14px;
       padding: 10px 18px;
     }
 
     .prueba-info h3 {
-      font-size: 15px;
+      font-size: 20px;
     }
 
     .prueba-info p {
-      font-size: 13px;
+      font-size: 16px;
     }
   }
 </style>

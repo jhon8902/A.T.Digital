@@ -1,0 +1,60 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CategoryArchive from "../components/archive/CategoryArchive.astro";
+
+const staticNotes = [
+  {
+    href: "/noticias-carrusel/noticia-ford",
+    img: "/img/ford-bronco/ford-bronco-suspension.webp",
+    alt: "Ford Bronco",
+    title: "Ford Bronco: la última apuesta todoterreno.",
+    description: "Innovaciones en diseño, seguridad y desempeño off-road.",
+    fecha: "Publicado: 01/07/2025",
+  },
+  {
+    href: "/noticias-carrusel/noticia-audi",
+    img: "/img/audi-etron/audi-portada.webp",
+    alt: "Audi E-TRON",
+    title: "Audi E-TRON: el SUV eléctrico más elegante de la marca.",
+    description: "Lujo eléctrico con enfoque en tecnología y confort.",
+    fecha: "Publicado: 28/06/2025",
+  },
+  {
+    href: "/noticias-carrusel/noticia-bmw-concept",
+    img: "/img/bmw-concept/bmw-concept-portada.webp",
+    alt: "BMW Concept XM",
+    title: "BMW Concept XM: el futuro del lujo y la potencia híbrida.",
+    description: "Diseño conceptual con alto rendimiento y ADN deportivo.",
+    fecha: "Publicado: 25/06/2025",
+  },
+  {
+    href: "/noticias-carrusel/noticia-bmw",
+    img: "/img/bmw-330e/bmw.webp",
+    alt: "BMW Serie 5",
+    title: "BMW Serie 5: poderoso y ahora electrificado.",
+    description: "Eficiencia y desempeño en la nueva generación del modelo.",
+    fecha: "Publicado: 20/06/2025",
+  },
+  {
+    href: "/noticias-carrusel/noticia-dfsk",
+    img: "/img/dfsk-e5/dfsk-ultima-portada.jpg",
+    alt: "DFSK E5",
+    title: "DFSK E5: la híbrida para 7 pasajeros en Colombia.",
+    description: "Una propuesta familiar con buen equipamiento y espacio.",
+    fecha: "Publicado: 15/06/2025",
+  },
+];
+---
+
+<Layout
+  title="Noticias Automotrices | Auto-Tech-Digital"
+  description="Últimas noticias del mundo automotriz en Colombia y el mundo: lanzamientos, tecnología, eléctricos e híbridos. Mantente informado con Auto-Tech-Digital."
+>
+  <CategoryArchive
+    category="noticias"
+    skipFirst={5}
+    title="Más noticias"
+    description="Todas las noticias del sector automotor en un solo lugar."
+    staticNotes={staticNotes}
+  />
+</Layout>

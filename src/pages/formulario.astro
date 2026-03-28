@@ -8,248 +8,958 @@
     <title>Crear Nota</title>
   </head>
   <body>
-    <h1>Crear Nota</h1>
-    <form id="noteForm">
-      <label>
-        Título:
-        <input type="text" name="title" placeholder="Título" required />
-      </label>
+    <main class="form-page">
+      <section class="form-card">
+        <header class="form-header">
+          <h1>Crear Nota</h1>
+          <p>
+            Completa los campos para publicar una nueva nota y ubicarla en la
+            categoría correcta.
+          </p>
+          <div class="header-tags">
+            <span>Editor</span>
+            <span>Contenido</span>
+            <span>Publicación</span>
+          </div>
+        </header>
 
-      <label>
-        Subtítulo:
-        <input type="text" name="subtitle" placeholder="Subtítulo" />
-      </label>
+        <!-- ════════════════════════════════════════════════════
+             PANEL DE AYUDA — Plantilla editorial
+             Siempre a mano antes de crear una nota
+        ════════════════════════════════════════════════════ -->
+        <details class="help-panel">
+          <summary class="help-toggle">
+            📋 Ver plantilla editorial — guía de campos
+          </summary>
 
-      <label>
-        Contenido:
-        <textarea name="content" placeholder="Contenido de la nota" required
-        ></textarea>
-      </label>
+          <div class="help-body">
+            <div class="help-grid">
+              <!-- TÍTULO -->
+              <div class="help-block">
+                <h3>Título</h3>
+                <code>[Marca] [Modelo] [Año]: frase gancho</code>
+                <p class="help-example">
+                  Ej: <em
+                    >CUPRA Born 2025: el eléctrico que desafía todos los límites</em
+                  >
+                </p>
+              </div>
 
-      <label>
-        Categoría:
-        <select name="category" required>
-          <option value="electricos">Eléctricos</option>
-          <option value="hibridos">Híbridos</option>
-          <option value="deportes">Deportes</option>
-          <option value="noticias">Noticias</option>
-          <option value="pruebas">Pruebas</option>
-          <option value="lanzamientos">Lanzamientos</option>
-        </select>
-      </label>
+              <!-- SUBTÍTULO -->
+              <div class="help-block">
+                <h3>Subtítulo</h3>
+                <p>Una sola oración ≤ 150 caracteres que amplíe el titular.</p>
+                <p class="help-example">
+                  Ej: <em
+                    >Llega renovado con más autonomía y tecnología de última
+                    generación.</em
+                  >
+                </p>
+              </div>
 
-      <fieldset>
-        <legend>Imágenes (URLs)</legend>
-        <input type="text" name="image1" placeholder="URL Imagen 1" />
-        <input type="text" name="image2" placeholder="URL Imagen 2" />
-        <input type="text" name="image3" placeholder="URL Imagen 3" />
-        <input type="text" name="image4" placeholder="URL Imagen 4" />
-        <input type="text" name="image5" placeholder="URL Imagen 5" />
-        <input type="text" name="image6" placeholder="URL Imagen 6" />
-      </fieldset>
+              <!-- CATEGORÍA -->
+              <div class="help-block help-block-full">
+                <h3>Categoría</h3>
+                <table class="help-table">
+                  <thead><tr><th>Valor</th><th>Cuándo usarla</th></tr></thead>
+                  <tbody>
+                    <tr
+                      ><td><code>electricos</code></td><td
+                        >Autos 100 % eléctricos (BEV)</td
+                      ></tr
+                    >
+                    <tr
+                      ><td><code>hibridos</code></td><td
+                        >Híbridos enchufables (PHEV) o suaves (MHEV/HEV)</td
+                      ></tr
+                    >
+                    <tr
+                      ><td><code>deportes</code></td><td
+                        >Autos deportivos, supercar, competición</td
+                      ></tr
+                    >
+                    <tr
+                      ><td><code>noticias</code></td><td
+                        >Noticias de marca, lanzamientos mundiales</td
+                      ></tr
+                    >
+                    <tr
+                      ><td><code>pruebas</code></td><td
+                        >Pruebas/tests de manejo propios de A.T. Digital</td
+                      ></tr
+                    >
+                    <tr
+                      ><td><code>lanzamientos</code></td><td
+                        >Presentaciones oficiales en Colombia o región</td
+                      ></tr
+                    >
+                  </tbody>
+                </table>
+              </div>
 
-      <!-- Videos -->
-      <label for="video1">Video principal (destacado)</label>
-      <input
-        type="text"
-        id="video1"
-        name="video1"
-        placeholder="../img/videos-pruebas/mi-video.mp4"
-      />
+              <!-- CONTENIDO -->
+              <div class="help-block help-block-full">
+                <h3>Contenido — estructura recomendada</h3>
+                <p>
+                  Escribe en <strong>texto plano</strong>. Separa cada sección
+                  con una <strong>línea en blanco</strong>. Cada párrafo se
+                  convierte en un bloque editorial aparte.
+                </p>
+                <div class="help-template">
+                  <p>
+                    <strong>① INTRO</strong> — Ciudad + presentación del auto<br
+                    />
+                    El CUPRA Born llegó a Bogotá con una propuesta que pocos esperaban:
+                    un eléctrico de carácter deportivo sin sacrificar practicidad.
+                  </p>
+                  <p>
+                    <strong>② DISEÑO</strong> — Exterior + primera impresión<br
+                    />
+                    Las líneas del Born hablan por sí solas. Los faros LED en forma
+                    de "C" le dan una identidad instantáneamente reconocible.
+                  </p>
+                  <p>
+                    <strong>③ INTERIOR</strong> — Tecnología + confort<br />
+                    Al subir, la pantalla flotante de 12" domina la cabina. El sistema
+                    de sonido beats de 300 W eleva la experiencia.
+                  </p>
+                  <p>
+                    <strong>④ RENDIMIENTO</strong> — Motorización + conducción<br
+                    />
+                    El motor de 231 CV entrega 310 Nm de par en décimas. 0–100 km/h
+                    en 6,6 s.
+                  </p>
+                  <p>
+                    <strong>⑤ DESTACADOS</strong> — Bullet list de specs clave<br
+                    />
+                    • Autonomía: 545 km WLTP<br />
+                    • Carga rápida: 130 kW (10–80 % en 35 min)<br />
+                    • Precio desde: COP 189.900.000
+                  </p>
+                  <p>
+                    <strong>⑥ CONCLUSIÓN</strong> — Veredicto + llamado a la acción<br
+                    />
+                    El CUPRA Born consolida a la marca como un jugador serio. Contáctanos
+                    para agendar una prueba de manejo.
+                  </p>
+                </div>
+              </div>
 
-      <label for="video2">Video 2</label>
-      <input type="text" id="video2" name="video2" />
+              <div class="help-block help-block-full">
+                <h3>Ficha técnica — plantilla rápida</h3>
+                <p>
+                  Esta sección es el diferencial de A.T. Digital. Completa solo
+                  lo que tengas confirmado; los campos vacíos no se publican.
+                </p>
+                <div class="help-template">
+                  <p><strong>Segmento:</strong> SUV compacto eléctrico</p>
+                  <p><strong>Origen:</strong> China</p>
+                  <p><strong>Motorización:</strong> Eléctrica 100 % (BEV)</p>
+                  <p><strong>Potencia (hp):</strong> 215</p>
+                  <p><strong>Torque (Nm):</strong> 320</p>
+                  <p><strong>Batería (kWh):</strong> 62</p>
+                  <p><strong>Autonomía (km):</strong> 470</p>
+                  <p><strong>Carga AC (kW):</strong> 11</p>
+                  <p><strong>Carga DC (kW):</strong> 92</p>
+                  <p><strong>0 a 100 km/h:</strong> 7.4 s</p>
+                  <p><strong>Tracción:</strong> Delantera</p>
+                  <p>
+                    <strong>Precio referencial (COP):</strong> Desde 164.900.000
+                  </p>
+                </div>
+              </div>
 
-      <label for="video3">Video 3</label>
-      <input type="text" id="video3" name="video3" />
+              <!-- IMÁGENES -->
+              <div class="help-block help-block-full">
+                <h3>Imágenes (URLs)</h3>
+                <table class="help-table">
+                  <thead
+                    ><tr
+                      ><th>Campo</th><th>Rol en la nota</th><th>Proporción</th
+                      ></tr
+                    ></thead
+                  >
+                  <tbody>
+                    <tr
+                      ><td><code>Imagen 1</code></td><td
+                        >Portada principal (arriba del todo)</td
+                      ><td>16:9</td></tr
+                    >
+                    <tr
+                      ><td><code>Imagen 2</code></td><td
+                        >Segunda sección / detalle</td
+                      ><td>16:9 ó 4:3</td></tr
+                    >
+                    <tr
+                      ><td><code>Imagen 3</code></td><td
+                        >Detalle diseño / ruedas / faros</td
+                      ><td>1:1 ó 4:3</td></tr
+                    >
+                    <tr
+                      ><td><code>Imagen 4</code></td><td>Interior / cockpit</td
+                      ><td>16:9</td></tr
+                    >
+                    <tr
+                      ><td><code>Imagen 5</code></td><td
+                        >Foto de acción / dinámica</td
+                      ><td>16:9</td></tr
+                    >
+                  </tbody>
+                </table>
+                <p class="help-tip">
+                  💡 Fuentes: <strong>unsplash.com</strong>, <strong
+                    >pexels.com</strong
+                  > o sala de prensa del fabricante.
+                </p>
+              </div>
 
-      <label for="video3">Video 4</label>
-      <input type="text" id="video4" name="video4" />
+              <!-- CHECKLIST -->
+              <div class="help-block help-block-full help-checklist">
+                <h3>✅ Checklist antes de publicar</h3>
+                <ul>
+                  <li>Título tiene marca, modelo y año</li>
+                  <li>Subtítulo ≤ 150 caracteres</li>
+                  <li>
+                    Contenido: mínimo 4 párrafos separados por línea en blanco
+                  </li>
+                  <li>Imagen 1 cargada (es la portada)</li>
+                  <li>Categoría correcta según la tabla</li>
+                  <li>Revisión ortográfica rápida</li>
+                </ul>
+              </div>
+            </div><!-- /.help-grid -->
+          </div><!-- /.help-body -->
+        </details>
 
-      <label for="video4">Video 5</label>
-      <input type="text" id="video5" name="video5" />
+        <form id="noteForm" class="note-form">
+          <div class="grid-2">
+            <label>
+              Título
+              <input type="text" name="title" placeholder="Título" required />
+            </label>
 
-      <label for="video4">Video 6</label>
-      <input type="text" id="video5" name="video6" />
+            <label>
+              Subtítulo
+              <input type="text" name="subtitle" placeholder="Subtítulo" />
+            </label>
+          </div>
 
-      <label for="video4">Video 7</label>
-      <input type="text" id="video7" name="video7" />
+          <label>
+            Categoría
+            <select name="category" required>
+              <option value="electricos">Eléctricos</option>
+              <option value="hibridos">Híbridos</option>
+              <option value="deportes">Deportes</option>
+              <option value="noticias">Noticias</option>
+              <option value="pruebas">Pruebas</option>
+              <option value="lanzamientos">Lanzamientos</option>
+            </select>
+          </label>
 
-      <button type="submit">Guardar Nota</button>
-    </form>
+          <label>
+            Contenido
+            <textarea name="content" placeholder="Contenido de la nota" required
+            ></textarea>
+          </label>
 
-    <p id="msg"></p>
+          <fieldset class="group-box">
+            <legend>Imágenes (URLs)</legend>
+            <p class="storage-tip">
+              Usa enlaces directos o rutas públicas del proyecto, por ejemplo:
+              /img/notas/mi-foto.webp
+            </p>
+            <div class="grid-2">
+              <input type="text" name="image1" placeholder="URL Imagen 1" />
+              <input type="text" name="image2" placeholder="URL Imagen 2" />
+              <input type="text" name="image3" placeholder="URL Imagen 3" />
+              <input type="text" name="image4" placeholder="URL Imagen 4" />
+              <input type="text" name="image5" placeholder="URL Imagen 5" />
+              <input type="text" name="image6" placeholder="URL Imagen 6" />
+            </div>
+          </fieldset>
 
-    <style>
-      body {
-        font-family: "Segoe UI", Roboto, sans-serif;
-        background-color: #eef1f5;
-        padding: 40px;
-        color: #333;
-      }
+          <fieldset class="group-box">
+            <legend>Videos (opcional)</legend>
+            <div class="grid-2">
+              <label for="video1">
+                Video principal (destacado)
+                <input
+                  type="text"
+                  id="video1"
+                  name="video1"
+                  placeholder="../img/videos-pruebas/mi-video.mp4"
+                />
+              </label>
 
-      form {
-        max-width: 100%;
-        margin: auto;
-        background-color: white;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        transition: box-shadow 0.3s ease;
-        font-size: 25px;
-      }
+              <label for="video2">
+                Video 2
+                <input type="text" id="video2" name="video2" />
+              </label>
 
-      h1 {
-        text-align: center;
-        color: #3f3510;
-        margin-bottom: 30px;
-        font-size: 42px;
-      }
+              <label for="video3">
+                Video 3
+                <input type="text" id="video3" name="video3" />
+              </label>
 
-      form:hover {
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-      }
+              <label for="video4">
+                Video 4
+                <input type="text" id="video4" name="video4" />
+              </label>
 
-      label {
-        font-weight: 600;
-        display: block;
-        margin-top: 20px;
-        margin-bottom: 5px;
-        color: #444;
-      }
+              <label for="video5">
+                Video 5
+                <input type="text" id="video5" name="video5" />
+              </label>
 
-      input,
-      textarea,
-      select {
-        width: 100%;
-        padding: 12px 14px;
-        margin-top: 5px;
-        border: 1px solid #ccd1d9;
-        border-radius: 6px;
-        font-size: 16px;
-        background-color: #fdfdfd;
-        transition: border-color 0.2s ease;
-      }
+              <label for="video6">
+                Video 6
+                <input type="text" id="video6" name="video6" />
+              </label>
 
-      input:focus,
-      textarea:focus,
-      select:focus {
-        border-color: #0077ff;
-        outline: none;
-        box-shadow: 0 0 0 2px rgba(0, 119, 255, 0.2);
-      }
+              <label for="video7">
+                Video 7
+                <input type="text" id="video7" name="video7" />
+              </label>
+            </div>
+          </fieldset>
 
-      button {
-        margin-top: 25px;
-        padding: 12px 20px;
-        background-color: #082a53;
-        color: #ffffff;
-        border: none;
-        border-radius: 6px;
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        width: 100%;
-      }
+          <fieldset class="group-box">
+            <legend>Ficha técnica (opcional pero recomendada)</legend>
+            <div class="grid-2">
+              <label>
+                Segmento
+                <input
+                  type="text"
+                  name="spec_segmento"
+                  placeholder="SUV compacto eléctrico"
+                />
+              </label>
 
-      button:hover {
-        background-color: #0056cc;
-      }
+              <label>
+                Precio estimado
+                <input
+                  type="text"
+                  name="spec_precio_estimado"
+                  placeholder="Desde $80,000 - $110,000 USD"
+                />
+              </label>
 
-      .msg {
-        margin-top: 20px;
-        font-weight: 600;
-        color: #0077ff;
-      }
-    </style>
+              <label>
+                Versiones
+                <input
+                  type="text"
+                  name="spec_versiones"
+                  placeholder="Twin Motor (AWD) | Performance (AWD+)"
+                />
+              </label>
 
-    <script>
-      const form = document.getElementById("noteForm");
-      const msg = document.getElementById("msg");
+              <label>
+                Origen
+                <input type="text" name="spec_origen" placeholder="China" />
+              </label>
 
-      // Convierte HTML string a texto plano (quita tags)
-      function stripHtml(html) {
-        const tmp = document.createElement("div");
-        tmp.innerHTML = html;
-        return tmp.textContent || tmp.innerText || "";
-      }
+              <label>
+                Motorización
+                <input
+                  type="text"
+                  name="spec_motorizacion"
+                  placeholder="Eléctrica 100 % (BEV)"
+                />
+              </label>
 
-      // Extrae la primera imagen src de un HTML string
-      function extractFirstImageFromHtml(html) {
-        if (!html) return null;
-        // Intentamos buscar <img src="..."> o <img data-src="...">
-        const imgRegex = /<img[^>]+(?:src|data-src)=["']([^"']+)["'][^>]*>/i;
-        const match = html.match(imgRegex);
-        return match ? match[1] : null;
-      }
+              <label>
+                Potencia (hp)
+                <input type="text" name="spec_potencia_hp" placeholder="215" />
+              </label>
 
-      // Genera un resumen técnico simple: primer texto no vacío hasta N chars
-      function generateSummaryFromHtml(html, maxChars = 160) {
-        const text = stripHtml(html).trim();
-        if (!text) return "";
-        // Tomamos hasta maxChars y evitamos cortar palabras: buscamos último espacio
-        if (text.length <= maxChars) return text;
-        const snippet = text.slice(0, maxChars);
-        const lastSpace = snippet.lastIndexOf(" ");
-        return snippet.slice(0, lastSpace > 40 ? lastSpace : maxChars) + "...";
-      }
+              <label>
+                Torque (Nm)
+                <input type="text" name="spec_torque_nm" placeholder="320" />
+              </label>
 
-      if (form) {
-        form.addEventListener("submit", async (e) => {
-          e.preventDefault();
+              <label>
+                Batería y autonomía (texto completo)
+                <input
+                  type="text"
+                  name="spec_bateria_autonomia"
+                  placeholder="111 kWh (107 útiles) | Hasta 600 km (WLTP)"
+                />
+              </label>
 
-          const formData = new FormData(form);
-          // Si hay campos de imagen y el usuario los dejó vacíos, los omitimos.
-          const data = Object.fromEntries(formData.entries());
+              <label>
+                Batería (kWh)
+                <input type="text" name="spec_bateria_kwh" placeholder="62" />
+              </label>
 
-          // Si estás permitiendo HTML en <textarea name="content">, extrae la primera imagen
-          const contentHtml = data.content || "";
-          const firstImg = extractFirstImageFromHtml(contentHtml);
+              <label>
+                Autonomía (km)
+                <input type="text" name="spec_autonomia_km" placeholder="470" />
+              </label>
 
-          // Si image1 está vacío y extrajimos una img del content, asignamos image1
-          if ((!data.image1 || data.image1.trim() === "") && firstImg) {
-            data.image1 = firstImg;
+              <label>
+                Carga (texto completo)
+                <input
+                  type="text"
+                  name="spec_carga"
+                  placeholder="DC 250 kW: 10–80% en 30 min"
+                />
+              </label>
+
+              <label>
+                Carga AC (kW)
+                <input type="text" name="spec_carga_ac_kw" placeholder="11" />
+              </label>
+
+              <label>
+                Carga DC (kW)
+                <input type="text" name="spec_carga_dc_kw" placeholder="92" />
+              </label>
+
+              <label>
+                0–100 km/h
+                <input
+                  type="text"
+                  name="spec_aceleracion_0_100"
+                  placeholder="7.4 s"
+                />
+              </label>
+
+              <label>
+                Seguridad
+                <input
+                  type="text"
+                  name="spec_seguridad"
+                  placeholder="8 airbags, LiDAR, Pilot Assist..."
+                />
+              </label>
+
+              <label>
+                Equipamiento
+                <input
+                  type="text"
+                  name="spec_equipamiento"
+                  placeholder="Google integrado, HUD, sonido premium..."
+                />
+              </label>
+
+              <label>
+                Pros
+                <input
+                  type="text"
+                  name="spec_pros"
+                  placeholder="Seguridad top, tecnología, espacio..."
+                />
+              </label>
+
+              <label>
+                Contras
+                <input
+                  type="text"
+                  name="spec_contras"
+                  placeholder="Precio alto, disponibilidad limitada..."
+                />
+              </label>
+
+              <label>
+                Competidores directos
+                <input
+                  type="text"
+                  name="spec_competidores"
+                  placeholder="BMW iX, Mercedes EQS SUV..."
+                />
+              </label>
+
+              <label>
+                Tracción
+                <input
+                  type="text"
+                  name="spec_traccion"
+                  placeholder="Delantera"
+                />
+              </label>
+
+              <label>
+                Precio referencial (COP)
+                <input
+                  type="text"
+                  name="spec_precio_cop"
+                  placeholder="Desde 164.900.000"
+                />
+              </label>
+            </div>
+          </fieldset>
+
+          <button type="submit">Guardar Nota</button>
+        </form>
+
+        <p id="msg" class="msg"></p>
+      </section>
+
+      <style>
+        * {
+          box-sizing: border-box;
+        }
+
+        body {
+          margin: 0;
+          font-family: "Segoe UI", Roboto, sans-serif;
+          background:
+            radial-gradient(
+              circle at 15% 10%,
+              rgba(245, 158, 11, 0.26) 0,
+              transparent 38%
+            ),
+            radial-gradient(
+              circle at 85% 15%,
+              rgba(59, 130, 246, 0.26) 0,
+              transparent 35%
+            ),
+            linear-gradient(180deg, #eef2ff 0%, #f8fafc 52%, #f1f5f9 100%);
+          color: #1f2937;
+        }
+
+        .form-page {
+          width: 100%;
+          max-width: 1100px;
+          margin: 32px auto;
+          padding: 0 16px;
+        }
+
+        .form-card {
+          background: linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #f9fbff 60%,
+            #fdf2f8 100%
+          );
+          border-radius: 16px;
+          border: 1px solid #dbe7ff;
+          padding: 26px;
+          box-shadow:
+            0 14px 34px rgba(15, 23, 42, 0.12),
+            0 2px 0 rgba(255, 255, 255, 0.7) inset;
+        }
+
+        .form-header h1 {
+          margin: 0;
+          font-size: 38px;
+          color: #0f172a;
+          letter-spacing: -0.5px;
+        }
+
+        .form-header p {
+          margin: 10px 0 20px;
+          color: #475569;
+          font-size: 15px;
+          max-width: 700px;
+        }
+
+        .header-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .header-tags span {
+          display: inline-flex;
+          align-items: center;
+          height: 28px;
+          padding: 0 12px;
+          border-radius: 999px;
+          font-size: 12px;
+          font-weight: 700;
+          color: #1e293b;
+          background: linear-gradient(135deg, #fde68a 0%, #fbcfe8 100%);
+          border: 1px solid rgba(148, 163, 184, 0.35);
+        }
+
+        .note-form {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .grid-2 {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 16px;
+        }
+
+        label {
+          display: block;
+          font-weight: 700;
+          color: #0f172a;
+          font-size: 14px;
+        }
+
+        input,
+        textarea,
+        select {
+          width: 100%;
+          margin-top: 8px;
+          padding: 12px 14px;
+          border: 1px solid #cbd5e1;
+          border-radius: 8px;
+          font-size: 15px;
+          background: #ffffff;
+          transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            transform 0.1s ease;
+        }
+
+        textarea {
+          min-height: 190px;
+          resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+          outline: none;
+          border-color: #6366f1;
+          box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.16);
+          transform: translateY(-1px);
+        }
+
+        .group-box {
+          border: 1px solid #d7e3f5;
+          border-radius: 10px;
+          padding: 14px;
+          margin: 0;
+          background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.92) 0%,
+            rgba(248, 250, 252, 0.92) 100%
+          );
+        }
+
+        .group-box legend {
+          padding: 0 8px;
+          font-weight: 700;
+          color: #1e3a8a;
+          font-size: 14px;
+        }
+
+        button {
+          width: 100%;
+          margin-top: 4px;
+          padding: 14px 18px;
+          border: none;
+          border-radius: 8px;
+          background: linear-gradient(
+            135deg,
+            #1d4ed8 0%,
+            #7c3aed 55%,
+            #db2777 100%
+          );
+          color: #ffffff;
+          font-size: 16px;
+          font-weight: 700;
+          cursor: pointer;
+          transition:
+            transform 0.15s ease,
+            box-shadow 0.2s ease,
+            filter 0.2s ease;
+          box-shadow: 0 10px 18px rgba(79, 70, 229, 0.28);
+        }
+
+        button:hover {
+          transform: translateY(-1px);
+          filter: brightness(1.05);
+          box-shadow: 0 14px 24px rgba(79, 70, 229, 0.35);
+        }
+
+        .msg {
+          margin-top: 14px;
+          min-height: 22px;
+          font-weight: 700;
+          background: rgba(255, 255, 255, 0.7);
+          border: 1px dashed #c7d2fe;
+          border-radius: 8px;
+          padding: 10px 12px;
+        }
+
+        .help-panel {
+          margin-bottom: 20px;
+          border: 1px solid #c7d2fe;
+          border-radius: 10px;
+          background: linear-gradient(135deg, #f0f4ff 0%, #fdf4ff 100%);
+          overflow: hidden;
+        }
+
+        .help-toggle {
+          padding: 12px 16px;
+          font-weight: 700;
+          font-size: 14px;
+          color: #1e3a8a;
+          cursor: pointer;
+          list-style: none;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          user-select: none;
+        }
+
+        .help-toggle::marker,
+        .help-toggle::-webkit-details-marker {
+          display: none;
+        }
+
+        .help-toggle::after {
+          content: "▼";
+          margin-left: auto;
+          font-size: 11px;
+          transition: transform 0.2s;
+        }
+
+        details[open] .help-toggle::after {
+          transform: rotate(180deg);
+        }
+
+        .help-body {
+          padding: 16px;
+          border-top: 1px solid #c7d2fe;
+        }
+
+        .help-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 14px;
+        }
+
+        .help-block {
+          background: #ffffff;
+          border: 1px solid #e0e7ff;
+          border-radius: 8px;
+          padding: 12px 14px;
+        }
+
+        .help-block h3 {
+          margin: 0 0 8px;
+          font-size: 13px;
+          font-weight: 700;
+          color: #4338ca;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .help-block p {
+          margin: 4px 0;
+          font-size: 13px;
+          color: #374151;
+          line-height: 1.5;
+        }
+
+        .help-block code {
+          display: inline-block;
+          background: #ede9fe;
+          color: #5b21b6;
+          border-radius: 4px;
+          padding: 2px 7px;
+          font-size: 12px;
+          font-family: "Courier New", monospace;
+          margin-bottom: 6px;
+        }
+
+        .help-block-full {
+          grid-column: 1 / -1;
+        }
+
+        .help-example {
+          font-size: 12px !important;
+          color: #6b7280 !important;
+        }
+
+        .help-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 13px;
+          margin-top: 6px;
+        }
+
+        .help-table th {
+          background: #e0e7ff;
+          color: #1e3a8a;
+          padding: 6px 10px;
+          text-align: left;
+          font-weight: 700;
+        }
+
+        .help-table td {
+          padding: 5px 10px;
+          border-bottom: 1px solid #e5e7eb;
+          color: #374151;
+          vertical-align: top;
+        }
+
+        .help-table tr:last-child td {
+          border-bottom: none;
+        }
+
+        .help-template {
+          margin-top: 10px;
+          background: #f8fafc;
+          border-left: 3px solid #6366f1;
+          border-radius: 0 6px 6px 0;
+          padding: 12px 14px;
+          font-size: 12.5px;
+          color: #374151;
+          line-height: 1.6;
+        }
+
+        .help-template p {
+          margin: 0 0 10px;
+          font-size: 12.5px !important;
+        }
+
+        .help-template p:last-child {
+          margin-bottom: 0;
+        }
+
+        .help-tip {
+          margin-top: 8px !important;
+          font-size: 12px !important;
+          color: #6b7280 !important;
+        }
+
+        .help-checklist ul {
+          margin: 6px 0 0;
+          padding-left: 20px;
+          font-size: 13px;
+          color: #374151;
+          line-height: 1.8;
+        }
+
+        .storage-tip {
+          margin: -4px 0 4px;
+          font-size: 13px;
+          color: #475569;
+        }
+
+        @media (max-width: 768px) {
+          .help-grid {
+            grid-template-columns: 1fr;
           }
 
-          // Generar resumen técnico si el usuario no lo proporcionó
-          if (!data.summary || data.summary.trim() === "") {
-            data.summary = generateSummaryFromHtml(contentHtml, 180);
+          .form-page {
+            margin: 18px auto;
           }
 
-          // Opción: si decidiste eliminar los campos image2..image6 en el servidor,
-          // podemos borrarlos del objeto para no mandarlos:
-          // delete data.image2; delete data.image3; ... etc.
-          // Pero dejo como comentario: si el backend los espera, dejalos.
+          .form-card {
+            padding: 16px;
+          }
 
-          console.log("📤 Datos enviados (pre):", data);
+          .form-header h1 {
+            font-size: 30px;
+          }
 
-          try {
-            const res = await fetch(
-              "http://localhost:8888/.netlify/functions/save-note",
-              {
+          .grid-2 {
+            grid-template-columns: 1fr;
+          }
+        }
+      </style>
+
+      <script>
+        const form = document.getElementById("noteForm");
+        const msg = document.getElementById("msg");
+        const isFormElement = form instanceof HTMLFormElement;
+
+        // Convierte HTML string a texto plano (quita tags)
+        function stripHtml(html) {
+          const tmp = document.createElement("div");
+          tmp.innerHTML = html;
+          return tmp.textContent || tmp.innerText || "";
+        }
+
+        // Extrae la primera imagen src de un HTML string
+        function extractFirstImageFromHtml(html) {
+          if (!html) return null;
+          // Intentamos buscar <img src="..."> o <img data-src="...">
+          const imgRegex = /<img[^>]+(?:src|data-src)=["']([^"']+)["'][^>]*>/i;
+          const match = html.match(imgRegex);
+          return match ? match[1] : null;
+        }
+
+        // Genera un resumen técnico simple: primer texto no vacío hasta N chars
+        function generateSummaryFromHtml(html, maxChars = 160) {
+          const text = stripHtml(html).trim();
+          if (!text) return "";
+          // Tomamos hasta maxChars y evitamos cortar palabras: buscamos último espacio
+          if (text.length <= maxChars) return text;
+          const snippet = text.slice(0, maxChars);
+          const lastSpace = snippet.lastIndexOf(" ");
+          return (
+            snippet.slice(0, lastSpace > 40 ? lastSpace : maxChars) + "..."
+          );
+        }
+
+        if (isFormElement) {
+          form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formElement = form;
+            const formData = new FormData(formElement);
+            // Si hay campos de imagen y el usuario los dejó vacíos, los omitimos.
+            const rawData = Object.fromEntries(formData.entries());
+            const data = Object.fromEntries(
+              Object.entries(rawData).map(([key, value]) => [
+                key,
+                typeof value === "string" ? value : "",
+              ]),
+            );
+
+            // Si estás permitiendo HTML en <textarea name="content">, extrae la primera imagen
+            const contentHtml = data.content || "";
+            const firstImg = extractFirstImageFromHtml(contentHtml);
+
+            // Si image1 está vacío y extrajimos una img del content, asignamos image1
+            if ((!data.image1 || data.image1.trim() === "") && firstImg) {
+              data.image1 = firstImg;
+            }
+
+            // Generar resumen técnico si el usuario no lo proporcionó
+            if (!data.summary || data.summary.trim() === "") {
+              data.summary = generateSummaryFromHtml(contentHtml, 180);
+            }
+
+            // Opción: si decidiste eliminar los campos image2..image6 en el servidor,
+            // podemos borrarlos del objeto para no mandarlos:
+            // delete data.image2; delete data.image3; ... etc.
+            // Pero dejo como comentario: si el backend los espera, dejalos.
+
+            try {
+              const apiUrl = `/api/save-note`;
+              const res = await fetch(apiUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),
+              });
+
+              const result = await res.json();
+
+              if (msg) {
+                msg.textContent =
+                  result.message || result.error || "Error al guardar la nota";
+                msg.style.color = res.ok ? "green" : "red";
               }
-            );
 
-            const result = await res.json();
-            console.log("📥 Respuesta del servidor:", result);
-
-            if (msg) {
-              msg.textContent = result.message || "Guardado";
-              msg.style.color = res.ok ? "green" : "red";
+              // Limpiar el formulario si se guardó exitosamente
+              if (res.ok) {
+                formElement.reset();
+                setTimeout(() => {
+                  if (msg) msg.textContent = "";
+                }, 3000);
+              }
+            } catch (error) {
+              if (msg) {
+                msg.textContent = "Error de conexión con el servidor";
+                msg.style.color = "red";
+              }
             }
-          } catch (error) {
-            console.error("❌ Error de conexión:", error);
-            if (msg) {
-              msg.textContent = "Error de conexión con el servidor";
-              msg.style.color = "red";
-            }
-          }
-        });
-      }
-    </script>
+          });
+        }
+      </script>
+    </main>
   </body>
 </html>

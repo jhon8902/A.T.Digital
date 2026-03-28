@@ -3,9 +3,15 @@ interface Props {
   position?: string;
   inGrid?: boolean;
   variant?: "byd" | "toyota" | "mazda";
+  href?: string;
 }
 
-const { position = "section", inGrid = false, variant = "byd" } = Astro.props;
+const {
+  position = "section",
+  inGrid = false,
+  variant = "byd",
+  href,
+} = Astro.props;
 
 const ads = {
   byd: {
@@ -16,6 +22,7 @@ const ads = {
     bg: "black",
     image: "/img/byd-sealion-7/byd-sealion7-principal.webp",
     textColor: "#ffffff",
+    href: "/dashboard-concesionario",
   },
   toyota: {
     brand: "TOYOTA",
@@ -23,8 +30,9 @@ const ads = {
     subtitle: "Potencia y tecnología sin límites",
     cta: "Descubre más",
     bg: "#f87171",
-    image: "/img/toyota-prado/toyota-prado-copia1.jpg",
+    image: "/img/toyota-prado/toyota-prado-copia1.webp",
     textColor: "#ffffff",
+    href: "/dashboard-concesionario",
   },
   mazda: {
     brand: undefined as string | undefined,
@@ -34,10 +42,12 @@ const ads = {
     bg: "black",
     image: "/img/mazda-ez6/mazda-ez6-diseño-portada.webp",
     textColor: "#ffffff",
+    href: "/dashboard-concesionario",
   },
 };
 
 const currentAd = ads[variant];
+const adHref = href ?? currentAd.href;
 ---
 
 <div
@@ -62,7 +72,12 @@ const currentAd = ads[variant];
       </div>
       <div class="ad-cta-block">
         <h3 class="ad-title">{currentAd.title}</h3>
-        <button class="ad-cta">{currentAd.cta} →</button>
+        <a
+          class="ad-cta"
+          href={adHref}
+          target="_blank"
+          rel="noopener noreferrer">{currentAd.cta} →</a
+        >
       </div>
     </div>
   </div>
@@ -281,6 +296,7 @@ const currentAd = ads[variant];
     white-space: nowrap;
     text-transform: uppercase;
     letter-spacing: 1.2px;
+    text-decoration: none;
   }
 
   .ad-cta:hover {

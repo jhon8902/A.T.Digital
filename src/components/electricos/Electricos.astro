@@ -125,8 +125,8 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
             />
           </div>
           <div class="texto-destacado">
-            <p class="texto-f">{allElectricos[0].fecha}</p>
             <h2>{allElectricos[0].title}</h2>
+            <p class="texto-f">{allElectricos[0].fecha}</p>
             <p>{allElectricos[0].description}</p>
           </div>
         </a>
@@ -140,10 +140,17 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     allElectricos.slice(1).map((nota) => (
       <div class="imagen-card">
         <a href={nota.href}>
-          <img src={nota.img} alt={nota.alt} loading="lazy" decoding="async" />
+          <div class="imagen-card-img-wrapper">
+            <img
+              src={nota.img}
+              alt={nota.alt}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
           <h2>{nota.title}</h2>
-          <p>{nota.description}</p>
           <p class="texto-f">{nota.fecha}</p>
+          <p>{nota.description}</p>
         </a>
       </div>
     ))
@@ -151,7 +158,7 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
 </div>
 
 <div class="ver-mas-modelos-container">
-  <button class="ver-mas-modelos-btn">Ver más modelos</button>
+  <a href="/electricos" class="ver-mas-modelos-btn">Ver más modelos</a>
 </div>
 
 <style>
@@ -160,7 +167,7 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: linear-gradient(to bottom, #fbfbfb 30%, #f6f6f7 40%);
+
     border-bottom: 20px solid rgb(250, 250, 250);
     scroll-margin-top: 100px;
     text-align: center;
@@ -171,7 +178,7 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
   /* 🔥 ESTE ES EL CONTENEDOR QUE LIMITA TODO */
   .central-content {
     width: 100%;
-    max-width: 1600px; /* ⬅️ AJUSTA AQUÍ EL ANCHO TOTAL */
+    max-width: 1400px; /* ⬅️ AJUSTA AQUÍ EL ANCHO TOTAL */
     margin: 0 auto;
     padding: 20px 0 0 0;
   }
@@ -280,10 +287,20 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     flex-direction: row;
     flex-wrap: wrap;
     align-items: stretch;
-    background: #4b5563;
+
     margin-top: 40px;
+    padding: 20px;
     overflow: hidden;
     border-radius: 10px;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .nueva-destacada:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   }
 
   .destacada-link {
@@ -314,6 +331,10 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     text-transform: uppercase;
     font-weight: bold;
     color: black;
+    border-bottom: 2px solid #6c9b61;
+    padding-bottom: 10px;
+    display: block;
+    width: 85%;
   }
 
   .texto-destacado p {
@@ -325,13 +346,16 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
   }
 
   .texto-destacado .texto-f {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: black;
-    border-bottom: 2px solid #6c9b61;
-    width: 38%;
-    display: inline-block;
-    padding: 5px;
+    font-size: 14px;
+    margin-top: 12px;
+    margin-bottom: 15px;
+    color: #666;
+    border-bottom: none;
+    width: auto;
+    display: block;
+    padding: 0;
+    font-weight: 400;
+    font-family: "Georgia", serif;
   }
 
   .imagen-destacada-img {
@@ -347,14 +371,12 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     height: 100%;
     object-fit: cover;
     display: block;
-
-    transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+    transition: transform 0.4s ease;
   }
 
-  .imagen-destacada-img img:hover,
-  .imagen-card img:hover {
-    transform: scale(1.08);
-    z-index: 2;
+  .nueva-destacada:hover .imagen-destacada-img img,
+  .imagen-card:hover .imagen-card-img-wrapper img {
+    transform: scale(1.1);
   }
 
   .imagenes-grid {
@@ -365,22 +387,35 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     max-width: none;
     margin-top: 40px;
 
-    padding: 10px; /* Elimina el padding lateral */
+    padding: 20px; /* Elimina el padding lateral */
   }
 
   .imagen-card {
-    overflow: hidden;
     text-align: center;
     position: relative;
     background: white;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .imagen-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .imagen-card-img-wrapper {
+    position: relative;
+    overflow: hidden;
   }
 
   .imagen-card img {
     width: 100%;
     height: 290px;
     object-fit: cover;
-    position: relative;
     display: block;
+    transition: transform 0.4s ease;
   }
 
   .imagen-card h2 {
@@ -389,11 +424,11 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     color: black;
     border-bottom: 2px solid #6c9b61;
     padding: 20px;
+    padding-bottom: 10px;
     text-align: start;
     position: relative;
     display: block;
     width: 90%;
-
     text-transform: uppercase;
   }
 
@@ -408,43 +443,52 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
   }
 
   .imagen-card .texto-f {
-    font-size: 16px;
-    color: black;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 5px 10px;
-    z-index: 2;
+    font-size: 14px;
+    color: #666;
+    position: static;
+    top: auto;
+    left: auto;
+    padding: 0 20px;
+    margin-top: 12px;
+    margin-bottom: 10px;
+    z-index: auto;
     text-align: left;
     text-transform: none;
-    border-bottom: 1px solid black;
-    display: inline-block;
+    border-bottom: none;
+    display: block;
+    font-weight: 400;
+    font-family: "Georgia", serif;
   }
 
   .ver-mas-modelos-container {
     width: 100%;
     display: flex;
     justify-content: flex-start;
-
-    padding: 30px 0;
+    padding: 30px 20px;
+    box-sizing: border-box;
   }
 
   .ver-mas-modelos-btn {
     background: #6c9b61;
     color: white;
-    font-size: 20px;
-    margin-left: 18px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 600;
     border: none;
-    border-radius: 100px;
-    padding: 10px 30px;
+    border-radius: 50px;
+    padding: 12px 32px;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: background 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: all 0.25s ease;
   }
 
   .ver-mas-modelos-btn:hover {
-    background: #8bc67d;
+    background: #4f7a47;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(108, 155, 97, 0.35);
   }
 
   @media (max-width: 768px) {
@@ -484,6 +528,9 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
 
     .texto-destacado h2 {
       font-size: 22px;
+      border-bottom: 2px solid #6c9b61;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
     }
 
     .texto-destacado p {
@@ -494,7 +541,11 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     .texto-destacado .texto-f {
       text-align: center;
       width: 100%;
-      font-size: 16px;
+      font-size: 13px;
+      color: #666;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      padding: 0;
     }
 
     .central-content {
@@ -542,7 +593,9 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
       font-size: 18px;
       padding: 10px;
       padding-top: 10px;
+      padding-bottom: 10px;
       font-weight: 600;
+      border-bottom: 2px solid #6c9b61;
     }
 
     .imagen-card p {
@@ -554,21 +607,23 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
 
     .imagen-card .texto-f {
       font-size: 12px;
+      color: #666;
+      padding: 0 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
 
     .ver-mas-modelos-container {
-      padding: 20px;
+      padding: 20px 16px;
       margin: 0;
+      justify-content: center;
     }
 
     .ver-mas-modelos-btn {
-      padding: 10px 20px; /* Un poco más de área táctil */
+      padding: 12px 28px;
       font-size: 1rem;
-    }
-
-    .ver-mas-modelos-btn {
-      margin-bottom: 10px; /* Más aire en móviles */
-      padding-top: 10px;
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>

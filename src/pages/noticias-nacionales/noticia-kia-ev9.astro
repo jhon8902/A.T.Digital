@@ -5,18 +5,31 @@ import "../../../public/css/noticias.css";
 
 <Layout title="KIA EV-9" bodyClass="nota-page">
   <section class="noticia-detalle">
-    <p class="noticia-descripcion">
-      El KIA EV9 es uno de los primeros SUV eléctricos en el mundo que puede
-      recibir actualizaciones de software a distancia.
-    </p>
+    <h1>
+      KIA EV-9: El SUV eléctrico de 7 plazas que redefine el lujo familiar con
+      hasta 563 km de autonomía
+    </h1>
+
+    <div class="datos-destacados">
+      <div class="dato-item">
+        <span class="dato-icono">⭐</span>
+        <p class="dato-texto">5 estrellas Euro NCAP en pruebas de seguridad</p>
+      </div>
+      <div class="dato-item">
+        <span class="dato-icono">🎨</span>
+        <p class="dato-texto">Hasta 6 configuraciones de asientos modulares</p>
+      </div>
+      <div class="dato-item">
+        <span class="dato-icono">🔌</span>
+        <p class="dato-texto">Función V2L exporta hasta 3,680W de potencia</p>
+      </div>
+    </div>
 
     <img
       src="/img/kia-ev9/kia-ev9-diseño.webp"
       alt="Portada de la noticia: KIA EV9"
       class="noticia-portada"
     />
-
-    <h1>KIA EV-9</h1>
 
     <article>
       <div class="noticia-bloque noticia-imagen-izquierda">
@@ -36,6 +49,48 @@ import "../../../public/css/noticias.css";
         <img
           src="/img/kia-ev9/kia-ev9-motor.webp"
           alt="Interior del KIA EV-9"
+          class="noticia-imagen"
+        />
+      </div>
+
+      <div class="noticia-bloque noticia-imagen-izquierda">
+        <div class="noticia-texto">
+          <h3 class="noticia-titulo">Diseño Exterior Premium</h3>
+          <p class="noticia-parrafo">
+            El KIA EV-9 presenta un diseño audaz y futurista con la parrilla
+            "Tiger Mask" invertida, faros LED de firma digital y proporciones
+            SUV de gran tamaño que transmiten poder y modernidad.
+          </p>
+          <p class="noticia-parrafo">
+            Las líneas dinámicas del cuerpo, la postura elevada y los detalles
+            de acabado cromado lo posicionan como un vehículo premium con
+            presencia imponente en la carretera.
+          </p>
+        </div>
+        <img
+          src="/img/kia-ev9/kia-ev9-diseño.webp"
+          alt="Diseño Exterior KIA EV-9"
+          class="noticia-imagen"
+        />
+      </div>
+
+      <div class="noticia-bloque noticia-imagen-derecha">
+        <div class="noticia-texto">
+          <h3 class="noticia-titulo">Habitáculo Espacioso de 7 Plazas</h3>
+          <p class="noticia-parrafo">
+            Con dimensiones de 5 metros de largo, el EV-9 ofrece un interior
+            sumamente espacioso que aloja cómodamente 7 ocupantes con asientos
+            tipo "relajación" en la segunda fila completamente reclinables.
+          </p>
+          <p class="noticia-parrafo">
+            Materiales premium, pantalla dual curva de 12.3", techo panorámico,
+            climatización tri-zona y abundante iluminación ambiental crean un
+            ambiente de lujo y confort inigualable.
+          </p>
+        </div>
+        <img
+          src="/img/kia-ev9/kia-ev9-interior.webp"
+          alt="Interior Espacioso KIA EV-9"
           class="noticia-imagen"
         />
       </div>
@@ -339,12 +394,10 @@ import "../../../public/css/noticias.css";
   }
 
   .noticia-bloque .noticia-parrafo {
-    font-size: 18px;
+    font-size: 22px;
     text-align: start;
     color: #333;
 
-    font-family: "Poppins", sans-serif;
-    font-family: "Poppins", sans-serif;
     margin-bottom: 15px; /* Agrega espacio entre los párrafos */
     line-height: 1.6; /* Mejora la legibilidad del texto */
   }

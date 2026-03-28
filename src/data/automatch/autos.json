@@ -89,12 +89,12 @@
     "ciudad": "bogotá",
     "condicion": "nuevo",
     "año": 2024,
-    "imagen_principal": "/img/toyota-prado/toyota-prado-copia.jpg",
+    "imagen_principal": "/img/toyota-prado/toyota-prado-copia.webp",
     "galeria": [
-      "/img/toyota-prado/toyota-prado-copia.jpg",
-      "/img/toyota-prado/toyota-prado-2.jpg",
-      "/img/toyota-prado/toyota-prado-interior.jpg",
-      "/img/toyota-prado/toyota-prado-detalles.jpg"
+      "/img/toyota-prado/toyota-prado-copia.webp",
+      "/img/toyota-prado/toyota-prado-copia2.webp",
+      "/img/toyota-prado/toyota-prado-copia1.webp",,
+      "/img/toyota-prado/toyota-prado-copia3.webp"
     ],
     "descripcion": "SUV de lujo y confiabilidad Toyota. Motor híbrido de 326 hp, perfecto para familia con gran capacidad.",
     "especificaciones_id": "toyota-prado",
@@ -170,12 +170,12 @@
     "ciudad": "medellín",
     "condicion": "nuevo",
     "año": 2024,
-    "imagen_principal": "/img/ford-bronco/ford-bronco-portada.jpg",
+    "imagen_principal": "/img/ford-bronco/ford-bronco-portada.webp",
     "galeria": [
-      "/img/ford-bronco/ford-bronco-portada.jpg",
-      "/img/ford-bronco/ford-bronco-2.jpg",
-      "/img/ford-bronco/ford-bronco-interior.jpg",
-      "/img/ford-bronco/ford-bronco-detalles.jpg"
+      "/img/ford-bronco/ford-bronco-portada.webp",
+      "/img/ford-bronco/ford-bronco-tecnologia.webp",
+      "/img/ford-bronco/ford-bronco-interior.webp",
+      "/img/ford-bronco/ford-bronco-suspension.webp"
     ],
     "descripcion": "Legendario y aventurero. Motor 4.0L EcoBoost, tracción 4x4, diseño robusto y capaz.",
     "especificaciones_id": "ford-bronco",

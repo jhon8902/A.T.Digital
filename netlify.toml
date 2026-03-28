@@ -6,7 +6,7 @@ publish = "dist"
 directory = "netlify/functions"
 
 [context.production]
-environment = { NODE_VERSION = "16" }
+environment = { NODE_VERSION = "20" }
 
 [dev]
   framework = "astro"

@@ -1,0 +1,69 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CategoryArchive from "../components/archive/CategoryArchive.astro";
+
+const staticNotes = [
+  {
+    href: "/notas-hibridos/nota-scape",
+    img: "/img/ford-scape-hibrida/ford-s.jpg",
+    alt: "Ford Escape",
+    title: "Ford Escape",
+    description:
+      "Motor híbrido eficiente, ideal para ciudad y trayectos largos.",
+    fecha: "Nota: 13-mar",
+  },
+  {
+    href: "/notas-hibridos/nota-volvo-cx90",
+    img: "/img/volvo-cx90-hibrida/volvo-cx90-portada.webp",
+    alt: "Volvo XC90",
+    title: "Volvo XC90",
+    description: "SUV premium con enfoque en seguridad, lujo y eficiencia.",
+    fecha: "Nota: 16-mar",
+  },
+  {
+    href: "/notas-hibridos/nota-subaru",
+    img: "/img/subaru-forester-hibrida/subaru-forester-portada.webp",
+    alt: "Subaru Forester",
+    title: "Subaru Forester E-Boxer",
+    description: "Tracción estable y manejo confiable en todo tipo de vías.",
+    fecha: "Nota: 21-mar",
+  },
+  {
+    href: "/notas-hibridos/nota-kona",
+    img: "/img/kona-hibrida/kona-portada.webp",
+    alt: "Hyundai Kona",
+    title: "Hyundai Kona Hybrid",
+    description: "SUV compacto con buen consumo y tecnología de asistencia.",
+    fecha: "Nota: 25-mar",
+  },
+  {
+    href: "/notas-hibridos/nota-audi-q7",
+    img: "/img/audi-q7-hibrida/audi-q7-portada.webp",
+    alt: "Audi Q7",
+    title: "Audi Q7 TFSI e",
+    description: "Potencia V6 con autonomía eléctrica en formato premium.",
+    fecha: "Nota: 28-mar",
+  },
+  {
+    href: "/notas-hibridos/nota-nissan",
+    img: "/img/nissan-xtrail-hibrida/nissan-x-trail.webp",
+    alt: "Nissan X-Trail",
+    title: "Nissan X-Trail e-Power",
+    description: "Confort familiar y experiencia de manejo electrificada.",
+    fecha: "Nota: 30-mar",
+  },
+];
+---
+
+<Layout
+  title="Autos Híbridos en Colombia 2025 | Auto-Tech-Digital"
+  description="Guía completa de autos híbridos en Colombia: Ford Escape, Nissan X-Trail, Volvo XC90, Subaru Forester y más. Autonomía, eficiencia y precios."
+>
+  <CategoryArchive
+    category="hibridos"
+    skipFirst={6}
+    title="Más modelos híbridos"
+    description="Consulta todas las notas de híbridos publicadas y actualizadas."
+    staticNotes={staticNotes}
+  />
+</Layout>

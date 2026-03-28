@@ -1,0 +1,361 @@
+---
+import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+
+interface NoteItem {
+  href: string;
+  img: string;
+  alt: string;
+  title: string;
+  description?: string;
+  fecha?: string;
+}
+
+interface Props {
+  category: string;
+  title: string;
+  description: string;
+  staticNotes?: NoteItem[];
+  itemsPerPage?: number;
+  skipFirst?: number;
+}
+
+const {
+  category,
+  title,
+  description,
+  staticNotes = [],
+  itemsPerPage = 12,
+  skipFirst = 0,
+} = Astro.props as Props;
+
+function normalizeCategory(value: string) {
+  return value
+    ?.toString()
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function extractFirstImage(html: string | undefined) {
+  if (!html) return null;
+  const match = html.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/i);
+  return match ? match[1] : null;
+}
+
+function parseDateValue(value?: string) {
+  if (!value) return 0;
+
+  const cleaned = value
+    .replace(/^Publicado:\s*/i, "")
+    .replace(/^Nota:\s*/i, "")
+    .trim();
+
+  const direct = new Date(cleaned);
+  if (!isNaN(direct.getTime())) return direct.getTime();
+
+  const ddmmyyyy = cleaned.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (ddmmyyyy) {
+    const [, dd, mm, yyyy] = ddmmyyyy;
+    return new Date(`${yyyy}-${mm}-${dd}`).getTime();
+  }
+
+  return 0;
+}
+
+let dynamicNotes: Array<NoteItem & { sortDate: number }> = [];
+
+try {
+  const apiUrl = getApiUrl("get-notes");
+  const data = await fetchWithTimeout(apiUrl);
+
+  if (data && Array.isArray(data)) {
+    dynamicNotes = data
+      .filter(
+        (note: any) =>
+          normalizeCategory(note.category) === normalizeCategory(category),
+      )
+      .map((note: any) => ({
+        href: `/notas/${note.id}`,
+        img:
+          note.image1?.trim() ||
+          extractFirstImage(note.content) ||
+          "/img/default.jpg",
+        alt: note.title || "nota",
+        title: note.title || "Sin título",
+        description: note.subtitle || "",
+        fecha: note.created_at
+          ? `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`
+          : "",
+        sortDate: note.created_at ? new Date(note.created_at).getTime() : 0,
+      }));
+  }
+} catch (err) {
+  console.error(`Error cargando notas de ${category}:`, err);
+}
+
+const normalizedStatic = staticNotes.map((note) => ({
+  ...note,
+  sortDate: parseDateValue(note.fecha),
+}));
+
+const allNotes = [...dynamicNotes, ...normalizedStatic].sort(
+  (a, b) => b.sortDate - a.sortDate,
+);
+
+// Omitir las primeras N notas que ya están visibles en la página principal
+const archiveNotes = skipFirst > 0 ? allNotes.slice(skipFirst) : allNotes;
+
+const totalPages = Math.max(1, Math.ceil(archiveNotes.length / itemsPerPage));
+const requestedPage = Number(Astro.url.searchParams.get("page") || "1");
+const currentPage =
+  Number.isFinite(requestedPage) && requestedPage > 0
+    ? Math.min(requestedPage, totalPages)
+    : 1;
+const startIndex = (currentPage - 1) * itemsPerPage;
+const paginatedNotes = archiveNotes.slice(
+  startIndex,
+  startIndex + itemsPerPage,
+);
+
+const isNoticiasArchive = normalizeCategory(category) === "noticias";
+
+function pageHref(page: number) {
+  return page <= 1 ? "?" : `?page=${page}`;
+}
+---
+
+<section
+  class={`archivo-notas ${isNoticiasArchive ? "archivo-notas--noticias" : ""}`}
+>
+  <div class="archivo-header">
+    <h1>{title}</h1>
+    <p>{description}</p>
+  </div>
+
+  <div class="archivo-grid">
+    {
+      paginatedNotes.map((note) => (
+        <article class="archivo-card">
+          <a href={note.href} class="archivo-link">
+            <div class="archivo-image">
+              <img
+                src={note.img}
+                alt={note.alt}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="archivo-content">
+              <h2>{note.title}</h2>
+              {note.fecha && <p class="archivo-date">{note.fecha}</p>}
+              {note.description && (
+                <p class="archivo-desc">{note.description}</p>
+              )}
+            </div>
+          </a>
+        </article>
+      ))
+    }
+  </div>
+
+  {
+    allNotes.length === 0 && (
+      <p class="archivo-empty">Aún no hay notas disponibles en esta sección.</p>
+    )
+  }
+
+  {
+    allNotes.length > 0 && archiveNotes.length === 0 && (
+      <p class="archivo-empty">
+        Las notas más recientes de esta sección están en la página principal.
+        ¡Pronto habrá más contenido aquí!
+      </p>
+    )
+  }
+
+  {
+    totalPages > 1 && (
+      <div class="archivo-pagination">
+        <a
+          href={pageHref(currentPage - 1)}
+          class={`archivo-page-btn ${currentPage === 1 ? "is-disabled" : ""}`}
+          aria-disabled={currentPage === 1}
+        >
+          ← Anterior
+        </a>
+
+        <span class="archivo-page-indicator">
+          Página {currentPage} de {totalPages}
+        </span>
+
+        <a
+          href={pageHref(currentPage + 1)}
+          class={`archivo-page-btn ${currentPage === totalPages ? "is-disabled" : ""}`}
+          aria-disabled={currentPage === totalPages}
+        >
+          Siguiente →
+        </a>
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .archivo-notas {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+    font-family: "Georgia", serif;
+  }
+
+  .archivo-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .archivo-header h1 {
+    font-size: clamp(28px, 4vw, 42px);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+
+  .archivo-header p {
+    font-size: 18px;
+    color: #2c2c2c;
+  }
+
+  .archivo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+  }
+
+  .archivo-card {
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+  }
+
+  .archivo-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .archivo-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+  }
+
+  .archivo-image {
+    height: 220px;
+    overflow: hidden;
+  }
+
+  .archivo-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .archivo-content {
+    padding: 18px;
+  }
+
+  .archivo-content h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .archivo-date {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #444;
+  }
+
+  .archivo-desc {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #1f1f1f;
+  }
+
+  .archivo-empty {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+  }
+
+  .archivo-pagination {
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .archivo-page-btn {
+    text-decoration: none;
+    color: #111;
+    border: 1px solid #d4d4d4;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 15px;
+    background: #fff;
+  }
+
+  .archivo-page-btn.is-disabled {
+    pointer-events: none;
+    opacity: 0.45;
+  }
+
+  .archivo-page-indicator {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2a2a2a;
+  }
+
+  .archivo-notas--noticias {
+    width: min(90%, 1700px);
+    max-width: 1700px;
+  }
+
+  .archivo-notas--noticias .archivo-header h1,
+  .archivo-notas--noticias .archivo-header p,
+  .archivo-notas--noticias .archivo-content h2,
+  .archivo-notas--noticias .archivo-date,
+  .archivo-notas--noticias .archivo-desc,
+  .archivo-notas--noticias .archivo-page-btn,
+  .archivo-notas--noticias .archivo-page-indicator,
+  .archivo-notas--noticias .archivo-empty {
+    font-family: "Georgia", serif;
+  }
+
+  @media (min-width: 1024px) {
+    .archivo-notas--noticias .archivo-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 28px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .archivo-notas {
+      padding: 30px 15px 50px;
+    }
+
+    .archivo-image {
+      height: 190px;
+    }
+
+    .archivo-content h2 {
+      font-size: 20px;
+    }
+  }
+</style>

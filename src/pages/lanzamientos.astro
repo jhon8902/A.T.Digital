@@ -1,0 +1,60 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CategoryArchive from "../components/archive/CategoryArchive.astro";
+
+const staticNotes = [
+  {
+    href: "/noticias-nacionales/noticia-jeep-avenger",
+    img: "/img/jeep-avenger/jeep-avenger-portada.webp",
+    alt: "Jeep Avenger",
+    title: "Jeep Avenger",
+    description:
+      "Primer Jeep 100% eléctrico en Europa y ganador del Car of the Year 2023.",
+    fecha: "Publicado: 2025-08-05",
+  },
+  {
+    href: "/noticias-nacionales/noticia-kia-ev9",
+    img: "/img/kia-ev9/kia-ev9-portada.webp",
+    alt: "KIA EV9",
+    title: "KIA EV9",
+    description: "SUV eléctrico con actualizaciones OTA y enfoque familiar.",
+    fecha: "Publicado: 2025-08-01",
+  },
+  {
+    href: "/noticias-nacionales/noticia-mazda-ez6",
+    img: "/img/mazda-ez6/mazda-ez6-portada.webp",
+    alt: "Mazda EZ-6",
+    title: "Mazda EZ-6",
+    description: "Eficiencia y rendimiento bajo la filosofía Skyactiv.",
+    fecha: "Publicado: 2025-08-02",
+  },
+  {
+    href: "/noticias-nacionales/noticia-toyota-prado",
+    img: "/img/toyota-prado/toyota-prado-copia.webp",
+    alt: "Toyota Prado",
+    title: "Toyota Prado",
+    description:
+      "SUV icónico por resistencia y desempeño en condiciones exigentes.",
+    fecha: "Publicado: 2025-08-03",
+  },
+  {
+    href: "/noticias-nacionales/noticia-ford-f150",
+    img: "/img/ford-f150/ford-f150-2.webp",
+    alt: "Ford F-150",
+    title: "Ford F-150 Lightning",
+    description:
+      "Pick-up eléctrica con capacidad de respaldo energético para hogar.",
+    fecha: "Publicado: 2025-08-04",
+  },
+];
+---
+
+<Layout title="Lanzamientos | Auto-Tech-Digital">
+  <CategoryArchive
+    category="lanzamientos"
+    skipFirst={5}
+    title="Más lanzamientos"
+    description="Explora todos los lanzamientos recientes del mercado automotor."
+    staticNotes={staticNotes}
+  />
+</Layout>

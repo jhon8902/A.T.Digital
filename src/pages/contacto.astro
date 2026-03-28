@@ -1,0 +1,240 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Contacto | Auto-Tech-Digital">
+  <section class="contacto-page">
+    <div class="contacto-shell">
+      <aside class="contacto-intro">
+        <p class="contacto-kicker">Contacto</p>
+        <h1>Hablemos de prensa, alianzas y colaboraciones</h1>
+        <p>
+          Este formulario es exclusivo para contacto directo con el equipo
+          editorial y comercial de Auto-Tech-Digital.
+        </p>
+        <ul>
+          <li>Consultas de prensa y medios</li>
+          <li>Propuestas de alianzas o pauta</li>
+          <li>Soporte y contacto institucional</li>
+        </ul>
+      </aside>
+
+      <section class="contacto-card">
+        <form
+          name="contacto-header"
+          method="POST"
+          action="/contacto-exitoso"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="contacto-form"
+        >
+          <input type="hidden" name="form-name" value="contacto-header" />
+          <input type="hidden" name="bot-field" />
+
+          <div class="field-grid">
+            <label>
+              Nombre completo
+              <input type="text" name="nombre" required />
+            </label>
+
+            <label>
+              Correo electronico
+              <input type="email" name="email" required />
+            </label>
+
+            <label>
+              Tipo de contacto
+              <select name="tipo_contacto" required>
+                <option value="">Selecciona una opcion</option>
+                <option value="prensa">Prensa / medios</option>
+                <option value="alianza">Alianza comercial</option>
+                <option value="marca">Marca / fabricante</option>
+                <option value="soporte">Soporte / informacion general</option>
+              </select>
+            </label>
+
+            <label>
+              Telefono
+              <input type="tel" name="telefono" />
+            </label>
+
+            <label class="full">
+              Ciudad o pais
+              <input type="text" name="ubicacion" />
+            </label>
+
+            <label class="full">
+              Mensaje
+              <textarea
+                name="mensaje"
+                rows="5"
+                placeholder="Cuéntanos en qué te podemos ayudar."
+                required></textarea>
+            </label>
+          </div>
+
+          <label class="consentimiento">
+            <input type="checkbox" name="acepta_contacto" required />
+            <span>Acepto ser contactado por Auto-Tech-Digital.</span>
+          </label>
+
+          <button type="submit">Enviar mensaje</button>
+        </form>
+      </section>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contacto-page {
+    min-height: 100vh;
+    padding: 210px 20px 80px;
+    background:
+      radial-gradient(
+        circle at right top,
+        rgba(225, 163, 7, 0.18),
+        transparent 28%
+      ),
+      linear-gradient(180deg, #f7f2e8 0%, #efe7d8 100%);
+  }
+
+  .contacto-shell {
+    width: min(94%, 1180px);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 0.92fr 1.08fr;
+    gap: 22px;
+  }
+
+  .contacto-intro,
+  .contacto-card {
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(140, 104, 22, 0.14);
+    box-shadow: 0 22px 60px rgba(42, 29, 8, 0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  .contacto-intro {
+    padding: 32px;
+  }
+
+  .contacto-kicker {
+    font-size: 0.76rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #8b6d1f;
+    margin-bottom: 12px;
+  }
+
+  .contacto-intro h1 {
+    padding: 0;
+    font-size: clamp(2rem, 3.2vw, 3.3rem);
+    margin-bottom: 14px;
+    color: #18130b;
+  }
+
+  .contacto-intro p,
+  .contacto-intro li {
+    color: #4c4235;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .contacto-intro ul {
+    margin-top: 18px;
+    padding-left: 18px;
+  }
+
+  .contacto-card {
+    padding: 28px;
+  }
+
+  .contacto-form {
+    display: grid;
+    gap: 16px;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .field-grid label,
+  .consentimiento {
+    display: grid;
+    gap: 8px;
+    color: #241c11;
+    font-size: 0.98rem;
+  }
+
+  .field-grid label.full {
+    grid-column: 1 / -1;
+  }
+
+  .field-grid input,
+  .field-grid select,
+  .field-grid textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid #d8c6a2;
+    background: #fffefb;
+    font-family: "Georgia", serif;
+    font-size: 1rem;
+    color: #1f180d;
+  }
+
+  .consentimiento {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .consentimiento input {
+    width: 18px;
+    height: 18px;
+  }
+
+  .contacto-form button {
+    justify-self: start;
+    padding: 14px 22px;
+    border-radius: 999px;
+    background: #17120c;
+    color: #fff;
+    border: 1px solid #17120c;
+    font-size: 0.98rem;
+  }
+
+  @media (max-width: 900px) {
+    .contacto-shell {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .contacto-page {
+      padding: 190px 14px 60px;
+    }
+
+    .contacto-intro,
+    .contacto-card {
+      padding: 20px;
+      border-radius: 22px;
+    }
+
+    .field-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .field-grid label.full {
+      grid-column: auto;
+    }
+
+    .contacto-form button {
+      width: 100%;
+      justify-self: stretch;
+    }
+  }
+</style>

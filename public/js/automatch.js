@@ -75,7 +75,7 @@ if (form) {
         uso: "familiar",
         precio: 65000000,
         ciudad: "bogotá",
-        imagen: "/img/toyota-prado/toyota-prado-copia.jpg",
+        imagen: "/img/toyota-prado/toyota-prado-copia.webp",
         seccion: "hibridos",
       },
       {
@@ -157,7 +157,7 @@ if (form) {
         uso: "deportivo",
         precio: 85000000,
         ciudad: "medellín",
-        imagen: "/img/ford-bronco/ford-bronco-portada.jpg",
+        imagen: "/img/ford-bronco/ford-bronco-portada.webp",
         seccion: "deportes",
       },
       {
