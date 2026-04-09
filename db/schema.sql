@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS notes (
   id SERIAL PRIMARY KEY,
   title TEXT NOT NULL,
   subtitle TEXT,
+  editor TEXT NOT NULL DEFAULT 'Jhon Aparicio',
+  source_scope TEXT NOT NULL DEFAULT 'nacional',
   content TEXT NOT NULL,
   category TEXT NOT NULL DEFAULT 'general',
   image_url TEXT,
@@ -45,6 +47,8 @@ CREATE TABLE IF NOT EXISTS notes (
 );
 
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS subtitle TEXT;
+ALTER TABLE notes ADD COLUMN IF NOT EXISTS editor TEXT;
+ALTER TABLE notes ADD COLUMN IF NOT EXISTS source_scope TEXT;
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS category TEXT;
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS image_url TEXT;
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS image1 TEXT;
@@ -83,14 +87,33 @@ ALTER TABLE notes ADD COLUMN IF NOT EXISTS spec_traccion TEXT;
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS spec_precio_cop TEXT;
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 
+ALTER TABLE notes ADD COLUMN IF NOT EXISTS block_titles TEXT;
+
 UPDATE notes
 SET category = 'general'
 WHERE category IS NULL OR btrim(category) = '';
 
+UPDATE notes
+SET source_scope = 'nacional'
+WHERE source_scope IS NULL OR btrim(source_scope) = '';
+
+UPDATE notes
+SET source_scope = 'nacional'
+WHERE lower(source_scope) NOT IN ('nacional', 'internacional');
+
+UPDATE notes
+SET editor = 'Jhon Aparicio'
+WHERE editor IS NULL OR btrim(editor) = '';
+
 ALTER TABLE notes ALTER COLUMN category SET DEFAULT 'general';
 ALTER TABLE notes ALTER COLUMN category SET NOT NULL;
+ALTER TABLE notes ALTER COLUMN editor SET DEFAULT 'Jhon Aparicio';
+ALTER TABLE notes ALTER COLUMN editor SET NOT NULL;
+ALTER TABLE notes ALTER COLUMN source_scope SET DEFAULT 'nacional';
+ALTER TABLE notes ALTER COLUMN source_scope SET NOT NULL;
 
 CREATE INDEX IF NOT EXISTS idx_notes_category ON notes(category);
+CREATE INDEX IF NOT EXISTS idx_notes_source_scope ON notes(source_scope);
 CREATE INDEX IF NOT EXISTS idx_notes_created_at ON notes(created_at DESC);
 
 CREATE TABLE IF NOT EXISTS likes (

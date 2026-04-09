@@ -42,6 +42,12 @@ function normalizeCategory(category: string) {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
+function normalizeEditor(editor: unknown) {
+  if (typeof editor !== "string") return "Jhon Aparicio";
+  const normalized = editor.trim();
+  return normalized || "Jhon Aparicio";
+}
+
 export const GET: APIRoute = async ({ request }) => {
   const headers = {
     "Content-Type": "application/json",
@@ -76,13 +82,14 @@ export const GET: APIRoute = async ({ request }) => {
 
       const note = result.rows[0];
       note.category = normalizeCategory(note.category);
+      note.editor = normalizeEditor(note.editor);
 
       return new Response(JSON.stringify(note), { status: 200, headers });
     }
 
     const result = await getPool().query(`
       SELECT
-        id, title, subtitle, content, category,
+        id, title, subtitle, editor, content, category,
         image1, image2, image3, image4, image5, image6,
         video1, video2, video3, video4, video5, video6, video7,
         spec_segmento, spec_origen, spec_precio_estimado, spec_versiones,
@@ -100,6 +107,7 @@ export const GET: APIRoute = async ({ request }) => {
     const normalizedRows = result.rows.map((row) => ({
       ...row,
       category: normalizeCategory(row.category),
+      editor: normalizeEditor(row.editor),
     }));
 
     return new Response(JSON.stringify(normalizedRows), { status: 200, headers });

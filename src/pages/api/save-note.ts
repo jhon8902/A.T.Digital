@@ -4,6 +4,7 @@ import pkg from "pg";
 const { Pool } = pkg;
 
 let _pool: InstanceType<typeof Pool> | null = null;
+let _notesColumns: Set<string> | null = null;
 
 const DB_CONNECTION_TIMEOUT_MS = Number(
   process.env.DB_CONNECTION_TIMEOUT_MS || "5000"
@@ -30,6 +31,27 @@ function getPool() {
   return _pool;
 }
 
+async function getNotesColumns(): Promise<Set<string>> {
+  if (_notesColumns) return _notesColumns;
+
+  const result = await getPool().query(
+    `
+      SELECT column_name
+      FROM information_schema.columns
+      WHERE table_schema = 'public'
+        AND table_name = 'notes'
+    `
+  );
+
+  _notesColumns = new Set(
+    result.rows
+      .map((row: any) => String(row.column_name || "").toLowerCase())
+      .filter(Boolean)
+  );
+
+  return _notesColumns;
+}
+
 const ALLOWED_CATEGORIES = new Set([
   "noticias",
   "electricos",
@@ -40,6 +62,8 @@ const ALLOWED_CATEGORIES = new Set([
   "automatch",
   "general",
 ]);
+
+const ALLOWED_SOURCE_SCOPES = new Set(["nacional", "internacional"]);
 
 const CATEGORY_ALIASES: Record<string, string> = {
   electrico: "electricos",
@@ -66,6 +90,12 @@ function normalizeCategory(category: string): string {
 function resolveCategory(category: string): string {
   const normalized = normalizeCategory(category);
   return CATEGORY_ALIASES[normalized] || normalized;
+}
+
+function normalizeSourceScope(scope: string): string {
+  const normalized = normalizeCategory(scope || "nacional");
+  if (normalized === "internacional") return "internacional";
+  return "nacional";
 }
 
 function normalizeMediaUrl(value: unknown): string | undefined {
@@ -139,6 +169,26 @@ function isMissingVideoColumnsError(error: any): boolean {
   );
 }
 
+function isMissingEditorColumnError(error: any): boolean {
+  if (!error) return false;
+  return (
+    error.code === "42703" &&
+    /editor|column\s+"?editor"?\s+does\s+not\s+exist/i.test(
+      String(error.message || "")
+    )
+  );
+}
+
+function isMissingSourceScopeColumnError(error: any): boolean {
+  if (!error) return false;
+  return (
+    error.code === "42703" &&
+    /source_scope|column\s+"?source_scope"?\s+does\s+not\s+exist/i.test(
+      String(error.message || "")
+    )
+  );
+}
+
 async function relaxLegacyCategorySchema() {
   const pool = getPool();
   await pool.query(`
@@ -169,6 +219,8 @@ async function insertNote(
   payload: {
   title: string;
   subtitle?: string;
+  editor?: string;
+  source_scope?: string;
   content: string;
   category: string;
   image1?: string;
@@ -205,12 +257,21 @@ async function insertNote(
   spec_competidores?: string;
   spec_traccion?: string;
   spec_precio_cop?: string;
+  block_titles?: string;
 },
-  options: { includeImage6: boolean; includeVideos: boolean }
+  options: {
+    includeImage6: boolean;
+    includeVideos: boolean;
+    includeEditor: boolean;
+    includeSourceScope: boolean;
+    includeBlockTitles: boolean;
+  }
 ) {
   const columns = [
     "title",
     "subtitle",
+    "editor",
+    "source_scope",
     "content",
     "category",
     "image1",
@@ -223,6 +284,8 @@ async function insertNote(
   const values: Array<string | null | undefined> = [
     payload.title,
     payload.subtitle,
+    payload.editor ?? "Jhon Aparicio",
+    payload.source_scope ?? "nacional",
     payload.content,
     payload.category,
     payload.image1,
@@ -235,6 +298,22 @@ async function insertNote(
   if (options.includeImage6) {
     columns.push("image6");
     values.push(payload.image6 ?? null);
+  }
+
+  if (!options.includeEditor) {
+    const editorIdx = columns.indexOf("editor");
+    if (editorIdx >= 0) {
+      columns.splice(editorIdx, 1);
+      values.splice(editorIdx, 1);
+    }
+  }
+
+  if (!options.includeSourceScope) {
+    const scopeIdx = columns.indexOf("source_scope");
+    if (scopeIdx >= 0) {
+      columns.splice(scopeIdx, 1);
+      values.splice(scopeIdx, 1);
+    }
   }
 
   if (options.includeVideos) {
@@ -289,6 +368,11 @@ async function insertNote(
     }
   });
 
+  if (options.includeBlockTitles && payload.block_titles !== undefined) {
+    columns.push("block_titles");
+    values.push(payload.block_titles);
+  }
+
   const placeholders = values.map((_, index) => `$${index + 1}`).join(", ");
 
   return getPool().query(
@@ -318,6 +402,8 @@ export const POST: APIRoute = async ({ request }) => {
     let {
       title,
       subtitle,
+      editor,
+      source_scope,
       content,
       category,
       image1,
@@ -354,10 +440,12 @@ export const POST: APIRoute = async ({ request }) => {
       spec_competidores,
       spec_traccion,
       spec_precio_cop,
+      block_titles,
     } = body;
 
     const normalizedTitle = normalizeTextField(title);
     const normalizedSubtitle = normalizeTextField(subtitle);
+    const normalizedEditor = normalizeTextField(editor) || "Jhon Aparicio";
     const normalizedContent = normalizeTextField(content);
 
     if (!normalizedTitle || !normalizedContent) {
@@ -379,9 +467,22 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
+    const normalizedSourceScope = normalizeSourceScope(source_scope);
+    if (!ALLOWED_SOURCE_SCOPES.has(normalizedSourceScope)) {
+      return new Response(
+        JSON.stringify({
+          error: `Ámbito no permitido: ${normalizedSourceScope}`,
+          source_scope: normalizedSourceScope,
+        }),
+        { status: 400, headers }
+      );
+    }
+
     const payload = {
       title: normalizedTitle,
       subtitle: normalizedSubtitle,
+      editor: normalizedEditor,
+      source_scope: normalizedSourceScope,
       content: normalizedContent,
       category,
       image1: normalizeMediaUrl(image1),
@@ -418,30 +519,74 @@ export const POST: APIRoute = async ({ request }) => {
       spec_competidores: normalizeTextField(spec_competidores),
       spec_traccion: normalizeTextField(spec_traccion),
       spec_precio_cop: normalizeTextField(spec_precio_cop),
+      block_titles: normalizeTextField(block_titles),
     };
+
+    const columns = await getNotesColumns();
+    const supportsEditor = columns.has("editor");
+    const supportsSourceScope = columns.has("source_scope");
+    const supportsImage6 = columns.has("image6");
+    const supportsVideos = [
+      "video1",
+      "video2",
+      "video3",
+      "video4",
+      "video5",
+      "video6",
+      "video7",
+    ].every((column) => columns.has(column));
+    const supportsBlockTitles = columns.has("block_titles");
 
     let result;
     try {
       result = await insertNote(payload, {
-        includeImage6: true,
-        includeVideos: true,
+        includeImage6: supportsImage6,
+        includeVideos: supportsVideos,
+        includeEditor: supportsEditor,
+        includeSourceScope: supportsSourceScope,
+        includeBlockTitles: supportsBlockTitles,
       });
     } catch (insertError: any) {
       if (isCategoryConstraintError(insertError)) {
         await relaxLegacyCategorySchema();
         result = await insertNote(payload, {
-          includeImage6: true,
-          includeVideos: true,
+          includeImage6: supportsImage6,
+          includeVideos: supportsVideos,
+          includeEditor: supportsEditor,
+          includeSourceScope: supportsSourceScope,
+          includeBlockTitles: supportsBlockTitles,
+        });
+      } else if (isMissingEditorColumnError(insertError)) {
+        result = await insertNote(payload, {
+          includeImage6: supportsImage6,
+          includeVideos: supportsVideos,
+          includeEditor: false,
+          includeSourceScope: supportsSourceScope,
+          includeBlockTitles: supportsBlockTitles,
+        });
+      } else if (isMissingSourceScopeColumnError(insertError)) {
+        result = await insertNote(payload, {
+          includeImage6: supportsImage6,
+          includeVideos: supportsVideos,
+          includeEditor: supportsEditor,
+          includeSourceScope: false,
+          includeBlockTitles: supportsBlockTitles,
         });
       } else if (isMissingVideoColumnsError(insertError)) {
         result = await insertNote(payload, {
-          includeImage6: true,
+          includeImage6: supportsImage6,
           includeVideos: false,
+          includeEditor: supportsEditor,
+          includeSourceScope: supportsSourceScope,
+          includeBlockTitles: supportsBlockTitles,
         });
       } else if (isMissingImage6ColumnError(insertError)) {
         result = await insertNote(payload, {
           includeImage6: false,
-          includeVideos: false,
+          includeVideos: supportsVideos,
+          includeEditor: supportsEditor,
+          includeSourceScope: supportsSourceScope,
+          includeBlockTitles: supportsBlockTitles,
         });
       } else {
         throw insertError;

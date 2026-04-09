@@ -2,9 +2,52 @@
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
 
 let dynamicElectricos: any[] = [];
+const HOME_VISIBLE_COUNT = 5;
+
+function normalizeSourceScope(scope?: string) {
+  return scope?.toLowerCase() === "internacional"
+    ? "internacional"
+    : "nacional";
+}
+
+function sourceScopeLabel(scope?: string) {
+  return normalizeSourceScope(scope) === "internacional"
+    ? "Internacional"
+    : "Nacional";
+}
+
+function cleanPublishedDate(value?: string) {
+  const cleaned = (value || "").replace(/^Publicado:\s*/i, "").trim();
+  if (!cleaned) return "";
+  if (/\d{4}/.test(cleaned)) return cleaned;
+  if (/^\d{1,2}-[a-záéíóúüñ]+$/i.test(cleaned)) return `${cleaned}-2025`;
+  return cleaned;
+}
+
+function parseDateValue(value?: string) {
+  const cleaned = (value || "").replace(/^Publicado:\s*/i, "").trim();
+
+  if (!cleaned) return 0;
+
+  const direct = new Date(cleaned);
+  if (!isNaN(direct.getTime())) return direct.getTime();
+
+  const ddmmyyyy = cleaned.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (ddmmyyyy) {
+    const [, dd, mm, yyyy] = ddmmyyyy;
+    return new Date(`${yyyy}-${mm}-${dd}`).getTime();
+  }
+
+  const ddMonth = cleaned.match(/^(\d{1,2})-([a-záéíóúüñ]+)$/i);
+  if (ddMonth) {
+    return new Date(`${cleaned}-2025`).getTime();
+  }
+
+  return 0;
+}
 
 // ✅ Función para extraer la primera imagen del HTML (para portada si no hay image1)
-function extractFirstImage(html) {
+function extractFirstImage(html?: string) {
   if (!html) return null;
   const match = html.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/i);
   return match ? match[1] : null;
@@ -36,6 +79,9 @@ try {
           fecha: note.created_at
             ? `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`
             : "",
+          editor: note.editor || "Jhon Aparicio",
+          source_scope: normalizeSourceScope(note.source_scope),
+          sortDate: note.created_at ? new Date(note.created_at).getTime() : 0,
         };
       });
   }
@@ -52,7 +98,8 @@ const staticElectricos = [
     title: "Volvo EX90",
     description:
       "No solo ofrece una autonomía de 500km sino que además llega con nuevo diseño vanguardista, es una de las más cotizadas en Colombia.",
-    fecha: "Nota: 10-feb",
+    fecha: "Publicado: 10-feb",
+    source_scope: "nacional",
   },
   {
     href: "/notas-electricos/nota-mini-cooper",
@@ -61,7 +108,8 @@ const staticElectricos = [
     title: "Mini Cooper",
     description:
       "Lujo y tecnología en un compacto eléctrico capaz de satisfacer todas tus necesidades básicas y de confort.",
-    fecha: "Nota: 13-mar",
+    fecha: "Publicado: 13-mar",
+    source_scope: "nacional",
   },
   {
     href: "/notas-electricos/nota-byd-sealion7",
@@ -70,7 +118,8 @@ const staticElectricos = [
     title: "BYD Sealion 7",
     description:
       "Deportivo y sostenible sin perder su esencia, el diseño y lujo se combinan para ofrecer lo mejor.",
-    fecha: "Nota: 13-mar",
+    fecha: "Publicado: 13-mar",
+    source_scope: "nacional",
   },
   {
     href: "/notas-electricos/nota-peugeot-e3008",
@@ -79,7 +128,8 @@ const staticElectricos = [
     title: "Peugeot E-3008",
     description:
       "Eléctrico y potente para la nueva era: si lo que quieres es que te vean, con este SUV lo logras.",
-    fecha: "Nota: 24-mar",
+    fecha: "Publicado: 24-mar",
+    source_scope: "nacional",
   },
   {
     href: "/notas-electricos/nota-renault-megane",
@@ -88,12 +138,20 @@ const staticElectricos = [
     title: "Renault Megane",
     description:
       "Compacto y eficiente para la movilidad urbana, además de futurista que compensa cualquier pero.",
-    fecha: "Nota: 20-abril",
+    fecha: "Publicado: 20-abril",
+    source_scope: "nacional",
   },
 ];
 
 // ✅ Juntamos dinámicas + estáticas (las 5 primeras)
-const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
+const staticElectricosWithDate = staticElectricos.map((note) => ({
+  ...note,
+  sortDate: parseDateValue(note.fecha),
+}));
+
+const allElectricos = [...dynamicElectricos, ...staticElectricosWithDate]
+  .sort((a, b) => b.sortDate - a.sortDate)
+  .slice(0, HOME_VISIBLE_COUNT);
 ---
 
 <div id="electricos" class="electrico-container">
@@ -126,7 +184,28 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
           </div>
           <div class="texto-destacado">
             <h2>{allElectricos[0].title}</h2>
-            <p class="texto-f">{allElectricos[0].fecha}</p>
+            <p class="texto-f">
+              <i class="fa-regular fa-user" aria-hidden="true" />
+              <span class="meta-author">
+                {allElectricos[0].editor || "Jhon Aparicio"}
+              </span>
+              <span class="meta-sep">•</span>
+              <i class="fa-regular fa-calendar" aria-hidden="true" />
+              <span class="meta-date">
+                {cleanPublishedDate(allElectricos[0].fecha)}
+              </span>
+            </p>
+            <span
+              class={
+                "scope-badge " +
+                (normalizeSourceScope(allElectricos[0].source_scope) ===
+                "internacional"
+                  ? "scope-badge--internacional"
+                  : "scope-badge--nacional")
+              }
+            >
+              {sourceScopeLabel(allElectricos[0].source_scope)}
+            </span>
             <p>{allElectricos[0].description}</p>
           </div>
         </a>
@@ -149,7 +228,23 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
             />
           </div>
           <h2>{nota.title}</h2>
-          <p class="texto-f">{nota.fecha}</p>
+          <p class="texto-f">
+            <i class="fa-regular fa-user" aria-hidden="true" />
+            <span class="meta-author">{nota.editor || "Jhon Aparicio"}</span>
+            <span class="meta-sep">•</span>
+            <i class="fa-regular fa-calendar" aria-hidden="true" />
+            <span class="meta-date">{cleanPublishedDate(nota.fecha)}</span>
+          </p>
+          <span
+            class={
+              "scope-badge " +
+              (normalizeSourceScope(nota.source_scope) === "internacional"
+                ? "scope-badge--internacional"
+                : "scope-badge--nacional")
+            }
+          >
+            {sourceScopeLabel(nota.source_scope)}
+          </span>
           <p>{nota.description}</p>
         </a>
       </div>
@@ -352,10 +447,33 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     color: #666;
     border-bottom: none;
     width: auto;
-    display: block;
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
     padding: 0;
     font-weight: 400;
     font-family: "Georgia", serif;
+  }
+
+  .scope-badge {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 10px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #ffffff;
+  }
+
+  .scope-badge--nacional {
+    background: #1f6f43;
+  }
+
+  .scope-badge--internacional {
+    background: #1d4ed8;
   }
 
   .imagen-destacada-img {
@@ -455,9 +573,17 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     text-align: left;
     text-transform: none;
     border-bottom: none;
-    display: block;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     font-weight: 400;
     font-family: "Georgia", serif;
+  }
+
+  .imagen-card .scope-badge {
+    display: flex;
+    justify-content: flex-start;
+    margin: 0 20px 10px;
   }
 
   .ver-mas-modelos-container {
@@ -522,7 +648,7 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     }
 
     .texto-destacado {
-      text-align: center;
+      text-align: left;
       padding: 10px 10px;
     }
 
@@ -539,7 +665,8 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
     }
 
     .texto-destacado .texto-f {
-      text-align: center;
+      text-align: left;
+      justify-content: flex-start;
       width: 100%;
       font-size: 13px;
       color: #666;
@@ -611,6 +738,15 @@ const allElectricos = [...dynamicElectricos, ...staticElectricos].slice(0, 5);
       padding: 0 10px;
       margin-top: 10px;
       margin-bottom: 10px;
+      display: flex;
+      justify-content: flex-start;
+      text-align: left;
+    }
+
+    .imagen-card .scope-badge {
+      display: flex;
+      justify-content: flex-start;
+      margin: 0 10px 10px;
     }
 
     .ver-mas-modelos-container {

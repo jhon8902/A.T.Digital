@@ -2,6 +2,94 @@
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
 
 let dynamicLanzamientos: any[] = [];
+const HOME_VISIBLE_COUNT = 5;
+
+function normalizeSourceScope(scope?: string) {
+  return scope?.toLowerCase() === "internacional"
+    ? "internacional"
+    : "nacional";
+}
+
+function sourceScopeLabel(scope?: string) {
+  return normalizeSourceScope(scope) === "internacional"
+    ? "Internacional"
+    : "Nacional";
+}
+
+function cleanPublishedDate(value?: string) {
+  const cleaned = (value || "")
+    .replace(/^Publicado:\s*/i, "")
+    .replace(/^Nota:\s*/i, "")
+    .trim();
+
+  if (!cleaned) return "";
+  if (/\d{4}/.test(cleaned)) return cleaned;
+  if (/^\d{1,2}-[a-záéíóúüñ]+$/i.test(cleaned)) return `${cleaned}-2025`;
+  return cleaned;
+}
+
+function parseDateValue(value?: string) {
+  if (!value) return 0;
+
+  const cleaned = value
+    .replace(/^Publicado:\s*/i, "")
+    .replace(/^Nota:\s*/i, "")
+    .trim();
+
+  const monthMap: Record<string, number> = {
+    ene: 0,
+    enero: 0,
+    feb: 1,
+    febrero: 1,
+    mar: 2,
+    marzo: 2,
+    abr: 3,
+    abril: 3,
+    may: 4,
+    mayo: 4,
+    jun: 5,
+    junio: 5,
+    jul: 6,
+    julio: 6,
+    ago: 7,
+    agosto: 7,
+    sep: 8,
+    septiembre: 8,
+    oct: 9,
+    octubre: 9,
+    nov: 10,
+    noviembre: 10,
+    dic: 11,
+    diciembre: 11,
+  };
+
+  const dayMonthMatch = cleaned.match(
+    /^(\d{1,2})-([a-záéíóúüñ]+)(?:-(\d{4}))?$/i,
+  );
+  if (dayMonthMatch) {
+    const [, dayRaw, monthRaw, yearRaw] = dayMonthMatch;
+    const normalizedMonth = monthRaw
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+    const monthIndex = monthMap[normalizedMonth];
+    if (Number.isInteger(monthIndex)) {
+      const year = yearRaw ? Number(yearRaw) : 2025;
+      return new Date(year, monthIndex, Number(dayRaw)).getTime();
+    }
+  }
+
+  const direct = new Date(cleaned);
+  if (!isNaN(direct.getTime())) return direct.getTime();
+
+  const ddmmyyyy = cleaned.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (ddmmyyyy) {
+    const [, dd, mm, yyyy] = ddmmyyyy;
+    return new Date(`${yyyy}-${mm}-${dd}`).getTime();
+  }
+
+  return 0;
+}
 
 // Traemos notas dinámicas desde Netlify
 try {
@@ -18,7 +106,12 @@ try {
         alt: note.title,
         title: note.title,
         description: note.subtitle || "",
-        fecha: note.created_at,
+        fecha: note.created_at
+          ? `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`
+          : "",
+        editor: note.editor || "Jhon Aparicio",
+        source_scope: normalizeSourceScope(note.source_scope),
+        sortDate: note.created_at ? new Date(note.created_at).getTime() : 0,
       }));
   }
 } catch (err) {
@@ -36,6 +129,7 @@ const staticLanzamientos = [
       "¿Sabías que el Jeep Avenger fue el primer modelo 100% eléctrico de la marca lanzado en Europa, ganando el premio 'Car of the Year 2023'?",
     fecha: "Publicado: 2025-08-05",
     destacada: true,
+    source_scope: "nacional",
   },
   {
     href: "./noticias-nacionales/noticia-kia-ev9",
@@ -45,6 +139,7 @@ const staticLanzamientos = [
     description:
       "El KIA EV9 es uno de los primeros SUV eléctricos en el mundo que puede recibir actualizaciones de software a distancia.",
     fecha: "Publicado: 2025-08-01",
+    source_scope: "nacional",
   },
   {
     href: "./noticias-nacionales/noticia-mazda-ez6",
@@ -54,6 +149,7 @@ const staticLanzamientos = [
     description:
       "‘Skyactiv’ Tecnología que optimiza el rendimiento y la eficiencia del motor híbrido, Mazda fue pionera en el uso del motor rotativo.",
     fecha: "Publicado: 2025-08-02",
+    source_scope: "nacional",
   },
   {
     href: "./noticias-nacionales/noticia-toyota-prado",
@@ -63,6 +159,7 @@ const staticLanzamientos = [
     description:
       "La Toyota Prado es famosa por su durabilidad en algunos países, es el vehículo preferido para condiciones extremas.",
     fecha: "Publicado: 2025-08-03",
+    source_scope: "nacional",
   },
   {
     href: "./noticias-nacionales/noticia-ford-f150",
@@ -72,18 +169,23 @@ const staticLanzamientos = [
     description:
       "La Ford F-150 Lightning puede alimentar una casa entera durante un corte de energía gracias a su batería de alta capacidad.",
     fecha: "Publicado: 2025-08-04",
+    source_scope: "nacional",
   },
 ];
 
+const staticLanzamientosWithDate = staticLanzamientos.map((note) => ({
+  ...note,
+  sortDate: parseDateValue(note.fecha),
+}));
+
 // Mezclamos dinámicas y estáticas y ordenamos por fecha descendente
-const mezcladas = [...dynamicLanzamientos, ...staticLanzamientos];
-mezcladas.sort(
-  (a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime(),
+const mezcladas = [...dynamicLanzamientos, ...staticLanzamientosWithDate].sort(
+  (a, b) => b.sortDate - a.sortDate,
 );
 
 // Nota destacada y el resto
 const destacada = mezcladas[0];
-const resto = mezcladas.slice(1, 5);
+const resto = mezcladas.slice(1, HOME_VISIBLE_COUNT);
 ---
 
 <section id="lanzamientos" class="noticias-container">
@@ -103,9 +205,27 @@ const resto = mezcladas.slice(1, 5);
       <a href={destacada.href} class="noticia-avenger-container">
         <div class="noticia-avenger-texto">
           <h3 class="noticia-texto-titulo">{destacada.title}</h3>
-          <p class="noticia-descripcion">{destacada.description}</p>
-          <span class="noticia-fecha">
-            Publicado: {new Date(destacada.fecha).toLocaleDateString("es-CO")}
+          <p class="noticia-descripcion noticia-descripcion--destacada">
+            {destacada.description}
+          </p>
+          <span class="noticia-fecha noticia-fecha--destacada">
+            <i class="fa-regular fa-user" aria-hidden="true" />
+            <span class="meta-author">
+              {destacada.editor || "Jhon Aparicio"}
+            </span>
+            <span class="meta-sep">•</span>
+            <i class="fa-regular fa-calendar" aria-hidden="true" />
+            <span class="meta-date">{cleanPublishedDate(destacada.fecha)}</span>
+          </span>
+          <span
+            class={
+              "noticia-ambito " +
+              (normalizeSourceScope(destacada.source_scope) === "internacional"
+                ? "noticia-ambito--internacional"
+                : "noticia-ambito--nacional")
+            }
+          >
+            {sourceScopeLabel(destacada.source_scope)}
           </span>
         </div>
         <img
@@ -133,10 +253,24 @@ const resto = mezcladas.slice(1, 5);
         </div>
         <div class="noticia-texto">
           <h3 class="noticia-texto-titulo">{nota.title}</h3>
-          <p class="noticia-descripcion">{nota.description}</p>
           <span class="noticia-fecha">
-            Publicado: {new Date(nota.fecha).toLocaleDateString("es-CO")}
+            <i class="fa-regular fa-user" aria-hidden="true" />
+            <span class="meta-author">{nota.editor || "Jhon Aparicio"}</span>
+            <span class="meta-sep">•</span>
+            <i class="fa-regular fa-calendar" aria-hidden="true" />
+            <span class="meta-date">{cleanPublishedDate(nota.fecha)}</span>
           </span>
+          <span
+            class={
+              "noticia-ambito " +
+              (normalizeSourceScope(nota.source_scope) === "internacional"
+                ? "noticia-ambito--internacional"
+                : "noticia-ambito--nacional")
+            }
+          >
+            {sourceScopeLabel(nota.source_scope)}
+          </span>
+          <p class="noticia-descripcion">{nota.description}</p>
         </div>
       </a>
     ))
@@ -310,14 +444,17 @@ const resto = mezcladas.slice(1, 5);
   }
 
   .noticia-texto {
-    padding: 15px;
-
+    padding: 18px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
     color: black;
   }
 
   .noticia-texto-titulo {
     font-size: 26px;
-    margin-bottom: 12px;
+    margin-bottom: 0;
     color: black;
     font-weight: 600;
 
@@ -335,13 +472,49 @@ const resto = mezcladas.slice(1, 5);
     font-weight: 500;
   }
 
+  .noticia-descripcion--destacada {
+    margin-top: 10px;
+  }
+
   .noticia-fecha {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
     font-size: 0.95em;
     color: #183b55;
-    margin-top: 8px;
+    margin-top: 4px;
+    margin-bottom: 4px;
     font-weight: 600;
     letter-spacing: 0.5px;
+  }
+
+  .noticia-fecha--destacada {
+    margin-top: 10px;
+    margin-bottom: 12px;
+    justify-content: center;
+  }
+
+  .noticia-ambito {
+    display: inline-flex;
+    width: fit-content;
+    margin-top: 0;
+    margin-bottom: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #ffffff;
+  }
+
+  .noticia-ambito--nacional {
+    background: #1f6f43;
+  }
+
+  .noticia-ambito--internacional {
+    background: #1d4ed8;
   }
 
   /* --- Jeep Avenger noticia especial --- */
@@ -367,13 +540,15 @@ const resto = mezcladas.slice(1, 5);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   }
   .noticia-avenger-texto {
-    padding: 40px 30px 20px 30px;
+    padding: 46px 34px 30px;
 
     color: #453302e7;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    gap: 8px;
     text-align: center;
   }
   .noticia-avenger-texto .noticia-texto-titulo {
@@ -384,7 +559,7 @@ const resto = mezcladas.slice(1, 5);
     display: inline-block;
     /*border-bottom: 2px solid #4e3e02;*/
     padding-bottom: 5px;
-    margin-bottom: 15px;
+    margin-bottom: 0;
     margin-left: auto;
     margin-right: auto;
   }
@@ -396,6 +571,14 @@ const resto = mezcladas.slice(1, 5);
     background: transparent;
 
     font-weight: 500;
+    margin-top: 6px;
+  }
+
+  .noticia-avenger-texto .noticia-ambito {
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 12px;
   }
 
   .noticia-avenger-imagen {
@@ -470,7 +653,7 @@ const resto = mezcladas.slice(1, 5);
   }
 
   .ver-mas-noticias-btn {
-    background: #8e8054e7;
+    background: #6b6038e7;
     color: white;
     font-size: 18px;
     font-weight: 600;
@@ -487,7 +670,7 @@ const resto = mezcladas.slice(1, 5);
   }
 
   .ver-mas-noticias-btn:hover {
-    background: #6b6038e7;
+    background: #8e8054e7;
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(142, 128, 84, 0.35);
   }
@@ -519,8 +702,22 @@ const resto = mezcladas.slice(1, 5);
     }
 
     .noticia-avenger-texto {
-      padding: 20px 10px 10px 10px;
+      padding: 24px 14px 18px;
       text-align: start;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .noticia-fecha--destacada {
+      justify-content: flex-start;
+      margin-top: 8px;
+      margin-bottom: 14px;
+    }
+
+    .noticia-avenger-texto .noticia-ambito {
+      align-self: flex-start;
+      margin-left: 0;
+      margin-right: 0;
     }
   }
 
@@ -574,6 +771,8 @@ const resto = mezcladas.slice(1, 5);
 
     .noticia-avenger-texto {
       text-align: center;
+      align-items: center;
+      padding: 20px 12px 16px;
     }
 
     .noticia-avenger-texto .noticia-texto-titulo {
@@ -590,8 +789,17 @@ const resto = mezcladas.slice(1, 5);
       background: transparent;
     }
 
+    .noticia-avenger-texto .noticia-ambito {
+      align-self: center;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 10px;
+    }
+
     .noticia-fecha {
-      font-size: 0.6rem;
+      font-size: 0.9rem;
+      line-height: 1.3;
+      margin-top: 10px;
     }
 
     /* DISEÑO HORIZONTAL PARA NOTICIAS EN MOBILE */

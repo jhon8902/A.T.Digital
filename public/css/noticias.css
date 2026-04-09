@@ -1,11 +1,11 @@
 /* ==== ESTILOS CATEGORÍA NOTICIAS ==== */
 
-/* Aislamos todo dentro de body.nota-noticias */
-body.nota-noticias {
+/* Aislamos todo dentro de .articulo-container.noticias */
+.articulo-container.noticias {
   font-family: "Georgia", serif;
 }
 
-body.nota-noticias .section-noticias {
+.articulo-container.noticias .section-noticias {
   width: 100%;
   text-align: center;
   max-width: 100%;
@@ -14,7 +14,7 @@ body.nota-noticias .section-noticias {
 }
 
 /* header */
-body.nota-noticias .header h1 {
+.articulo-container.noticias .header h1 {
   text-align: center;
   padding: 40px;
   font-size: 42px;
@@ -25,8 +25,8 @@ body.nota-noticias .header h1 {
   font-family: "Georgia", serif;
 }
 
-body.nota-noticias .section-noticias .container,
-body.nota-noticias .articulo-container .container {
+.articulo-container.noticias .section-noticias .container,
+.articulo-container.noticias .articulo-container .container {
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -36,7 +36,7 @@ body.nota-noticias .articulo-container .container {
 }
 
 
-body.nota-noticias .card {
+.articulo-container.noticias .card {
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -46,34 +46,34 @@ body.nota-noticias .card {
   gap: 28px;
 }
 
-body.nota-noticias .card:hover {
+.articulo-container.noticias .card:hover {
   transform: translateY(-8px);
 }
 
-body.nota-noticias .card.reverse {
+.articulo-container.noticias .card.reverse {
   flex-direction: row-reverse;
 }
 
-body.nota-noticias .card-image {
+.articulo-container.noticias .card-image {
   flex: 0 0 48%;
   min-height: 360px;
   overflow: hidden;
 }
 
-body.nota-noticias .card-image img {
+.articulo-container.noticias .card-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-body.nota-noticias .card-text {
+.articulo-container.noticias .card-text {
   flex: 1 1 auto;
   min-width: 0;
   padding: 40px 20px;
   text-align: start;
 }
 
-body.nota-noticias .card-text h2 {
+.articulo-container.noticias .card-text h2 {
   font-size: 26px;
   color: black;
   margin-bottom: 15px;
@@ -82,7 +82,7 @@ body.nota-noticias .card-text h2 {
   font-weight: bolder;
 }
 
-body.nota-noticias .card-text p {
+.articulo-container.noticias .card-text p {
   font-size: 18px;
   line-height: 1.6;
   color: #121212;
@@ -92,33 +92,33 @@ body.nota-noticias .card-text p {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  body.nota-noticias .section-noticias {
+  .articulo-container.noticias .section-noticias {
     padding: 0 15px;
   }
 
-  body.nota-noticias .card {
+  .articulo-container.noticias .card {
     flex-direction: column;
     gap: 0;
   }
 
-  body.nota-noticias .header h1 {
+  .articulo-container.noticias .header h1 {
     font-size: 26px;
     text-align: start;
     padding: 20px 15px 10px;
     margin-bottom: 20px;
   }
 
-  body.nota-noticias .card.reverse {
+  .articulo-container.noticias .card.reverse {
     flex-direction: column;
   }
 
-  body.nota-noticias .card-text {
+  .articulo-container.noticias .card-text {
     flex: 0 0 auto;
     text-align: start;
     padding: 16px 14px;
   }
 
-  body.nota-noticias .card-text h2 {
+  .articulo-container.noticias .card-text h2 {
     font-size: 20px;
     border-bottom: none;
     text-align: start;
@@ -126,8 +126,286 @@ body.nota-noticias .card-text p {
     margin: 0;
   }
 
-  body.nota-noticias .card-text p {
+  .articulo-container.noticias .card-text p {
     font-size: 16px;
     padding-top: 10px;
+  }
+}
+
+/* Adaptador para notas dinámicas en /notas/[id] con look de noticias */
+.articulo-container.noticias .noticia-detalle {
+  width: min(90vw, 1700px) !important;
+  max-width: min(90vw, 1700px) !important;
+  margin: 24px auto 40px !important;
+  padding: 20px 0 40px !important;
+  background: white;
+  font-family: "Georgia", serif;
+}
+
+.articulo-container.noticias .noticia-detalle h1 {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  font-weight: 700;
+  margin: 0 auto 24px;
+  border-bottom: 2px solid #111;
+  width: 90%;
+  max-width: none;
+  padding-bottom: 14px;
+  font-family: "Georgia", serif;
+}
+
+.articulo-container.noticias .noticia-descripcion {
+  font-size: 20px;
+  font-family: "Georgia", serif;
+  text-align: center;
+  color: #222;
+  width: 90%;
+  max-width: none;
+  margin: 0 auto 20px;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.articulo-container.noticias .nota-meta-line {
+  width: 90%;
+  margin: 0 auto 20px;
+  justify-content: center;
+  text-align: center;
+}
+
+.articulo-container.noticias .noticia-portada {
+  width: 90%;
+  max-width: none;
+  margin: 0 auto 32px;
+  border-radius: 12px;
+  display: block;
+}
+
+/* Bloque: imagen (48%) + texto — estilo card de noticias */
+.articulo-container.noticias .noticia-bloque {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 28px;
+  width: 90%;
+  max-width: none;
+  margin: 0 auto 28px;
+  border-radius: 15px;
+  overflow: hidden;
+  background: white;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: transform 0.3s ease;
+}
+
+.articulo-container.noticias .noticia-bloque:hover {
+  transform: translateY(-6px);
+}
+
+/* Zig-zag: bloque impar → imagen a la izquierda */
+.articulo-container.noticias .noticia-bloque.imagen-izquierda {
+  flex-direction: row-reverse;
+}
+
+.articulo-container.noticias .noticia-bloque img {
+  flex: 0 0 48%;
+  width: 48%;
+  min-height: 320px;
+  object-fit: cover;
+  border-radius: 0;
+  margin: 0;
+  box-shadow: none;
+  transition: none;
+}
+
+.articulo-container.noticias .noticia-bloque .noticia-texto {
+  flex: 1;
+  padding: 34px 40px !important;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.articulo-container.noticias .noticia-bloque .noticia-titulo {
+  margin-bottom: 18px;
+  line-height: 1.35;
+  letter-spacing: -0.3px;
+}
+
+.articulo-container.noticias .noticia-bloque .noticia-parrafo {
+  line-height: 1.7;
+  letter-spacing: 0px;
+  font-size: 17px;
+}
+
+.articulo-container.noticias .noticia-bloque .noticia-titulo {
+  font-family: "Georgia", serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: black;
+  margin-bottom: 14px;
+  border-left: none;
+  padding-left: 0;
+  text-align: start;
+}
+
+.articulo-container.noticias .noticia-bloque .noticia-parrafo {
+  font-family: "Georgia", serif;
+  font-size: 18px;
+  line-height: 1.65;
+  color: #222;
+  text-align: start;
+}
+
+/* Ficha técnica — look de noticias */
+.articulo-container.noticias .ficha-tecnica-profesional {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  padding: 50px 30px;
+  margin: 40px auto;
+  width: 90%;
+  max-width: none;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.articulo-container.noticias .ficha-tecnica-profesional h2 {
+  font-family: "Georgia", serif;
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  font-weight: 700;
+  color: #08341f;
+  text-align: center;
+  border-bottom: 3px solid #e6b410;
+  padding-bottom: 16px;
+  margin-bottom: 28px;
+}
+
+.articulo-container.noticias .ficha-tecnica-profesional .ficha-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.articulo-container.noticias .ficha-tecnica-profesional .ficha-item {
+  background: white;
+  padding: 22px;
+  border-radius: 8px;
+  border-left: 4px solid #e6b410;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.articulo-container.noticias .ficha-tecnica-profesional .ficha-item:hover {
+  transform: translateY(-4px);
+}
+
+.articulo-container.noticias .ficha-tecnica-profesional .ficha-item strong {
+  display: block;
+  font-size: 1rem;
+  color: #08341f;
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-family: "Poppins", sans-serif;
+}
+
+.articulo-container.noticias .ficha-tecnica-profesional .ficha-item p {
+  font-size: 0.97rem;
+  line-height: 1.6;
+  color: #444;
+  margin: 0;
+  font-family: "Georgia", serif;
+}
+
+.articulo-container.noticias .ficha-tecnica-profesional .ficha-item.competidores {
+  grid-column: 1 / -1;
+  background: #08341f;
+  border-left-color: #e6b410;
+}
+
+.articulo-container.noticias .ficha-tecnica-profesional .ficha-item.competidores strong {
+  color: #e6b410;
+}
+
+.articulo-container.noticias .ficha-tecnica-profesional .ficha-item.competidores p {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .articulo-container.noticias .noticia-detalle {
+    width: 94vw !important;
+    max-width: 94vw !important;
+    margin: 16px auto 30px !important;
+    padding: 10px 14px 26px;
+  }
+
+  .articulo-container.noticias .noticia-detalle h1 {
+    font-size: 28px;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto 18px;
+    padding: 0 10px 10px;
+  }
+
+  .articulo-container.noticias .noticia-descripcion {
+    width: 100%;
+    font-size: 17px;
+    text-align: center;
+  }
+
+  .articulo-container.noticias .nota-meta-line {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .articulo-container.noticias .noticia-bloque,
+  .articulo-container.noticias .noticia-bloque.imagen-izquierda {
+    flex-direction: column;
+    gap: 0;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    margin: 0 0 20px !important;
+  }
+
+  .articulo-container.noticias .noticia-bloque .noticia-texto {
+    padding: 24px 18px !important;
+  }
+
+  .articulo-container.noticias .noticia-bloque img {
+    flex: 0 0 auto;
+    width: 100%;
+    min-height: 0;
+  }
+
+  .articulo-container.noticias .noticia-bloque .noticia-titulo {
+    font-size: 22px;
+  }
+
+  .articulo-container.noticias .noticia-bloque .noticia-parrafo {
+    font-size: 16px;
+  }
+
+  .articulo-container.noticias .ficha-tecnica-profesional {
+    width: 100%;
+    padding: 28px 14px;
+    border-radius: 0;
+  }
+
+  .articulo-container.noticias .ficha-tecnica-profesional .ficha-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .articulo-container.noticias .noticia-bloque .noticia-titulo {
+    font-size: 18px;
+  }
+
+  .articulo-container.noticias .noticia-bloque .noticia-parrafo {
+    font-size: 15px;
   }
 }

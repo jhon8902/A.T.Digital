@@ -2,21 +2,64 @@
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
 
 let dynamicHibridos: any[] = [];
+const HOME_VISIBLE_COUNT = 6;
 
 // ✅ Función para extraer la primera imagen del HTML
-function extractFirstImage(html) {
+function extractFirstImage(html?: string) {
   if (!html) return null;
   const match = html.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/i);
   return match ? match[1] : null;
 }
 
 // ✅ Normaliza strings para comparar sin tildes ni mayúsculas
-function normalizeString(str) {
+function normalizeString(str?: string) {
   return str
     ?.normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .trim()
     .toLowerCase();
+}
+
+function normalizeSourceScope(scope?: string) {
+  return scope?.toLowerCase() === "internacional"
+    ? "internacional"
+    : "nacional";
+}
+
+function sourceScopeLabel(scope?: string) {
+  return normalizeSourceScope(scope) === "internacional"
+    ? "Internacional"
+    : "Nacional";
+}
+
+function cleanPublishedDate(value?: string) {
+  const cleaned = (value || "").replace(/^Publicado:\s*/i, "").trim();
+  if (!cleaned) return "";
+  if (/\d{4}/.test(cleaned)) return cleaned;
+  if (/^\d{1,2}-[a-záéíóúüñ]+$/i.test(cleaned)) return `${cleaned}-2025`;
+  return cleaned;
+}
+
+function parseDateValue(value?: string) {
+  const cleaned = (value || "").replace(/^Publicado:\s*/i, "").trim();
+
+  if (!cleaned) return 0;
+
+  const direct = new Date(cleaned);
+  if (!isNaN(direct.getTime())) return direct.getTime();
+
+  const ddmmyyyy = cleaned.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (ddmmyyyy) {
+    const [, dd, mm, yyyy] = ddmmyyyy;
+    return new Date(`${yyyy}-${mm}-${dd}`).getTime();
+  }
+
+  const ddMonth = cleaned.match(/^(\d{1,2})-([a-záéíóúüñ]+)$/i);
+  if (ddMonth) {
+    return new Date(`${cleaned}-2025`).getTime();
+  }
+
+  return 0;
 }
 
 // 🔹 Cargar notas dinámicas
@@ -42,6 +85,9 @@ try {
           fecha: note.created_at
             ? `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`
             : "",
+          editor: note.editor || "Jhon Aparicio",
+          source_scope: normalizeSourceScope(note.source_scope),
+          sortDate: note.created_at ? new Date(note.created_at).getTime() : 0,
         };
       });
   }
@@ -58,7 +104,8 @@ const staticHibridos = [
     title: "Ford Escape",
     description:
       "Usa motor eléctrico y de gasolina, brindando bajo consumo y buena autonomía. Ideal para viajes largos y manejo urbano cómodo y eficiente.",
-    fecha: "nota: 13-mar",
+    fecha: "Publicado: 13-mar",
+    source_scope: "nacional",
   },
   {
     href: "/notas-hibridos/nota-volvo-cx90",
@@ -67,7 +114,8 @@ const staticHibridos = [
     title: "Volvo XC90",
     description:
       "SUV premium con motor híbrido y diseño escandinavo. Potente, eficiente y seguro, pensado para quienes buscan confort y tecnología.",
-    fecha: "nota: 16-mar",
+    fecha: "Publicado: 16-mar",
+    source_scope: "nacional",
   },
   {
     href: "/notas-hibridos/nota-subaru",
@@ -76,7 +124,8 @@ const staticHibridos = [
     title: "Subaru Forester E-Boxer",
     description:
       "Integra motor bóxer con eléctrico para una tracción estable y eficiente. Ideal para caminos mixtos y aventuras urbanas.",
-    fecha: "nota: 21-mar",
+    fecha: "Publicado: 21-mar",
+    source_scope: "nacional",
   },
   {
     href: "/notas-hibridos/nota-kona",
@@ -85,7 +134,8 @@ const staticHibridos = [
     title: "Hyundai Kona Hybrid",
     description:
       "SUV compacto con consumo eficiente y diseño moderno. Incorpora ayudas de conducción y pantallas digitales para una experiencia conectada.",
-    fecha: "nota: 25-mar",
+    fecha: "Publicado: 25-mar",
+    source_scope: "nacional",
   },
   {
     href: "/notas-hibridos/nota-audi-q7",
@@ -94,7 +144,8 @@ const staticHibridos = [
     title: "Audi Q7 TFSI E",
     description:
       "Lujoso SUV híbrido con motor V6 y gran autonomía eléctrica. Tecnología, potencia y confort se combinan en este modelo premium de Audi.",
-    fecha: "nota: 28-mar",
+    fecha: "Publicado: 28-mar",
+    source_scope: "nacional",
   },
   {
     href: "/notas-hibridos/nota-nissan",
@@ -103,12 +154,20 @@ const staticHibridos = [
     title: "Nissan X-Trail E-Power",
     description:
       "SUV híbrido que destaca en ventas por su diseño, confort y motor eléctrico. Una opción confiable y moderna para la familia y ciudad, disfrutando de su confort.",
-    fecha: "nota: 30-mar",
+    fecha: "Publicado: 30-mar",
+    source_scope: "nacional",
   },
 ];
 
 // ✅ Combinamos dinámicas + estáticas
-const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
+const staticHibridosWithDate = staticHibridos.map((note) => ({
+  ...note,
+  sortDate: parseDateValue(note.fecha),
+}));
+
+const allHibridos = [...dynamicHibridos, ...staticHibridosWithDate]
+  .sort((a, b) => b.sortDate - a.sortDate)
+  .slice(0, HOME_VISIBLE_COUNT);
 ---
 
 <section id="hibridos" class="hibridos-container">
@@ -137,7 +196,23 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
           </div>
           <div class="hibrido-texto">
             <h2>{nota.title}</h2>
-            <div class="texto-fecha">{nota.fecha}</div>
+            <div class="texto-fecha">
+              <i class="fa-regular fa-user" aria-hidden="true" />
+              <span class="meta-author">{nota.editor || "Jhon Aparicio"}</span>
+              <span class="meta-sep">•</span>
+              <i class="fa-regular fa-calendar" aria-hidden="true" />
+              <span class="meta-date">{cleanPublishedDate(nota.fecha)}</span>
+            </div>
+            <span
+              class={
+                "scope-badge " +
+                (normalizeSourceScope(nota.source_scope) === "internacional"
+                  ? "scope-badge--internacional"
+                  : "scope-badge--nacional")
+              }
+            >
+              {sourceScopeLabel(nota.source_scope)}
+            </span>
             <p>{nota.description}</p>
           </div>
         </a>
@@ -399,6 +474,27 @@ const allHibridos = [...dynamicHibridos, ...staticHibridos].slice(0, 6);
 
   .texto-fecha::before {
     display: none;
+  }
+
+  .scope-badge {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 10px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #ffffff;
+  }
+
+  .scope-badge--nacional {
+    background: #1f6f43;
+  }
+
+  .scope-badge--internacional {
+    background: #1d4ed8;
   }
 
   .ver-mas-container {

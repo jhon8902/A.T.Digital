@@ -1,221 +1,294 @@
- /* ==== ESTILOS CATEGORÍA LANZAMIENTOS ==== */
-  /* Estilos principales */
-  .noticia-detalle {
-    width: 100%;
-    margin: 0;
-    padding: 20px 0;
-    position: relative;
-    background: white;
-  }
+/* ==== ESTILOS CATEGORIA LANZAMIENTOS ==== */
 
-  /* Título subtitulo kia ev9 */
-  .noticia-detalle h1 {
-    font-size: 42px;
-    text-align: center;
-    color: black;
-    width: 90%;
-    font-weight: 600;
-    margin: 0 auto 5px;
+.articulo-container.lanzamientos .noticia-detalle {
+  width: min(90vw, 1700px) !important;
+  max-width: min(90vw, 1700px) !important;
+  margin: 24px auto 40px !important;
+  padding: 20px 0 40px !important;
+  position: relative;
+  background: white;
+}
 
-    border-bottom: 2px solid #595902;
-    padding: 15px;
-    font-family: "Georgia", serif;
-  }
+.articulo-container.lanzamientos .noticia-detalle h1 {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  color: black;
+  width: 90%;
+  max-width: none;
+  font-weight: 600;
+  margin: 0 auto 8px;
+  border-bottom: 2px solid #595902;
+  padding: 0 0 14px;
+  font-family: "Georgia", serif;
+}
 
-  /* Título principal */
-  .noticia-descripcion {
-    font-size: 24px;
-    font-weight: 600;
-    text-align: center;
-    padding: 30px;
-    text-transform: none;
-    font-family: "Poppins", sans-serif;
+.articulo-container.lanzamientos .noticia-descripcion {
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  width: 90%;
+  max-width: none;
+  margin: 0 auto 20px;
+  padding: 0;
+  text-transform: none;
+  font-family: "Poppins", sans-serif;
+  opacity: 0;
+  animation: fadeSlideIn 1s ease-out forwards;
+  animation-delay: 0.3s;
+}
 
-    /* Animación */
+.articulo-container.lanzamientos .nota-meta-line {
+  width: 90%;
+  margin: 0 auto 20px;
+  justify-content: center;
+  text-align: center;
+}
+
+@keyframes fadeSlideIn {
+  from {
     opacity: 0;
-    animation: fadeSlideIn 1s ease-out forwards;
-    animation-delay: 0.3s; /* leve retraso opcional */
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.articulo-container.lanzamientos .noticia-portada {
+  width: 90%;
+  max-width: none;
+  height: min(52vw, 860px);
+  object-fit: cover;
+  padding: 0;
+  margin: 0 auto 30px;
+  border-radius: 12px;
+  transition: box-shadow 0.4s ease;
+}
+
+.articulo-container.lanzamientos .noticia-portada:hover {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+}
+
+.articulo-container.lanzamientos .noticia-bloque {
+  display: flex;
+  align-items: stretch;
+  gap: 28px;
+  width: 90%;
+  max-width: none;
+  margin: 0 auto 28px;
+  border-radius: 15px;
+  overflow: hidden;
+  background: white;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.articulo-container.lanzamientos .noticia-bloque:hover {
+  transform: translateY(-6px);
+}
+
+.articulo-container.lanzamientos .noticia-bloque.imagen-izquierda {
+  flex-direction: row-reverse;
+}
+
+.articulo-container.lanzamientos .noticia-bloque img {
+  flex: 0 0 48%;
+  width: 48%;
+  min-height: 320px;
+  margin: 0;
+  object-fit: cover;
+  box-shadow: none;
+  transition: none;
+}
+
+.articulo-container.lanzamientos .noticia-bloque .noticia-texto {
+  flex: 1;
+  width: auto;
+  text-align: left;
+  padding: 34px 40px !important;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.articulo-container.lanzamientos .noticia-titulo {
+  font-size: 28px;
+  font-weight: 700;
+  color: black;
+  margin-bottom: 18px;
+  text-transform: none;
+  font-family: "Georgia", serif;
+  line-height: 1.35;
+  letter-spacing: -0.3px;
+}
+
+.articulo-container.lanzamientos .noticia-bloque .noticia-parrafo {
+  font-size: 17px;
+  text-align: left;
+  color: #222;
+  font-family: "Poppins", sans-serif;
+  margin-bottom: 0;
+  line-height: 1.7;
+}
+
+.articulo-container.lanzamientos .ficha-tecnica-profesional {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  padding: 50px 30px;
+  margin: 40px auto;
+  width: 90%;
+  max-width: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.articulo-container.lanzamientos .ficha-tecnica-profesional h2 {
+  text-align: center;
+  font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+  color: #08341f;
+  margin-bottom: 30px;
+  border-bottom: 3px solid #e6b410;
+  padding-bottom: 16px;
+  font-family: "Georgia", serif;
+  font-weight: 700;
+}
+
+.articulo-container.lanzamientos .ficha-tecnica-profesional .ficha-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.articulo-container.lanzamientos .ficha-tecnica-profesional .ficha-item {
+  background: white;
+  padding: 22px;
+  border-radius: 8px;
+  border-left: 4px solid #e6b410;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.articulo-container.lanzamientos .ficha-tecnica-profesional .ficha-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(230, 180, 16, 0.2);
+}
+
+.articulo-container.lanzamientos .ficha-tecnica-profesional .ficha-item strong {
+  display: block;
+  font-size: 1rem;
+  color: #08341f;
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-family: "Poppins", sans-serif;
+}
+
+.articulo-container.lanzamientos .ficha-tecnica-profesional .ficha-item p {
+  font-size: 0.97rem;
+  line-height: 1.6;
+  color: #444;
+  margin: 0;
+  font-family: "Georgia", serif;
+}
+
+.articulo-container.lanzamientos .ficha-tecnica-profesional .ficha-item.competidores {
+  grid-column: 1 / -1;
+  background: #08341f;
+  border-left-color: #e6b410;
+}
+
+.articulo-container.lanzamientos .ficha-tecnica-profesional .ficha-item.competidores strong {
+  color: #e6b410;
+}
+
+.articulo-container.lanzamientos .ficha-tecnica-profesional .ficha-item.competidores p {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .articulo-container.lanzamientos .noticia-detalle {
+    width: 94vw !important;
+    max-width: 94vw !important;
+    margin: 16px auto 30px !important;
+    padding: 10px 14px 26px;
   }
 
-  /* animacion titulo descripcion */
-
-  @keyframes fadeSlideIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px); /* empieza un poco abajo */
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0); /* termina en su lugar */
-    }
-  }
-
-  .noticia-portada {
+  .articulo-container.lanzamientos .noticia-detalle h1 {
+    font-size: 28px;
+    text-align: center;
     width: 100%;
-    height: 900px;
-    object-fit: cover;
+    margin: 0 auto 18px;
+    padding: 0 10px 10px;
+  }
+
+  .articulo-container.lanzamientos .noticia-descripcion {
+    width: 100%;
+    font-size: 17px;
+    text-align: center;
     padding: 0;
-    transition: box-shadow 0.4s ease;
   }
 
-  .noticia-portada:hover {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-  }
-
-  .noticia-bloque {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  .articulo-container.lanzamientos .nota-meta-line {
     width: 100%;
-    margin: 30px auto;
-  }
-
-  .noticia-bloque img {
-    margin: 10px;
-    width: 48%;
-    height: auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
-    transition: transform 0.9s ease;
-  }
-
-  .noticia-bloque img:hover {
-    transform: scale(1.05);
-  }
-
-  .noticia-bloque .noticia-texto {
-    flex: 1;
-    text-align: start;
-    padding: 20px;
-    border-radius: 12px;
-    width: 50%;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
   }
 
-  .noticia-titulo {
-    font-size: 26px;
-    font-weight: bolder;
-    color: black;
-    margin-bottom: 10px;
-    text-transform: none;
-    font-family: "Georgia", serif;
+  .articulo-container.lanzamientos .noticia-portada {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
   }
 
-  .noticia-bloque .noticia-parrafo {
-    font-size: 18px;
-    text-align: start;
-    color: #333;
-
-    font-family: "Poppins", sans-serif;
-    margin-bottom: 15px; /* Agrega espacio entre los párrafos */
-    line-height: 1.6; /* Mejora la legibilidad del texto */
+  .articulo-container.lanzamientos .noticia-bloque,
+  .articulo-container.lanzamientos .noticia-bloque.imagen-izquierda {
+    flex-direction: column;
+    gap: 0;
+    border-radius: 10px;
+    width: 100%;
+    margin: 0 0 20px !important;
   }
 
-  .noticia-imagen-izquierda {
-    flex-direction: row;
+  .articulo-container.lanzamientos .noticia-bloque img {
+    width: 100%;
+    min-height: 0;
+    flex: 0 0 auto;
   }
 
-  .noticia-imagen-derecha {
-    flex-direction: row-reverse;
+  .articulo-container.lanzamientos .noticia-bloque .noticia-texto {
+    width: 100%;
+    padding: 24px 18px !important;
   }
 
-  .ficha-tecnica {
-    background: #f7f7f7;
-    border-radius: 12px;
-    padding: 20px;
-    margin: 30px auto;
-    width: 90%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: "Poppins", sans-serif;
+  .articulo-container.lanzamientos .noticia-titulo {
+    font-size: 22px;
   }
 
-  .ficha-tecnica h2 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    text-align: center;
-    color: #333;
-    font-weight: 600;
-    font-family: "Georgia", serif;
-  }
-
-  .ficha-tecnica ul,
-  .ficha-tecnica .ficha-grid {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 10px;
-  }
-
-  .ficha-tecnica li,
-  .ficha-tecnica .ficha-item {
+  .articulo-container.lanzamientos .noticia-bloque .noticia-parrafo {
     font-size: 16px;
-    background: white;
-    padding: 12px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   }
 
-  @media (max-width: 768px) {
-    .noticia-bloque {
-      flex-direction: column;
-    }
-
-    .noticia-detalle h1 {
-      font-size: 26px;
-      background: none;
-      color: black;
-      text-shadow: none;
-    }
-
-    .noticia-bloque img {
-      width: 100%;
-      height: auto;
-    }
-
-    .noticia-bloque .noticia-texto {
-      font-size: 20px;
-      text-align: start;
-      padding-top: 0;
-    }
-
-    .noticia-descripcion {
-      font-size: 20px;
-      font-weight: 600;
-      padding: 15px;
-      text-align: start;
-      padding-top: 0;
-    }
-
-    .noticia-bloque .noticia-parrafo {
-      font-size: 16px;
-      color: black;
-      padding-top: 5px;
-    }
-
-    .noticia-bloque .noticia-texto {
-      width: 100%;
-    }
-
-    .noticia-titulo {
-      font-size: 20px;
-    }
-
-    .noticia-portada {
-      border-bottom: none;
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-    }
+  .articulo-container.lanzamientos .ficha-tecnica-profesional {
+    width: 100%;
+    padding: 28px 14px;
+    border-radius: 0;
   }
 
+  .articulo-container.lanzamientos .ficha-tecnica-profesional .ficha-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
+@media (max-width: 480px) {
+  .articulo-container.lanzamientos .noticia-titulo {
+    font-size: 18px;
+  }
 
-  
-
-
-
- 
+  .articulo-container.lanzamientos .noticia-bloque .noticia-parrafo {
+    font-size: 15px;
+  }
+}

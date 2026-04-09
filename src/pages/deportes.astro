@@ -9,7 +9,8 @@ const staticNotes = [
     alt: "Deportes motorizados",
     title: "Adrenalina sobre ruedas",
     description: "Cobertura de motociclismo y automovilismo de alto nivel.",
-    fecha: "Nota: 12-mar",
+    fecha: "Publicado: 12-mar",
+    source_scope: "nacional",
   },
   {
     href: "/notas-deportes/nota-deportes1",
@@ -17,7 +18,8 @@ const staticNotes = [
     alt: "Máquinas de alto rendimiento",
     title: "Máquinas de alto rendimiento",
     description: "Ingeniería extrema aplicada a la velocidad y la pista.",
-    fecha: "Nota: 13-mar",
+    fecha: "Publicado: 13-mar",
+    source_scope: "nacional",
   },
   {
     href: "/notas-deportes/nota-deportes2",
@@ -25,7 +27,8 @@ const staticNotes = [
     alt: "Tecnología en deportes",
     title: "Tecnología de última generación",
     description: "Materiales, telemetría y evolución técnica en competencia.",
-    fecha: "Nota: 15-mar",
+    fecha: "Publicado: 15-mar",
+    source_scope: "nacional",
   },
 ];
 ---
@@ -33,6 +36,7 @@ const staticNotes = [
 <Layout title="Deportes motor | Auto-Tech-Digital">
   <CategoryArchive
     category="deportes"
+    skipFirst={3}
     title="Más notas de deportes"
     description="Todas las publicaciones de automovilismo y motociclismo en un solo lugar."
     staticNotes={staticNotes}

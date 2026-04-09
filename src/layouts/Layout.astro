@@ -7,6 +7,9 @@ interface Props {
   ogImage?: string;
   ogType?: string;
   canonical?: string;
+  source_scope?: "nacional" | "internacional";
+  sourceScope?: "nacional" | "internacional";
+  editor?: string;
 }
 
 const {
@@ -17,6 +20,9 @@ const {
   ogImage = "/img/og-default.webp",
   ogType = "website",
   canonical,
+  source_scope,
+  sourceScope,
+  editor,
 } = Astro.props;
 
 const siteUrl = "https://autotechdigital.netlify.app";
@@ -27,6 +33,41 @@ const ogImageUrl = ogImage.startsWith("http")
 
 // ✅ Si pasas class, úsalo como bodyClass
 const finalBodyClass = bodyClass ?? classProp;
+const pathname = Astro.url.pathname.toLowerCase();
+
+const staticNotePrefixes = [
+  "/notas-electricos/",
+  "/notas-hibridos/",
+  "/notas-deportes/",
+  "/noticias-carrusel/",
+  "/noticias-nacionales/",
+];
+
+const isStaticNotePath = staticNotePrefixes.some((prefix) =>
+  pathname.startsWith(prefix),
+);
+
+const normalizeSourceScope = (
+  value: unknown,
+): "nacional" | "internacional" | null => {
+  if (typeof value !== "string") return null;
+  const normalized = value.trim().toLowerCase();
+  return normalized === "internacional"
+    ? "internacional"
+    : normalized === "nacional"
+      ? "nacional"
+      : null;
+};
+
+const explicitScope = normalizeSourceScope(source_scope ?? sourceScope);
+const inferredScope = pathname.includes("internacional")
+  ? "internacional"
+  : "nacional";
+const layoutScope = explicitScope ?? (isStaticNotePath ? inferredScope : null);
+const layoutScopeLabel =
+  layoutScope === "internacional" ? "Internacional" : "Nacional";
+const layoutEditor =
+  typeof editor === "string" && editor.trim() ? editor.trim() : "Jhon Aparicio";
 
 // 🔹 Detectamos si el bodyClass corresponde a una nota
 let categoria = "";
@@ -45,6 +86,34 @@ if (finalBodyClass) {
   }
 }
 
+const categoryLabel = (() => {
+  switch (categoria) {
+    case "electricos":
+    case "eléctricos":
+      return "Eléctricos";
+    case "hibridos":
+    case "híbridos":
+      return "Híbridos";
+    case "deportes":
+      return "Deportes";
+    case "lanzamientos":
+      return "Lanzamientos";
+    case "noticias":
+      return "Noticias";
+    default:
+      // Inferir desde URL cuando bodyClass no provee la categoría
+      if (pathname.startsWith("/notas-electricos")) return "Eléctricos";
+      if (pathname.startsWith("/notas-hibridos")) return "Híbridos";
+      if (pathname.startsWith("/notas-deportes")) return "Deportes";
+      if (
+        pathname.startsWith("/noticias-nacionales") ||
+        pathname.startsWith("/noticias-carrusel")
+      )
+        return "Noticias";
+      return "Actualidad";
+  }
+})();
+
 // 🔹 Definimos el CSS de categoría que se cargará dinámicamente
 let categoriaCSS = "";
 switch (categoria) {
@@ -59,6 +128,10 @@ switch (categoria) {
     categoriaCSS = "/css/noticias.css";
     break;
   case "lanzamientos":
+    categoriaCSS = "/css/lanzamientos.css";
+    break;
+  case "deportes":
+  case "pruebas":
     categoriaCSS = "/css/lanzamientos.css";
     break;
   case "automatch":
@@ -145,6 +218,28 @@ import "swiper/css/pagination";
   <body class={finalBodyClass}>
     <Header />
     <main>
+      {
+        layoutScope && (
+          <div class="scope-bar-outer">
+            <div class="layout-scope-wrap">
+              <span class="layout-meta-item">
+                <i class="fa-regular fa-user" aria-hidden="true" />
+                <span>{layoutEditor}</span>
+              </span>
+              <span class="layout-meta-item">
+                <i class="fa-regular fa-bookmark" aria-hidden="true" />
+                <span>{categoryLabel}</span>
+              </span>
+              <span
+                class={`layout-meta-item ${layoutScope === "internacional" ? "scope-internacional" : "scope-nacional"}`}
+              >
+                <i class="fa-regular fa-compass" aria-hidden="true" />
+                <span>{layoutScopeLabel}</span>
+              </span>
+            </div>
+          </div>
+        )
+      }
       <slot />
     </main>
     <Footer />
@@ -170,5 +265,68 @@ import "swiper/css/pagination";
         targets.forEach((el) => io.observe(el));
       });
     </script>
+
+    <style>
+      .scope-bar-outer {
+        width: 100%;
+        background: #faf5f0;
+        padding-top: 2rem;
+        padding-bottom: 0.5rem;
+      }
+
+      .layout-scope-wrap {
+        width: min(1120px, calc(100% - 2rem));
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem 0.95rem;
+        flex-wrap: wrap;
+      }
+
+      .layout-meta-item {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        border-radius: 999px;
+        padding: 0.36rem 0.86rem;
+        font-family: "Montserrat", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: #404040;
+        background: #f3f3f3;
+        border: 1px solid #dedede;
+      }
+
+      .layout-meta-item i {
+        font-size: 0.82rem;
+        opacity: 0.82;
+      }
+
+      .layout-meta-item.scope-nacional {
+        background: #e6f4ec;
+        color: #1f5d3e;
+        border-color: #bfdcc9;
+      }
+
+      .layout-meta-item.scope-internacional {
+        background: #eaf2ff;
+        color: #1f4aa8;
+        border-color: #c7d9ff;
+      }
+
+      @media (max-width: 768px) {
+        .scope-bar-outer {
+          padding-top: 1.5rem;
+          padding-bottom: 0.35rem;
+        }
+
+        .layout-scope-wrap {
+          width: calc(100% - 1.5rem);
+          gap: 0.45rem 0.7rem;
+        }
+      }
+    </style>
   </body>
 </html>

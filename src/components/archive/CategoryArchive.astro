@@ -8,6 +8,8 @@ interface NoteItem {
   title: string;
   description?: string;
   fecha?: string;
+  editor?: string;
+  source_scope?: string;
 }
 
 interface Props {
@@ -51,6 +53,49 @@ function parseDateValue(value?: string) {
     .replace(/^Nota:\s*/i, "")
     .trim();
 
+  const monthMap: Record<string, number> = {
+    ene: 0,
+    enero: 0,
+    feb: 1,
+    febrero: 1,
+    mar: 2,
+    marzo: 2,
+    abr: 3,
+    abril: 3,
+    may: 4,
+    mayo: 4,
+    jun: 5,
+    junio: 5,
+    jul: 6,
+    julio: 6,
+    ago: 7,
+    agosto: 7,
+    sep: 8,
+    septiembre: 8,
+    oct: 9,
+    octubre: 9,
+    nov: 10,
+    noviembre: 10,
+    dic: 11,
+    diciembre: 11,
+  };
+
+  const dayMonthMatch = cleaned.match(
+    /^(\d{1,2})-([a-záéíóúüñ]+)(?:-(\d{4}))?$/i,
+  );
+  if (dayMonthMatch) {
+    const [, dayRaw, monthRaw, yearRaw] = dayMonthMatch;
+    const normalizedMonth = monthRaw
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+    const monthIndex = monthMap[normalizedMonth];
+    if (Number.isInteger(monthIndex)) {
+      const year = yearRaw ? Number(yearRaw) : 2025;
+      return new Date(year, monthIndex, Number(dayRaw)).getTime();
+    }
+  }
+
   const direct = new Date(cleaned);
   if (!isNaN(direct.getTime())) return direct.getTime();
 
@@ -61,6 +106,30 @@ function parseDateValue(value?: string) {
   }
 
   return 0;
+}
+
+function sourceScopeLabel(scope?: string) {
+  return scope?.toLowerCase() === "internacional"
+    ? "Internacional"
+    : "Nacional";
+}
+
+function sourceScopeClass(scope?: string) {
+  return scope?.toLowerCase() === "internacional"
+    ? "archivo-scope archivo-scope--internacional"
+    : "archivo-scope archivo-scope--nacional";
+}
+
+function cleanPublishedDate(value?: string) {
+  const cleaned = (value || "")
+    .replace(/^Publicado:\s*/i, "")
+    .replace(/^Nota:\s*/i, "")
+    .trim();
+
+  if (!cleaned) return "";
+  if (/\d{4}/.test(cleaned)) return cleaned;
+  if (/^\d{1,2}-[a-záéíóúüñ]+$/i.test(cleaned)) return `${cleaned}-2025`;
+  return cleaned;
 }
 
 let dynamicNotes: Array<NoteItem & { sortDate: number }> = [];
@@ -84,6 +153,8 @@ try {
         alt: note.title || "nota",
         title: note.title || "Sin título",
         description: note.subtitle || "",
+        editor: note.editor || "Jhon Aparicio",
+        source_scope: note.source_scope || "nacional",
         fecha: note.created_at
           ? `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`
           : "",
@@ -147,8 +218,19 @@ function pageHref(page: number) {
               />
             </div>
             <div class="archivo-content">
+              <span class={sourceScopeClass(note.source_scope)}>
+                {sourceScopeLabel(note.source_scope)}
+              </span>
               <h2>{note.title}</h2>
-              {note.fecha && <p class="archivo-date">{note.fecha}</p>}
+              <p class="archivo-date">
+                <i class="fa-regular fa-user" aria-hidden="true" />
+                <span class="meta-author">
+                  {note.editor || "Jhon Aparicio"}
+                </span>
+                <span class="meta-sep">•</span>
+                <i class="fa-regular fa-calendar" aria-hidden="true" />
+                <span class="meta-date">{cleanPublishedDate(note.fecha)}</span>
+              </p>
               {note.description && (
                 <p class="archivo-desc">{note.description}</p>
               )}
@@ -270,6 +352,28 @@ function pageHref(page: number) {
     font-size: 22px;
     margin-bottom: 8px;
     line-height: 1.3;
+  }
+
+  .archivo-scope {
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+
+  .archivo-scope--nacional {
+    background: rgba(12, 82, 37, 0.12);
+    color: #0c5225;
+  }
+
+  .archivo-scope--internacional {
+    background: rgba(15, 60, 120, 0.12);
+    color: #0f3c78;
   }
 
   .archivo-date {

@@ -1,4 +1,141 @@
-<meta charset="UTF-8" />
+---
+import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+
+type DeporteItem = {
+  href: string;
+  img: string;
+  alt: string;
+  title: string;
+  description: string;
+  fecha?: string;
+  editor?: string;
+  source_scope?: string;
+  sortDate: number;
+};
+
+const HOME_VISIBLE_COUNT = 3;
+
+function normalizeSourceScope(scope?: string) {
+  return scope?.toLowerCase() === "internacional"
+    ? "internacional"
+    : "nacional";
+}
+
+function sourceScopeLabel(scope?: string) {
+  return normalizeSourceScope(scope) === "internacional"
+    ? "Internacional"
+    : "Nacional";
+}
+
+function cleanPublishedDate(value?: string) {
+  const cleaned = (value || "").replace(/^Publicado:\s*/i, "").trim();
+  if (!cleaned) return "";
+  if (/\d{4}/.test(cleaned)) return cleaned;
+  if (/^\d{1,2}-[a-záéíóúüñ]+$/i.test(cleaned)) return `${cleaned}-2025`;
+  return cleaned;
+}
+
+function parseDateValue(value?: string) {
+  const cleaned = (value || "").replace(/^Publicado:\s*/i, "").trim();
+
+  if (!cleaned) return 0;
+
+  const direct = new Date(cleaned);
+  if (!isNaN(direct.getTime())) return direct.getTime();
+
+  const ddmmyyyy = cleaned.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (ddmmyyyy) {
+    const [, dd, mm, yyyy] = ddmmyyyy;
+    return new Date(`${yyyy}-${mm}-${dd}`).getTime();
+  }
+
+  const ddMonth = cleaned.match(/^(\d{1,2})-([a-záéíóúüñ]+)$/i);
+  if (ddMonth) {
+    return new Date(`${cleaned}-2025`).getTime();
+  }
+
+  return 0;
+}
+
+function extractFirstImage(html: string | undefined) {
+  if (!html) return null;
+  const match = html.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/i);
+  return match ? match[1] : null;
+}
+
+const staticDeportes: DeporteItem[] = [
+  {
+    href: "/notas-deportes/nota-deportes-motos",
+    img: "/img/img-deportes/deportes-motos-portada1.jpg",
+    alt: "Deportes motorizados",
+    title: "Adrenalina sobre ruedas",
+    description: "Cobertura de motociclismo y automovilismo de alto nivel.",
+    fecha: "Publicado: 12-mar",
+    editor: "Jhon Aparicio",
+    source_scope: "nacional",
+    sortDate: parseDateValue("Publicado: 12-mar"),
+  },
+  {
+    href: "/notas-deportes/nota-deportes1",
+    img: "/img/img-deportes/subportada-deporte.webp",
+    alt: "Máquinas de alto rendimiento",
+    title: "Máquinas de alto rendimiento",
+    description: "Ingeniería extrema aplicada a la velocidad y la pista.",
+    fecha: "Publicado: 13-mar",
+    editor: "Jhon Aparicio",
+    source_scope: "nacional",
+    sortDate: parseDateValue("Publicado: 13-mar"),
+  },
+  {
+    href: "/notas-deportes/nota-deportes2",
+    img: "/img/img-deportes/deporte-2.webp",
+    alt: "Tecnología en deportes",
+    title: "Tecnología de última generación",
+    description: "Materiales, telemetría y evolución técnica en competencia.",
+    fecha: "Publicado: 15-mar",
+    editor: "Jhon Aparicio",
+    source_scope: "nacional",
+    sortDate: parseDateValue("Publicado: 15-mar"),
+  },
+];
+
+let dynamicDeportes: DeporteItem[] = [];
+
+try {
+  const apiUrl = getApiUrl("get-notes");
+  const data = await fetchWithTimeout(apiUrl);
+
+  if (data && Array.isArray(data)) {
+    dynamicDeportes = data
+      .filter((note: any) => note.category?.toLowerCase() === "deportes")
+      .map((note: any) => ({
+        href: `/notas/${note.id}`,
+        img:
+          note.image1?.trim() ||
+          extractFirstImage(note.content) ||
+          "/img/default.jpg",
+        alt: note.title || "Deportes",
+        title: note.title || "Sin título",
+        description: note.subtitle || "",
+        fecha: note.created_at
+          ? `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`
+          : "",
+        editor: note.editor || "Jhon Aparicio",
+        source_scope: normalizeSourceScope(note.source_scope),
+        sortDate: note.created_at ? new Date(note.created_at).getTime() : 0,
+      }));
+  }
+} catch (err) {
+  console.error("Error cargando deportes dinámicos:", err);
+}
+
+const allDeportes = [...dynamicDeportes, ...staticDeportes]
+  .sort((a, b) => b.sortDate - a.sortDate)
+  .slice(0, HOME_VISIBLE_COUNT);
+
+const destacada = allDeportes[0];
+const restoDeportes = allDeportes.slice(1);
+---
 
 <section id="deportes" class="nota-container">
   <div class="nota-header">
@@ -14,21 +151,41 @@
   <section class="highlight-wrapper">
     <!-- IZQUIERDA -->
     <section class="highlight-banner">
-      <a href="/notas-deportes/nota-deportes-motos">
+      <a href={destacada?.href || "/deportes"} class="highlight-note-link">
         <img
-          src="/img/img-deportes/deportes-motos-portada1.jpg"
-          alt="Competencia de autos y motos"
+          src={destacada?.img ||
+            "/img/img-deportes/deportes-motos-portada1.jpg"}
+          alt={destacada?.alt || "Competencia de autos y motos"}
           loading="lazy"
           decoding="async"
         />
+        <div class="highlight-text">
+          <div class="texto-fecha texto-fecha--highlight">
+            <p>
+              <i class="fa-regular fa-user" aria-hidden="true"></i>
+              <span class="meta-author"
+                >{destacada?.editor || "Jhon Aparicio"}</span
+              >
+              <span class="meta-sep">•</span>
+              <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+              <span class="meta-date"
+                >{cleanPublishedDate(destacada?.fecha)}</span
+              >
+            </p>
+          </div>
+          <span
+            class={`ambito-deporte ambito-deporte--${normalizeSourceScope(destacada?.source_scope)} ambito-deporte--highlight`}
+          >
+            {sourceScopeLabel(destacada?.source_scope)}
+          </span>
+          <p>
+            {
+              destacada?.description ||
+                "Descubre lo mejor del automovilismo y motociclismo mundial."
+            }
+          </p>
+        </div>
       </a>
-      <div class="highlight-text">
-        <p>
-          ¿Sabías que los deportes motorizados son el puro reflejo de la
-          velocidad, el poder y la ingeniería llevados al límite? ¡Vive cada
-          adrenalina con nosotros!
-        </p>
-      </div>
     </section>
 
     <!-- DERECHA -->
@@ -56,45 +213,38 @@
   </section>
 
   <section class="info-grid">
-    <div class="info-item">
-      <a href="/notas-deportes/nota-deportes1">
-        <img
-          src="/img/img-deportes/subportada-deporte.webp"
-          alt="Moto GP en acción"
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="texto-fecha">
-          <p>Nota: 13-mar</p>
+    {
+      restoDeportes.map((nota) => (
+        <div class="info-item">
+          <a href={nota.href}>
+            <img
+              src={nota.img}
+              alt={nota.alt}
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="texto-fecha">
+              <p>
+                <i class="fa-regular fa-user" aria-hidden="true" />
+                <span class="meta-author">
+                  {nota.editor || "Jhon Aparicio"}
+                </span>
+                <span class="meta-sep">•</span>
+                <i class="fa-regular fa-calendar" aria-hidden="true" />
+                <span class="meta-date">{cleanPublishedDate(nota.fecha)}</span>
+              </p>
+            </div>
+            <span
+              class={`ambito-deporte ambito-deporte--${normalizeSourceScope(nota.source_scope)}`}
+            >
+              {sourceScopeLabel(nota.source_scope)}
+            </span>
+            <h3>{nota.title}</h3>
+            <p>{nota.description}</p>
+          </a>
         </div>
-        <h3>Máquinas de Alto Rendimiento</h3>
-        <p>
-          La ingeniería automotriz avanza con diseños aerodinámicos y motores
-          que desafían los límites de la velocidad, precios colores todo lo que
-          han desarrollado para destacar en el mercado.
-        </p>
-      </a>
-    </div>
-
-    <div class="info-item">
-      <a href="/notas-deportes/nota-deportes2">
-        <img
-          src="/img/img-deportes/deporte-2.webp"
-          alt="F1 Monoplaza"
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="texto-fecha">
-          <p>Nota: 15-mar</p>
-        </div>
-        <h3>Tecnología de Última Generación</h3>
-        <p>
-          La combinación de materiales ultraligeros y sistemas inteligentes
-          mejora el rendimiento en cada circuito, precios colores todo lo que
-          han desarrollado para destacar en el mercado.
-        </p>
-      </a>
-    </div>
+      ))
+    }
     <div class="ver-mas-container">
       <a href="/deportes" class="ver-mas-boton">Ver mas </a>
     </div>
@@ -186,6 +336,14 @@
     flex-direction: column;
   }
 
+  .highlight-note-link {
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+  }
+
   .highlight-banner img {
     width: 100%;
     height: 600px;
@@ -207,13 +365,30 @@
 
   .highlight-text {
     width: 100%;
-    padding: 40px 20px;
+    padding: 28px 24px 34px;
     color: rgb(27, 27, 27);
-    text-align: center;
+    text-align: left;
     font-size: 30px;
     font-weight: 500;
     font-family: "Georgia", serif;
-    border-radius: 50px;
+    background: linear-gradient(180deg, #fbf2cf 0%, #f7edd0 100%);
+  }
+
+  .highlight-text .texto-fecha--highlight {
+    padding: 0;
+    margin: 6px 0 14px;
+  }
+
+  .highlight-text .ambito-deporte--highlight {
+    margin: 0 0 16px;
+    align-self: flex-start;
+  }
+
+  .highlight-text p {
+    font-size: 1.55rem;
+    line-height: 1.55;
+    color: #2c2c2c;
+    margin: 0;
   }
 
   .curiosidades {
@@ -298,6 +473,7 @@
     aspect-ratio: 16/9;
     object-fit: cover;
     display: flex;
+    margin-bottom: 14px;
   }
 
   .info-item h3 {
@@ -305,7 +481,7 @@
     font-size: 1.6rem;
     color: #000000;
     font-weight: 900;
-    padding: 20px 20px 10px 20px;
+    padding: 24px 20px 8px 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
   }
@@ -319,25 +495,40 @@
   }
 
   .info-item .texto-fecha {
-    padding: 10px 16px;
-
-    background: #ebc460;
-
+    padding: 0 20px;
+    background: transparent;
     font-weight: 500;
-    margin: 20px 20px 10px 20px;
+    margin: 6px 0 12px 0;
     display: block;
-    border-radius: 50px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    border-radius: 0;
+    text-transform: none;
+    letter-spacing: 0;
     text-align: start;
-    width: fit-content;
+    width: 100%;
   }
 
   .info-item .texto-fecha p {
     margin: 0;
     padding: 0;
     color: rgb(32, 32, 32);
-    font-size: 0.82rem;
+    font-size: 0.9rem;
+  }
+
+  .ambito-deporte {
+    display: inline-flex;
+    width: fit-content;
+    margin: 0 0 16px 20px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #ffffff;
+  }
+
+  .ambito-deporte--nacional {
+    background: #1f6f43;
   }
 
   .ver-mas-container {
@@ -384,7 +575,7 @@
 
     .highlight-text {
       font-size: 24px;
-      padding: 30px 15px;
+      padding: 24px 18px 28px;
     }
 
     .highlight-banner img {
@@ -424,7 +615,11 @@
 
     .highlight-text {
       font-size: 20px;
-      padding: 25px 15px;
+      padding: 22px 15px 24px;
+    }
+
+    .highlight-text p {
+      font-size: 1rem;
     }
 
     .curiosidades {
@@ -461,7 +656,13 @@
     }
 
     .info-item .texto-fecha {
-      margin: 20px 15px 10px 15px;
+      padding: 0 15px;
+      margin: 6px 0 10px;
+    }
+
+    .ambito-deporte {
+      margin-left: 15px;
+      margin-bottom: 12px;
     }
   }
 
@@ -487,7 +688,11 @@
 
     .highlight-text {
       font-size: 18px;
-      padding: 20px 10px;
+      padding: 18px 12px 22px;
+    }
+
+    .highlight-text p {
+      font-size: 0.95rem;
     }
 
     .curiosidades {
@@ -524,8 +729,13 @@
 
     .info-item .texto-fecha {
       font-size: 0.75rem;
-      margin: 15px 12px 6px 12px;
-      padding: 6px 10px;
+      margin: 6px 0 8px;
+      padding: 0 12px;
+    }
+
+    .ambito-deporte {
+      margin-left: 12px;
+      margin-bottom: 10px;
     }
 
     .ver-mas-container {

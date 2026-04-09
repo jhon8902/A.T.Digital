@@ -7,6 +7,8 @@ interface Note {
   id: number;
   title: string;
   subtitle?: string;
+  editor?: string;
+  source_scope?: string;
   category?: string;
   content: string;
   created_at?: string;
@@ -44,6 +46,7 @@ interface Note {
   spec_competidores?: string;
   spec_traccion?: string;
   spec_precio_cop?: string;
+  block_titles?: string;
 }
 
 // ✅ Parámetro recibido desde la URL
@@ -135,19 +138,80 @@ const galleryVideos = [
   note?.video7,
 ].filter((video): video is string => Boolean(video && video.trim()));
 
-const remainingImages = galleryImages.slice(contentParagraphs.length);
-
 function isDirectVideoFile(url: string) {
   return /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url);
 }
 
+const editorialFallbackTitles = [
+  "Contexto del mercado",
+  "Diseno y propuesta",
+  "Cabina y tecnologia",
+  "Rendimiento y eficiencia",
+  "Impacto en Colombia",
+  "Analisis editorial",
+  "Conclusiones clave",
+];
+
 function makeBlockTitle(text: string, index: number) {
-  const firstSentence = text.split(/[.!?]/)[0]?.trim() || "";
-  if (firstSentence.length >= 20 && firstSentence.length <= 80) {
-    return firstSentence;
+  const normalized = (text || "").toLowerCase();
+
+  if (/autonomia|bateria|carga|kwh|km/i.test(normalized)) {
+    return "Autonomia y energia";
   }
-  return `Sección ${index + 1}`;
+  if (/interior|cabina|pantalla|conectividad|tecnolog/i.test(normalized)) {
+    return "Interior y conectividad";
+  }
+  if (/diseno|estetica|exterior|silueta|firma luminica/i.test(normalized)) {
+    return "Diseno exterior";
+  }
+  if (/precio|cop|costo|mercado|colombia|segmento/i.test(normalized)) {
+    return "Panorama comercial";
+  }
+  if (/seguridad|adas|airbag|asistencias/i.test(normalized)) {
+    return "Seguridad y asistencias";
+  }
+  if (/motor|potencia|torque|aceleracion|traccion/i.test(normalized)) {
+    return "Desempeno mecanico";
+  }
+
+  return editorialFallbackTitles[index % editorialFallbackTitles.length];
 }
+
+// Procesar títulos personalizados si están disponibles
+const customTitles = (note?.block_titles || "")
+  .split("\n")
+  .map((t) => t.trim())
+  .filter((t) => t.length > 0);
+
+const uniqueContentBlocks = contentParagraphs.map((paragraph, index) => {
+  // Usar título personalizado si disponible, sino auto-generar
+  const customTitle = customTitles[index];
+  const title = customTitle || makeBlockTitle(paragraph, index);
+  return {
+    paragraph,
+    title,
+  };
+});
+
+const usedTitles = new Set<string>();
+uniqueContentBlocks.forEach((block, index) => {
+  if (!usedTitles.has(block.title)) {
+    usedTitles.add(block.title);
+    return;
+  }
+
+  const nextFallback = editorialFallbackTitles.find((candidate) => !usedTitles.has(candidate));
+  if (nextFallback) {
+    block.title = nextFallback;
+    usedTitles.add(block.title);
+    return;
+  }
+
+  block.title = `${block.title} ${index + 1}`;
+  usedTitles.add(block.title);
+});
+
+const remainingImages = galleryImages.slice(uniqueContentBlocks.length);
 
 function combineText(...values: Array<string | undefined>) {
   return values
@@ -202,19 +266,98 @@ const technicalSpecCards = [
     className: "competidores",
   },
 ].filter((item) => Boolean(item.value && item.value.trim()));
+
+function sourceScopeLabel(scope?: string) {
+  return scope?.toLowerCase() === "internacional" ? "Internacional" : "Nacional";
+}
+
+function sectionLabel(category?: string) {
+  const normalized = (category || "").toLowerCase();
+  switch (normalized) {
+    case "electricos":
+    case "eléctricos":
+      return "Eléctricos";
+    case "hibridos":
+    case "híbridos":
+      return "Híbridos";
+    case "lanzamientos":
+      return "Lanzamientos";
+    case "deportes":
+      return "Deportes";
+    case "pruebas":
+      return "Pruebas";
+    case "noticias":
+      return "Noticias";
+    default:
+      return "Actualidad";
+  }
+}
+
+function categoryClassName(category?: string) {
+  const normalized = (category || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+  switch (normalized) {
+    case "electricos":
+    case "hibridos":
+    case "lanzamientos":
+    case "deportes":
+    case "pruebas":
+    case "noticias":
+    case "automatch":
+      return normalized;
+    default:
+      return "general";
+  }
+}
+
+function publishedDate(value?: string) {
+  if (!value) return "";
+  const parsed = new Date(value);
+  if (isNaN(parsed.getTime())) return "";
+  return parsed.toLocaleDateString("es-CO", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+const categoryClass = categoryClassName(note?.category);
 ---
 
 <Layout
   title={note?.title || "Nota no encontrada"}
-  bodyClass={`nota-page nota-${note?.category || "general"}`}
+  bodyClass={`nota-page nota-${categoryClass} ${categoryClass}`}
 >
   {
     note?.title ? (
-      <section
-        class={`articulo-container ${note.category?.toLowerCase() || "general"}`}
-      >
+      <section class={`articulo-container ${categoryClass}`}>
         <article class="noticia-detalle">
           <h1>{note.title}</h1>
+          <div class="nota-meta-line">
+            <span class="nota-meta-item">
+              <i class="fa-regular fa-user" aria-hidden="true"></i>
+              <span>{note.editor?.trim() || "Jhon Aparicio"}</span>
+            </span>
+            {
+              publishedDate(note.created_at) && (
+                <span class="nota-meta-item">
+                  <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                  <span>{publishedDate(note.created_at)}</span>
+                </span>
+              )
+            }
+            <span class="nota-meta-item">
+              <i class="fa-regular fa-bookmark" aria-hidden="true"></i>
+              <span>{sectionLabel(note.category)}</span>
+            </span>
+            <span class="nota-meta-item">
+              <i class="fa-regular fa-compass" aria-hidden="true"></i>
+              <span>{sourceScopeLabel(note.source_scope)}</span>
+            </span>
+          </div>
 
           {note.subtitle && <p class="noticia-descripcion">{note.subtitle}</p>}
 
@@ -231,14 +374,14 @@ const technicalSpecCards = [
           }
 
           {
-            contentParagraphs.length > 0 ? (
-              contentParagraphs.map((paragraph, index) => {
+            uniqueContentBlocks.length > 0 ? (
+              uniqueContentBlocks.map((block, index) => {
                 const blockImage = galleryImages[index];
                 return (
-                  <section class="noticia-bloque">
+                  <section class={`noticia-bloque${index % 2 === 1 ? " imagen-izquierda" : ""}`}>
                     <div class="noticia-texto">
-                      <h2 class="noticia-titulo">{makeBlockTitle(paragraph, index)}</h2>
-                      <p class="noticia-parrafo">{paragraph}</p>
+                      <h2 class="noticia-titulo">{block.title}</h2>
+                      <p class="noticia-parrafo">{block.paragraph}</p>
                     </div>
                     {
                       blockImage && (
@@ -281,7 +424,7 @@ const technicalSpecCards = [
           {
             remainingImages.length > 0 &&
               remainingImages.map((imgSrc, index) => (
-                <section class="noticia-bloque">
+                <section class={`noticia-bloque${(uniqueContentBlocks.length + index) % 2 === 1 ? " imagen-izquierda" : ""}`}>
                   <div class="noticia-texto">
                     <h2 class="noticia-titulo">Galería {index + 1}</h2>
                     <p class="noticia-parrafo">Imagen complementaria de la nota.</p>
@@ -350,3 +493,36 @@ const technicalSpecCards = [
     )
   }
 </Layout>
+
+<style>
+  .nota-meta-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin: 0.35rem 0 0.9rem;
+    color: #5a5a5a;
+    font-size: 0.96rem;
+    line-height: 1.3;
+  }
+
+  .nota-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-weight: 500;
+  }
+
+  .nota-meta-item i {
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 640px) {
+    .nota-meta-line {
+      margin-bottom: 0.7rem;
+      font-size: 0.9rem;
+      gap: 0.5rem 0.85rem;
+    }
+  }
+</style>

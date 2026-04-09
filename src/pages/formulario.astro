@@ -231,8 +231,52 @@
           </div><!-- /.help-body -->
         </details>
 
+        <div class="edit-toolbar" id="editToolbar">
+          <div class="edit-toolbar-grid">
+            <label>
+              Editar nota por ID
+              <input
+                type="number"
+                id="editNoteId"
+                min="1"
+                placeholder="Ej: 128"
+              />
+            </label>
+            <div class="edit-actions">
+              <button type="button" id="loadNoteBtn" class="btn-secondary">
+                Cargar Nota
+              </button>
+              <button
+                type="button"
+                id="deleteNoteBtn"
+                class="btn-danger"
+                hidden
+              >
+                Eliminar Nota
+              </button>
+              <button type="button" id="exitEditBtn" class="btn-light" hidden>
+                Salir de Edicion
+              </button>
+            </div>
+          </div>
+          <p class="edit-mode-label" id="editModeLabel">
+            Modo actual: Crear nueva nota
+          </p>
+        </div>
+
         <form id="noteForm" class="note-form">
           <div class="grid-2">
+            <label>
+              Editor
+              <input
+                type="text"
+                name="editor"
+                placeholder="Nombre del editor"
+                value="Jhon Aparicio"
+                required
+              />
+            </label>
+
             <label>
               Título
               <input type="text" name="title" placeholder="Título" required />
@@ -253,6 +297,14 @@
               <option value="noticias">Noticias</option>
               <option value="pruebas">Pruebas</option>
               <option value="lanzamientos">Lanzamientos</option>
+            </select>
+          </label>
+
+          <label>
+            Ámbito
+            <select name="source_scope" required>
+              <option value="nacional" selected>Nacional</option>
+              <option value="internacional">Internacional</option>
             </select>
           </label>
 
@@ -489,7 +541,27 @@
             </div>
           </fieldset>
 
-          <button type="submit">Guardar Nota</button>
+          <fieldset class="group-box">
+            <legend>Títulos de bloques (opcional)</legend>
+            <p class="storage-tip">
+              Si deseas títulos personalizados para cada bloque, ingresa aquí.
+              Si dejas vacío, se auto-generarán basados en el contenido. Separa
+              cada título con saltos de línea.
+            </p>
+            <label>
+              Títulos de bloques
+              <textarea
+                name="block_titles"
+                placeholder="Ejemplo:
+Presentación y primeras impresiones
+Diseño exterior llama la atención
+Interior con tecnología de punta
+Rendimiento impresionante"
+              ></textarea>
+            </label>
+          </fieldset>
+
+          <button type="submit" id="submitNoteBtn">Guardar Nota</button>
         </form>
 
         <p id="msg" class="msg"></p>
@@ -577,6 +649,34 @@
           display: flex;
           flex-direction: column;
           gap: 16px;
+        }
+
+        .edit-toolbar {
+          margin: 0 0 16px;
+          padding: 14px;
+          border: 1px solid #cbd5e1;
+          border-radius: 10px;
+          background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+        }
+
+        .edit-toolbar-grid {
+          display: grid;
+          grid-template-columns: 2fr 1fr;
+          gap: 12px;
+          align-items: end;
+        }
+
+        .edit-actions {
+          display: flex;
+          gap: 8px;
+          align-items: stretch;
+        }
+
+        .edit-mode-label {
+          margin: 10px 0 0;
+          font-size: 13px;
+          color: #1e3a8a;
+          font-weight: 700;
         }
 
         .grid-2 {
@@ -668,6 +768,29 @@
           transform: translateY(-1px);
           filter: brightness(1.05);
           box-shadow: 0 14px 24px rgba(79, 70, 229, 0.35);
+        }
+
+        .btn-secondary,
+        .btn-light,
+        .btn-danger {
+          margin-top: 0;
+          padding: 12px 14px;
+          font-size: 14px;
+          box-shadow: none;
+        }
+
+        .btn-secondary {
+          background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+        }
+
+        .btn-light {
+          background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+          color: #0f172a;
+        }
+
+        .btn-danger {
+          background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+          color: #fff;
         }
 
         .msg {
@@ -857,13 +980,334 @@
           .grid-2 {
             grid-template-columns: 1fr;
           }
+
+          .edit-toolbar-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .edit-actions {
+            flex-direction: column;
+          }
         }
       </style>
 
       <script>
         const form = document.getElementById("noteForm");
         const msg = document.getElementById("msg");
+        const editNoteIdInput = document.getElementById("editNoteId");
+        const loadNoteBtn = document.getElementById("loadNoteBtn");
+        const deleteNoteBtn = document.getElementById("deleteNoteBtn");
+        const exitEditBtn = document.getElementById("exitEditBtn");
+        const editModeLabel = document.getElementById("editModeLabel");
+        const submitNoteBtn = document.getElementById("submitNoteBtn");
+        const formHeaderTitle = document.querySelector(".form-header h1");
         const isFormElement = form instanceof HTMLFormElement;
+        let editingNoteId = "";
+
+        const editableFields = [
+          "editor",
+          "title",
+          "subtitle",
+          "category",
+          "source_scope",
+          "content",
+          "image1",
+          "image2",
+          "image3",
+          "image4",
+          "image5",
+          "image6",
+          "video1",
+          "video2",
+          "video3",
+          "video4",
+          "video5",
+          "video6",
+          "video7",
+          "spec_segmento",
+          "spec_origen",
+          "spec_precio_estimado",
+          "spec_versiones",
+          "spec_motorizacion",
+          "spec_potencia_hp",
+          "spec_torque_nm",
+          "spec_bateria_autonomia",
+          "spec_bateria_kwh",
+          "spec_autonomia_km",
+          "spec_carga",
+          "spec_carga_ac_kw",
+          "spec_carga_dc_kw",
+          "spec_aceleracion_0_100",
+          "spec_seguridad",
+          "spec_equipamiento",
+          "spec_pros",
+          "spec_contras",
+          "spec_competidores",
+          "spec_traccion",
+          "spec_precio_cop",
+          "block_titles",
+        ];
+
+        function fieldByName(name) {
+          if (!isFormElement) return null;
+          return form.querySelector(`[name="${name}"]`);
+        }
+
+        function getFieldValue(field) {
+          if (
+            field instanceof HTMLInputElement ||
+            field instanceof HTMLTextAreaElement ||
+            field instanceof HTMLSelectElement
+          ) {
+            return field.value;
+          }
+          return "";
+        }
+
+        function setFieldValue(field, value) {
+          if (
+            field instanceof HTMLInputElement ||
+            field instanceof HTMLTextAreaElement ||
+            field instanceof HTMLSelectElement
+          ) {
+            field.value = value;
+          }
+        }
+
+        function setMode(isEditing, noteId) {
+          const safeId = typeof noteId === "number" ? noteId : null;
+          editingNoteId = isEditing && safeId ? String(safeId) : "";
+
+          if (isEditing) {
+            if (editModeLabel)
+              editModeLabel.textContent = `Modo actual: Editando nota #${safeId}`;
+            if (submitNoteBtn) submitNoteBtn.textContent = "Actualizar Nota";
+            if (formHeaderTitle) formHeaderTitle.textContent = "Editar Nota";
+            if (deleteNoteBtn) deleteNoteBtn.hidden = false;
+            if (exitEditBtn) exitEditBtn.hidden = false;
+          } else {
+            if (editModeLabel)
+              editModeLabel.textContent = "Modo actual: Crear nueva nota";
+            if (submitNoteBtn) submitNoteBtn.textContent = "Guardar Nota";
+            if (formHeaderTitle) formHeaderTitle.textContent = "Crear Nota";
+            if (deleteNoteBtn) deleteNoteBtn.hidden = true;
+            if (exitEditBtn) exitEditBtn.hidden = true;
+            if (editNoteIdInput instanceof HTMLInputElement) {
+              editNoteIdInput.value = "";
+            }
+          }
+        }
+
+        async function deleteCurrentNote() {
+          const fallbackEditId =
+            editNoteIdInput instanceof HTMLInputElement
+              ? editNoteIdInput.value.trim()
+              : "";
+          const effectiveEditId =
+            editingNoteId ||
+            (/^\d+$/.test(fallbackEditId) ? fallbackEditId : "");
+
+          if (!effectiveEditId) {
+            if (msg) {
+              msg.textContent =
+                "Primero carga una nota por ID para poder eliminar";
+              msg.style.color = "red";
+            }
+            return;
+          }
+
+          const confirmDelete = window.confirm(
+            `Vas a eliminar la nota #${effectiveEditId}. Esta accion no se puede deshacer. ¿Deseas continuar?`,
+          );
+          if (!confirmDelete) return;
+
+          try {
+            if (msg) {
+              msg.textContent = `Intentando eliminar nota #${effectiveEditId}...`;
+              msg.style.color = "#334155";
+            }
+
+            const attempts = [
+              {
+                method: "POST",
+                endpoint: "/api/delete-note",
+                body: JSON.stringify({ id: Number(effectiveEditId) }),
+                headers: { "Content-Type": "application/json" },
+              },
+              {
+                method: "DELETE",
+                endpoint: `/api/delete-note?id=${effectiveEditId}`,
+              },
+              {
+                method: "DELETE",
+                endpoint: `/.netlify/functions/delete-note?id=${effectiveEditId}`,
+              },
+            ];
+
+            const debugLines = [];
+            let deleteOk = false;
+            let lastErrorMessage = "No se pudo eliminar la nota";
+
+            for (const attempt of attempts) {
+              const { method, endpoint, body, headers } = attempt;
+              try {
+                const res = await fetch(endpoint, {
+                  method,
+                  headers,
+                  body,
+                });
+                const rawText = await res.text();
+                let result = null;
+
+                try {
+                  result = rawText ? JSON.parse(rawText) : null;
+                } catch {
+                  result = null;
+                }
+
+                if (res.ok) {
+                  debugLines.push(`OK ${method} ${endpoint} -> ${res.status}`);
+                  deleteOk = true;
+                  break;
+                }
+
+                const detail =
+                  result?.error ||
+                  (rawText && rawText.slice(0, 120)) ||
+                  "Sin detalle";
+                debugLines.push(
+                  `FAIL ${method} ${endpoint} -> ${res.status}: ${detail}`,
+                );
+                lastErrorMessage = detail;
+              } catch {
+                debugLines.push(`FAIL ${method} ${endpoint} -> sin respuesta`);
+                lastErrorMessage = "No hubo respuesta del servidor de borrado";
+              }
+            }
+
+            if (!deleteOk) {
+              if (msg) {
+                msg.textContent = `${lastErrorMessage}\n${debugLines.join("\n")}`;
+                msg.style.color = "red";
+              }
+              return;
+            }
+
+            if (msg) {
+              msg.textContent = `Nota eliminada con exito ✅ (ID: ${effectiveEditId})\n${debugLines.join("\n")}`;
+              msg.style.color = "green";
+            }
+
+            exitEditMode(true);
+          } catch {
+            if (msg) {
+              msg.textContent = "Error de conexion al eliminar la nota";
+              msg.style.color = "red";
+            }
+          }
+        }
+
+        function fillFormFromNote(note) {
+          editableFields.forEach((name) => {
+            const field = fieldByName(name);
+            if (!field) return;
+
+            const nextValue = note?.[name] ?? "";
+            setFieldValue(
+              field,
+              typeof nextValue === "string"
+                ? nextValue
+                : String(nextValue || ""),
+            );
+          });
+        }
+
+        async function loadNoteForEdit() {
+          const rawId =
+            editNoteIdInput instanceof HTMLInputElement
+              ? editNoteIdInput.value.trim()
+              : "";
+          const id = Number.parseInt(rawId, 10);
+
+          if (!Number.isInteger(id) || id <= 0) {
+            if (msg) {
+              msg.textContent = "Ingresa un ID valido para editar";
+              msg.style.color = "red";
+            }
+            return;
+          }
+
+          try {
+            const response = await fetch(`/api/get-notes?id=${id}`);
+            const note = await response.json();
+
+            if (!response.ok) {
+              if (msg) {
+                msg.textContent = note?.error || "No se pudo cargar la nota";
+                msg.style.color = "red";
+              }
+              return;
+            }
+
+            fillFormFromNote(note);
+            setMode(true, id);
+
+            if (msg) {
+              msg.textContent = `Nota #${id} cargada para edicion`;
+              msg.style.color = "green";
+            }
+          } catch {
+            if (msg) {
+              msg.textContent = "Error de conexion al cargar la nota";
+              msg.style.color = "red";
+            }
+          }
+        }
+
+        function exitEditMode(keepMessage = false) {
+          if (!isFormElement) return;
+          form.reset();
+
+          const editorField = fieldByName("editor");
+          if (editorField && !getFieldValue(editorField)) {
+            setFieldValue(editorField, "Jhon Aparicio");
+          }
+
+          const sourceScopeField = fieldByName("source_scope");
+          if (sourceScopeField && !getFieldValue(sourceScopeField)) {
+            setFieldValue(sourceScopeField, "nacional");
+          }
+
+          setMode(false, null);
+          if (msg && !keepMessage) {
+            msg.textContent = "Modo edicion cerrado";
+            msg.style.color = "#334155";
+          }
+        }
+
+        if (loadNoteBtn) {
+          loadNoteBtn.addEventListener("click", loadNoteForEdit);
+        }
+
+        if (exitEditBtn) {
+          exitEditBtn.addEventListener("click", exitEditMode);
+        }
+
+        if (deleteNoteBtn) {
+          deleteNoteBtn.addEventListener("click", deleteCurrentNote);
+        }
+
+        setMode(false, null);
+
+        if (editNoteIdInput instanceof HTMLInputElement) {
+          const initialId = new URLSearchParams(window.location.search).get(
+            "id",
+          );
+          if (initialId && /^\d+$/.test(initialId)) {
+            editNoteIdInput.value = initialId;
+            loadNoteForEdit();
+          }
+        }
 
         // Convierte HTML string a texto plano (quita tags)
         function stripHtml(html) {
@@ -929,9 +1373,21 @@
             // Pero dejo como comentario: si el backend los espera, dejalos.
 
             try {
-              const apiUrl = `/api/save-note`;
+              const fallbackEditId =
+                editNoteIdInput instanceof HTMLInputElement
+                  ? editNoteIdInput.value.trim()
+                  : "";
+              const effectiveEditId =
+                editingNoteId ||
+                (/^\d+$/.test(fallbackEditId) ? fallbackEditId : "");
+              const isEditing = Boolean(effectiveEditId);
+              const apiUrl = isEditing ? `/api/update-note` : `/api/save-note`;
+              if (isEditing) {
+                data.id = effectiveEditId;
+              }
+
               const res = await fetch(apiUrl, {
-                method: "POST",
+                method: isEditing ? "PUT" : "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),
               });
@@ -939,13 +1395,35 @@
               const result = await res.json();
 
               if (msg) {
+                const detailText =
+                  result?.detail?.message ||
+                  result?.detail?.detail ||
+                  result?.detail?.hint ||
+                  "";
                 msg.textContent =
-                  result.message || result.error || "Error al guardar la nota";
+                  result.message ||
+                  (detailText
+                    ? `${result.error || "Error al guardar la nota"} (${detailText})`
+                    : result.error) ||
+                  "Error al guardar la nota";
                 msg.style.color = res.ok ? "green" : "red";
               }
 
               // Limpiar el formulario si se guardó exitosamente
               if (res.ok) {
+                if (isEditing) {
+                  if (msg) {
+                    msg.textContent = `Nota actualizada con exito ✅ (ID: ${effectiveEditId}). Recarga la pagina de la nota para ver los cambios.`;
+                    msg.style.color = "green";
+                  }
+                  return;
+                }
+
+                if (result?.id) {
+                  window.location.href = `/notas/${result.id}`;
+                  return;
+                }
+
                 formElement.reset();
                 setTimeout(() => {
                   if (msg) msg.textContent = "";
