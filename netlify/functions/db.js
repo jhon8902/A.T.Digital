@@ -4,9 +4,9 @@ const { Pool } = pkg;
 
 function resolveConnectionString() {
   const raw =
-    process.env.DATABASE_URL ||
     process.env.NETLIFY_DATABASE_URL ||
     process.env.NETLIFY_DATABASE_URL_UNPOOLED ||
+    process.env.DATABASE_URL ||
     "";
 
   return raw.trim().replace(/^['\"]|['\"]$/g, "");

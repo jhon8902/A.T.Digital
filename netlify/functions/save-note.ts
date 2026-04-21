@@ -15,9 +15,9 @@ const DB_QUERY_TIMEOUT_MS = Number(process.env.DB_QUERY_TIMEOUT_MS || "8000");
 
 function resolveConnectionString(): string {
   const raw =
-    process.env.DATABASE_URL ||
     process.env.NETLIFY_DATABASE_URL ||
     process.env.NETLIFY_DATABASE_URL_UNPOOLED ||
+    process.env.DATABASE_URL ||
     "";
 
   const connStr = raw.trim().replace(/^['\"]|['\"]$/g, "");
