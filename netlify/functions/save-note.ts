@@ -1,6 +1,7 @@
 import pkg from "pg";
 import type { Handler } from "@netlify/functions";
 import "dotenv/config";
+import { requireEventBasicAuth } from "./auth.js";
 
 const { Pool } = pkg;
 
@@ -188,32 +189,6 @@ function isMissingEditorColumnError(error: any): boolean {
   );
 }
 
-async function relaxLegacyCategorySchema() {
-  const pool = getPool();
-  await pool.query(`
-    DO $$
-    DECLARE
-      r RECORD;
-    BEGIN
-      FOR r IN
-        SELECT c.conname
-        FROM pg_constraint c
-        JOIN pg_class t ON t.oid = c.conrelid
-        WHERE t.relname = 'notes'
-          AND c.contype = 'c'
-          AND pg_get_constraintdef(c.oid) ILIKE '%category%'
-      LOOP
-        EXECUTE format('ALTER TABLE notes DROP CONSTRAINT IF EXISTS %I', r.conname);
-      END LOOP;
-    END $$;
-  `);
-
-  await pool.query(`
-    ALTER TABLE notes
-    ALTER COLUMN category TYPE TEXT USING category::text;
-  `);
-}
-
 async function insertNote(
   payload: {
   title: string;
@@ -388,6 +363,17 @@ export const handler: Handler = async (event) => {
       return { statusCode: 405, headers, body: "Método no permitido" };
     }
 
+    const unauthorizedResponse = requireEventBasicAuth(event);
+    if (unauthorizedResponse) {
+      return {
+        ...unauthorizedResponse,
+        headers: {
+          ...headers,
+          ...(unauthorizedResponse.headers || {}),
+        },
+      };
+    }
+
     // ✅ Parsear body
     const body = JSON.parse(event.body || "{}");
     console.log("📩 Datos recibidos:", body);
@@ -542,13 +528,15 @@ export const handler: Handler = async (event) => {
       });
     } catch (insertError: any) {
       if (isCategoryConstraintError(insertError)) {
-        await relaxLegacyCategorySchema();
-        result = await insertNote(payload, {
-          includeImage6: supportsImage6,
-          includeVideos: supportsVideos,
-          includeSourceScope: supportsSourceScope,
-          includeEditor: supportsEditor,
-        });
+        return {
+          statusCode: 409,
+          headers,
+          body: JSON.stringify({
+            error:
+              "Esquema de categorias desactualizado. Aplica db/schema.sql para habilitar todas las categorias.",
+            detail: formatDbError(insertError),
+          }),
+        };
       } else if (isMissingEditorColumnError(insertError)) {
         result = await insertNote(payload, {
           includeImage6: supportsImage6,

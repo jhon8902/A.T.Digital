@@ -409,3 +409,22 @@
     font-size: 15px;
   }
 }
+
+/* ===== ESCRITORIO: ajustes tipográficos ===== */
+@media (min-width: 769px) {
+  /* H1 principal en mayúsculas */
+  .articulo-container.noticias .noticia-detalle h1 {
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  /* Títulos de bloques e imágenes: de 26px → 30px */
+  .articulo-container.noticias .noticia-detalle .noticia-bloque .noticia-titulo {
+    font-size: 30px;
+  }
+
+  /* Texto de lectura: de 18px → 21px */
+  .articulo-container.noticias .noticia-detalle .noticia-bloque .noticia-parrafo {
+    font-size: 21px;
+  }
+}

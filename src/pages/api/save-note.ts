@@ -189,32 +189,6 @@ function isMissingSourceScopeColumnError(error: any): boolean {
   );
 }
 
-async function relaxLegacyCategorySchema() {
-  const pool = getPool();
-  await pool.query(`
-    DO $$
-    DECLARE
-      r RECORD;
-    BEGIN
-      FOR r IN
-        SELECT c.conname
-        FROM pg_constraint c
-        JOIN pg_class t ON t.oid = c.conrelid
-        WHERE t.relname = 'notes'
-          AND c.contype = 'c'
-          AND pg_get_constraintdef(c.oid) ILIKE '%category%'
-      LOOP
-        EXECUTE format('ALTER TABLE notes DROP CONSTRAINT IF EXISTS %I', r.conname);
-      END LOOP;
-    END $$;
-  `);
-
-  await pool.query(`
-    ALTER TABLE notes
-    ALTER COLUMN category TYPE TEXT USING category::text;
-  `);
-}
-
 async function insertNote(
   payload: {
   title: string;
@@ -257,14 +231,12 @@ async function insertNote(
   spec_competidores?: string;
   spec_traccion?: string;
   spec_precio_cop?: string;
-  block_titles?: string;
 },
   options: {
     includeImage6: boolean;
     includeVideos: boolean;
     includeEditor: boolean;
     includeSourceScope: boolean;
-    includeBlockTitles: boolean;
   }
 ) {
   const columns = [
@@ -368,11 +340,6 @@ async function insertNote(
     }
   });
 
-  if (options.includeBlockTitles && payload.block_titles !== undefined) {
-    columns.push("block_titles");
-    values.push(payload.block_titles);
-  }
-
   const placeholders = values.map((_, index) => `$${index + 1}`).join(", ");
 
   return getPool().query(
@@ -440,7 +407,6 @@ export const POST: APIRoute = async ({ request }) => {
       spec_competidores,
       spec_traccion,
       spec_precio_cop,
-      block_titles,
     } = body;
 
     const normalizedTitle = normalizeTextField(title);
@@ -519,7 +485,6 @@ export const POST: APIRoute = async ({ request }) => {
       spec_competidores: normalizeTextField(spec_competidores),
       spec_traccion: normalizeTextField(spec_traccion),
       spec_precio_cop: normalizeTextField(spec_precio_cop),
-      block_titles: normalizeTextField(block_titles),
     };
 
     const columns = await getNotesColumns();
@@ -535,8 +500,6 @@ export const POST: APIRoute = async ({ request }) => {
       "video6",
       "video7",
     ].every((column) => columns.has(column));
-    const supportsBlockTitles = columns.has("block_titles");
-
     let result;
     try {
       result = await insertNote(payload, {
@@ -544,25 +507,23 @@ export const POST: APIRoute = async ({ request }) => {
         includeVideos: supportsVideos,
         includeEditor: supportsEditor,
         includeSourceScope: supportsSourceScope,
-        includeBlockTitles: supportsBlockTitles,
       });
     } catch (insertError: any) {
       if (isCategoryConstraintError(insertError)) {
-        await relaxLegacyCategorySchema();
-        result = await insertNote(payload, {
-          includeImage6: supportsImage6,
-          includeVideos: supportsVideos,
-          includeEditor: supportsEditor,
-          includeSourceScope: supportsSourceScope,
-          includeBlockTitles: supportsBlockTitles,
-        });
+        return new Response(
+          JSON.stringify({
+            error:
+              "Esquema de categorias desactualizado. Aplica db/schema.sql para habilitar todas las categorias.",
+            detail: formatDbError(insertError),
+          }),
+          { status: 409, headers }
+        );
       } else if (isMissingEditorColumnError(insertError)) {
         result = await insertNote(payload, {
           includeImage6: supportsImage6,
           includeVideos: supportsVideos,
           includeEditor: false,
           includeSourceScope: supportsSourceScope,
-          includeBlockTitles: supportsBlockTitles,
         });
       } else if (isMissingSourceScopeColumnError(insertError)) {
         result = await insertNote(payload, {
@@ -570,7 +531,6 @@ export const POST: APIRoute = async ({ request }) => {
           includeVideos: supportsVideos,
           includeEditor: supportsEditor,
           includeSourceScope: false,
-          includeBlockTitles: supportsBlockTitles,
         });
       } else if (isMissingVideoColumnsError(insertError)) {
         result = await insertNote(payload, {
@@ -578,7 +538,6 @@ export const POST: APIRoute = async ({ request }) => {
           includeVideos: false,
           includeEditor: supportsEditor,
           includeSourceScope: supportsSourceScope,
-          includeBlockTitles: supportsBlockTitles,
         });
       } else if (isMissingImage6ColumnError(insertError)) {
         result = await insertNote(payload, {
@@ -586,7 +545,6 @@ export const POST: APIRoute = async ({ request }) => {
           includeVideos: supportsVideos,
           includeEditor: supportsEditor,
           includeSourceScope: supportsSourceScope,
-          includeBlockTitles: supportsBlockTitles,
         });
       } else {
         throw insertError;

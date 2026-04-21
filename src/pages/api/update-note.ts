@@ -197,7 +197,6 @@ const updatableColumns = [
   "spec_competidores",
   "spec_traccion",
   "spec_precio_cop",
-  "block_titles",
 ] as const;
 
 async function handleUpdate(request: Request) {
@@ -265,7 +264,7 @@ async function handleUpdate(request: Request) {
       "spec_bateria_autonomia","spec_bateria_kwh","spec_autonomia_km","spec_carga",
       "spec_carga_ac_kw","spec_carga_dc_kw","spec_aceleracion_0_100","spec_seguridad",
       "spec_equipamiento","spec_pros","spec_contras","spec_competidores","spec_traccion",
-      "spec_precio_cop", "block_titles"
+      "spec_precio_cop"
     ] as const;
 
     const mediaFields = [

@@ -1,5 +1,9 @@
 ---
-
+const cloudinaryCloudName = import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME || "";
+const cloudinaryUploadPreset =
+  import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET || "";
+const cloudinaryFolder =
+  import.meta.env.PUBLIC_CLOUDINARY_FOLDER || "atdigital/notas";
 ---
 
 <html lang="es">
@@ -264,7 +268,13 @@
           </p>
         </div>
 
-        <form id="noteForm" class="note-form">
+        <form
+          id="noteForm"
+          class="note-form"
+          data-cloudinary-cloud-name={cloudinaryCloudName}
+          data-cloudinary-upload-preset={cloudinaryUploadPreset}
+          data-cloudinary-folder={cloudinaryFolder}
+        >
           <div class="grid-2">
             <label>
               Editor
@@ -327,6 +337,34 @@
               <input type="text" name="image4" placeholder="URL Imagen 4" />
               <input type="text" name="image5" placeholder="URL Imagen 5" />
               <input type="text" name="image6" placeholder="URL Imagen 6" />
+            </div>
+            <div class="cloudinary-uploader">
+              <label for="cloudinaryFiles"
+                >Subir imágenes desde tu computador</label
+              >
+              <input
+                type="file"
+                id="cloudinaryFiles"
+                accept="image/*"
+                multiple
+              />
+              <div id="cloudinaryQueue" class="cloudinary-queue" hidden></div>
+              <button
+                type="button"
+                id="uploadCloudinaryBtn"
+                class="btn-secondary"
+              >
+                Subir a Cloudinary y completar campos
+              </button>
+              <p class="storage-tip cloudinary-tip">
+                Compatible con modo mixto: las imágenes antiguas en /public
+                siguen funcionando y las nuevas se guardan por URL externa.
+              </p>
+              <p class="storage-tip cloudinary-tip">
+                Si el orden importa, acomoda la lista antes de subir. La
+                posición 1 llenará image1, la 2 llenará image2, y así
+                sucesivamente.
+              </p>
             </div>
           </fieldset>
 
@@ -539,26 +577,6 @@
                 />
               </label>
             </div>
-          </fieldset>
-
-          <fieldset class="group-box">
-            <legend>Títulos de bloques (opcional)</legend>
-            <p class="storage-tip">
-              Si deseas títulos personalizados para cada bloque, ingresa aquí.
-              Si dejas vacío, se auto-generarán basados en el contenido. Separa
-              cada título con saltos de línea.
-            </p>
-            <label>
-              Títulos de bloques
-              <textarea
-                name="block_titles"
-                placeholder="Ejemplo:
-Presentación y primeras impresiones
-Diseño exterior llama la atención
-Interior con tecnología de punta
-Rendimiento impresionante"
-              ></textarea>
-            </label>
           </fieldset>
 
           <button type="submit" id="submitNoteBtn">Guardar Nota</button>
@@ -960,7 +978,96 @@ Rendimiento impresionante"
           color: #475569;
         }
 
+        .cloudinary-uploader {
+          margin-top: 12px;
+          padding: 12px;
+          border: 1px dashed #94a3b8;
+          border-radius: 8px;
+          background: #f8fafc;
+          display: grid;
+          gap: 10px;
+        }
+
+        .cloudinary-uploader label {
+          margin: 0;
+        }
+
+        .cloudinary-uploader button {
+          width: auto;
+          margin-top: 0;
+        }
+
+        .cloudinary-tip {
+          margin: 0;
+        }
+
+        .cloudinary-queue {
+          display: grid;
+          gap: 8px;
+        }
+
+        .cloudinary-queue-item {
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          gap: 10px;
+          align-items: center;
+          padding: 10px 12px;
+          border: 1px solid #cbd5e1;
+          border-radius: 8px;
+          background: #ffffff;
+        }
+
+        .cloudinary-queue-position {
+          width: 28px;
+          height: 28px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 999px;
+          background: #dbeafe;
+          color: #1d4ed8;
+          font-size: 12px;
+          font-weight: 700;
+        }
+
+        .cloudinary-queue-name {
+          min-width: 0;
+          font-size: 13px;
+          color: #334155;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .cloudinary-queue-actions {
+          display: flex;
+          gap: 6px;
+        }
+
+        .cloudinary-queue-btn {
+          width: auto;
+          min-width: 34px;
+          padding: 8px 10px;
+          margin-top: 0;
+          border-radius: 8px;
+          box-shadow: none;
+          font-size: 13px;
+          line-height: 1;
+        }
+
         @media (max-width: 768px) {
+          .cloudinary-queue-item {
+            grid-template-columns: 1fr;
+          }
+
+          .cloudinary-queue-actions {
+            justify-content: stretch;
+          }
+
+          .cloudinary-queue-btn {
+            flex: 1;
+          }
+
           .help-grid {
             grid-template-columns: 1fr;
           }
@@ -991,453 +1098,7 @@ Rendimiento impresionante"
         }
       </style>
 
-      <script>
-        const form = document.getElementById("noteForm");
-        const msg = document.getElementById("msg");
-        const editNoteIdInput = document.getElementById("editNoteId");
-        const loadNoteBtn = document.getElementById("loadNoteBtn");
-        const deleteNoteBtn = document.getElementById("deleteNoteBtn");
-        const exitEditBtn = document.getElementById("exitEditBtn");
-        const editModeLabel = document.getElementById("editModeLabel");
-        const submitNoteBtn = document.getElementById("submitNoteBtn");
-        const formHeaderTitle = document.querySelector(".form-header h1");
-        const isFormElement = form instanceof HTMLFormElement;
-        let editingNoteId = "";
-
-        const editableFields = [
-          "editor",
-          "title",
-          "subtitle",
-          "category",
-          "source_scope",
-          "content",
-          "image1",
-          "image2",
-          "image3",
-          "image4",
-          "image5",
-          "image6",
-          "video1",
-          "video2",
-          "video3",
-          "video4",
-          "video5",
-          "video6",
-          "video7",
-          "spec_segmento",
-          "spec_origen",
-          "spec_precio_estimado",
-          "spec_versiones",
-          "spec_motorizacion",
-          "spec_potencia_hp",
-          "spec_torque_nm",
-          "spec_bateria_autonomia",
-          "spec_bateria_kwh",
-          "spec_autonomia_km",
-          "spec_carga",
-          "spec_carga_ac_kw",
-          "spec_carga_dc_kw",
-          "spec_aceleracion_0_100",
-          "spec_seguridad",
-          "spec_equipamiento",
-          "spec_pros",
-          "spec_contras",
-          "spec_competidores",
-          "spec_traccion",
-          "spec_precio_cop",
-          "block_titles",
-        ];
-
-        function fieldByName(name) {
-          if (!isFormElement) return null;
-          return form.querySelector(`[name="${name}"]`);
-        }
-
-        function getFieldValue(field) {
-          if (
-            field instanceof HTMLInputElement ||
-            field instanceof HTMLTextAreaElement ||
-            field instanceof HTMLSelectElement
-          ) {
-            return field.value;
-          }
-          return "";
-        }
-
-        function setFieldValue(field, value) {
-          if (
-            field instanceof HTMLInputElement ||
-            field instanceof HTMLTextAreaElement ||
-            field instanceof HTMLSelectElement
-          ) {
-            field.value = value;
-          }
-        }
-
-        function setMode(isEditing, noteId) {
-          const safeId = typeof noteId === "number" ? noteId : null;
-          editingNoteId = isEditing && safeId ? String(safeId) : "";
-
-          if (isEditing) {
-            if (editModeLabel)
-              editModeLabel.textContent = `Modo actual: Editando nota #${safeId}`;
-            if (submitNoteBtn) submitNoteBtn.textContent = "Actualizar Nota";
-            if (formHeaderTitle) formHeaderTitle.textContent = "Editar Nota";
-            if (deleteNoteBtn) deleteNoteBtn.hidden = false;
-            if (exitEditBtn) exitEditBtn.hidden = false;
-          } else {
-            if (editModeLabel)
-              editModeLabel.textContent = "Modo actual: Crear nueva nota";
-            if (submitNoteBtn) submitNoteBtn.textContent = "Guardar Nota";
-            if (formHeaderTitle) formHeaderTitle.textContent = "Crear Nota";
-            if (deleteNoteBtn) deleteNoteBtn.hidden = true;
-            if (exitEditBtn) exitEditBtn.hidden = true;
-            if (editNoteIdInput instanceof HTMLInputElement) {
-              editNoteIdInput.value = "";
-            }
-          }
-        }
-
-        async function deleteCurrentNote() {
-          const fallbackEditId =
-            editNoteIdInput instanceof HTMLInputElement
-              ? editNoteIdInput.value.trim()
-              : "";
-          const effectiveEditId =
-            editingNoteId ||
-            (/^\d+$/.test(fallbackEditId) ? fallbackEditId : "");
-
-          if (!effectiveEditId) {
-            if (msg) {
-              msg.textContent =
-                "Primero carga una nota por ID para poder eliminar";
-              msg.style.color = "red";
-            }
-            return;
-          }
-
-          const confirmDelete = window.confirm(
-            `Vas a eliminar la nota #${effectiveEditId}. Esta accion no se puede deshacer. ¿Deseas continuar?`,
-          );
-          if (!confirmDelete) return;
-
-          try {
-            if (msg) {
-              msg.textContent = `Intentando eliminar nota #${effectiveEditId}...`;
-              msg.style.color = "#334155";
-            }
-
-            const attempts = [
-              {
-                method: "POST",
-                endpoint: "/api/delete-note",
-                body: JSON.stringify({ id: Number(effectiveEditId) }),
-                headers: { "Content-Type": "application/json" },
-              },
-              {
-                method: "DELETE",
-                endpoint: `/api/delete-note?id=${effectiveEditId}`,
-              },
-              {
-                method: "DELETE",
-                endpoint: `/.netlify/functions/delete-note?id=${effectiveEditId}`,
-              },
-            ];
-
-            const debugLines = [];
-            let deleteOk = false;
-            let lastErrorMessage = "No se pudo eliminar la nota";
-
-            for (const attempt of attempts) {
-              const { method, endpoint, body, headers } = attempt;
-              try {
-                const res = await fetch(endpoint, {
-                  method,
-                  headers,
-                  body,
-                });
-                const rawText = await res.text();
-                let result = null;
-
-                try {
-                  result = rawText ? JSON.parse(rawText) : null;
-                } catch {
-                  result = null;
-                }
-
-                if (res.ok) {
-                  debugLines.push(`OK ${method} ${endpoint} -> ${res.status}`);
-                  deleteOk = true;
-                  break;
-                }
-
-                const detail =
-                  result?.error ||
-                  (rawText && rawText.slice(0, 120)) ||
-                  "Sin detalle";
-                debugLines.push(
-                  `FAIL ${method} ${endpoint} -> ${res.status}: ${detail}`,
-                );
-                lastErrorMessage = detail;
-              } catch {
-                debugLines.push(`FAIL ${method} ${endpoint} -> sin respuesta`);
-                lastErrorMessage = "No hubo respuesta del servidor de borrado";
-              }
-            }
-
-            if (!deleteOk) {
-              if (msg) {
-                msg.textContent = `${lastErrorMessage}\n${debugLines.join("\n")}`;
-                msg.style.color = "red";
-              }
-              return;
-            }
-
-            if (msg) {
-              msg.textContent = `Nota eliminada con exito ✅ (ID: ${effectiveEditId})\n${debugLines.join("\n")}`;
-              msg.style.color = "green";
-            }
-
-            exitEditMode(true);
-          } catch {
-            if (msg) {
-              msg.textContent = "Error de conexion al eliminar la nota";
-              msg.style.color = "red";
-            }
-          }
-        }
-
-        function fillFormFromNote(note) {
-          editableFields.forEach((name) => {
-            const field = fieldByName(name);
-            if (!field) return;
-
-            const nextValue = note?.[name] ?? "";
-            setFieldValue(
-              field,
-              typeof nextValue === "string"
-                ? nextValue
-                : String(nextValue || ""),
-            );
-          });
-        }
-
-        async function loadNoteForEdit() {
-          const rawId =
-            editNoteIdInput instanceof HTMLInputElement
-              ? editNoteIdInput.value.trim()
-              : "";
-          const id = Number.parseInt(rawId, 10);
-
-          if (!Number.isInteger(id) || id <= 0) {
-            if (msg) {
-              msg.textContent = "Ingresa un ID valido para editar";
-              msg.style.color = "red";
-            }
-            return;
-          }
-
-          try {
-            const response = await fetch(`/api/get-notes?id=${id}`);
-            const note = await response.json();
-
-            if (!response.ok) {
-              if (msg) {
-                msg.textContent = note?.error || "No se pudo cargar la nota";
-                msg.style.color = "red";
-              }
-              return;
-            }
-
-            fillFormFromNote(note);
-            setMode(true, id);
-
-            if (msg) {
-              msg.textContent = `Nota #${id} cargada para edicion`;
-              msg.style.color = "green";
-            }
-          } catch {
-            if (msg) {
-              msg.textContent = "Error de conexion al cargar la nota";
-              msg.style.color = "red";
-            }
-          }
-        }
-
-        function exitEditMode(keepMessage = false) {
-          if (!isFormElement) return;
-          form.reset();
-
-          const editorField = fieldByName("editor");
-          if (editorField && !getFieldValue(editorField)) {
-            setFieldValue(editorField, "Jhon Aparicio");
-          }
-
-          const sourceScopeField = fieldByName("source_scope");
-          if (sourceScopeField && !getFieldValue(sourceScopeField)) {
-            setFieldValue(sourceScopeField, "nacional");
-          }
-
-          setMode(false, null);
-          if (msg && !keepMessage) {
-            msg.textContent = "Modo edicion cerrado";
-            msg.style.color = "#334155";
-          }
-        }
-
-        if (loadNoteBtn) {
-          loadNoteBtn.addEventListener("click", loadNoteForEdit);
-        }
-
-        if (exitEditBtn) {
-          exitEditBtn.addEventListener("click", exitEditMode);
-        }
-
-        if (deleteNoteBtn) {
-          deleteNoteBtn.addEventListener("click", deleteCurrentNote);
-        }
-
-        setMode(false, null);
-
-        if (editNoteIdInput instanceof HTMLInputElement) {
-          const initialId = new URLSearchParams(window.location.search).get(
-            "id",
-          );
-          if (initialId && /^\d+$/.test(initialId)) {
-            editNoteIdInput.value = initialId;
-            loadNoteForEdit();
-          }
-        }
-
-        // Convierte HTML string a texto plano (quita tags)
-        function stripHtml(html) {
-          const tmp = document.createElement("div");
-          tmp.innerHTML = html;
-          return tmp.textContent || tmp.innerText || "";
-        }
-
-        // Extrae la primera imagen src de un HTML string
-        function extractFirstImageFromHtml(html) {
-          if (!html) return null;
-          // Intentamos buscar <img src="..."> o <img data-src="...">
-          const imgRegex = /<img[^>]+(?:src|data-src)=["']([^"']+)["'][^>]*>/i;
-          const match = html.match(imgRegex);
-          return match ? match[1] : null;
-        }
-
-        // Genera un resumen técnico simple: primer texto no vacío hasta N chars
-        function generateSummaryFromHtml(html, maxChars = 160) {
-          const text = stripHtml(html).trim();
-          if (!text) return "";
-          // Tomamos hasta maxChars y evitamos cortar palabras: buscamos último espacio
-          if (text.length <= maxChars) return text;
-          const snippet = text.slice(0, maxChars);
-          const lastSpace = snippet.lastIndexOf(" ");
-          return (
-            snippet.slice(0, lastSpace > 40 ? lastSpace : maxChars) + "..."
-          );
-        }
-
-        if (isFormElement) {
-          form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const formElement = form;
-            const formData = new FormData(formElement);
-            // Si hay campos de imagen y el usuario los dejó vacíos, los omitimos.
-            const rawData = Object.fromEntries(formData.entries());
-            const data = Object.fromEntries(
-              Object.entries(rawData).map(([key, value]) => [
-                key,
-                typeof value === "string" ? value : "",
-              ]),
-            );
-
-            // Si estás permitiendo HTML en <textarea name="content">, extrae la primera imagen
-            const contentHtml = data.content || "";
-            const firstImg = extractFirstImageFromHtml(contentHtml);
-
-            // Si image1 está vacío y extrajimos una img del content, asignamos image1
-            if ((!data.image1 || data.image1.trim() === "") && firstImg) {
-              data.image1 = firstImg;
-            }
-
-            // Generar resumen técnico si el usuario no lo proporcionó
-            if (!data.summary || data.summary.trim() === "") {
-              data.summary = generateSummaryFromHtml(contentHtml, 180);
-            }
-
-            // Opción: si decidiste eliminar los campos image2..image6 en el servidor,
-            // podemos borrarlos del objeto para no mandarlos:
-            // delete data.image2; delete data.image3; ... etc.
-            // Pero dejo como comentario: si el backend los espera, dejalos.
-
-            try {
-              const fallbackEditId =
-                editNoteIdInput instanceof HTMLInputElement
-                  ? editNoteIdInput.value.trim()
-                  : "";
-              const effectiveEditId =
-                editingNoteId ||
-                (/^\d+$/.test(fallbackEditId) ? fallbackEditId : "");
-              const isEditing = Boolean(effectiveEditId);
-              const apiUrl = isEditing ? `/api/update-note` : `/api/save-note`;
-              if (isEditing) {
-                data.id = effectiveEditId;
-              }
-
-              const res = await fetch(apiUrl, {
-                method: isEditing ? "PUT" : "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
-              });
-
-              const result = await res.json();
-
-              if (msg) {
-                const detailText =
-                  result?.detail?.message ||
-                  result?.detail?.detail ||
-                  result?.detail?.hint ||
-                  "";
-                msg.textContent =
-                  result.message ||
-                  (detailText
-                    ? `${result.error || "Error al guardar la nota"} (${detailText})`
-                    : result.error) ||
-                  "Error al guardar la nota";
-                msg.style.color = res.ok ? "green" : "red";
-              }
-
-              // Limpiar el formulario si se guardó exitosamente
-              if (res.ok) {
-                if (isEditing) {
-                  if (msg) {
-                    msg.textContent = `Nota actualizada con exito ✅ (ID: ${effectiveEditId}). Recarga la pagina de la nota para ver los cambios.`;
-                    msg.style.color = "green";
-                  }
-                  return;
-                }
-
-                if (result?.id) {
-                  window.location.href = `/notas/${result.id}`;
-                  return;
-                }
-
-                formElement.reset();
-                setTimeout(() => {
-                  if (msg) msg.textContent = "";
-                }, 3000);
-              }
-            } catch (error) {
-              if (msg) {
-                msg.textContent = "Error de conexión con el servidor";
-                msg.style.color = "red";
-              }
-            }
-          });
-        }
-      </script>
+      <script src="/js/formulario.js" defer></script>
     </main>
   </body>
 </html>

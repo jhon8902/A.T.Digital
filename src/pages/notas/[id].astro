@@ -152,6 +152,23 @@ const editorialFallbackTitles = [
   "Conclusiones clave",
 ];
 
+const ENABLE_INLINE_MANUAL_TITLES = true;
+
+function extractInlineManualTitle(block: string) {
+  if (!ENABLE_INLINE_MANUAL_TITLES) return null;
+
+  // Sintaxis segura y explicita:
+  // Titulo: Mi encabezado | Texto del bloque
+  const match = block.match(/^t[ií]tulo\s*:\s*([^|]{3,120})\|\s*(.+)$/i);
+  if (!match) return null;
+
+  const title = (match[1] || "").trim();
+  const paragraph = (match[2] || "").trim();
+  if (!title || !paragraph) return null;
+
+  return { title, paragraph };
+}
+
 function makeBlockTitle(text: string, index: number) {
   const normalized = (text || "").toLowerCase();
 
@@ -184,11 +201,13 @@ const customTitles = (note?.block_titles || "")
   .filter((t) => t.length > 0);
 
 const uniqueContentBlocks = contentParagraphs.map((paragraph, index) => {
-  // Usar título personalizado si disponible, sino auto-generar
+  const inlineManual = extractInlineManualTitle(paragraph);
   const customTitle = customTitles[index];
-  const title = customTitle || makeBlockTitle(paragraph, index);
+  const normalizedParagraph = inlineManual ? inlineManual.paragraph : paragraph;
+  const title = inlineManual?.title || customTitle || makeBlockTitle(normalizedParagraph, index);
+
   return {
-    paragraph,
+    paragraph: normalizedParagraph,
     title,
   };
 });
@@ -325,6 +344,12 @@ function publishedDate(value?: string) {
 }
 
 const categoryClass = categoryClassName(note?.category);
+const normalizedTitle = (note?.title || "")
+  .toLowerCase()
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "");
+const useSmartImageFrame =
+  normalizedTitle.includes("smart #5") || normalizedTitle.includes("smart 5");
 ---
 
 <Layout
@@ -334,7 +359,7 @@ const categoryClass = categoryClassName(note?.category);
   {
     note?.title ? (
       <section class={`articulo-container ${categoryClass}`}>
-        <article class="noticia-detalle">
+        <article class={`noticia-detalle${useSmartImageFrame ? " smart-note-frame" : ""}`}>
           <h1>{note.title}</h1>
           <div class="nota-meta-line">
             <span class="nota-meta-item">
@@ -385,12 +410,23 @@ const categoryClass = categoryClassName(note?.category);
                     </div>
                     {
                       blockImage && (
-                        <img
-                          src={blockImage}
-                          alt={`${note.title} imagen ${index + 2}`}
-                          loading="lazy"
-                          decoding="async"
-                        />
+                        useSmartImageFrame ? (
+                          <div class="noticia-media-frame">
+                            <img
+                              src={blockImage}
+                              alt={`${note.title} imagen ${index + 2}`}
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          </div>
+                        ) : (
+                          <img
+                            src={blockImage}
+                            alt={`${note.title} imagen ${index + 2}`}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        )
                       )
                     }
                   </section>
@@ -429,12 +465,23 @@ const categoryClass = categoryClassName(note?.category);
                     <h2 class="noticia-titulo">Galería {index + 1}</h2>
                     <p class="noticia-parrafo">Imagen complementaria de la nota.</p>
                   </div>
-                  <img
-                    src={imgSrc}
-                    alt={`${note.title} imagen adicional ${index + 1}`}
-                    loading="lazy"
-                    decoding="async"
-                  />
+                  {useSmartImageFrame ? (
+                    <div class="noticia-media-frame">
+                      <img
+                        src={imgSrc}
+                        alt={`${note.title} imagen adicional ${index + 1}`}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                  ) : (
+                    <img
+                      src={imgSrc}
+                      alt={`${note.title} imagen adicional ${index + 1}`}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
                 </section>
               ))
           }

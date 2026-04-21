@@ -5,6 +5,8 @@ interface ImportMetaEnv {
 	readonly DATABASE_URL: string;
 	readonly NETLIFY_DATABASE_URL: string;
 	readonly NETLIFY_DATABASE_URL_UNPOOLED: string;
+	readonly FORMULARIO_ADMIN_USER?: string;
+	readonly FORMULARIO_ADMIN_PASSWORD?: string;
 	readonly API_BASE_URL?: string;
 }
 
