@@ -11,12 +11,25 @@ const DB_CONNECTION_TIMEOUT_MS = Number(
 );
 const DB_QUERY_TIMEOUT_MS = Number(process.env.DB_QUERY_TIMEOUT_MS || "8000");
 
+function resolveConnectionString(): string {
+  const raw =
+    process.env.DATABASE_URL ||
+    process.env.NETLIFY_DATABASE_URL ||
+    process.env.NETLIFY_DATABASE_URL_UNPOOLED ||
+    "";
+
+  // Netlify UI values can accidentally be saved wrapped in quotes.
+  const connStr = raw.trim().replace(/^['\"]|['\"]$/g, "");
+  if (!connStr) {
+    throw new Error("DATABASE_URL no está configurada");
+  }
+
+  return connStr;
+}
+
 function getPool() {
   if (!_pool) {
-    const connStr = process.env.DATABASE_URL;
-    if (!connStr) {
-      throw new Error("DATABASE_URL no está configurada");
-    }
+    const connStr = resolveConnectionString();
 
     _pool = new Pool({
       connectionString: connStr,
