@@ -13,7 +13,9 @@ const DB_QUERY_TIMEOUT_MS = Number(process.env.DB_QUERY_TIMEOUT_MS || "8000");
 function getPool() {
   if (!_pool) {
     const connStr =
-      import.meta.env.DATABASE_URL ?? process.env.DATABASE_URL;
+      import.meta.env.DATABASE_URL ??
+      process.env.DATABASE_URL ??
+      process.env.NETLIFY_DATABASE_URL;
 
     if (!connStr) {
       throw new Error("DATABASE_URL no está configurada");
@@ -31,6 +33,16 @@ function getPool() {
   }
 
   return _pool;
+}
+
+function isMissingEditorColumnError(error: any): boolean {
+  if (!error) return false;
+  return (
+    error.code === "42703" &&
+    /editor|column\s+"?editor"?\s+does\s+not\s+exist/i.test(
+      String(error.message || "")
+    )
+  );
 }
 
 function normalizeCategory(category: string) {
@@ -87,22 +99,43 @@ export const GET: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify(note), { status: 200, headers });
     }
 
-    const result = await getPool().query(`
-      SELECT
-        id, title, subtitle, editor, content, category,
-        image1, image2, image3, image4, image5, image6,
-        video1, video2, video3, video4, video5, video6, video7,
-        spec_segmento, spec_origen, spec_precio_estimado, spec_versiones,
-        spec_motorizacion, spec_potencia_hp, spec_torque_nm,
-        spec_bateria_autonomia, spec_bateria_kwh, spec_autonomia_km,
-        spec_carga, spec_carga_ac_kw, spec_carga_dc_kw,
-        spec_aceleracion_0_100, spec_seguridad, spec_equipamiento,
-        spec_pros, spec_contras, spec_competidores,
-        spec_traccion, spec_precio_cop,
-        created_at
-      FROM notes
-      ORDER BY created_at DESC
-    `);
+    let result;
+    try {
+      result = await getPool().query(`
+        SELECT
+          id, title, subtitle, editor, content, category,
+          image1, image2, image3, image4, image5, image6,
+          video1, video2, video3, video4, video5, video6, video7,
+          spec_segmento, spec_origen, spec_precio_estimado, spec_versiones,
+          spec_motorizacion, spec_potencia_hp, spec_torque_nm,
+          spec_bateria_autonomia, spec_bateria_kwh, spec_autonomia_km,
+          spec_carga, spec_carga_ac_kw, spec_carga_dc_kw,
+          spec_aceleracion_0_100, spec_seguridad, spec_equipamiento,
+          spec_pros, spec_contras, spec_competidores,
+          spec_traccion, spec_precio_cop,
+          created_at
+        FROM notes
+        ORDER BY created_at DESC
+      `);
+    } catch (error: any) {
+      if (!isMissingEditorColumnError(error)) throw error;
+      result = await getPool().query(`
+        SELECT
+          id, title, subtitle, content, category,
+          image1, image2, image3, image4, image5, image6,
+          video1, video2, video3, video4, video5, video6, video7,
+          spec_segmento, spec_origen, spec_precio_estimado, spec_versiones,
+          spec_motorizacion, spec_potencia_hp, spec_torque_nm,
+          spec_bateria_autonomia, spec_bateria_kwh, spec_autonomia_km,
+          spec_carga, spec_carga_ac_kw, spec_carga_dc_kw,
+          spec_aceleracion_0_100, spec_seguridad, spec_equipamiento,
+          spec_pros, spec_contras, spec_competidores,
+          spec_traccion, spec_precio_cop,
+          created_at
+        FROM notes
+        ORDER BY created_at DESC
+      `);
+    }
 
     const normalizedRows = result.rows.map((row) => ({
       ...row,
