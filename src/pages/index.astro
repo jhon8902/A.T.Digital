@@ -60,36 +60,6 @@ try {
   </div>
 </Layout>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const sectionLinks = document.querySelectorAll("a[data-section]");
-
-    /* -----------------------------------------
-       Cuando se hace clic en un enlace <a data-section="">
-    ------------------------------------------ */
-    sectionLinks.forEach((link) => {
-      link.addEventListener("click", (event) => {
-        event.preventDefault();
-        const targetId = link.getAttribute("data-section");
-        if (!targetId) return;
-
-        // Scroll suave hacia la sección con offset dinámico
-        const target = document.getElementById(targetId);
-        if (target) {
-          const headerHeight = 280; // Altura del header
-          const targetPosition =
-            target.getBoundingClientRect().top + window.scrollY - headerHeight;
-
-          window.scrollTo({
-            top: targetPosition,
-            behavior: "smooth",
-          });
-        }
-      });
-    });
-  });
-</script>
-
 <style>
   /* Animación suave de entrada para secciones */
   @keyframes fadeInUp {

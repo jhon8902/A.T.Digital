@@ -983,7 +983,19 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
       z-index: 0;
     }
 
-    /* Removido overlay oscuro para mantener imagen clara */
+    .news-card--featured .news-card-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        95deg,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.5) 34%,
+        rgba(0, 0, 0, 0.16) 58%,
+        rgba(0, 0, 0, 0) 78%
+      );
+      pointer-events: none;
+    }
 
     .news-card--featured .news-card-image img {
       display: block;
@@ -1002,8 +1014,13 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
       position: relative;
       z-index: 2;
       padding: 42px 54px;
-      color: black;
-      background: transparent;
+      color: #ffffff;
+      background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.34) 0%,
+        rgba(0, 0, 0, 0.18) 58%,
+        rgba(0, 0, 0, 0) 100%
+      );
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -1195,17 +1212,23 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
       min-height: auto;
       max-width: 92%;
       margin: 20px 0 0 12px;
+      background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.48) 0%,
+        rgba(0, 0, 0, 0.24) 62%,
+        rgba(0, 0, 0, 0) 100%
+      );
     }
 
     .news-card--featured .news-title {
       font-size: 1.85rem;
       margin-bottom: 12px;
-      color: #000;
+      color: #fff;
     }
 
     .news-card--featured .news-date {
       font-size: 0.85rem;
-      color: #374151;
+      color: rgba(255, 255, 255, 0.92);
     }
 
     .news-card--featured .news-read-more {

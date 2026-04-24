@@ -773,6 +773,13 @@ const autos = [
 
 <script>
   document.addEventListener("DOMContentLoaded", async () => {
+    type LikeType = "like" | "corazon";
+    type AutoMatchComment = {
+      nombre: string;
+      mensaje: string;
+      created_at?: string;
+    };
+
     const likedState = JSON.parse(
       localStorage.getItem("automatchLikedState") || "{}",
     );
@@ -787,7 +794,7 @@ const autos = [
       localStorage.setItem("automatchClientId", clientId);
     }
 
-    function setCounter(autoId, tipo, value) {
+    function setCounter(autoId: string, tipo: LikeType, value: number) {
       const selector = tipo === "like" ? ".btn-like" : ".btn-corazon";
       const btn = document.querySelector(
         `.auto-card[data-id="${autoId}"] ${selector}`,
@@ -817,7 +824,7 @@ const autos = [
       }
     }
 
-    function createCommentItem(comment) {
+    function createCommentItem(comment: AutoMatchComment) {
       const li = document.createElement("li");
       const dateStr = comment?.created_at
         ? new Date(comment.created_at).toLocaleString("es-CO", {
@@ -833,7 +840,7 @@ const autos = [
       return li;
     }
 
-    async function cargarComentarios(autoId) {
+    async function cargarComentarios(autoId: string) {
       const ul = document.querySelector(
         `.auto-card[data-id="${autoId}"] .lista-comentarios`,
       ) as HTMLElement | null;
@@ -854,7 +861,7 @@ const autos = [
         const comments = Array.isArray(data?.comments) ? data.comments : [];
 
         ul.innerHTML = "";
-        comments.forEach((comment) => {
+        comments.forEach((comment: AutoMatchComment) => {
           ul.appendChild(createCommentItem(comment));
         });
         contador.textContent = `(${comments.length})`;

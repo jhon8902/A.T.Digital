@@ -36,12 +36,14 @@ const headerSearchData = encodeURIComponent(
     <!-- Menú de navegación para escritorio -->
     <nav id="menu-escritorio" class="menu-escritorio">
       <ul>
-        <li><a href="/#inicio">Inicio</a></li>
+        <li><a href="/#inicio" data-section="inicio">Inicio</a></li>
         <li>
           <a href="/#noticias" data-section="noticias">Noticias</a>
         </li>
-        <li><a href="/#automatch">AutoMatch</a></li>
-        <li><a href="/#lanzamientos">Lanzamientos</a></li>
+        <li><a href="/#automatch" data-section="automatch">AutoMatch</a></li>
+        <li>
+          <a href="/#lanzamientos" data-section="lanzamientos">Lanzamientos</a>
+        </li>
 
         <li>
           <a href="/#hibridos" data-section="hibridos">Híbridos</a>
@@ -101,7 +103,7 @@ const headerSearchData = encodeURIComponent(
         >&times;</button
       >
       <ul>
-        <li><a href="/#inicio">Inicio</a></li>
+        <li><a href="/#inicio" data-section="inicio">Inicio</a></li>
 
         <li><a href="/#noticias" data-section="noticias">Noticias</a></li>
         <li>
@@ -112,7 +114,7 @@ const headerSearchData = encodeURIComponent(
         <li><a href="/#deportes" data-section="deportes">Deportes</a></li>
         <li><a href="/#pruebas" data-section="pruebas">Pruebas</a></li>
 
-        <li><a href="/#automatch">AutoMatch</a></li>
+        <li><a href="/#automatch" data-section="automatch">AutoMatch</a></li>
       </ul>
     </div>
   </nav>
@@ -130,10 +132,11 @@ const headerSearchData = encodeURIComponent(
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: var(--header-anchor-offset, 120px);
   }
 
-  * {
-    scroll-margin-top: 280px; /* Espacio para el header sticky */
+  [id] {
+    scroll-margin-top: var(--header-anchor-offset, 120px);
   }
 
   /* Estilo principal del header */
@@ -845,11 +848,6 @@ const headerSearchData = encodeURIComponent(
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Animación de scroll suave para enlaces */
-  html {
-    scroll-padding-top: 280px;
-  }
-
   /* Tagline de Identidad Editorial */
   .brand-tagline {
     background: linear-gradient(135deg, #121212 0%, #201701 100%);
@@ -952,10 +950,6 @@ const headerSearchData = encodeURIComponent(
       width: 90%;
       height: 1.5px;
     }
-
-    * {
-      scroll-margin-top: 180px;
-    }
   }
 </style>
 
@@ -968,6 +962,84 @@ const headerSearchData = encodeURIComponent(
     const menu = document.getElementById("menu-hamburguesa");
     const closeMenu = document.getElementById("close-menu");
     const overlay = document.getElementById("menu-overlay");
+    const topBar = document.querySelector(".top-bar") as HTMLElement | null;
+
+    function getHeaderOffset() {
+      const topBarHeight = topBar?.getBoundingClientRect().height || 0;
+      return Math.round(topBarHeight + 16);
+    }
+
+    function syncAnchorOffset() {
+      document.documentElement.style.setProperty(
+        "--header-anchor-offset",
+        `${getHeaderOffset()}px`,
+      );
+    }
+
+    function isHomePath(pathname: string) {
+      return pathname === "/" || pathname === "/index.html";
+    }
+
+    function scrollToHash(hash: string, behavior: ScrollBehavior = "smooth") {
+      const targetId = hash.replace(/^#/, "");
+      if (!targetId) return false;
+
+      const target = document.getElementById(targetId);
+      if (!target) return false;
+
+      const targetPosition =
+        target.getBoundingClientRect().top + window.scrollY - getHeaderOffset();
+
+      window.scrollTo({
+        top: Math.max(0, targetPosition),
+        behavior,
+      });
+
+      return true;
+    }
+
+    syncAnchorOffset();
+
+    window.addEventListener("resize", () => {
+      syncAnchorOffset();
+    });
+
+    const hashLinks = document.querySelectorAll('a[href^="/#"], a[href^="#"]');
+
+    hashLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        const href = link.getAttribute("href") || "";
+        const hashIndex = href.indexOf("#");
+        if (hashIndex < 0) return;
+
+        const hash = href.slice(hashIndex);
+        if (!hash || hash === "#") return;
+
+        const targetId = hash.slice(1);
+        if (!targetId) return;
+
+        const shouldNavigateToHome =
+          href.startsWith("/#") && !isHomePath(window.location.pathname);
+
+        if (shouldNavigateToHome) {
+          return;
+        }
+
+        if (!document.getElementById(targetId)) {
+          return;
+        }
+
+        event.preventDefault();
+        history.pushState(null, "", `${window.location.pathname}${hash}`);
+        scrollToHash(hash, "smooth");
+      });
+    });
+
+    if (isHomePath(window.location.pathname) && window.location.hash) {
+      requestAnimationFrame(() => {
+        scrollToHash(window.location.hash, "auto");
+      });
+    }
 
     if (botonHamburguesa && menu) {
       botonHamburguesa.addEventListener("click", function () {

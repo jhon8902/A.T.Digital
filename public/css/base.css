@@ -319,9 +319,10 @@ body.nota-deportes .noticia-titulo {
   line-height: 1.3;
   color: #1a1a1a;
   margin-top: 0 !important;
-  margin-bottom: 16px !important;
-  padding: 0 0 0 16px !important;
-  border-left: 4px solid #e6b410;
+  margin-bottom: 18px !important;
+  padding: 0 0 10px 0 !important;
+  border-left: none;
+  border-bottom: 2px solid #1f2937;
 }
 
 body.nota-page .noticia-bloque .noticia-parrafo,
