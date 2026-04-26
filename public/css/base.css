@@ -187,7 +187,7 @@ body.nota-deportes .noticia-detalle h1 {
   line-height: 1.2;
   color: #1a1a1a;
   border: none !important;
-  border-bottom: 3px solid #e6b410 !important;
+  /*border-bottom: 3px solid #e6b410 !important;*/
   text-align: left;
   width: 100% !important;
 }

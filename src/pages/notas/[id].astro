@@ -360,6 +360,18 @@ const useSmartImageFrame =
     note?.title ? (
       <section class={`articulo-container ${categoryClass}`}>
         <article class={`noticia-detalle${useSmartImageFrame ? " smart-note-frame" : ""}`}>
+          {
+            coverImage && (
+              <img
+                class="noticia-portada"
+                src={coverImage}
+                alt={note.title}
+                loading="lazy"
+                decoding="async"
+              />
+            )
+          }
+
           <h1>{note.title}</h1>
           <div class="nota-meta-line">
             <span class="nota-meta-item">
@@ -385,18 +397,6 @@ const useSmartImageFrame =
           </div>
 
           {note.subtitle && <p class="noticia-descripcion">{note.subtitle}</p>}
-
-          {
-            coverImage && (
-              <img
-                class="noticia-portada"
-                src={coverImage}
-                alt={note.title}
-                loading="lazy"
-                decoding="async"
-              />
-            )
-          }
 
           {
             uniqueContentBlocks.length > 0 ? (
@@ -561,8 +561,9 @@ const useSmartImageFrame =
   }
 
   .nota-meta-item i {
-    font-size: 0.85rem;
-    opacity: 0.8;
+    font-size: 0.95rem;
+    opacity: 1;
+    color: #e6b410;
   }
 
   @media (max-width: 640px) {

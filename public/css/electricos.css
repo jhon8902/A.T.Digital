@@ -17,12 +17,13 @@
 }
 
 /* CABECERA */
+/* Bloque principal cabecera + contenedor (ajuste de espacio lateral) */
 .electricos .nota-header,
 .electricos .articulo-container {
   text-align: center;
-  padding: 30px 20px;
-  background: white;
   color: black;
+  padding: 10px 0;
+  background: white;
 }
 
 .electricos .nota-header h1 {
@@ -258,12 +259,12 @@
 }
 /* ==== CORRECCIÓN DE IMAGEN PRINCIPAL EN NOTAS ELÉCTRICOS ==== */
 .articulo-container.electricos .noticia-portada {
-  width: 100vw;
-  max-width: 100vw;
+  width: min(80vw, 1360px);
+  max-width: 100%;
   height: auto;
   display: block;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 20px;
   object-fit: contain;
   border-radius: 0;
@@ -274,7 +275,9 @@
   .articulo-container.electricos .noticia-portada {
     width: 100%;
     max-width: 100%;
-    height: auto;          /* se adapta al contenido */
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 16px;
   }
 }
@@ -291,7 +294,7 @@
   margin: 24px auto 40px;
   padding: 0 0 40px;
   background: white;
-  overflow: visible;
+  overflow-x: hidden;
   text-align: center;
 }
 
@@ -334,13 +337,13 @@
 
 /* Imagen de portada */
 .articulo-container.electricos .noticia-portada {
-  width: 100vw;
-  max-width: 100vw;
+  width: min(90vw, 1530px);
+  max-width: 100%;
   height: auto;
   object-fit: cover;
   border-radius: 0;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 24px;
   box-shadow: none;
 }
@@ -508,6 +511,8 @@
     width: 94vw;
     max-width: 94vw;
     margin: 16px auto 30px;
+    padding: 0 10px 30px;
+    box-sizing: border-box;
   }
 
   .articulo-container.electricos .noticia-detalle h1 {
@@ -529,7 +534,7 @@
   .articulo-container.electricos .nota-meta-line {
     width: 100%;
     justify-content: center;
-    padding: 0;
+    padding: 0 4px;
     margin-bottom: 14px;
   }
 
@@ -537,9 +542,9 @@
     width: 100%;
     max-width: 100%;
     height: auto;
-    aspect-ratio: 16/9;
-    margin-left: 0;
-    margin-right: 0;
+    aspect-ratio: auto;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .articulo-container.electricos .noticia-bloque,
@@ -638,5 +643,17 @@
 
   .articulo-container.electricos .noticia-parrafo {
     font-size: 1.2rem;
+  }
+
+  .articulo-container.electricos .ficha-tecnica-profesional h2 {
+    font-size: 38px;
+  }
+
+  .articulo-container.electricos .ficha-tecnica-profesional .ficha-item strong {
+    font-size: 20px;
+  }
+
+  .articulo-container.electricos .ficha-tecnica-profesional .ficha-item p {
+    font-size: 18px;
   }
 }

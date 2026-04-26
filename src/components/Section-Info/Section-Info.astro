@@ -876,14 +876,23 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
     }
 
     .news-card--featured .news-card-content {
-      padding: 30px 24px;
+      padding: 24px;
       min-height: auto;
-      max-width: 90%;
-      margin: 30px 0 0 20px;
+      max-width: 100%;
+      margin: 0;
+      background: white;
+      color: #1a1a1a;
     }
 
     .news-card--featured .news-title {
-      font-size: 2.2rem;
+      font-size: 1.5rem;
+      color: #1a1a1a;
+      text-shadow: none;
+    }
+
+    .news-card--featured .news-date {
+      color: #555;
+      text-shadow: none;
     }
 
     .news-card-image {
@@ -1037,7 +1046,7 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
 
     .news-card--featured .news-title {
       color: #ffffff;
-      font-size: clamp(3.1rem, 4.8vw, 4.4rem);
+      font-size: clamp(2rem, 3vw, 2.8rem);
       line-height: 1.15;
       margin-bottom: 18px;
       text-shadow:
