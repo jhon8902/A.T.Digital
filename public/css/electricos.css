@@ -602,7 +602,7 @@
 
   .articulo-container.electricos .noticia-bloque .noticia-parrafo {
     order: 3;
-    padding: 8px 20px 16px;
+    padding: 1px 20px 3px;
     width: 100%;
     box-sizing: border-box;
   }
@@ -628,7 +628,7 @@
 
   .articulo-container.electricos .noticia-parrafo {
     font-size: 1.25rem;
-    padding: 10px 0;
+    padding: 1px 0;
     text-align: left;
   }
 
