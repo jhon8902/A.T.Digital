@@ -114,7 +114,7 @@ const contentParagraphs = contentText
   .replace(/<\/(p|div|article|section|h1|h2|h3|h4|h5|h6|li)>/gi, "\n\n")
   .replace(/<br\s*\/?\s*>/gi, "\n")
   .replace(/<[^>]*>/g, "")
-  .split(/\r?\n+/)
+  .split(/\r?\n\s*\r?\n+/)
   .map((block) => block.trim())
   .filter(Boolean);
 
@@ -159,7 +159,7 @@ function extractInlineManualTitle(block: string) {
 
   // Sintaxis segura y explicita:
   // Titulo: Mi encabezado | Texto del bloque
-  const match = block.match(/^t[ií]tulo\s*:\s*([^|]{3,120})\|\s*(.+)$/i);
+  const match = block.match(/^t[ií]tulo\s*:\s*([^|]{3,120})\|\s*([\s\S]+)$/i);
   if (!match) return null;
 
   const title = (match[1] || "").trim();
@@ -204,10 +204,19 @@ const uniqueContentBlocks = contentParagraphs.map((paragraph, index) => {
   const inlineManual = extractInlineManualTitle(paragraph);
   const customTitle = customTitles[index];
   const normalizedParagraph = inlineManual ? inlineManual.paragraph : paragraph;
+  
+  // Solo split si hay máximo 2 párrafos para evitar timeout
+  const paragraphParts = normalizedParagraph
+    .split(/\r?\n/)
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .slice(0, 3); // Limitar a máximo 3 partes
+  
   const title = inlineManual?.title || customTitle || makeBlockTitle(normalizedParagraph, index);
 
   return {
     paragraph: normalizedParagraph,
+    paragraphs: paragraphParts.length > 1 ? paragraphParts : [normalizedParagraph],
     title,
   };
 });
@@ -406,7 +415,11 @@ const useSmartImageFrame =
                   <section class={`noticia-bloque${index % 2 === 1 ? " imagen-izquierda" : ""}`}>
                     <div class="noticia-texto">
                       <h2 class="noticia-titulo">{block.title}</h2>
-                      <p class="noticia-parrafo">{block.paragraph}</p>
+                      {
+                        block.paragraphs.map((paragraphText) => (
+                          <p class="noticia-parrafo">{paragraphText}</p>
+                        ))
+                      }
                     </div>
                     {
                       blockImage && (

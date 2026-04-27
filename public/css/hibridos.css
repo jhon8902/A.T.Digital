@@ -224,7 +224,7 @@
 
 /* ============================================================
    NOTAS DINÁMICAS /notas/[id] — CATEGORÍA HÍBRIDOS
-   Idéntico al look de las notas estáticas de la sección
+   Copia del look de eléctricos para uniformidad total
    ============================================================ */
 
 /* Contenedor principal */
@@ -234,158 +234,168 @@
   margin: 24px auto 40px;
   padding: 0 0 40px;
   background: white;
-  font-family: "Georgia", serif;
-  overflow: visible;
+  overflow-x: hidden;
   text-align: center;
 }
 
-/* Título principal centrado, con separador verde */
+/* Título principal */
 .articulo-container.hibridos .noticia-detalle h1 {
   font-family: "Georgia", serif;
   font-size: 58px;
   display: inline-block;
-  color: black;
-  font-weight: 600;
-  text-align: center;
   text-transform: uppercase;
-  width: auto;
+  font-weight: 600;
+  color: #111;
+  text-align: center;
   margin: 30px auto 0;
   padding: 0 0 12px;
-  border-bottom: 2px solid #0b5f3e;
+  border-bottom: 2px solid currentColor;
   opacity: 0;
   transform: translateY(20px);
-  animation: fadeIn 1.4s ease forwards;
+  animation: fadein 2s forwards;
 }
 
-@keyframes fadeIn {
-  to { opacity: 1; transform: translateY(0); }
+@keyframes fadein {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Subtítulo */
 .articulo-container.hibridos .noticia-descripcion {
+  font-family: "Poppins", sans-serif;
   font-size: 1.5rem;
-  color: #222;
   text-align: center;
   width: 90%;
   margin: 10px auto 16px;
   padding: 0;
   border: none;
   background: transparent;
-  font-style: normal;
-  font-family: "Poppins", sans-serif;
+  color: #444;
 }
 
-/* Meta-línea (autor, fecha, sección) */
+/* Meta-línea */
 .articulo-container.hibridos .nota-meta-line {
   width: 90%;
   margin: 0 auto 18px;
   justify-content: center;
-  color: #444;
 }
 
-/* Imagen de portada — ancho completo, alto generoso */
+/* Imagen de portada */
 .articulo-container.hibridos .noticia-portada {
-  width: 100vw;
-  max-width: 100vw;
+  width: min(90vw, 1530px);
+  max-width: 100%;
   height: auto;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 0;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 24px;
   box-shadow: none;
 }
 
-/* Bloques de contenido: mitad imagen / mitad texto */
+/* Bloques */
 .articulo-container.hibridos .noticia-bloque {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  gap: 0;
+  padding: 0;
   margin: 0 auto 28px;
-  background: white;
-  overflow: hidden;
-  align-items: stretch;
-  min-height: 0;
   width: 90%;
   max-width: none;
+  background: white;
 }
 
-/* Zig-zag: bloque impar → imagen a la izquierda */
 .articulo-container.hibridos .noticia-bloque.imagen-izquierda {
   flex-direction: row-reverse;
 }
 
-/* Texto dentro del bloque */
 .articulo-container.hibridos .noticia-bloque .noticia-texto {
   flex: 1;
   width: 100%;
   padding: 60px 20px;
+  background: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-family: "Poppins", sans-serif;
-  background: white;
   text-align: start;
 }
 
-/* Imagen dentro del bloque */
 .articulo-container.hibridos .noticia-bloque img {
   flex: 1;
   width: 100%;
   height: auto;
-  min-height: 0;
-  max-height: 400px;
-  object-fit: cover;
-  display: block;
+  object-fit: contain;
+  max-width: 100%;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
   box-shadow: none;
-  border-radius: 12px;
   transition: none;
 }
 
-/* H2 de cada bloque — igual que el estático */
+.articulo-container.hibridos .noticia-detalle.smart-note-frame .noticia-bloque .noticia-media-frame {
+  flex: 1;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #f3f5f7;
+  overflow: hidden;
+  padding: 0;
+}
+
+.articulo-container.hibridos .noticia-detalle.smart-note-frame .noticia-bloque .noticia-media-frame img {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  padding: 0;
+  margin: 0;
+  display: block;
+  object-fit: cover;
+}
+
 .articulo-container.hibridos .noticia-titulo {
   font-family: "Georgia", serif;
   font-size: 1.6rem;
   font-weight: 600;
-  color: black;
   text-transform: uppercase;
-  margin: 0 0 15px;
+  color: #111;
+  border-bottom: 2px solid #111;
   padding: 0 0 8px;
-  border-bottom: 2px solid #0b5f3e;
-  line-height: 1.2;
+  margin: 0 0 15px;
   text-align: start;
 }
 
-/* Texto del párrafo */
 .articulo-container.hibridos .noticia-parrafo {
   font-family: "Poppins", sans-serif;
   font-size: 1.2rem;
   line-height: 1.6;
-  color: #111;
-  margin: 0;
-  padding: 20px 0;
+  color: #333;
   text-align: start;
+  margin: 0;
+  padding: 8px 0;
 }
 
-/* Ficha técnica — acento verde */
 .articulo-container.hibridos .ficha-tecnica-profesional {
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  margin: 40px auto;
   border-radius: 12px;
   padding: 40px 20px;
+  margin: 40px auto;
   max-width: 1200px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .articulo-container.hibridos .ficha-tecnica-profesional h2 {
   font-family: "Georgia", serif;
-  font-size: 32px;
-  font-weight: 700;
-  color: #08341f;
   text-align: center;
-  border-bottom: 3px solid #08341f;
-  padding: 0 0 15px;
+  font-size: 32px;
+  color: #08341f;
   margin-bottom: 30px;
+  border-bottom: 3px solid #e6b410;
+  padding: 0 0 15px;
 }
 
 .articulo-container.hibridos .ficha-tecnica-profesional .ficha-grid {
@@ -399,14 +409,13 @@
   background: white;
   padding: 20px;
   border-radius: 8px;
-  border-left: 4px solid #0b5f3e;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-left: 4px solid #e6b410;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .articulo-container.hibridos .ficha-tecnica-profesional .ficha-item:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 20px rgba(11,95,62,0.18);
+  box-shadow: 0 6px 20px rgba(230, 180, 16, 0.2);
 }
 
 .articulo-container.hibridos .ficha-tecnica-profesional .ficha-item strong {
@@ -421,7 +430,7 @@
 .articulo-container.hibridos .ficha-tecnica-profesional .ficha-item p {
   font-size: 15px;
   line-height: 1.6;
-  color: #333;
+  color: #444;
   margin: 0;
   font-family: "Georgia", serif;
 }
@@ -429,7 +438,7 @@
 .articulo-container.hibridos .ficha-tecnica-profesional .ficha-item.competidores {
   grid-column: 1 / -1;
   background: #08341f;
-  border-left-color: #e6b410;
+  border-left: 4px solid #e6b410;
 }
 
 .articulo-container.hibridos .ficha-tecnica-profesional .ficha-item.competidores strong {
@@ -437,18 +446,7 @@
 }
 
 .articulo-container.hibridos .ficha-tecnica-profesional .ficha-item.competidores p {
-  color: #ffffff;
-}
-
-/* ========= 📱 RESPONSIVE ========= */
-@media (max-width: 1024px) {
-  .articulo-container.hibridos .noticia-detalle h1 {
-    font-size: 42px;
-  }
-
-  .articulo-container.hibridos .noticia-portada {
-    height: auto;
-  }
+  color: #fff;
 }
 
 @media (max-width: 768px) {
@@ -456,69 +454,123 @@
     width: 94vw;
     max-width: 94vw;
     margin: 16px auto 30px;
+    padding: 0 10px 30px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
   }
 
   .articulo-container.hibridos .noticia-detalle h1 {
     font-size: 24px;
-    width: auto;
-    text-align: center;
-    margin: 24px auto 0;
-    padding: 0;
+    text-align: left;
+    display: block;
+    margin: 24px 0 0;
     border-bottom: none;
-  }
-
-  .articulo-container.hibridos .noticia-descripcion {
-    width: 100%;
-    font-size: 1.1rem;
-    text-align: center;
-    padding: 0;
-    margin: 15px auto 16px;
-  }
-
-  .articulo-container.hibridos .nota-meta-line {
-    width: 100%;
-    padding: 0;
-    justify-content: center;
-    margin-bottom: 14px;
+    padding-bottom: 0;
+    line-height: 1.08;
+    letter-spacing: 0.012em;
+    text-wrap: balance;
+    order: 1;
   }
 
   .articulo-container.hibridos .noticia-portada {
     width: 100%;
     max-width: 100%;
     height: auto;
-    aspect-ratio: 16/9;
-    margin-left: 0;
-    margin-right: 0;
+    aspect-ratio: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    order: 2;
+  }
+
+  .articulo-container.hibridos .nota-meta-line {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 2px 0 10px;
+    gap: 0.45rem 0.8rem;
+    font-size: 0.92rem;
+    line-height: 1.35;
+    order: 3;
+  }
+
+  .articulo-container.hibridos .noticia-descripcion {
+    width: 100%;
+    text-align: left;
+    font-size: 1.2rem;
+    margin: 0 0 18px;
+    padding: 0 !important;
+    line-height: 1.62;
+    max-width: 33ch;
+    text-wrap: pretty;
+    color: #2b2b2b;
+    order: 4;
   }
 
   .articulo-container.hibridos .noticia-bloque,
   .articulo-container.hibridos .noticia-bloque.imagen-izquierda {
     flex-direction: column;
-    min-height: 0;
+    padding: 0;
     width: 100%;
     margin: 0 auto 20px;
+    order: 5;
   }
 
-  .articulo-container.hibridos .noticia-bloque .noticia-texto,
-  .articulo-container.hibridos .noticia-bloque img {
-    flex: 0 0 auto;
-    width: 100%;
-    min-height: 0;
+  .articulo-container.hibridos .ficha-tecnica-profesional {
+    order: 6;
   }
 
   .articulo-container.hibridos .noticia-bloque .noticia-texto {
-    padding: 20px;
+    display: contents;
+  }
+
+  .articulo-container.hibridos .noticia-bloque .noticia-titulo {
+    order: 1;
+    padding: 16px 20px 8px;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .articulo-container.hibridos .noticia-bloque img {
+    width: 100%;
+    max-height: none;
+    border-radius: 0;
+    order: 2;
+  }
+
+  .articulo-container.hibridos .noticia-bloque .noticia-parrafo {
+    order: 3;
+    padding: 8px 20px 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .articulo-container.hibridos .noticia-detalle.smart-note-frame .noticia-bloque .noticia-media-frame {
+    width: 100%;
+    aspect-ratio: auto;
+    background: transparent;
+  }
+
+  .articulo-container.hibridos .noticia-detalle.smart-note-frame .noticia-bloque .noticia-media-frame img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 
   .articulo-container.hibridos .noticia-titulo {
-    font-size: 1.3rem;
+    font-size: 1.45rem;
     border-bottom: none;
     margin-bottom: 10px;
+    text-align: left;
   }
 
   .articulo-container.hibridos .noticia-parrafo {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     padding: 10px 0;
+    text-align: left;
   }
 
   .articulo-container.hibridos .ficha-tecnica-profesional {
@@ -532,24 +584,59 @@
   }
 }
 
-/* ========= ESCRITORIO ========= */
 @media (min-width: 1024px) {
-  .articulo-container.hibridos .noticia-bloque {
-    gap: 20px;
-  }
-
   .articulo-container.hibridos .noticia-bloque .noticia-texto,
   .articulo-container.hibridos .noticia-bloque img {
     flex: 1;
-    max-width: calc(50% - 10px);
+    max-width: 50%;
+    padding: 20px;
     box-sizing: border-box;
+  }
+
+  .articulo-container.hibridos .noticia-bloque img {
+    width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 12px;
+  }
+
+  .articulo-container.hibridos .noticia-detalle.smart-note-frame .noticia-bloque .noticia-media-frame {
+    flex: 1;
+    max-width: 50%;
+    padding: 0;
+    box-sizing: border-box;
+    aspect-ratio: 16 / 10;
+    border-radius: 12px;
+    background: #f3f5f7;
+  }
+
+  .articulo-container.hibridos .noticia-detalle.smart-note-frame .noticia-bloque .noticia-media-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .articulo-container.hibridos .noticia-bloque .noticia-texto {
     padding: 40px;
   }
 
-  .articulo-container.hibridos .noticia-bloque img {
-    max-height: 500px;
+  .articulo-container.hibridos .noticia-titulo {
+    font-size: 1.8rem;
+  }
+
+  .articulo-container.hibridos .noticia-parrafo {
+    font-size: 1.2rem;
+  }
+
+  .articulo-container.hibridos .ficha-tecnica-profesional h2 {
+    font-size: 38px;
+  }
+
+  .articulo-container.hibridos .ficha-tecnica-profesional .ficha-item strong {
+    font-size: 20px;
+  }
+
+  .articulo-container.hibridos .ficha-tecnica-profesional .ficha-item p {
+    font-size: 18px;
   }
 }
