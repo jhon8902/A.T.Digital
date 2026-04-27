@@ -600,7 +600,7 @@ body.nota-noticias .card {
   body.nota-page .noticia-bloque .noticia-parrafo,
   body.nota-noticias .noticia-bloque .noticia-parrafo,
   body.nota-deportes .noticia-bloque .noticia-parrafo {
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 1.62;
     margin-bottom: 10px;
   }

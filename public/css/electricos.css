@@ -513,29 +513,22 @@
     margin: 16px auto 30px;
     padding: 0 10px 30px;
     box-sizing: border-box;
+    /* Reorden: h1/meta/subtítulo encima de la portada */
+    display: flex;
+    flex-direction: column;
   }
 
   .articulo-container.electricos .noticia-detalle h1 {
     font-size: 24px;
-    text-align: center;
+    text-align: left;
     display: block;
-    margin: 24px auto 0;
+    margin: 24px 0 0;
     border-bottom: none;
     padding-bottom: 0;
-  }
-
-  .articulo-container.electricos .noticia-descripcion {
-    width: 100%;
-    text-align: center;
-    font-size: 1.1rem;
-    margin: 15px auto 16px;
-  }
-
-  .articulo-container.electricos .nota-meta-line {
-    width: 100%;
-    justify-content: center;
-    padding: 0 4px;
-    margin-bottom: 14px;
+    line-height: 1.08;
+    letter-spacing: 0.012em;
+    text-wrap: balance;
+    order: 1;
   }
 
   .articulo-container.electricos .noticia-portada {
@@ -545,6 +538,32 @@
     aspect-ratio: auto;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 10px;
+    order: 2;
+  }
+
+  .articulo-container.electricos .nota-meta-line {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 2px 0 10px;
+    gap: 0.45rem 0.8rem;
+    font-size: 0.92rem;
+    line-height: 1.35;
+    order: 3;
+  }
+
+  .articulo-container.electricos .noticia-descripcion {
+    width: 100%;
+    text-align: left;
+    font-size: 1.2rem;
+    margin: 0 0 18px;
+    padding: 0 !important;
+    line-height: 1.62;
+    max-width: 33ch;
+    text-wrap: pretty;
+    color: #2b2b2b;
+    order: 4;
   }
 
   .articulo-container.electricos .noticia-bloque,
@@ -553,17 +572,39 @@
     padding: 0;
     width: 100%;
     margin: 0 auto 20px;
+    order: 5;
   }
 
+  .articulo-container.electricos .ficha-tecnica-profesional {
+    order: 6;
+  }
+
+  /* Imagen entre el h2 y el párrafo en cada bloque */
   .articulo-container.electricos .noticia-bloque .noticia-texto {
+    display: contents;
+  }
+
+  .articulo-container.electricos .noticia-bloque .noticia-titulo {
+    order: 1;
+    padding: 16px 20px 8px;
     width: 100%;
-    padding: 20px;
+    box-sizing: border-box;
+    border-bottom: none;
+    margin-bottom: 0;
   }
 
   .articulo-container.electricos .noticia-bloque img {
     width: 100%;
     max-height: none;
     border-radius: 0;
+    order: 2;
+  }
+
+  .articulo-container.electricos .noticia-bloque .noticia-parrafo {
+    order: 3;
+    padding: 8px 20px 16px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .articulo-container.electricos .noticia-detalle.smart-note-frame .noticia-bloque .noticia-media-frame {
@@ -579,14 +620,16 @@
   }
 
   .articulo-container.electricos .noticia-titulo {
-    font-size: 1.3rem;
+    font-size: 1.45rem;
     border-bottom: none;
     margin-bottom: 10px;
+    text-align: left;
   }
 
   .articulo-container.electricos .noticia-parrafo {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     padding: 10px 0;
+    text-align: left;
   }
 
   .articulo-container.electricos .ficha-tecnica-profesional {
