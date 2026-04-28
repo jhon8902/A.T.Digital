@@ -8,6 +8,52 @@ const { Pool } = pkg;
 let _pool: InstanceType<typeof Pool> | null = null;
 let _notesColumns: Set<string> | null = null;
 
+const KNOWN_NOTES_COLUMNS = new Set([
+  "id",
+  "title",
+  "subtitle",
+  "editor",
+  "source_scope",
+  "content",
+  "category",
+  "image1",
+  "image2",
+  "image3",
+  "image4",
+  "image5",
+  "image6",
+  "video1",
+  "video2",
+  "video3",
+  "video4",
+  "video5",
+  "video6",
+  "video7",
+  "spec_segmento",
+  "spec_origen",
+  "spec_precio_estimado",
+  "spec_versiones",
+  "spec_motorizacion",
+  "spec_potencia_hp",
+  "spec_torque_nm",
+  "spec_bateria_autonomia",
+  "spec_bateria_kwh",
+  "spec_autonomia_km",
+  "spec_carga",
+  "spec_carga_ac_kw",
+  "spec_carga_dc_kw",
+  "spec_aceleracion_0_100",
+  "spec_seguridad",
+  "spec_equipamiento",
+  "spec_pros",
+  "spec_contras",
+  "spec_competidores",
+  "spec_traccion",
+  "spec_precio_cop",
+  "created_at",
+  "updated_at",
+]);
+
 const DB_CONNECTION_TIMEOUT_MS = Number(
   process.env.DB_CONNECTION_TIMEOUT_MS || "5000"
 );
@@ -47,18 +93,8 @@ function getPool() {
 async function getNotesColumns(): Promise<Set<string>> {
   if (_notesColumns) return _notesColumns;
 
-  const result = await getPool().query(`
-    SELECT column_name
-    FROM information_schema.columns
-    WHERE table_schema = 'public'
-      AND table_name = 'notes'
-  `);
-
-  _notesColumns = new Set(
-    result.rows
-      .map((row: any) => String(row.column_name || "").toLowerCase())
-      .filter(Boolean)
-  );
+  // Evitamos consultar information_schema por request para no disparar timeout en Netlify Dev.
+  _notesColumns = KNOWN_NOTES_COLUMNS;
 
   return _notesColumns;
 }
