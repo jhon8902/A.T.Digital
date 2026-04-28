@@ -1,9 +1,26 @@
 ---
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
-// --- CARGA Y FILTRO DE NOTAS DE CATEGORÍA "noticias" ---
+// --- CARGA Y FILTRO DE NOTAS RECIENTES PARA PORTADA ---
 
 let dynamicNotes: any[] = [];
 const HOME_VISIBLE_COUNT = 5;
+const HOME_NEWS_CATEGORIES = new Set([
+  "noticias",
+  "lanzamientos",
+  "hibridos",
+  "electricos",
+  "deportes",
+  "pruebas",
+]);
+
+function normalizeCategory(value?: string) {
+  return (value || "")
+    .toString()
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
 
 function normalizeSourceScope(scope?: string) {
   return scope?.toLowerCase() === "internacional"
@@ -94,9 +111,9 @@ try {
   const data = await fetchWithTimeout(getApiUrl("get-notes"));
 
   if (data && Array.isArray(data)) {
-    // 2️⃣ Filtramos solo las notas de la categoría "noticias"
-    const filtered = data.filter(
-      (note: any) => note.category?.toLowerCase() === "noticias",
+    // 2️⃣ Mostramos en portada lo más reciente de categorías editoriales
+    const filtered = data.filter((note: any) =>
+      HOME_NEWS_CATEGORIES.has(normalizeCategory(note.category)),
     );
 
     // 3️⃣ Normalizamos formato para el carrusel
@@ -843,7 +860,7 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
   @media (max-width: 768px) {
     .container {
       width: 100%;
-      padding: 20px 12px;
+      padding: 0;
     }
 
     .section-info {
@@ -857,8 +874,15 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
 
     .news-grid {
       grid-template-columns: 1fr;
-      gap: 28px;
-      padding: 20px 16px;
+      gap: 20px;
+      padding: 0;
+    }
+
+    .news-card {
+      width: 100%;
+      border-radius: 0;
+      border-left: 0;
+      border-right: 0;
     }
 
     .news-card--featured {
@@ -868,17 +892,19 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
       margin-left: 0;
       margin-right: 0;
       margin-bottom: 28px;
-      border-radius: 12px;
+      border-radius: 0;
     }
 
     .news-card-image {
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
-      margin-right: calc(50% - 50vw);
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      height: auto;
+      overflow: visible;
     }
 
     .news-card--featured .news-card-link {
-      min-height: 500px;
+      min-height: auto;
     }
 
     .news-card--featured .news-card-content {
@@ -902,7 +928,14 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
     }
 
     .news-card-image {
-      height: 320px;
+      height: auto;
+    }
+
+    .news-card-image img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      object-position: center center;
     }
 
     .news-card-content {
@@ -1167,7 +1200,7 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
 
   @media (max-width: 480px) {
     .container {
-      padding: 16px 10px;
+      padding: 0;
     }
 
     .info-header {
@@ -1214,18 +1247,20 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
     }
 
     .news-grid {
-      padding: 16px;
+      padding: 0;
       gap: 20px;
     }
 
     .news-card--featured .news-card-link {
-      min-height: 450px;
+      min-height: auto;
     }
 
     .news-card-image {
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
-      margin-right: calc(50% - 50vw);
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      height: auto;
+      overflow: visible;
     }
 
     .news-card--featured .news-card-content {
@@ -1278,7 +1313,14 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
     }
 
     .news-card-image {
-      height: 260px;
+      height: auto;
+    }
+
+    .news-card-image img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      object-position: center center;
     }
 
     .news-card-content {
