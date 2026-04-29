@@ -40,6 +40,34 @@ function cleanPublishedDate(value?: string) {
   return cleaned;
 }
 
+const MESES_ES: Record<string, string> = {
+  ene: "01",
+  enero: "01",
+  feb: "02",
+  febrero: "02",
+  mar: "03",
+  marzo: "03",
+  abr: "04",
+  abril: "04",
+  may: "05",
+  mayo: "05",
+  jun: "06",
+  junio: "06",
+  jul: "07",
+  julio: "07",
+  ago: "08",
+  agosto: "08",
+  sep: "09",
+  sept: "09",
+  septiembre: "09",
+  oct: "10",
+  octubre: "10",
+  nov: "11",
+  noviembre: "11",
+  dic: "12",
+  diciembre: "12",
+};
+
 function parseDateValue(value?: string) {
   const cleaned = (value || "").replace(/^Publicado:\s*/i, "").trim();
 
@@ -56,7 +84,11 @@ function parseDateValue(value?: string) {
 
   const ddMonth = cleaned.match(/^(\d{1,2})-([a-záéíóúüñ]+)$/i);
   if (ddMonth) {
-    return new Date(`${cleaned}-2025`).getTime();
+    const [, dd, monthStr] = ddMonth;
+    const mm = MESES_ES[monthStr.toLowerCase()];
+    if (mm) {
+      return new Date(`2025-${mm}-${dd.padStart(2, "0")}`).getTime();
+    }
   }
 
   return 0;
@@ -165,7 +197,21 @@ const staticHibridosWithDate = staticHibridos.map((note) => ({
   sortDate: parseDateValue(note.fecha),
 }));
 
-const allHibridos = [...dynamicHibridos, ...staticHibridosWithDate]
+function slugTitle(t?: string) {
+  return (t || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+const dynamicHibridosTitles = new Set(
+  dynamicHibridos.map((n) => slugTitle(n.title)),
+);
+const deduplicatedStaticHibridos = staticHibridosWithDate.filter(
+  (n) => !dynamicHibridosTitles.has(slugTitle(n.title)),
+);
+const allHibridos = [...dynamicHibridos, ...deduplicatedStaticHibridos]
   .sort((a, b) => b.sortDate - a.sortDate)
   .slice(0, HOME_VISIBLE_COUNT);
 ---
@@ -500,39 +546,50 @@ const allHibridos = [...dynamicHibridos, ...staticHibridosWithDate]
   .ver-mas-container {
     width: 100%;
     display: flex;
-    justify-content: flex-start;
-    padding: 30px 20px;
+    justify-content: flex-end;
+    padding: 30px 48px 30px 20px;
     box-sizing: border-box;
   }
 
   .ver-mas-boton {
-    background-color: #036697;
-    color: white;
-    font-size: 18px;
-    font-weight: 600;
-    border: none;
-    border-radius: 50px;
-    padding: 12px 32px;
-    cursor: pointer;
-    text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-    transition: all 0.25s ease;
+    text-decoration: none;
+    color: #036697;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: "Georgia", serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0 0 3px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-size: 0% 1.5px;
+    background-position: left bottom;
+    transition: background-size 0.35s ease;
   }
-
-  /* Efecto hover simple */
+  .ver-mas-boton::before {
+    display: none;
+  }
+  .ver-mas-boton::after {
+    content: " →";
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 14px;
+    letter-spacing: 0;
+    transition: transform 0.25s ease;
+  }
   .ver-mas-boton:hover {
-    background-color: #024d73;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(3, 102, 151, 0.35);
+    background-size: 100% 1.5px;
   }
-
-  /* Ocultar icono y texto-hover original */
-  .flecha-icono,
-  .texto-hover {
-    display: none !important;
+  .ver-mas-boton:hover::before {
+    width: 56px;
+  }
+  .ver-mas-boton:hover::after {
+    transform: translateX(6px);
   }
 
   @media (max-width: 768px) {
@@ -651,10 +708,7 @@ const allHibridos = [...dynamicHibridos, ...staticHibridosWithDate]
     }
 
     .ver-mas-boton {
-      padding: 12px 28px;
-      font-size: 1rem;
-      width: 100%;
-      justify-content: center;
+      font-size: 12px;
     }
 
     .ver-mas-container {

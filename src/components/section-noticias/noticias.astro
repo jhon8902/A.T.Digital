@@ -28,6 +28,34 @@ function cleanPublishedDate(value?: string) {
   return cleaned;
 }
 
+const MESES_ES: Record<string, string> = {
+  ene: "01",
+  enero: "01",
+  feb: "02",
+  febrero: "02",
+  mar: "03",
+  marzo: "03",
+  abr: "04",
+  abril: "04",
+  may: "05",
+  mayo: "05",
+  jun: "06",
+  junio: "06",
+  jul: "07",
+  julio: "07",
+  ago: "08",
+  agosto: "08",
+  sep: "09",
+  sept: "09",
+  septiembre: "09",
+  oct: "10",
+  octubre: "10",
+  nov: "11",
+  noviembre: "11",
+  dic: "12",
+  diciembre: "12",
+};
+
 function parseDateValue(value?: string) {
   if (!value) return 0;
 
@@ -179,9 +207,24 @@ const staticLanzamientosWithDate = staticLanzamientos.map((note) => ({
 }));
 
 // Mezclamos dinámicas y estáticas y ordenamos por fecha descendente
-const mezcladas = [...dynamicLanzamientos, ...staticLanzamientosWithDate].sort(
-  (a, b) => b.sortDate - a.sortDate,
+function slugTitle(t?: string) {
+  return (t || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+const dynamicLanzamientosTitles = new Set(
+  dynamicLanzamientos.map((n) => slugTitle(n.title)),
 );
+const deduplicatedStaticLanzamientos = staticLanzamientosWithDate.filter(
+  (n) => !dynamicLanzamientosTitles.has(slugTitle(n.title)),
+);
+const mezcladas = [
+  ...dynamicLanzamientos,
+  ...deduplicatedStaticLanzamientos,
+].sort((a, b) => b.sortDate - a.sortDate);
 
 // Nota destacada y el resto
 const destacada = mezcladas[0];
@@ -195,8 +238,7 @@ const resto = mezcladas.slice(1, HOME_VISIBLE_COUNT);
     </div>
     <h1 class="noticias-titulo">LANZAMIENTOS</h1>
     <p class="descripcion-lanzamientos">
-      Descubre los nuevos modelos que llegan al país: fichas técnicas, imágenes
-      y versiones.
+      Lanzamientos nacionales: fichas técnicas, imágenes y versiones.
     </p>
   </div>
 
@@ -680,32 +722,50 @@ const resto = mezcladas.slice(1, HOME_VISIBLE_COUNT);
   .ver-mas-noticias-container {
     grid-column: 1 / -1;
     display: flex;
-    justify-content: flex-start;
-    padding: 30px 20px;
+    justify-content: flex-end;
+    padding: 30px 48px 30px 20px;
     box-sizing: border-box;
   }
 
   .ver-mas-noticias-btn {
-    background: #1f6f43;
-    color: white;
-    font-size: 18px;
-    font-weight: 600;
-    border: none;
-    border-radius: 50px;
-    padding: 12px 32px;
-    cursor: pointer;
-    text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-    transition: all 0.25s ease;
+    text-decoration: none;
+    color: #1f6f43;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: "Georgia", serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0 0 3px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-size: 0% 1.5px;
+    background-position: left bottom;
+    transition: background-size 0.35s ease;
   }
-
+  .ver-mas-noticias-btn::before {
+    display: none;
+  }
+  .ver-mas-noticias-btn::after {
+    content: " →";
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 14px;
+    letter-spacing: 0;
+    transition: transform 0.25s ease;
+  }
   .ver-mas-noticias-btn:hover {
-    background: #2a8a57;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(31, 111, 67, 0.35);
+    background-size: 100% 1.5px;
+  }
+  .ver-mas-noticias-btn:hover::before {
+    width: 56px;
+  }
+  .ver-mas-noticias-btn:hover::after {
+    transform: translateX(6px);
   }
 
   @media (max-width: 900px) {
@@ -895,9 +955,9 @@ const resto = mezcladas.slice(1, HOME_VISIBLE_COUNT);
     }
 
     .ver-mas-noticias-btn {
-      font-size: 14px;
-      padding: 12px 24px;
-      width: 100%;
+      font-size: 12px;
+    }
+    .ver-mas-noticias-container {
       justify-content: center;
     }
   }

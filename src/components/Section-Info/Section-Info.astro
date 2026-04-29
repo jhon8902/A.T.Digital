@@ -44,6 +44,34 @@ function extractFirstImage(html?: string) {
   return match ? match[1] : null;
 }
 
+const MESES_ES: Record<string, string> = {
+  ene: "01",
+  enero: "01",
+  feb: "02",
+  febrero: "02",
+  mar: "03",
+  marzo: "03",
+  abr: "04",
+  abril: "04",
+  may: "05",
+  mayo: "05",
+  jun: "06",
+  junio: "06",
+  jul: "07",
+  julio: "07",
+  ago: "08",
+  agosto: "08",
+  sep: "09",
+  sept: "09",
+  septiembre: "09",
+  oct: "10",
+  octubre: "10",
+  nov: "11",
+  noviembre: "11",
+  dic: "12",
+  diciembre: "12",
+};
+
 function parseDateValue(value?: string) {
   if (!value) return 0;
 
@@ -182,7 +210,21 @@ const staticNotesWithDate = staticNotes.map((note) => ({
 }));
 
 // 5️⃣ Combinamos dinámicas + estáticas, ordenamos y mostramos máximo 5
-const allNotes = [...dynamicNotes, ...staticNotesWithDate]
+function slugTitle(t?: string) {
+  return (t || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+const dynamicNotesTitles = new Set(
+  dynamicNotes.map((n) => slugTitle(n.caption)),
+);
+const deduplicatedStaticNotes = staticNotesWithDate.filter(
+  (n) => !dynamicNotesTitles.has(slugTitle(n.caption)),
+);
+const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
   .sort((a, b) => b.sortDate - a.sortDate)
   .slice(0, HOME_VISIBLE_COUNT);
 ---
@@ -197,8 +239,8 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
       Noticias
     </h1>
     <p class="info-descripcion">
-      La actualidad del sector automotor colombiano: lanzamientos, regulaciones,
-      tecnología y más.
+      La actualidad del sector automotor nacional e internacional: lanzamientos,
+      tendencias, tecnología y más.
     </p>
   </div>
 
@@ -598,11 +640,11 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
   }
 
   .news-card--insight {
-    background: #ecdcc8;
+    background: linear-gradient(160deg, #10161f 0%, #18212d 60%, #1f2b3a 100%);
     border: 2px solid #d4a742;
     box-shadow:
-      0 8px 24px rgba(17, 24, 39, 0.4),
-      inset 0 0 30px rgba(212, 167, 66, 0.1);
+      0 12px 28px rgba(0, 0, 0, 0.34),
+      inset 0 0 32px rgba(212, 167, 66, 0.1);
     position: relative;
     overflow: hidden;
   }
@@ -614,7 +656,7 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
     right: -50%;
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(212, 167, 66, 0.15), transparent);
+    background: radial-gradient(circle, rgba(248, 202, 38, 0.16), transparent);
     pointer-events: none;
   }
 
@@ -625,15 +667,29 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
   }
 
   .news-card--insight .news-title {
-    color: #000000;
+    color: #ffffff;
+    font-size: clamp(1.9rem, 2.4vw, 2.45rem);
+    line-height: 1.2;
   }
 
   .news-card--insight .news-date {
-    color: #000000;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 1.08rem;
+    line-height: 1.65;
   }
 
   .news-card--insight .news-read-more {
-    color: #000000;
+    color: #f8ca26;
+    font-size: 1.08rem;
+    font-weight: 700;
+  }
+
+  .news-card--insight .news-tag--insight {
+    background: #f8ca26;
+    color: #111827;
+    border: 1px solid rgba(248, 202, 38, 0.75);
+    font-size: 0.82rem;
+    padding: 7px 15px;
   }
 
   .news-card--featured {
@@ -790,31 +846,49 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
 
   .ver-mas-noticias-section {
     display: flex;
-    justify-content: flex-start;
-    padding: 24px 20px;
+    justify-content: flex-end;
+    padding: 24px 48px 24px 20px;
     box-sizing: border-box;
   }
   .ver-mas-noticias-btn {
-    background: #f8ca26;
-    color: #181818;
-    font-size: 18px;
-    font-weight: 600;
-    border: none;
-    border-radius: 50px;
-    padding: 12px 32px;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-    text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    transition: all 0.25s ease;
+    text-decoration: none;
+    color: #111;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: "Georgia", serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0 0 3px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-size: 0% 1.5px;
+    background-position: left bottom;
+    transition: background-size 0.35s ease;
+  }
+  .ver-mas-noticias-btn::before {
+    display: none;
+  }
+  .ver-mas-noticias-btn::after {
+    content: " →";
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 14px;
+    letter-spacing: 0;
+    transition: transform 0.25s ease;
   }
   .ver-mas-noticias-btn:hover {
-    background: #d4a742;
-    color: #000;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(248, 202, 38, 0.4);
+    background-size: 100% 1.5px;
+  }
+  .ver-mas-noticias-btn:hover::before {
+    width: 56px;
+  }
+  .ver-mas-noticias-btn:hover::after {
+    transform: translateX(6px);
   }
 
   /* animacion titulo pricipal h1 - MISMO PATRÓN QUE HÍBRIDOS */
@@ -883,6 +957,15 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
       border-radius: 0;
       border-left: 0;
       border-right: 0;
+    }
+
+    .news-card--insight {
+      width: calc(100% - 20px);
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 12px;
+      border-left: 2px solid #d4a742;
+      border-right: 2px solid #d4a742;
     }
 
     .news-card--featured {
@@ -1130,10 +1213,15 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
 
     .news-card--insight {
       grid-column: span 12;
-      background: #ecdcc8;
+      background: linear-gradient(
+        160deg,
+        #10161f 0%,
+        #18212d 60%,
+        #1f2b3a 100%
+      );
       border: 2px solid #d4a742;
       box-shadow:
-        0 8px 24px rgba(17, 24, 39, 0.4),
+        0 12px 28px rgba(0, 0, 0, 0.34),
         inset 0 0 30px rgba(212, 167, 66, 0.1);
       display: flex;
       justify-content: center;
@@ -1151,7 +1239,7 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
       height: 500px;
       background: radial-gradient(
         circle,
-        rgba(212, 167, 66, 0.15),
+        rgba(248, 202, 38, 0.16),
         transparent
       );
       pointer-events: none;
@@ -1175,15 +1263,20 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
     }
 
     .news-card--insight .news-title {
-      color: #000000;
+      color: #ffffff;
+      font-size: 1.55rem;
+      line-height: 1.25;
     }
 
     .news-card--insight .news-date {
-      color: #000000;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 1rem;
+      line-height: 1.55;
     }
 
     .news-card--insight .news-read-more {
-      color: #000000;
+      color: #f8ca26;
+      font-size: 1rem;
     }
 
     .news-card--insight:hover {
@@ -1194,7 +1287,7 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
     }
 
     .news-card--insight:hover .news-read-more {
-      color: #000000;
+      color: #ffd966;
     }
   }
 
@@ -1236,7 +1329,7 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
     }
 
     .info-descripcion {
-      font-size: 1rem;
+      font-size: 1.4rem;
       text-align: left;
       padding: 0 0 10px 0;
       line-height: 1.3;
@@ -1328,13 +1421,13 @@ const allNotes = [...dynamicNotes, ...staticNotesWithDate]
     }
 
     .news-title {
-      font-size: 1rem;
+      font-size: 1.6rem;
     }
 
     .ver-mas-noticias-btn {
-      font-size: 13px;
-      padding: 10px 20px;
-      width: 100%;
+      font-size: 12px;
+    }
+    .ver-mas-noticias-section {
       justify-content: center;
     }
   }

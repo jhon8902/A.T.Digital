@@ -115,11 +115,11 @@ const trends = [
   .tendencias-hero {
     background:
       radial-gradient(
-        circle at 20% 20%,
-        rgba(212, 167, 66, 0.2),
+        circle at 15% 20%,
+        rgba(248, 202, 38, 0.2),
         transparent 55%
       ),
-      linear-gradient(135deg, #5a4331, #6a4f39 55%, #7a5c43 100%);
+      linear-gradient(150deg, #10161f 0%, #18212d 58%, #1f2b3a 100%);
     color: #f8fafc;
     padding: 80px 24px 60px;
   }
@@ -138,13 +138,13 @@ const trends = [
     gap: 8px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     color: #f8ca26;
   }
 
   .tendencias-hero h1 {
-    font-size: clamp(2.2rem, 3vw, 3.4rem);
+    font-size: clamp(2.35rem, 3.3vw, 3.7rem);
     font-family: "Georgia", serif;
     margin: 0;
     line-height: 1.1;
@@ -152,7 +152,7 @@ const trends = [
   }
 
   .tendencias-hero p {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     max-width: 720px;
     line-height: 1.7;
     color: rgba(248, 250, 252, 0.85);
@@ -202,7 +202,7 @@ const trends = [
   }
 
   .stat {
-    background: rgba(54, 39, 28, 0.45);
+    background: rgba(16, 22, 31, 0.62);
     border: 1px solid rgba(248, 202, 38, 0.25);
     border-radius: 16px;
     padding: 16px 18px;
@@ -212,13 +212,13 @@ const trends = [
   }
 
   .stat-value {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 700;
     color: #f8ca26;
   }
 
   .stat-label {
-    font-size: 0.9rem;
+    font-size: 0.98rem;
     text-transform: uppercase;
     letter-spacing: 1px;
     color: whitesmoke;
@@ -286,14 +286,15 @@ const trends = [
 
   .trend-card h2 {
     margin: 0;
-    font-size: 1.4rem;
+    font-size: 1.55rem;
     font-family: "Georgia", serif;
     color: #1a1a1a !important;
   }
 
   .trend-card p {
     margin: 0;
-    line-height: 1.6;
+    line-height: 1.68;
+    font-size: 1.03rem;
     color: rgba(26, 26, 26, 0.85) !important;
     font-family: "Poppins", sans-serif;
   }
@@ -302,6 +303,7 @@ const trends = [
     margin-top: auto;
     font-weight: 700;
     color: #1a1a1a;
+    font-size: 1.02rem;
   }
 
   .tendencias-cta {
@@ -312,10 +314,12 @@ const trends = [
   .cta-content {
     max-width: 900px;
     margin: 0 auto;
-    background: #ecdcc8;
+    background: linear-gradient(160deg, #10161f 0%, #18212d 60%, #1f2b3a 100%);
+    border: 1px solid rgba(248, 202, 38, 0.3);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
     border-radius: 20px;
     padding: 40px;
-    color: #1a1a1a;
+    color: #f8fafc;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -324,20 +328,28 @@ const trends = [
 
   .cta-content h3 {
     margin: 0;
-    font-size: 2rem;
+    font-size: 2.15rem;
     font-family: "Georgia", serif;
-    color: #1a1a1a !important;
+    color: #f8fafc !important;
   }
 
   .cta-content p {
     margin: 0;
-    color: rgba(26, 26, 26, 0.9);
+    color: rgba(248, 250, 252, 0.88);
     font-family: "Poppins", sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.65;
   }
 
   @media (max-width: 768px) {
     .tendencias-hero {
       padding: 60px 20px 40px;
+    }
+
+    .hero-inner {
+      width: calc(100% - 20px);
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .tendencias-grid {
@@ -351,6 +363,24 @@ const trends = [
     .hero-actions {
       flex-direction: column;
       align-items: flex-start;
+    }
+
+    .tendencias-hero h1 {
+      font-size: 2.55rem;
+      line-height: 1.12;
+    }
+
+    .tendencias-hero p {
+      font-size: 1.08rem;
+      line-height: 1.65;
+    }
+
+    .trend-card h2 {
+      font-size: 1.42rem;
+    }
+
+    .trend-card p {
+      font-size: 1rem;
     }
   }
 </style>

@@ -318,11 +318,16 @@ body.nota-deportes .noticia-titulo {
   font-weight: 700;
   line-height: 1.3;
   color: #1a1a1a;
+  display: inline;
   margin-top: 0 !important;
   margin-bottom: 18px !important;
-  padding: 0 0 10px 0 !important;
+  padding: 0 !important;
   border-left: none;
-  border-bottom: 2px solid #1f2937;
+  border-bottom: none;
+  text-decoration-line: underline;
+  text-decoration-color: rgba(31, 41, 55, 0.65);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.34em;
 }
 
 body.nota-page .noticia-bloque .noticia-parrafo,
@@ -602,6 +607,8 @@ body.nota-noticias .card {
   body.nota-deportes .noticia-titulo {
     margin-bottom: 10px !important;
     font-size: clamp(1.35rem, 4.6vw, 1.7rem);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.28em;
   }
 
   body.nota-page .noticia-bloque .noticia-parrafo,

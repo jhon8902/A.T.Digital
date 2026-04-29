@@ -14,6 +14,7 @@ interface NoteItem {
 
 interface Props {
   category: string;
+  categories?: string[];
   title: string;
   description: string;
   staticNotes?: NoteItem[];
@@ -23,6 +24,7 @@ interface Props {
 
 const {
   category,
+  categories,
   title,
   description,
   staticNotes = [],
@@ -44,6 +46,34 @@ function extractFirstImage(html: string | undefined) {
   const match = html.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/i);
   return match ? match[1] : null;
 }
+
+const MESES_ES: Record<string, string> = {
+  ene: "01",
+  enero: "01",
+  feb: "02",
+  febrero: "02",
+  mar: "03",
+  marzo: "03",
+  abr: "04",
+  abril: "04",
+  may: "05",
+  mayo: "05",
+  jun: "06",
+  junio: "06",
+  jul: "07",
+  julio: "07",
+  ago: "08",
+  agosto: "08",
+  sep: "09",
+  sept: "09",
+  septiembre: "09",
+  oct: "10",
+  octubre: "10",
+  nov: "11",
+  noviembre: "11",
+  dic: "12",
+  diciembre: "12",
+};
 
 function parseDateValue(value?: string) {
   if (!value) return 0;
@@ -139,10 +169,15 @@ try {
   const data = await fetchWithTimeout(apiUrl);
 
   if (data && Array.isArray(data)) {
+    const categorySet = categories
+      ? new Set(categories.map((c) => normalizeCategory(c)))
+      : null;
+
     dynamicNotes = data
-      .filter(
-        (note: any) =>
-          normalizeCategory(note.category) === normalizeCategory(category),
+      .filter((note: any) =>
+        categorySet
+          ? categorySet.has(normalizeCategory(note.category))
+          : normalizeCategory(note.category) === normalizeCategory(category),
       )
       .map((note: any) => ({
         href: `/notas/${note.id}`,
@@ -170,7 +205,19 @@ const normalizedStatic = staticNotes.map((note) => ({
   sortDate: parseDateValue(note.fecha),
 }));
 
-const allNotes = [...dynamicNotes, ...normalizedStatic].sort(
+function slugTitle(t?: string) {
+  return (t || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+const dynamicTitles = new Set(dynamicNotes.map((n) => slugTitle(n.title)));
+const deduplicatedStatic = normalizedStatic.filter(
+  (n) => !dynamicTitles.has(slugTitle(n.title)),
+);
+const allNotes = [...dynamicNotes, ...deduplicatedStatic].sort(
   (a, b) => b.sortDate - a.sortDate,
 );
 

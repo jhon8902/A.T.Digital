@@ -86,7 +86,21 @@ try {
 }
 
 const HOME_VISIBLE_COUNT = staticPruebas.length;
-const allPruebas = [...dynamicPruebas, ...staticPruebas].sort(
+function slugTitle(t?: string) {
+  return (t || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+const dynamicPruebasTitles = new Set(
+  dynamicPruebas.map((n) => slugTitle(n.title)),
+);
+const deduplicatedStaticPruebas = staticPruebas.filter(
+  (n) => !dynamicPruebasTitles.has(slugTitle(n.title)),
+);
+const allPruebas = [...dynamicPruebas, ...deduplicatedStaticPruebas].sort(
   (a, b) => b.sortDate - a.sortDate,
 );
 
@@ -448,35 +462,48 @@ const resto = homePruebas.slice(1);
   /* Botón Ver más videos */
   .ver-mas-videos-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     padding: 0 60px;
     position: relative;
     z-index: 1;
   }
 
   .ver-mas-videos-btn {
-    background: #ffffff;
-    color: var(--sport-accent);
-    padding: 16px 48px;
-    font-size: 17px;
-    font-weight: 700;
-    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
     text-decoration: none;
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease,
-      border-color 0.3s ease;
-    cursor: pointer;
-    border: 2px solid var(--sport-accent);
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
+    color: var(--sport-accent);
+    font-size: 15px;
+    font-weight: 700;
+    font-family: "Georgia", serif;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    padding: 0 0 3px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-size: 0% 1.5px;
+    background-position: left bottom;
+    transition: background-size 0.35s ease;
   }
-
+  .ver-mas-videos-btn::before {
+    display: none;
+  }
+  .ver-mas-videos-btn::after {
+    content: " →";
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 14px;
+    letter-spacing: 0;
+    transition: transform 0.25s ease;
+  }
   .ver-mas-videos-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.18);
-    border-color: var(--sport-accent-2);
+    background-size: 100% 1.5px;
+  }
+  .ver-mas-videos-btn:hover::after {
+    transform: translateX(6px);
   }
 
   @keyframes fade-rise {
@@ -660,13 +687,11 @@ const resto = homePruebas.slice(1);
 
     .ver-mas-videos-container {
       padding: 0 20px;
+      justify-content: center;
     }
 
     .ver-mas-videos-btn {
-      padding: 12px 28px;
-      font-size: 16px;
-      width: 100%;
-      max-width: 400px;
+      font-size: 12px;
     }
   }
 
@@ -762,12 +787,11 @@ const resto = homePruebas.slice(1);
 
     .ver-mas-videos-container {
       padding: 0 15px;
+      justify-content: center;
     }
 
     .ver-mas-videos-btn {
-      padding: 11px 22px;
-      font-size: 15px;
-      width: 100%;
+      font-size: 12px;
     }
   }
 
@@ -789,10 +813,12 @@ const resto = homePruebas.slice(1);
       font-size: 15px;
     }
 
-    .btn-ver-video,
-    .ver-mas-videos-btn {
+    .btn-ver-video {
       font-size: 14px;
       padding: 10px 18px;
+    }
+    .ver-mas-videos-btn {
+      font-size: 11px;
     }
 
     .prueba-info h3 {
