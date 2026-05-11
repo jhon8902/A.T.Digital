@@ -1,0 +1,135 @@
+---
+import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+const { currentId, category } = Astro.props;
+
+let relatedNotes = [];
+try {
+  const apiUrl = getApiUrl("get-notes");
+  const data = await fetchWithTimeout(apiUrl);
+  if (data && Array.isArray(data)) {
+    relatedNotes = data
+      .filter(
+        (note) =>
+          note.category?.toLowerCase() === category.toLowerCase() &&
+          note.id !== currentId,
+      )
+      .sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      )
+      .slice(0, 4);
+  }
+} catch (err) {
+  relatedNotes = [];
+}
+---
+
+{
+  relatedNotes.length > 0 && (
+    <section class="notas-relacionadas">
+      <h2>Notas relacionadas</h2>
+      <div class="notas-relacionadas-grid">
+        {relatedNotes.map((note) => (
+          <a href={`/notas/${note.id}`} class="nota-relacionada-card">
+            <img
+              src={note.image1 || "/img/default.jpg"}
+              alt={note.title}
+              loading="lazy"
+            />
+            <div class="nota-relacionada-info">
+              <span class="nota-relacionada-fecha">
+                {note.created_at && !isNaN(new Date(note.created_at).getTime())
+                  ? new Date(note.created_at).toLocaleDateString("es-CO")
+                  : ""}
+              </span>
+              <span class="nota-relacionada-autor">
+                {note.editor || "AutoTechDigital"}
+              </span>
+              <h3>{note.title}</h3>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .notas-relacionadas {
+    margin: 48px 0 0 0;
+  }
+  .notas-relacionadas h2 {
+    color: #08341f;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-bottom: 3px solid #e1a307;
+    padding-bottom: 6px;
+    margin-bottom: 24px;
+    letter-spacing: 0.01em;
+    display: inline-block;
+  }
+  .notas-relacionadas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+  }
+  .nota-relacionada-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(8,52,31,0.09);
+    text-decoration: none;
+    color: #08341f;
+    overflow: hidden;
+    transition: box-shadow 0.22s, transform 0.18s, border 0.18s;
+    border: 1.5px solid #e1a307;
+  }
+  .nota-relacionada-card:hover {
+    box-shadow: 0 8px 28px rgba(225,163,7,0.16);
+    transform: translateY(-4px) scale(1.02);
+    border-color: #08341f;
+  }
+  .nota-relacionada-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-bottom: 1px solid #e1a307;
+    border-radius: 12px 12px 0 0;
+    transition: transform 0.2s;
+    background: #f8f8f8;
+  }
+  .nota-relacionada-card:hover img {
+    transform: scale(1.04);
+  }
+  .nota-relacionada-info {
+    padding: 16px 18px 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  @media (max-width: 700px) {
+    .notas-relacionadas-grid {
+      grid-template-columns: 1fr;
+    }
+    .nota-relacionada-card img {
+      height: 180px;
+    }
+  }
+  }
+  .nota-relacionada-info h3 {
+    font-size: 1.08rem;
+    font-weight: 600;
+    margin: 0;
+    color: #08341f;
+    line-height: 1.3;
+  }
+  @media (max-width: 700px) {
+    .notas-relacionadas-grid {
+      grid-template-columns: 1fr;
+    }
+    .nota-relacionada-card img {
+      height: 160px;
+    }
+  }
+</style>

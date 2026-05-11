@@ -1,3 +1,17 @@
+/* Portada principal de noticias: manipulación fácil de sombra, overlay, brillo, etc. */
+.noticia-portada--main {
+  box-shadow: none !important;
+  filter: none !important;
+  position: relative;
+  z-index: 1;
+  /* Puedes agregar aquí cualquier overlay, filtro o sombra personalizada */
+}
+/* Forzar sin sombra en portada de noticias */
+.articulo-container.noticias .noticia-portada,
+.articulo-container.noticias .noticia-detalle .noticia-portada {
+  box-shadow: none !important;
+  filter: none !important;
+}
 /* ==== ESTILOS CATEGORÍA NOTICIAS ==== */
 
 /* Aislamos todo dentro de .articulo-container.noticias */

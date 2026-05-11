@@ -288,7 +288,7 @@ body.nota-deportes .noticia-portada {
   object-fit: cover;
   border-radius: 4px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: none !important;
 }
 
 body.nota-page .noticia-bloque,
@@ -355,7 +355,7 @@ body.nota-deportes .noticia-bloque img {
   max-width: 58%;
   height: auto;
   border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: none;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   object-fit: cover;
 }
@@ -364,7 +364,7 @@ body.nota-page .noticia-bloque img:hover,
 body.nota-noticias .noticia-bloque img:hover,
 body.nota-deportes .noticia-bloque img:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: none;
 }
 
 /* Bloque con imagen grande a ancho completo */

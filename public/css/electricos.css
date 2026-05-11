@@ -417,7 +417,7 @@
   font-weight: 600;
   text-transform: uppercase;
   color: #111;
-  border-bottom: 2px solid #111;
+  border-bottom: none;
   padding: 0 0 8px;
   margin: 0 0 15px;
   text-align: start;

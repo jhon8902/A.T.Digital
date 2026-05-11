@@ -15,7 +15,9 @@ type PruebaItem = {
 };
 
 function normalizeSourceScope(scope?: string) {
-  return scope?.toLowerCase() === "internacional" ? "internacional" : "nacional";
+  return scope?.toLowerCase() === "internacional"
+    ? "internacional"
+    : "nacional";
 }
 
 function sourceScopeLabel(scope?: string) {
@@ -217,10 +219,12 @@ function pageHref(page: number) {
               </span>
               <h2>{item.title}</h2>
               <p class="archivo-date">
-                <i class="fa-regular fa-user" aria-hidden="true"></i>
-                <span class="meta-author">{item.editor || "Jhon Aparicio"}</span>
+                <i class="fa-regular fa-user" aria-hidden="true" />
+                <span class="meta-author">
+                  {item.editor || "Jhon Aparicio"}
+                </span>
                 <span class="meta-sep">•</span>
-                <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                <i class="fa-regular fa-calendar" aria-hidden="true" />
                 <span class="meta-date">{cleanPublishedDate(item.fecha)}</span>
               </p>
               {item.subtitle && <p class="archivo-desc">{item.subtitle}</p>}
@@ -388,30 +392,63 @@ function pageHref(page: number) {
   }
 
   .archivo-pagination {
-    margin-top: 28px;
+    margin-top: 32px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 14px;
+    justify-content: center;
+    gap: 18px;
     flex-wrap: wrap;
+    background: #f8f7f4;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
+    padding: 18px 32px;
+    min-width: 320px;
+    border: 1px solid #ece7df;
   }
 
   .archivo-page-btn {
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    padding: 9px 14px;
     text-decoration: none;
-    color: #111827;
-    background: #fff;
+    color: #222;
+    border: 1.5px solid #e0d9ce;
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 600;
+    background: linear-gradient(90deg, #fff 80%, #f6f3ee 100%);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.04);
+    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    outline: none;
+    position: relative;
+  }
+
+  .archivo-page-btn:hover:not(.is-disabled),
+  .archivo-page-btn:focus-visible:not(.is-disabled) {
+    background: linear-gradient(90deg, #f6f3ee 60%, #e9e3d7 100%);
+    color: #0e3a5e;
+    border-color: #b6a98b;
+    box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1);
+    transform: translateY(-2px) scale(1.04);
   }
 
   .archivo-page-btn.is-disabled {
     pointer-events: none;
     opacity: 0.45;
+    background: #f3f3f3;
+    color: #aaa;
+    border-color: #e0d9ce;
+    box-shadow: none;
+    transform: none;
   }
 
   .archivo-page-indicator {
-    color: #374151;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 700;
+    color: #2a2a2a;
+    letter-spacing: 0.01em;
+    padding: 0 10px;
+    background: transparent;
+    border-radius: 8px;
+    transition: color 0.18s;
   }
 </style>

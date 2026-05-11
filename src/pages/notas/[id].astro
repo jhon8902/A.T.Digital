@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import RelatedNotes from "./RelatedNotes.astro";
 export const prerender = false;
 
 // ✅ Definimos la interfaz del tipo de nota
@@ -373,7 +374,7 @@ const useSmartImageFrame =
           {
             coverImage && (
               <img
-                class="noticia-portada"
+                class="noticia-portada noticia-portada--main"
                 src={coverImage}
                 alt={note.title}
                 loading="lazy"
@@ -532,6 +533,11 @@ const useSmartImageFrame =
             )
           }
         </article>
+
+        <!-- Notas relacionadas -->
+        {note?.category && (
+          <RelatedNotes currentId={note.id} category={note.category} />
+        )}
 <!--
         <section class="resumen">
           <h2>Resumen Técnico</h2>
