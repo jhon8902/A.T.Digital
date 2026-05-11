@@ -110,11 +110,12 @@ const coverImage =
   null;
 const contentText = (note?.content || "").trim();
 
+// Mejorar el parseo: dividir cada bloque que comience con 'Titulo:' (sin depender de saltos de línea dobles)
 const contentParagraphs = contentText
   .replace(/<\/(p|div|article|section|h1|h2|h3|h4|h5|h6|li)>/gi, "\n\n")
   .replace(/<br\s*\/?\s*>/gi, "\n")
   .replace(/<[^>]*>/g, "")
-  .split(/\r?\n\s*\r?\n+/)
+  .split(/(?=^t[ií]tulo\s*:)/gmi)
   .map((block) => block.trim())
   .filter(Boolean);
 
@@ -157,9 +158,9 @@ const ENABLE_INLINE_MANUAL_TITLES = true;
 function extractInlineManualTitle(block: string) {
   if (!ENABLE_INLINE_MANUAL_TITLES) return null;
 
-  // Sintaxis segura y explicita:
-  // Titulo: Mi encabezado | Texto del bloque
-  const match = block.match(/^t[ií]tulo\s*:\s*([^|]{3,120})\|\s*([\s\S]+)$/i);
+  // Sintaxis flexible: acepta salto de línea después del |
+  // Titulo: Mi encabezado | Texto del bloque (en la misma línea o en la siguiente)
+  const match = block.match(/^t[ií]tulo\s*:\s*([^|\n]{3,120})\|[ \t]*[\r\n]*([\s\S]*)$/i);
   if (!match) return null;
 
   const title = (match[1] || "").trim();

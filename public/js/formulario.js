@@ -529,6 +529,45 @@
       data[key] = typeof value === "string" ? value : "";
     });
 
+    // Procesar el campo content para estructurarlo como HTML
+    function procesarContenidoAHtml(texto) {
+      if (!texto) return "";
+      // Separar por doble salto de línea o salto de línea + espacios
+      const bloques = texto.split(/\n\s*\n/);
+      return bloques
+        .map((bloque) => {
+          const limpio = bloque.trim();
+          if (!limpio) return "";
+          // Detectar títulos de sección
+          if (/^(Titulo:|Título:)/i.test(limpio)) {
+            // Extraer el texto después de 'Titulo:' o 'Título:' y antes de '|', si existe
+            const partes = limpio.replace(/^(Titulo:|Título:)/i, "").split("|");
+            const titulo = partes[0].trim();
+            const subtitulo = partes[1] ? partes[1].trim() : "";
+            let html = `<h2>${titulo}</h2>`;
+            if (subtitulo) html += `<p>${subtitulo}</p>`;
+            return html;
+          }
+          // Si es un bullet list
+          if (/^•|^- /.test(limpio)) {
+            // Convertir cada línea en <li>
+            const items = limpio.split(/\n|\r/).map(linea => {
+              const item = linea.replace(/^•|^- /, "").trim();
+              return item ? `<li>${item}</li>` : "";
+            }).join("");
+            return `<ul>${items}</ul>`;
+          }
+          // Párrafo normal
+          return `<p>${limpio}</p>`;
+        })
+        .join("");
+    }
+
+    // Guardar el contenido como texto plano, sin convertir a HTML
+    // if (data.content) {
+    //   data.content = procesarContenidoAHtml(data.content);
+    // }
+
     const contentHtml = String(data.content || "");
     const firstImg = extractFirstImageFromHtml(contentHtml);
     if ((!data.image1 || String(data.image1).trim() === "") && firstImg) {
