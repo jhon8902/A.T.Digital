@@ -310,20 +310,23 @@ function pageHref(page: number) {
           href={pageHref(currentPage - 1)}
           class={`archivo-page-btn ${currentPage === 1 ? "is-disabled" : ""}`}
           aria-disabled={currentPage === 1}
+          title="Página anterior"
         >
-          ← Anterior
+          &#8592;
         </a>
 
         <span class="archivo-page-indicator">
-          Página {currentPage} de {totalPages}
+          {currentPage}
+          <span class="archivo-page-total"> / {totalPages}</span>
         </span>
 
         <a
           href={pageHref(currentPage + 1)}
           class={`archivo-page-btn ${currentPage === totalPages ? "is-disabled" : ""}`}
           aria-disabled={currentPage === totalPages}
+          title="Página siguiente"
         >
-          Siguiente →
+          &#8594;
         </a>
       </div>
     )
@@ -499,14 +502,23 @@ function pageHref(page: number) {
   }
 
   .archivo-page-indicator {
-    font-size: 15px;
-    font-weight: 500;
+    font-size: 17px;
+    font-weight: 700;
     color: #08341f;
     letter-spacing: 0.01em;
-    padding: 0 6px;
+    padding: 0 4px;
     background: transparent;
     border-radius: 0;
+    min-width: 32px;
+    text-align: center;
     transition: color 0.18s;
+    display: inline-block;
+  }
+  .archivo-page-total {
+    font-size: 14px;
+    font-weight: 400;
+    color: #b6a98b;
+    margin-left: 2px;
   }
 
   .archivo-notas--noticias {

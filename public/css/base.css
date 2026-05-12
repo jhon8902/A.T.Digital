@@ -1,3 +1,9 @@
+/* Forzar línea clara en todos los títulos de bloque de nota */
+.noticia-titulo {
+  border-bottom: 1.1px solid #131312 !important;
+  color: #08341f;
+  font-weight: 700;
+}
 /* ========== BASE GLOBAL DEL SITIO ========== */
 
 /* Reset básico */
@@ -322,8 +328,8 @@ body.nota-deportes .noticia-titulo {
   margin-top: 0 !important;
   margin-bottom: 18px !important;
   padding: 0 !important;
-  border-left: none;
-  border-bottom: none;
+    border-left: none;
+    border-bottom: none !important;
   text-decoration-line: underline;
   text-decoration-color: rgba(31, 41, 55, 0.65);
   text-decoration-thickness: 1px;

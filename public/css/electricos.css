@@ -102,7 +102,7 @@
   text-align: start;
   font-weight: 600;
   text-transform: uppercase;
-  border-bottom: 2px solid black;
+  border-bottom: none !important;
   font-family: "Georgia", serif;
 }
 
@@ -309,24 +309,12 @@
   text-align: center;
   margin: 30px auto 0;
   padding: 0 0 12px;
-  border-bottom: 2px solid #111;
+  border-bottom: none !important;
   opacity: 0;
   transform: translateY(20px);
   animation: fadein 2s forwards;
 }
-
-/* Subtítulo */
-.articulo-container.electricos .noticia-descripcion {
-  font-family: "Poppins", sans-serif;
-  font-size: 1.5rem;
-  text-align: center;
-  width: 90%;
-  margin: 10px auto 16px;
-  padding: 0;
-  border: none;
-  background: transparent;
-  color: #444;
-}
+ 
 
 /* Meta-línea */
 .articulo-container.electricos .nota-meta-line {
@@ -417,7 +405,7 @@
   font-weight: 600;
   text-transform: uppercase;
   color: #111;
-  border-bottom: none;
+  
   padding: 0 0 8px;
   margin: 0 0 15px;
   text-align: start;
@@ -450,7 +438,7 @@
   font-size: 32px;
   color: #08341f;
   margin-bottom: 30px;
-  border-bottom: 3px solid #e6b410;
+  border-bottom: none !important;
   padding: 0 0 15px;
 }
 
@@ -523,7 +511,7 @@
     text-align: left;
     display: block;
     margin: 24px 0 0;
-    border-bottom: none;
+    border-bottom: none !important;
     padding-bottom: 0;
     line-height: 1.08;
     letter-spacing: 0.012em;
