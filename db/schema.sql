@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS notes (
   spec_traccion TEXT,
   spec_precio_cop TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- Asegura que la columna exista si se ejecuta sobre una base existente
 );
 
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS subtitle TEXT;

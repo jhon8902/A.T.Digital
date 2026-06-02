@@ -8,6 +8,9 @@
   const editModeLabel = document.getElementById("editModeLabel");
   const submitNoteBtn = document.getElementById("submitNoteBtn");
   const formHeaderTitle = document.querySelector(".form-header h1");
+  const categoryField = document.getElementById("categoryField");
+  const automatchModeHint = document.getElementById("automatchModeHint");
+  const contentFieldGroup = document.getElementById("contentFieldGroup");
   const cloudinaryFilesInput = document.getElementById("cloudinaryFiles");
   const uploadCloudinaryBtn = document.getElementById("uploadCloudinaryBtn");
   const cloudinaryQueue = document.getElementById("cloudinaryQueue");
@@ -91,6 +94,69 @@
     if (!msg) return;
     msg.textContent = text;
     msg.style.color = color;
+  }
+
+  function isAutomatchCategory(value) {
+    return String(value || "").trim().toLowerCase() === "automatch";
+  }
+
+  function setBlockEnabled(block, enabled) {
+    const fields = block.querySelectorAll("input, textarea, select, button");
+    fields.forEach(function (field) {
+      if (
+        field instanceof HTMLInputElement ||
+        field instanceof HTMLTextAreaElement ||
+        field instanceof HTMLSelectElement ||
+        field instanceof HTMLButtonElement
+      ) {
+        field.disabled = !enabled;
+      }
+    });
+  }
+
+  function applyCategoryMode() {
+    const categoryValue = getFieldValue("category");
+    const contentField = byName("content");
+    const subtitleField = byName("subtitle");
+    const fullNoteBlocks = form.querySelectorAll(".full-note-only");
+    const automatchMode = isAutomatchCategory(categoryValue);
+
+    if (automatchModeHint instanceof HTMLElement) {
+      automatchModeHint.hidden = !automatchMode;
+    }
+
+    if (contentFieldGroup instanceof HTMLElement) {
+      contentFieldGroup.hidden = automatchMode;
+      contentFieldGroup.style.display = automatchMode ? "none" : "block";
+    }
+
+    if (contentField instanceof HTMLTextAreaElement) {
+      contentField.required = !automatchMode;
+      if (automatchMode) {
+        contentField.value = "";
+        contentField.disabled = true;
+        contentField.placeholder = "Contenido de la nota";
+      } else {
+        contentField.disabled = false;
+        contentField.placeholder = "Contenido de la nota";
+      }
+    }
+
+    if (subtitleField instanceof HTMLInputElement) {
+      subtitleField.required = automatchMode;
+      if (automatchMode) {
+        subtitleField.placeholder = "Descripcion corta para la tarjeta del carrusel";
+      } else {
+        subtitleField.placeholder = "Subtítulo";
+      }
+    }
+
+    fullNoteBlocks.forEach(function (block) {
+      if (block instanceof HTMLElement) {
+        block.hidden = automatchMode;
+        setBlockEnabled(block, !automatchMode);
+      }
+    });
   }
 
   function clearSelectedCloudinaryFiles() {
@@ -347,6 +413,7 @@
       const value = typeof raw === "string" ? raw : String(raw || "");
       setFieldValue(name, value);
     });
+    applyCategoryMode();
   }
 
   function resetDefaults() {
@@ -356,6 +423,7 @@
     if (!getFieldValue("source_scope")) {
       setFieldValue("source_scope", "nacional");
     }
+    applyCategoryMode();
   }
 
   async function loadNoteForEdit() {
@@ -509,6 +577,10 @@
     uploadCloudinaryBtn.addEventListener("click", uploadSelectedImages);
   }
 
+  if (categoryField instanceof HTMLSelectElement) {
+    categoryField.addEventListener("change", applyCategoryMode);
+  }
+
   setMode(false, "");
   resetDefaults();
 
@@ -572,6 +644,16 @@
     const firstImg = extractFirstImageFromHtml(contentHtml);
     if ((!data.image1 || String(data.image1).trim() === "") && firstImg) {
       data.image1 = firstImg;
+    }
+
+    if (isAutomatchCategory(data.category)) {
+      const autoSubtitle = String(data.subtitle || "").trim();
+      if (!autoSubtitle) {
+        setMessage("Para AutoMatch agrega un subtitulo corto para la tarjeta", "red");
+        return;
+      }
+
+      data.content = `<p>${autoSubtitle}</p>`;
     }
 
     const effectiveEditId = editingNoteId;

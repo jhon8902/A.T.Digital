@@ -300,15 +300,21 @@ const cloudinaryFolder =
 
           <label>
             Categoría
-            <select name="category" required>
+            <select id="categoryField" name="category" required>
               <option value="electricos">Eléctricos</option>
               <option value="hibridos">Híbridos</option>
               <option value="deportes">Deportes</option>
               <option value="noticias">Noticias</option>
               <option value="pruebas">Pruebas</option>
               <option value="lanzamientos">Lanzamientos</option>
+              <option value="automatch">AutoMatch</option>
             </select>
           </label>
+
+          <p id="automatchModeHint" class="storage-tip" hidden>
+            Modo AutoMatch activo: se guarda como ficha corta para carrusel
+            (titulo, subtitulo e imagenes). Campos de nota larga ocultos.
+          </p>
 
           <label>
             Ámbito
@@ -318,7 +324,7 @@ const cloudinaryFolder =
             </select>
           </label>
 
-          <label>
+          <label id="contentFieldGroup">
             Contenido
             <textarea name="content" placeholder="Contenido de la nota" required
             ></textarea>
@@ -368,7 +374,7 @@ const cloudinaryFolder =
             </div>
           </fieldset>
 
-          <fieldset class="group-box">
+          <fieldset class="group-box full-note-only">
             <legend>Videos (opcional)</legend>
             <div class="grid-2">
               <label for="video1">
@@ -413,7 +419,7 @@ const cloudinaryFolder =
             </div>
           </fieldset>
 
-          <fieldset class="group-box">
+          <fieldset class="group-box full-note-only">
             <legend>Ficha técnica (opcional pero recomendada)</legend>
             <div class="grid-2">
               <label>

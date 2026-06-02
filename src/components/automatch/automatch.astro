@@ -1,5 +1,5 @@
 ---
-const autos = [
+const staticAutos = [
   {
     id: "tesla-model-3",
     nombre: "Maserati GranCabrio",
@@ -35,22 +35,87 @@ const autos = [
     ],
   },
 ];
+
+const { autos: incomingAutos = [], mode = "home" } = Astro.props;
+const HOME_VISIBLE_COUNT = 3;
+
+function stripHtml(input = "") {
+  return String(input)
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeText(input = "") {
+  return String(input)
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+const normalizedIncoming = Array.isArray(incomingAutos)
+  ? incomingAutos
+      .map((auto, index) => {
+        const images = Array.isArray(auto?.imagenes)
+          ? auto.imagenes.filter(Boolean)
+          : [];
+        return {
+          id: String(auto?.id ?? `auto-${index + 1}`),
+          nombre: String(auto?.nombre || "AutoMatch"),
+          descripcion: String(
+            auto?.descripcion || stripHtml(auto?.content || "Sin descripcion"),
+          ),
+          imagenes: images.length > 0 ? images : ["/img/default.jpg"],
+        };
+      })
+      .filter((auto) => auto.nombre && auto.imagenes.length > 0)
+  : [];
+
+const incomingIdSet = new Set(
+  normalizedIncoming.map((auto) => String(auto.id)),
+);
+const incomingTitleSet = new Set(
+  normalizedIncoming.map((auto) => normalizeText(auto.nombre)),
+);
+
+const mergedAutos = [
+  ...normalizedIncoming,
+  ...staticAutos.filter(
+    (auto) =>
+      !incomingIdSet.has(String(auto.id)) &&
+      !incomingTitleSet.has(normalizeText(auto.nombre)),
+  ),
+];
+
+const autosToRender =
+  mode === "archive"
+    ? mergedAutos.slice(HOME_VISIBLE_COUNT)
+    : mergedAutos.slice(0, HOME_VISIBLE_COUNT);
+
+const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
 ---
 
 <section class="automatch-section">
   <h2 class="titulo">
     <i class="fas fa-car titulo-icon"></i>
-    AutoMatch
+    {mode === "archive" ? "Mas contenido AutoMatch" : "AutoMatch"}
     <i class="fas fa-heart titulo-icon titulo-icon--heart"></i>
   </h2>
-  <p class="subtitulo">Descubre, comenta y dale like a tus autos favoritos.</p>
+  <p class="subtitulo">
+    {
+      mode === "archive"
+        ? "Listado de fichas AutoMatch con el mismo formato de tarjetas y carrusel."
+        : "Descubre, comenta y dale like a tus autos favoritos."
+    }
+  </p>
 
   <div class="cards">
     {
-      autos.map((auto) => (
+      autosToRender.map((auto: any) => (
         <article class="auto-card" data-id={auto.id}>
           <div class="auto-carousel">
-            {auto.imagenes.map((img, index) => (
+            {(auto.imagenes as string[]).map((img, index) => (
               <img
                 src={img}
                 alt={auto.nombre}
@@ -106,21 +171,42 @@ const autos = [
       ))
     }
   </div>
+
+  {
+    mode === "archive" && autosToRender.length === 0 && (
+      <p class="subtitulo">Aun no hay mas fichas para mostrar.</p>
+    )
+  }
+
+  {
+    mode === "home" && hasMoreAutos && (
+      <div class="ver-mas-automatch-container">
+        <a href="/automatch" class="btn-automatch">
+          <i class="fas fa-layer-group" /> Ver mas AutoMatch
+        </a>
+      </div>
+    )
+  }
 </section>
 
-<section class="automatch-section">
-  <h2>
-    <i class="fas fa-car-side"></i>
-    Encuentra tu AutoMatch
-  </h2>
-  <p>
-    Usa nuestra herramienta inteligente para descubrir el auto perfecto para ti.
-  </p>
+{
+  mode === "home" && (
+    <section class="automatch-section">
+      <h2>
+        <i class="fas fa-car-side" />
+        Encuentra tu AutoMatch
+      </h2>
+      <p>
+        Usa nuestra herramienta inteligente para descubrir el auto perfecto para
+        ti.
+      </p>
 
-  <a href="/automatch-find" class="btn-automatch">
-    <i class="fas fa-sliders-h"></i> Probar AutoMatch
-  </a>
-</section>
+      <a href="/automatch-find" class="btn-automatch">
+        <i class="fas fa-sliders-h" /> Probar AutoMatch
+      </a>
+    </section>
+  )
+}
 
 <style>
   /* ========== SECCIÓN AUTOMATCH PRINCIPAL ========== */
@@ -213,10 +299,26 @@ const autos = [
     border-radius: 16px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
     transition:
       transform 0.3s,
       box-shadow 0.3s;
     border: 1px solid rgba(225, 163, 7, 0.1);
+  }
+
+  .auto-card h3 {
+    margin: 0.9rem 0 0.5rem;
+    color: black;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .auto-card p {
+    margin: 0;
+    line-height: 1.5;
+    min-height: 3em;
+    color: #000;
   }
 
   .auto-card:hover {
@@ -268,6 +370,7 @@ const autos = [
     top: 50%;
     transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.9);
+    color: black;
     border: none;
     border-radius: 50%;
     padding: 0.5rem 0.7rem;
@@ -306,6 +409,7 @@ const autos = [
   .btn-corazon {
     border: none;
     background: transparent;
+    color: #5f6b77;
     cursor: pointer;
     transition:
       transform 0.2s,
@@ -318,36 +422,45 @@ const autos = [
   }
 
   .btn-like i {
-    color: #0077ff;
+    color: currentColor;
     font-size: 1.3rem;
     transition: color 0.2s;
   }
 
   .btn-like:hover i {
-    color: #0055cc;
+    color: currentColor;
   }
 
   .btn-like:hover {
-    transform: scale(1.15);
+    color: #0055cc;
+    transform: scale(1.08);
   }
 
   .btn-corazon i {
-    color: #e63946;
+    color: currentColor;
     font-size: 1.3rem;
     transition: color 0.2s;
   }
 
   .btn-corazon:hover i {
-    color: #d62828;
+    color: currentColor;
   }
 
   .btn-corazon:hover {
-    transform: scale(1.15);
+    color: #d62828;
+    transform: scale(1.08);
   }
 
-  .btn-like.activo,
+  .btn-like.activo {
+    color: #0077ff;
+  }
+
   .btn-corazon.activo {
-    transform: scale(1.4);
+    color: #e63946;
+  }
+
+  .btn-like.is-animating,
+  .btn-corazon.is-animating {
     animation: pulse 0.3s ease;
   }
 
@@ -371,7 +484,7 @@ const autos = [
 
   .comentarios h4 {
     margin-bottom: 0.5rem;
-    color: #1b5e3f;
+    color: #000;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -379,14 +492,14 @@ const autos = [
   }
 
   .comentarios h4 i {
-    color: #1b5e3f;
+    color: #000;
     font-size: 1rem;
   }
 
   .contador-comentarios {
     font-size: 0.85rem;
     font-weight: 500;
-    color: #1b5e3f;
+    color: #000;
   }
 
   .lista-comentarios {
@@ -399,6 +512,7 @@ const autos = [
 
   .lista-comentarios li {
     background: #f7f8fa;
+    color: #000;
     margin-bottom: 0.4rem;
     padding: 0.5rem 0.8rem;
     border-left: 4px solid #1b5e3f;
@@ -468,14 +582,14 @@ const autos = [
   }
 
   .lista-comentarios li strong {
-    color: #111;
+    color: #000;
     font-weight: 600;
   }
 
   .lista-comentarios li .fecha {
     float: right;
     font-size: 0.75rem;
-    color: #888;
+    color: #000;
   }
 
   .btn-vote-comment {
@@ -578,6 +692,12 @@ const autos = [
   }
 
   /* ========== BOTÓN AUTOMATCH ========== */
+  .ver-mas-automatch-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
   .btn-automatch {
     display: inline-flex;
     align-items: center;
@@ -696,6 +816,10 @@ const autos = [
       font-size: 0.95rem;
     }
 
+    .ver-mas-automatch-container {
+      margin-top: 0.25rem;
+    }
+
     .lista-comentarios {
       max-height: 200px;
     }
@@ -765,6 +889,10 @@ const autos = [
       font-size: 0.9rem;
     }
 
+    .ver-mas-automatch-container {
+      margin-top: 0;
+    }
+
     .lista-comentarios {
       max-height: 150px;
     }
@@ -802,6 +930,25 @@ const autos = [
       if (!btn) return;
       const span = btn.querySelector("span");
       if (span) span.textContent = String(value || 0);
+    }
+
+    function pulseActionButton(button: HTMLElement) {
+      button.classList.add("is-animating");
+      setTimeout(() => button.classList.remove("is-animating"), 300);
+    }
+
+    function aplicarEstadoLikes() {
+      const actionButtons = document.querySelectorAll(
+        ".btn-like, .btn-corazon",
+      );
+      actionButtons.forEach((button) => {
+        if (!(button instanceof HTMLElement)) return;
+        const autoId = button.dataset.id;
+        if (!autoId) return;
+        const tipo = button.classList.contains("btn-like") ? "like" : "corazon";
+        const key = `${autoId}-${tipo}`;
+        button.classList.toggle("activo", Boolean(likedState[key]));
+      });
     }
 
     async function cargarLikes() {
@@ -884,6 +1031,7 @@ const autos = [
     });
 
     await cargarLikes();
+    aplicarEstadoLikes();
     await Promise.all(autoIds.map((autoId) => cargarComentarios(autoId)));
 
     // Clicks globales: carrusel + likes
@@ -926,7 +1074,7 @@ const autos = [
 
         if (likedState[key]) {
           actionButton.classList.add("activo");
-          setTimeout(() => actionButton.classList.remove("activo"), 300);
+          pulseActionButton(actionButton);
           return;
         }
 
@@ -957,7 +1105,7 @@ const autos = [
             JSON.stringify(likedState),
           );
           actionButton.classList.add("activo");
-          setTimeout(() => actionButton.classList.remove("activo"), 300);
+          pulseActionButton(actionButton);
         } catch (error) {
           void error;
         }

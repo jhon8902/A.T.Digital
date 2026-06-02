@@ -1,0 +1,53 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AutoMatch from "../components/automatch/automatch.astro";
+import { getApiUrl, fetchWithTimeout } from "../lib/api";
+
+let autos: any[] = [];
+
+try {
+  const apiUrl = getApiUrl("get-notes");
+  const data = await fetchWithTimeout(apiUrl);
+
+  if (data && Array.isArray(data)) {
+    autos = data
+      .filter((note: any) => note.category?.toLowerCase() === "automatch")
+      .sort((a: any, b: any) => {
+        const aDate = a?.created_at ? new Date(a.created_at).getTime() : 0;
+        const bDate = b?.created_at ? new Date(b.created_at).getTime() : 0;
+        return bDate - aDate;
+      })
+      .map((note: any) => ({
+        id: String(note.id),
+        nombre: note.title,
+        descripcion: note.subtitle || "",
+        imagenes: [
+          note.image1,
+          note.image2,
+          note.image3,
+          note.image4,
+          note.image5,
+          note.image6,
+        ].filter(Boolean),
+      }));
+  }
+} catch (err) {
+  console.error("Error cargando autos en archivo AutoMatch:", err);
+}
+---
+
+<Layout
+  title="AutoMatch | Archivo de Fichas"
+  description="Archivo de fichas AutoMatch con tarjetas y carruseles para seguir explorando modelos."
+>
+  <section class="automatch-archivo">
+    <AutoMatch autos={autos} mode="archive" />
+  </section>
+</Layout>
+
+<style>
+  .automatch-archivo {
+    background: white;
+    padding: 0.5rem 0 1.5rem;
+  }
+</style>

@@ -300,6 +300,7 @@ input::placeholder {
   top: 50%;
   transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.9);
+  color: black;
   border: none;
   border-radius: 50%;
   width: 45px;

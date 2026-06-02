@@ -19,8 +19,13 @@ try {
   if (data && Array.isArray(data)) {
     autos = data
       .filter((note: any) => note.category?.toLowerCase() === "automatch")
+      .sort((a: any, b: any) => {
+        const aDate = a?.created_at ? new Date(a.created_at).getTime() : 0;
+        const bDate = b?.created_at ? new Date(b.created_at).getTime() : 0;
+        return bDate - aDate;
+      })
       .map((note: any) => ({
-        id: note.id,
+        id: String(note.id),
         nombre: note.title,
         descripcion: note.subtitle || note.content.substring(0, 100),
         imagenes: [
@@ -29,6 +34,7 @@ try {
           note.image3,
           note.image4,
           note.image5,
+          note.image6,
         ].filter(Boolean),
       }));
   }

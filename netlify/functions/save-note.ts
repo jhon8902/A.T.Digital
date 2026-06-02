@@ -467,6 +467,7 @@ export const handler: Handler = async (event) => {
       spec_competidores,
       spec_traccion,
       spec_precio_cop,
+      scheduled_at
     } = body;
 
     const normalizedTitle = normalizeTextField(title);
@@ -550,6 +551,7 @@ export const handler: Handler = async (event) => {
       spec_competidores: normalizeTextField(spec_competidores),
       spec_traccion: normalizeTextField(spec_traccion),
       spec_precio_cop: normalizeTextField(spec_precio_cop),
+      scheduled_at: scheduled_at ? new Date(scheduled_at) : null
     };
 
     const columns = await getNotesColumns();
