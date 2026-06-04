@@ -11,6 +11,7 @@
   const categoryField = document.getElementById("categoryField");
   const automatchModeHint = document.getElementById("automatchModeHint");
   const contentFieldGroup = document.getElementById("contentFieldGroup");
+  const automatchTextGroup = document.getElementById("automatchTextGroup");
   const cloudinaryFilesInput = document.getElementById("cloudinaryFiles");
   const uploadCloudinaryBtn = document.getElementById("uploadCloudinaryBtn");
   const cloudinaryQueue = document.getElementById("cloudinaryQueue");
@@ -61,6 +62,11 @@
     "spec_competidores",
     "spec_traccion",
     "spec_precio_cop",
+    "texto_img2_linea1",
+    "texto_img3_linea1",
+    "texto_img4_linea1",
+    "texto_img5_linea1",
+    "texto_img6_linea1",
   ];
 
   function byName(name) {
@@ -149,6 +155,11 @@
       } else {
         subtitleField.placeholder = "Subtítulo";
       }
+    }
+
+    if (automatchTextGroup instanceof HTMLElement) {
+      automatchTextGroup.hidden = !automatchMode;
+      setBlockEnabled(automatchTextGroup, automatchMode);
     }
 
     fullNoteBlocks.forEach(function (block) {
@@ -413,6 +424,30 @@
       const value = typeof raw === "string" ? raw : String(raw || "");
       setFieldValue(name, value);
     });
+
+    if (isAutomatchCategory(note && note.category ? note.category : "")) {
+      const content =
+        note && typeof note.content === "string" ? note.content : "";
+      const metaMatch = content.match(/AUTOMATCH_META:([^>]*)-->/i);
+
+      if (metaMatch && metaMatch[1]) {
+        try {
+          const parsed = JSON.parse(decodeURIComponent(metaMatch[1]));
+          const texts = parsed && parsed.texts ? parsed.texts : {};
+
+          for (let i = 2; i <= 6; i += 1) {
+            const key = "img" + String(i);
+            const item = texts[key] || {};
+            setFieldValue("texto_img" + String(i) + "_linea1", item.line1 || "");
+          }
+        } catch (_error) {
+          for (let i = 2; i <= 6; i += 1) {
+            setFieldValue("texto_img" + String(i) + "_linea1", "");
+          }
+        }
+      }
+    }
+
     applyCategoryMode();
   }
 
@@ -653,7 +688,16 @@
         return;
       }
 
-      data.content = `<p>${autoSubtitle}</p>`;
+      const texts = {};
+      for (let i = 2; i <= 6; i += 1) {
+        const line1 = String(data["texto_img" + String(i) + "_linea1"] || "").trim();
+        if (line1) {
+          texts["img" + String(i)] = { line1 };
+        }
+      }
+
+      const encodedMeta = encodeURIComponent(JSON.stringify({ texts }));
+      data.content = `<p>${autoSubtitle}</p><!--AUTOMATCH_META:${encodedMeta}-->`;
     }
 
     const effectiveEditId = editingNoteId;

@@ -54,6 +54,64 @@ function normalizeText(input = "") {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
+function toSingleLine(text = "", max = 96) {
+  const clean = stripHtml(text) || "Informacion destacada del modelo.";
+  if (clean.length <= max) {
+    return clean;
+  }
+
+  const cutAt = clean.lastIndexOf(" ", max);
+  const safeCut = cutAt > 20 ? cutAt : max;
+  return `${clean.slice(0, safeCut).trim()}...`;
+}
+
+const defaultFactsByModel: Record<string, string[]> = {
+  "maserati grancabrio": [
+    "Convertible de lujo con enfoque GT y respuesta progresiva.",
+    "Cabina premium con acabados artesanales y gran nivel de detalle.",
+    "Tren motriz electrificado pensado para acelerar con suavidad y fuerza.",
+  ],
+  "subaru brz": [
+    "Coupe de traccion trasera con reparto de peso equilibrado.",
+    "Motor boxer 2.4L atmosferico con respuesta lineal en altas vueltas.",
+    "Puesta a punto enfocada en precision de chasis y control en curva.",
+  ],
+  "bugatti chiron": [
+    "Hiperdeportivo con arquitectura extrema y aerodinamica activa.",
+    "Motor W16 quad-turbo de altas prestaciones para uso de coleccion.",
+    "Ingenieria orientada a velocidad maxima y estabilidad a alta carga.",
+  ],
+  "maserati mcxtrema": [
+    "Modelo de pista con enfoque radical y produccion muy limitada.",
+    "V6 biturbo de alto rendimiento y calibracion orientada a circuito.",
+    "Aero funcional para generar carga y confianza en curvas rapidas.",
+  ],
+};
+
+function parseAutomatchMeta(content = "") {
+  const match = String(content).match(/AUTOMATCH_META:([^>]*)-->/i);
+  if (!match || !match[1]) return {};
+
+  try {
+    const decoded = decodeURIComponent(match[1].trim());
+    const parsed = JSON.parse(decoded);
+    return parsed?.texts && typeof parsed.texts === "object"
+      ? parsed.texts
+      : {};
+  } catch (_error) {
+    return {};
+  }
+}
+
+const slideTopics = [
+  "Vista exterior principal",
+  "Perfil y presencia lateral",
+  "Detalles de diseno",
+  "Interior y cabina",
+  "Espacio y practicidad",
+  "Tecnologia y conectividad",
+];
+
 const normalizedIncoming = Array.isArray(incomingAutos)
   ? incomingAutos
       .map((auto, index) => {
@@ -66,6 +124,7 @@ const normalizedIncoming = Array.isArray(incomingAutos)
           descripcion: String(
             auto?.descripcion || stripHtml(auto?.content || "Sin descripcion"),
           ),
+          metaTexts: parseAutomatchMeta(auto?.content || ""),
           imagenes: images.length > 0 ? images : ["/img/default.jpg"],
         };
       })
@@ -93,6 +152,38 @@ const autosToRender =
     ? mergedAutos.slice(HOME_VISIBLE_COUNT)
     : mergedAutos.slice(0, HOME_VISIBLE_COUNT);
 
+const autosWithTexts = autosToRender.map((auto: any) => {
+  const modelFacts =
+    defaultFactsByModel[normalizeText(auto.nombre)] || ([] as string[]);
+  const firstSlideText = toSingleLine(auto.descripcion, 98);
+
+  const texts = (auto.imagenes as string[]).map((_, index) => {
+    if (index === 0) {
+      return {
+        line1: firstSlideText,
+      };
+    }
+
+    const key = `img${index + 1}`;
+    const custom = auto?.metaTexts?.[key] || {};
+    const customLine1 = stripHtml(custom?.line1 || "");
+    const customLine2 = stripHtml(custom?.line2 || "");
+
+    return {
+      line1:
+        customLine1 ||
+        modelFacts[index - 1] ||
+        slideTopics[index % slideTopics.length] ||
+        "Detalle destacado del modelo",
+    };
+  });
+
+  return {
+    ...auto,
+    texts,
+  };
+});
+
 const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
 ---
 
@@ -106,13 +197,13 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     {
       mode === "archive"
         ? "Listado de fichas AutoMatch con el mismo formato de tarjetas y carrusel."
-        : "Descubre, comenta y dale like a tus autos favoritos."
+        : "Infórmate, comenta y dale like a tus favoritos."
     }
   </p>
 
   <div class="cards">
     {
-      autosToRender.map((auto: any) => (
+      autosWithTexts.map((auto: any) => (
         <article class="auto-card" data-id={auto.id}>
           <div class="auto-carousel">
             {(auto.imagenes as string[]).map((img, index) => (
@@ -124,12 +215,34 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
                 decoding="async"
               />
             ))}
-            <button class="prev">❮</button>
-            <button class="next">❯</button>
+          </div>
+          <div class="auto-carousel-controls">
+            <button type="button" class="prev" aria-label="Imagen anterior">
+              <i class="fas fa-chevron-left" />
+            </button>
+            <div class="carousel-dots" aria-label="Navegacion de imagenes">
+              {(auto.imagenes as string[]).map((_, index) => (
+                <button
+                  type="button"
+                  class={`carousel-dot ${index === 0 ? "active" : ""}`}
+                  data-index={String(index)}
+                  aria-label={`Ir a la imagen ${index + 1}`}
+                />
+              ))}
+            </div>
+            <button type="button" class="next" aria-label="Imagen siguiente">
+              <i class="fas fa-chevron-right" />
+            </button>
           </div>
 
           <h3>{auto.nombre}</h3>
-          <p>{auto.descripcion}</p>
+          <div class="auto-info">
+            {auto.texts.map((text: any, index: number) => (
+              <p class={`auto-texto ${index === 0 ? "visible" : "hidden"}`}>
+                <span class="auto-texto-linea">{text.line1}</span>
+              </p>
+            ))}
+          </div>
 
           <div class="acciones">
             <button class="btn-like" data-id={auto.id}>
@@ -181,8 +294,8 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
   {
     mode === "home" && hasMoreAutos && (
       <div class="ver-mas-automatch-container">
-        <a href="/automatch" class="btn-automatch">
-          <i class="fas fa-layer-group" /> Ver mas AutoMatch
+        <a href="/automatch" class="btn-automatch btn-automatch--secondary">
+          <i class="fas fa-arrow-right" /> Ver mas AutoMatch
         </a>
       </div>
     )
@@ -191,7 +304,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
 
 {
   mode === "home" && (
-    <section class="automatch-section">
+    <section class="automatch-section automatch-section--finder">
       <h2>
         <i class="fas fa-car-side" />
         Encuentra tu AutoMatch
@@ -201,7 +314,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
         ti.
       </p>
 
-      <a href="/automatch-find" class="btn-automatch">
+      <a href="/automatch-find" class="btn-automatch btn-automatch--primary">
         <i class="fas fa-sliders-h" /> Probar AutoMatch
       </a>
     </section>
@@ -214,7 +327,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
   .automatch-section {
     text-align: center;
     padding: 3rem 1rem;
-    background: linear-gradient(135deg, #a6c796 0%, #ffffff 100%);
+    background: #ffffff;
     border-radius: 1.2rem;
     margin: 3rem 0;
     font-size: 1.4rem;
@@ -287,7 +400,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
   /* ========== GRID DE TARJETAS ========== */
   .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 2rem;
     font-size: 1.1rem;
     text-align: start;
@@ -295,16 +408,24 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
   }
 
   .auto-card {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    padding: 1rem 1.5rem;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
     display: flex;
     flex-direction: column;
     transition:
-      transform 0.3s,
-      box-shadow 0.3s;
-    border: 1px solid rgba(225, 163, 7, 0.1);
+      transform 0.35s,
+      box-shadow 0.35s;
+    border: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    position: relative;
+    isolation: isolate;
+  }
+
+  .auto-card::before {
+    content: none;
   }
 
   .auto-card h3 {
@@ -321,10 +442,58 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     color: #000;
   }
 
+  .auto-info {
+    min-height: 2.2em;
+    margin-bottom: 0.35rem;
+  }
+
+  .auto-texto {
+    margin: 0;
+    color: #000;
+  }
+
+  .auto-texto.hidden {
+    display: none;
+  }
+
+  .auto-texto.visible {
+    display: block;
+  }
+
+  .auto-texto-linea {
+    display: block;
+    line-height: 1.35;
+  }
+
+  .auto-texto.entering {
+    animation: autoTextIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes autoTextIn {
+    0% {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .auto-texto.entering {
+      animation: none;
+    }
+
+    .auto-img.entering {
+      animation: none;
+    }
+  }
+
   .auto-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    border-color: rgba(225, 163, 7, 0.3);
+    transform: translateY(-10px) scale(1.01);
+    box-shadow: none;
+    background: transparent;
   }
 
   /* ========== CARRUSEL DE IMÁGENES ========== */
@@ -356,7 +525,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     border-radius: 12px;
     display: none;
     transition: opacity 0.4s ease;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 3 / 2;
     object-fit: cover;
   }
 
@@ -364,36 +533,103 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     display: block;
   }
 
+  .auto-img.entering {
+    animation: autoImageIn 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes autoImageIn {
+    0% {
+      opacity: 0.25;
+      transform: translateY(6px) scale(1.03);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .auto-carousel-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.95rem;
+    margin-top: 0.55rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .carousel-dots {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(207, 213, 220, 0.95);
+  }
+
+  .carousel-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: none;
+    background: #b7c2ce;
+    cursor: pointer;
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease,
+      opacity 0.2s ease;
+    opacity: 0.8;
+  }
+
+  .carousel-dot:hover {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+
+  .carousel-dot.active {
+    background: #1b5e3f;
+    transform: scale(1.28);
+    opacity: 1;
+  }
+
   .prev,
   .next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.9);
-    color: black;
-    border: none;
+    position: static;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #ffffff 0%, #f2f5f8 100%);
+    color: #26323f;
+    border: 1px solid #cfd7e0;
     border-radius: 50%;
-    padding: 0.5rem 0.7rem;
-    font-size: 1.2rem;
+    padding: 0;
+    font-size: 0.82rem;
     cursor: pointer;
-    transition: all 0.2s;
-    z-index: 10;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s,
+      background-color 0.2s,
+      color 0.2s,
+      border-color 0.2s;
+    box-shadow:
+      0 5px 14px rgba(19, 38, 57, 0.16),
+      0 1px 2px rgba(19, 38, 57, 0.08);
   }
 
   .prev:hover,
   .next:hover {
     background: #1b5e3f;
     color: white;
-    transform: translateY(-50%) scale(1.15);
-    box-shadow: 0 4px 12px rgba(27, 94, 63, 0.4);
+    border-color: #1b5e3f;
+    transform: scale(1.06);
+    box-shadow: 0 6px 16px rgba(27, 94, 63, 0.28);
   }
 
-  .prev {
-    left: 10px;
-  }
-
-  .next {
-    right: 10px;
+  .prev:active,
+  .next:active {
+    transform: scale(0.96);
   }
 
   /* ========== ACCIONES (LIKES Y CORAZONES) ========== */
@@ -695,59 +931,111 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
   .ver-mas-automatch-container {
     display: flex;
     justify-content: center;
-    margin-top: 0.5rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.25rem;
   }
 
   .btn-automatch {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 1rem;
-    padding: 1rem 2rem;
-    background: #1b5e3f;
-    color: white;
+    margin-top: 0.8rem;
+    padding: 0.78rem 1.3rem;
+    background: transparent;
+    color: #1b5e3f;
     text-decoration: none;
-    border-radius: 0.8rem;
+    border-radius: 999px;
     font-weight: 700;
-    font-size: 1.05rem;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 4px 20px rgba(225, 163, 7, 0.3);
+    font-size: 0.93rem;
+    transition: all 0.25s ease;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    position: relative;
-    overflow: hidden;
-    border: none;
+    letter-spacing: 0.35px;
+    border: 1px solid rgba(27, 94, 63, 0.3);
     cursor: pointer;
   }
 
   .btn-automatch i {
-    font-size: 1rem;
-  }
-
-  .btn-automatch::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: #1b5e3f;
-    transition: left 0.4s ease;
-    z-index: 1;
+    font-size: 0.88rem;
   }
 
   .btn-automatch:hover {
-    background: linear-gradient(135deg, #d4932e 0%, #c17f1a 100%);
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 30px rgba(225, 163, 7, 0.4);
+    transform: translateY(-2px);
   }
 
-  .btn-automatch:hover::before {
-    left: 100%;
+  .btn-automatch--secondary {
+    margin-top: 0.35rem;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: #1f5f43;
+    box-shadow: none;
+    font-size: 0.97rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0.1px;
+    text-decoration: underline;
+    text-decoration-color: rgba(31, 95, 67, 0.32);
+    text-underline-offset: 0.22rem;
+  }
+
+  .btn-automatch--secondary:hover {
+    background: transparent;
+    color: #174a33;
+    box-shadow: none;
+    transform: none;
+    text-decoration-color: rgba(23, 74, 51, 0.75);
+  }
+
+  .btn-automatch--secondary i {
+    font-size: 0.86rem;
+    opacity: 0.85;
+    transition: transform 0.2s ease;
+  }
+
+  .btn-automatch--secondary:hover i {
+    transform: translateX(2px);
+  }
+
+  .btn-automatch--primary {
+    padding: 0.95rem 1.75rem;
+    background: #1b5e3f;
+    color: white;
+    border-color: #1b5e3f;
+    box-shadow: 0 8px 20px rgba(27, 94, 63, 0.24);
+    font-size: 0.98rem;
+  }
+
+  .btn-automatch--primary:hover {
+    background: #154c33;
+    border-color: #154c33;
+    box-shadow: 0 10px 24px rgba(21, 76, 51, 0.28);
   }
 
   .btn-automatch:active {
-    transform: translateY(-1px) scale(1.02);
+    transform: translateY(0);
+  }
+
+  .automatch-section--finder {
+    margin-top: 1rem;
+    padding-top: 2.35rem;
+    position: relative;
+  }
+
+  .automatch-section--finder::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(460px, 74%);
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      rgba(27, 94, 63, 0) 0%,
+      rgba(27, 94, 63, 0.35) 50%,
+      rgba(27, 94, 63, 0) 100%
+    );
   }
 
   /* ========== RESPONSIVE ========== */
@@ -766,6 +1054,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     .automatch-section {
       padding: 2rem 1rem;
       margin: 2rem 0;
+      background: #ffffff;
     }
 
     .automatch-section h2 {
@@ -798,7 +1087,24 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     }
 
     .auto-card {
-      padding: 1rem;
+      padding: 0;
+    }
+
+    .auto-card h3 {
+      margin: 0.8rem 0 0.45rem;
+      font-size: 1.08rem;
+      letter-spacing: 0.2px;
+    }
+
+    .auto-info {
+      min-height: 2.45em;
+      margin-bottom: 0.45rem;
+    }
+
+    .auto-texto-linea {
+      font-size: 1.03rem;
+      line-height: 1.5;
+      letter-spacing: 0.1px;
     }
 
     .form-comentario {
@@ -812,8 +1118,18 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     }
 
     .btn-automatch {
-      padding: 0.8rem 1.5rem;
-      font-size: 0.95rem;
+      padding: 0.75rem 1.15rem;
+      font-size: 0.9rem;
+    }
+
+    .btn-automatch--primary {
+      padding: 0.85rem 1.4rem;
+      font-size: 0.93rem;
+    }
+
+    .automatch-section--finder {
+      margin-top: 0.9rem;
+      padding-top: 2rem;
     }
 
     .ver-mas-automatch-container {
@@ -846,18 +1162,44 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     }
 
     .auto-card {
-      padding: 0.75rem;
-      border-radius: 12px;
+      padding: 0;
+      border-radius: 0;
     }
 
     .auto-img {
       aspect-ratio: 16 / 10;
     }
 
+    .auto-card h3 {
+      font-size: 1rem;
+    }
+
+    .auto-texto-linea {
+      font-size: 0.98rem;
+      line-height: 1.48;
+    }
+
     .prev,
     .next {
-      padding: 0.4rem 0.5rem;
-      font-size: 1rem;
+      width: 34px;
+      height: 34px;
+      font-size: 0.76rem;
+    }
+
+    .auto-carousel-controls {
+      margin-top: 0.45rem;
+      margin-bottom: 0.55rem;
+      gap: 0.75rem;
+    }
+
+    .carousel-dots {
+      gap: 0.42rem;
+      padding: 0.12rem 0.38rem;
+    }
+
+    .carousel-dot {
+      width: 7px;
+      height: 7px;
     }
 
     .acciones {
@@ -880,13 +1222,53 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     }
 
     .form-comentario button {
-      padding: 0.5rem;
-      font-size: 0.8rem;
+      width: 95%;
+      margin: 0.15rem auto 0;
+      justify-content: center;
+      border-radius: 10px;
+      padding: 0.62rem 0.8rem;
+      font-size: 0.84rem;
+      letter-spacing: 0.4px;
+    }
+
+    .btn-expand-comentarios {
+      width: 95%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      padding: 0.52rem 0.8rem;
+      border-radius: 10px;
+    }
+
+    .ver-mas-automatch-container {
+      width: 100%;
+      justify-content: center;
     }
 
     .btn-automatch {
-      padding: 0.75rem 1.2rem;
+      width: 95%;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 0.72rem 1rem;
+      font-size: 0.88rem;
+    }
+
+    .btn-automatch--secondary {
+      width: auto;
+      min-width: 0;
+      padding: 0;
+      font-size: 0.92rem;
+    }
+
+    .btn-automatch--primary {
+      width: 95%;
+      padding: 0.82rem 1.1rem;
       font-size: 0.9rem;
+    }
+
+    .automatch-section--finder {
+      margin-top: 0.85rem;
+      padding-top: 1.85rem;
     }
 
     .ver-mas-automatch-container {
@@ -912,6 +1294,11 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
       localStorage.getItem("automatchLikedState") || "{}",
     );
     const autoCards = Array.from(document.querySelectorAll(".auto-card"));
+    const autoplayTimers = new Map<HTMLElement, number>();
+    const AUTOPLAY_MS = 5000;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
     const autoIds = autoCards
       .map((card) => (card as HTMLElement).dataset.id || "")
       .filter(Boolean);
@@ -1034,31 +1421,164 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     aplicarEstadoLikes();
     await Promise.all(autoIds.map((autoId) => cargarComentarios(autoId)));
 
+    function animateTextEntry(textEl: HTMLElement | undefined) {
+      if (!textEl) return;
+      textEl.classList.remove("entering");
+      void textEl.offsetWidth;
+      textEl.classList.add("entering");
+    }
+
+    function animateImageEntry(imageEl: HTMLElement | undefined) {
+      if (!imageEl) return;
+      imageEl.classList.remove("entering");
+      void imageEl.offsetWidth;
+      imageEl.classList.add("entering");
+    }
+
+    function getCurrentImageIndex(images: Element[]) {
+      const current = images.findIndex((img) =>
+        img.classList.contains("visible"),
+      );
+      return current < 0 ? 0 : current;
+    }
+
+    function updateCarousel(card: HTMLElement, nextIndex: number) {
+      const carousel = card.querySelector(".auto-carousel");
+      if (!(carousel instanceof HTMLElement)) return;
+
+      carousel.classList.add("loaded");
+      const images = Array.from(carousel.querySelectorAll(".auto-img"));
+      const texts = Array.from(card.querySelectorAll(".auto-texto"));
+      const dots = Array.from(card.querySelectorAll(".carousel-dot"));
+      if (images.length === 0) return;
+
+      const current = getCurrentImageIndex(images);
+      const normalizedNext =
+        ((nextIndex % images.length) + images.length) % images.length;
+
+      images[current]?.classList.remove("visible");
+      images[current]?.classList.add("hidden");
+      images[current]?.classList.remove("entering");
+
+      images[normalizedNext]?.classList.remove("hidden");
+      images[normalizedNext]?.classList.add("visible");
+      animateImageEntry(images[normalizedNext] as HTMLElement | undefined);
+
+      if (texts.length > 0) {
+        const currentText = texts[current] as HTMLElement | undefined;
+        const nextText = texts[normalizedNext] as HTMLElement | undefined;
+        if (currentText) {
+          currentText.classList.remove("visible");
+          currentText.classList.add("hidden");
+          currentText.classList.remove("entering");
+        }
+        if (nextText) {
+          nextText.classList.remove("hidden");
+          nextText.classList.add("visible");
+          animateTextEntry(nextText);
+        }
+      }
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("active", index === normalizedNext);
+      });
+    }
+
+    function moveCarouselBy(card: HTMLElement, step: number) {
+      const images = Array.from(
+        card.querySelectorAll(".auto-carousel .auto-img"),
+      );
+      if (images.length === 0) return;
+      const current = getCurrentImageIndex(images);
+      updateCarousel(card, current + step);
+    }
+
+    function stopAutoplay(card: HTMLElement) {
+      const timer = autoplayTimers.get(card);
+      if (timer) {
+        window.clearInterval(timer);
+        autoplayTimers.delete(card);
+      }
+    }
+
+    function startAutoplay(card: HTMLElement) {
+      if (prefersReducedMotion.matches) return;
+      stopAutoplay(card);
+      const timer = window.setInterval(() => {
+        moveCarouselBy(card, 1);
+      }, AUTOPLAY_MS);
+      autoplayTimers.set(card, timer);
+    }
+
+    autoCards.forEach((cardNode) => {
+      if (!(cardNode instanceof HTMLElement)) return;
+      const card = cardNode;
+      startAutoplay(card);
+      card.addEventListener("mouseenter", () => stopAutoplay(card));
+      card.addEventListener("mouseleave", () => startAutoplay(card));
+      card.addEventListener("focusin", () => stopAutoplay(card));
+      card.addEventListener("focusout", (event) => {
+        const nextFocus = event.relatedTarget as Node | null;
+        if (!nextFocus || !card.contains(nextFocus)) {
+          startAutoplay(card);
+        }
+      });
+    });
+
+    prefersReducedMotion.addEventListener("change", () => {
+      autoCards.forEach((cardNode) => {
+        if (!(cardNode instanceof HTMLElement)) return;
+        if (prefersReducedMotion.matches) {
+          stopAutoplay(cardNode);
+        } else {
+          startAutoplay(cardNode);
+        }
+      });
+    });
+
     // Clicks globales: carrusel + likes
     document.addEventListener("click", async (e) => {
       const target = e.target;
       if (!(target instanceof HTMLElement)) return;
 
       // Carrusel
-      if (target.matches(".next, .prev")) {
-        const carousel = target.closest(".auto-carousel");
-        if (!carousel) return;
-        carousel.classList.add("loaded");
-        const images = carousel.querySelectorAll(".auto-img");
-        let current = Array.from(images).findIndex((img) =>
-          img.classList.contains("visible"),
+      if (
+        target.matches(".next, .prev") ||
+        target.closest(".next, .prev") ||
+        target.matches(".carousel-dot")
+      ) {
+        const trigger = target.matches(".next, .prev, .carousel-dot")
+          ? target
+          : target.closest(".next, .prev");
+        if (!(trigger instanceof HTMLElement)) return;
+
+        const card = trigger.closest(".auto-card");
+        if (!(card instanceof HTMLElement)) return;
+        const images = Array.from(
+          card.querySelectorAll(".auto-carousel .auto-img"),
         );
-        if (current < 0) current = 0;
+        if (images.length === 0) return;
 
-        images[current].classList.remove("visible");
-        images[current].classList.add("hidden");
+        const current = getCurrentImageIndex(images);
 
-        const nextIndex = target.matches(".next")
-          ? (current + 1) % images.length
-          : (current - 1 + images.length) % images.length;
+        let nextIndex = current;
+        if (trigger.matches(".next")) {
+          nextIndex = (current + 1) % images.length;
+        } else if (trigger.matches(".prev")) {
+          nextIndex = (current - 1 + images.length) % images.length;
+        } else {
+          const dotIndex = Number(trigger.dataset.index);
+          if (
+            !Number.isNaN(dotIndex) &&
+            dotIndex >= 0 &&
+            dotIndex < images.length
+          ) {
+            nextIndex = dotIndex;
+          }
+        }
 
-        images[nextIndex].classList.remove("hidden");
-        images[nextIndex].classList.add("visible");
+        updateCarousel(card, nextIndex);
+        startAutoplay(card);
         return;
       }
 

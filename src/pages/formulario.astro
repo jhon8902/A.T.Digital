@@ -318,7 +318,7 @@ const cloudinaryFolder =
 
           <label>
             Ámbito
-            <select name="source_scope" required>
+            <select class="scope-select" name="source_scope" required>
               <option value="nacional" selected>Nacional</option>
               <option value="internacional">Internacional</option>
             </select>
@@ -371,6 +371,60 @@ const cloudinaryFolder =
                 posición 1 llenará image1, la 2 llenará image2, y así
                 sucesivamente.
               </p>
+            </div>
+          </fieldset>
+
+          <fieldset id="automatchTextGroup" class="group-box" hidden>
+            <legend>Textos por imagen (solo AutoMatch)</legend>
+            <p class="storage-tip">
+              La imagen 1 usa titulo y subtitulo. Desde imagen 2 puedes definir
+              una linea por slide para reemplazar el texto base.
+            </p>
+            <div class="grid-2">
+              <label>
+                Texto imagen 2
+                <input
+                  type="text"
+                  name="texto_img2_linea1"
+                  placeholder="Ej: Rendimiento y dinamica"
+                />
+              </label>
+
+              <label>
+                Texto imagen 3
+                <input
+                  type="text"
+                  name="texto_img3_linea1"
+                  placeholder="Ej: Diseno y acabados"
+                />
+              </label>
+
+              <label>
+                Texto imagen 4
+                <input
+                  type="text"
+                  name="texto_img4_linea1"
+                  placeholder="Ej: Cabina y confort"
+                />
+              </label>
+
+              <label>
+                Texto imagen 5
+                <input
+                  type="text"
+                  name="texto_img5_linea1"
+                  placeholder="Ej: Tecnologia util"
+                />
+              </label>
+
+              <label>
+                Texto imagen 6
+                <input
+                  type="text"
+                  name="texto_img6_linea1"
+                  placeholder="Ej: Seguridad activa"
+                />
+              </label>
             </div>
           </fieldset>
 
@@ -585,7 +639,9 @@ const cloudinaryFolder =
             </div>
           </fieldset>
 
-          <button type="submit" id="submitNoteBtn">Guardar Nota</button>
+          <button type="submit" id="submitNoteBtn" class="submit-editorial">
+            Guardar Nota
+          </button>
         </form>
 
         <p id="msg" class="msg"></p>
@@ -598,19 +654,8 @@ const cloudinaryFolder =
 
         body {
           margin: 0;
-          font-family: "Segoe UI", Roboto, sans-serif;
-          background:
-            radial-gradient(
-              circle at 15% 10%,
-              rgba(245, 158, 11, 0.26) 0,
-              transparent 38%
-            ),
-            radial-gradient(
-              circle at 85% 15%,
-              rgba(59, 130, 246, 0.26) 0,
-              transparent 35%
-            ),
-            linear-gradient(180deg, #eef2ff 0%, #f8fafc 52%, #f1f5f9 100%);
+          font-family: Georgia, "Times New Roman", serif;
+          background: #f7f5f1;
           color: #1f2937;
         }
 
@@ -622,18 +667,13 @@ const cloudinaryFolder =
         }
 
         .form-card {
-          background: linear-gradient(
-            135deg,
-            #ffffff 0%,
-            #f9fbff 60%,
-            #fdf2f8 100%
-          );
+          background: #ffffff;
           border-radius: 16px;
-          border: 1px solid #dbe7ff;
+          border: 1px solid #e3ddd4;
           padding: 26px;
           box-shadow:
-            0 14px 34px rgba(15, 23, 42, 0.12),
-            0 2px 0 rgba(255, 255, 255, 0.7) inset;
+            0 14px 34px rgba(15, 23, 42, 0.08),
+            0 1px 0 rgba(255, 255, 255, 0.85) inset;
         }
 
         .form-header h1 {
@@ -664,9 +704,9 @@ const cloudinaryFolder =
           border-radius: 999px;
           font-size: 12px;
           font-weight: 700;
-          color: #1e293b;
-          background: linear-gradient(135deg, #fde68a 0%, #fbcfe8 100%);
-          border: 1px solid rgba(148, 163, 184, 0.35);
+          color: #374151;
+          background: #f3f0ea;
+          border: 1px solid #e4ddd3;
         }
 
         .note-form {
@@ -722,7 +762,7 @@ const cloudinaryFolder =
           width: 100%;
           margin-top: 8px;
           padding: 12px 14px;
-          border: 1px solid #cbd5e1;
+          border: 1px solid #d8d2c8;
           border-radius: 8px;
           font-size: 15px;
           background: #ffffff;
@@ -741,9 +781,21 @@ const cloudinaryFolder =
         textarea:focus,
         select:focus {
           outline: none;
-          border-color: #6366f1;
-          box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.16);
+          border-color: #6b7280;
+          box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.12);
           transform: translateY(-1px);
+        }
+
+        .scope-select {
+          appearance: none;
+          background: #fbfaf7;
+          border-color: #d8d2c8;
+          color: #111827;
+        }
+
+        .scope-select option {
+          background: #ffffff;
+          color: #111827;
         }
 
         .group-box {
@@ -769,14 +821,9 @@ const cloudinaryFolder =
           width: 100%;
           margin-top: 4px;
           padding: 14px 18px;
-          border: none;
+          border: 1px solid #1f2937;
           border-radius: 8px;
-          background: linear-gradient(
-            135deg,
-            #1d4ed8 0%,
-            #7c3aed 55%,
-            #db2777 100%
-          );
+          background: #1f2937;
           color: #ffffff;
           font-size: 16px;
           font-weight: 700;
@@ -785,13 +832,18 @@ const cloudinaryFolder =
             transform 0.15s ease,
             box-shadow 0.2s ease,
             filter 0.2s ease;
-          box-shadow: 0 10px 18px rgba(79, 70, 229, 0.28);
+          box-shadow: 0 8px 16px rgba(31, 41, 55, 0.18);
         }
 
         button:hover {
           transform: translateY(-1px);
           filter: brightness(1.05);
-          box-shadow: 0 14px 24px rgba(79, 70, 229, 0.35);
+          box-shadow: 0 10px 20px rgba(31, 41, 55, 0.24);
+        }
+
+        .submit-editorial {
+          letter-spacing: 0.3px;
+          text-transform: none;
         }
 
         .btn-secondary,

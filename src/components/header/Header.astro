@@ -83,9 +83,25 @@ const headerSearchData = encodeURIComponent(
     </button>
   </div>
 
-  <!-- Tagline de Identidad Editorial -->
-  <div class="brand-tagline">
-    <p>Tecnología, emoción y futuro del automóvil en</p>
+  <!-- Identidad Editorial -->
+  <div class="brand-identity">
+    <div class="brand-copy">
+      <p class="brand-tagline">
+        La actualidad del sector automotor nacional e internacional:
+        lanzamientos, tendencias, tecnología y más.
+      </p>
+    </div>
+    <div class="brand-mark">
+      <div class="brand-logo-frame">
+        <img
+          src="/img/autlogo2.png"
+          alt="AutoTech Digital"
+          class="brand-logo"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+    </div>
   </div>
 
   <section id="inicio">
@@ -102,6 +118,12 @@ const headerSearchData = encodeURIComponent(
       <button id="close-menu" class="close-menu" aria-label="Cerrar menú"
         >&times;</button
       >
+      <div class="menu-mobile-actions">
+        <button id="menu-search-button" type="button" class="menu-action-btn">
+          Buscar
+        </button>
+        <a href="/registro" class="menu-action-link">Registro</a>
+      </div>
       <ul>
         <li><a href="/#inicio" data-section="inicio">Inicio</a></li>
 
@@ -142,40 +164,29 @@ const headerSearchData = encodeURIComponent(
   /* Estilo principal del header */
   .header {
     position: relative;
+    display: flex;
+    flex-direction: column;
     height: auto;
     width: 100%;
     background: black;
     font-family: "Georgia", serif;
+    overflow: visible;
   }
 
-  .header::after {
-    content: "";
-    background-image: url("/img/autlogo2.png");
-    background-size: 20px; /* Ajusta el tamaño de la imagen a 50px */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    background-position: center; /* Centra la imagen en el contenedor */
-    opacity: 1; /* Hacer la imagen completamente visible */
-    position: absolute;
-    top: 50px; /* mueve hacia abajo la imagen */
-    left: 0;
-    width: 100%;
-    height: 100%;
-    animation: welcomeLogo 0.8s ease-in-out forwards;
+  .header > .brand-identity {
+    order: 1;
   }
 
-  /* Animación de bienvenida para el logo */
-  @keyframes welcomeLogo {
-    0% {
-      opacity: 0;
-      transform: translateY(-30px) scale(0.8);
-    }
-    50% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+  .header > .top-bar {
+    order: 2;
+  }
+
+  .header > #inicio {
+    order: 3;
+  }
+
+  .header > .menu-hamburguesa {
+    order: 4;
   }
 
   /* icono casita de regreso */
@@ -206,17 +217,21 @@ const headerSearchData = encodeURIComponent(
   .top-bar {
     display: flex;
     align-items: center;
-    padding: 28px;
+    padding: 14px 20px;
     gap: 10px;
-    position: fixed; /* Fija la barra */
-    top: 0; /* Pegada arriba */
-    left: 0; /* Pegada al lado izquierdo */
+    position: relative;
+    top: auto;
+    left: auto;
     width: 100%; /* Ocupa todo el ancho */
-    max-width: 100vw; /* Evita overflow horizontal */
+    max-width: 100%;
     box-sizing: border-box; /* Incluye padding en el width */
-    z-index: 1000; /* Para que quede por encima del contenido */
-    background-color: #000; /* O el color que uses en tu header */
-    overflow-x: hidden; /* Evita scroll horizontal */
+    z-index: 20;
+    background-color: #fff;
+    overflow-x: clip;
+    border-top: 0;
+    border-bottom: 0;
+    box-shadow: none;
+    margin: 10px 0;
   }
 
   /* Espaciadores para centrar el menú */
@@ -227,7 +242,7 @@ const headerSearchData = encodeURIComponent(
   /* Menú de escritorio */
   .menu-escritorio {
     display: none;
-    margin-top: 20px;
+    margin-top: 0;
     text-align: center;
     justify-self: center; /* Centra el menú en la columna del medio */
   }
@@ -247,18 +262,19 @@ const headerSearchData = encodeURIComponent(
   }
 
   .menu-escritorio ul li a {
-    color: white;
+    color: #111;
     font-size: 1.1rem;
     padding: 12px 18px;
     border-radius: 8px;
     text-decoration: none;
-    border: 1px solid #e1a307 !important;
+    border: 0 !important;
+    background: transparent;
   }
 
   .menu-escritorio ul li a:hover {
-    background: rgb(220, 220, 220) !important;
+    background: #f1f1f1 !important;
     color: #111;
-    transform: scale(2.05);
+    transform: none;
   }
 
   /* Redes sociales icono */
@@ -436,6 +452,31 @@ const headerSearchData = encodeURIComponent(
     margin-bottom: 20px;
   }
 
+  .menu-mobile-actions {
+    display: none;
+  }
+
+  .menu-action-btn,
+  .menu-action-link {
+    border: 0;
+    background: #f3f3f3;
+    color: #111;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .menu-action-btn:hover,
+  .menu-action-link:hover {
+    background: #e8e8e8;
+  }
+
   /* menu hamburguesa lista */
   .menu-content ul {
     list-style: none;
@@ -488,35 +529,24 @@ const headerSearchData = encodeURIComponent(
   /* Media query para pantallas pequeñas */
   @media (max-width: 600px) {
     .header {
-      height: 180px; /* Ajusta la altura del header en pantallas pequeñas */
-    }
-
-    .header::after {
-      background-size: 280px; /* Reduce el tamaño de la imagen en pantallas pequeñas */
-      top: 30px;
+      height: auto;
+      min-height: 0;
     }
   }
 
   /* Media query para pantallas medianas */
   @media (min-width: 601px) and (max-width: 1024px) {
     .header {
-      height: 250px; /* Ajusta la altura del header en pantallas medianas */
-    }
-
-    .header::after {
-      background-size: 400px; /* Ajusta el tamaño de la imagen para pantallas medianas */
-      top: 50px;
+      height: auto;
+      min-height: 0;
     }
   }
 
   /* Responsive */
   @media (min-width: 768px) {
     .header {
-      height: 350px; /* Ajusta la altura de tu header */
-    }
-
-    .header::after {
-      background-size: 600px; /* Ajusta el tamaño de la imagen a 600px pantallas grandes */
+      height: auto;
+      min-height: 0;
     }
 
     .header-social-icons {
@@ -536,8 +566,14 @@ const headerSearchData = encodeURIComponent(
       display: none;
     }
 
+    .header {
+      height: auto;
+      min-height: 0;
+    }
+
     .top-bar {
       padding: 10px 12px;
+      margin-top: 0;
       gap: 6px;
       justify-content: flex-start;
       align-items: center;
@@ -569,12 +605,11 @@ const headerSearchData = encodeURIComponent(
     }
 
     /* Botones de autenticación: empujar hacia la derecha */
-    .auth-buttons {
-      gap: 6px;
-      font-size: 11px;
-      margin-left: auto;
-      flex-shrink: 0;
-      align-items: center;
+    .auth-buttons,
+    #search-button,
+    .register-button,
+    #search-close {
+      display: none !important;
     }
 
     .register-button {
@@ -592,12 +627,32 @@ const headerSearchData = encodeURIComponent(
     }
 
     .boton-hamburguesa {
-      padding: 6px 10px;
-      font-size: 26px;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      font-size: 22px;
       flex-shrink: 0;
-      margin-left: 6px;
-      min-width: 42px;
-      min-height: 42px;
+      margin-left: auto;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 12px;
+      border: 1px solid #d6d6d6;
+      background: #fff;
+      color: #1a1a1a;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .boton-hamburguesa span {
+      font-size: 24px;
+      line-height: 1;
+      text-shadow: none;
+    }
+
+    .menu-mobile-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: -4px 0 18px;
     }
   }
 
@@ -614,15 +669,11 @@ const headerSearchData = encodeURIComponent(
       width: 30px;
     }
 
-    .register-button {
-      display: none;
-    }
-
     .boton-hamburguesa {
-      padding: 5px 8px;
-      font-size: 22px;
-      min-width: 36px;
-      min-height: 36px;
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      min-height: 40px;
       margin-left: 4px;
     }
 
@@ -642,26 +693,26 @@ const headerSearchData = encodeURIComponent(
   }
 
   .register-button {
-    background-color: black;
+    background-color: #111;
     color: white;
     padding: 8px 16px;
     border-radius: 5px;
     cursor: pointer;
 
     transition: background-color 0.3s;
-    border: 1px solid rgb(171, 129, 4); /* Aquí defines el borde amarillo */
+    border: 0;
   }
 
   /* Estilos para el botón de búsqueda */
   #search-button {
-    background-color: black;
+    background-color: #111;
     color: white;
     padding: 8px 16px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 30px;
     transition: background-color 0.6s;
-    border: 1px solid rgb(26, 26, 26); /* Aquí defines el borde amarillo */
+    border: 0;
   }
 
   #search-button:hover {
@@ -769,12 +820,13 @@ const headerSearchData = encodeURIComponent(
       margin: 0;
     }
     .menu-escritorio ul li a {
-      color: white;
+      color: #111;
       font-size: 1.1rem;
       padding: 12px 18px;
       border-radius: 8px;
       text-decoration: none;
-      border: 2px solid #e1a307;
+      border: 0;
+      background: transparent;
       transition:
         background 0.3s,
         color 0.3s,
@@ -783,9 +835,9 @@ const headerSearchData = encodeURIComponent(
       font-weight: 500;
     }
     .menu-escritorio ul li a:hover {
-      background: #e1a307;
+      background: #f1f1f1;
       color: #111;
-      transform: scale(1.05);
+      transform: none;
     }
 
     .social-icons {
@@ -848,85 +900,115 @@ const headerSearchData = encodeURIComponent(
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Tagline de Identidad Editorial */
-  .brand-tagline {
+  /* Identidad editorial */
+  .brand-identity {
+    display: grid;
+    grid-template-columns: minmax(0, 0.56fr) minmax(0, 0.44fr);
+    align-items: center;
+    justify-items: center;
+    gap: clamp(2px, 0.8vw, 12px);
     background: linear-gradient(135deg, #121212 0%, #201701 100%);
     color: white;
     text-align: center;
-    padding: 40px 20px;
-    margin-top: 100px;
+    padding: clamp(18px, 2vw, 26px) 24px clamp(14px, 1.4vw, 20px);
+    margin-top: 0;
     font-style: italic;
     font-family: "Georgia", serif;
     letter-spacing: 2px;
-    animation: fadeInDown 0.8s ease-in-out;
     position: relative;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(225, 163, 7, 0.16);
+    overflow: hidden;
+    animation: brandMastheadIn 0.8s ease-out both;
   }
 
-  /* Líneas decorativas */
-  .brand-tagline::before,
-  .brand-tagline::after {
+  .brand-identity::after {
     content: "";
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0%;
-    max-width: 900px;
+    top: 50%;
+    left: 60.5%;
+    width: clamp(140px, 12vw, 220px);
     height: 2px;
     background: linear-gradient(
       90deg,
       transparent 0%,
-      #b98f04 20%,
-      #e1a307 50%,
-      #b98f04 80%,
+      rgba(225, 163, 7, 0.55) 10%,
+      rgba(225, 163, 7, 0.85) 50%,
+      rgba(225, 163, 7, 0.55) 90%,
       transparent 100%
     );
-    opacity: 0;
-    z-index: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 2px;
+    box-shadow: 0 0 7px rgba(225, 163, 7, 0.16);
+    pointer-events: none;
+    opacity: 0.88;
   }
 
-  .brand-tagline::before {
-    top: 15px;
-    animation: expandFromCenter 1s ease-in-out 0.3s forwards;
+  .brand-copy,
+  .brand-mark {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .brand-tagline::after {
-    bottom: 15px;
-    animation: expandFromCenter 1s ease-in-out 0.5s forwards;
+  .brand-copy {
+    justify-content: flex-start;
+    padding-right: 0;
+    padding-left: clamp(10px, 1.4vw, 22px);
   }
 
-  @keyframes expandFromCenter {
-    0% {
-      width: 0%;
-      opacity: 0;
-    }
-    50% {
-      opacity: 0.7;
-    }
-    100% {
-      width: 80%;
-      opacity: 0.7;
-    }
+  .brand-mark {
+    --desktop-logo-frame-width: clamp(360px, 30vw, 520px);
+    --desktop-logo-frame-height: clamp(120px, 10vw, 330px);
+    position: relative;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    justify-content: flex-start;
+    padding-left: 0;
   }
 
-  .brand-tagline p {
+  .brand-logo-frame {
+    width: var(--desktop-logo-frame-width);
+    height: var(--desktop-logo-frame-height);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: brandLogoIn 0.85s ease-out both 0.08s;
+  }
+
+  .brand-tagline {
     margin: 0;
-    font-size: 1.4rem;
-    font-weight: 500;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
+    font-size: clamp(1.34rem, 1.8vw, 1.62rem);
+    font-weight: 600;
+    max-width: 760px;
     color: white;
     position: relative;
-    z-index: 1;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    letter-spacing: 1px;
+    letter-spacing: 0.6px;
+    animation: brandTextIn 0.75s ease-out both;
+    text-align: left;
+    justify-self: start;
+    line-height: 1.42;
+    text-transform: capitalize;
   }
 
-  @keyframes fadeInDown {
+  .brand-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    transform: scale(1.65);
+    transform-origin: center;
+    display: block;
+  }
+
+  @keyframes brandMastheadIn {
     from {
       opacity: 0;
-      transform: translateY(-20px);
+      transform: translateY(-14px);
     }
     to {
       opacity: 1;
@@ -934,21 +1016,79 @@ const headerSearchData = encodeURIComponent(
     }
   }
 
+  @keyframes brandTextIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes brandLogoIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
   @media (max-width: 768px) {
+    .brand-identity {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 10px 14px 16px;
+      margin-top: 0;
+    }
+
+    .brand-identity::after {
+      display: none;
+    }
+
+    .brand-copy,
+    .brand-mark {
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+    }
+
+    .brand-mark {
+      gap: 0;
+    }
+
     .brand-tagline {
-      padding: 25px 15px;
-      margin-top: 70px;
-    }
-
-    .brand-tagline p {
-      font-size: 1rem;
+      font-size: 1.02rem;
       letter-spacing: 0.5px;
+      text-align: center;
+      max-width: 100%;
+      justify-self: center;
+      line-height: 1.38;
     }
 
-    .brand-tagline::before,
-    .brand-tagline::after {
-      width: 90%;
-      height: 1.5px;
+    .brand-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 52%;
+      transform: none;
+    }
+
+    .brand-logo-frame {
+      width: min(320px, 82vw);
+      max-width: 320px;
+      height: 128px;
+    }
+
+    .top-bar {
+      border-bottom: 0 !important;
+      box-shadow: none !important;
     }
   }
 </style>
@@ -966,7 +1106,10 @@ const headerSearchData = encodeURIComponent(
 
     function getHeaderOffset() {
       const topBarHeight = topBar?.getBoundingClientRect().height || 0;
-      return Math.round(topBarHeight + 16);
+      const isFixed = topBar
+        ? window.getComputedStyle(topBar).position === "fixed"
+        : false;
+      return Math.round((isFixed ? topBarHeight : 0) + 16);
     }
 
     function syncAnchorOffset() {
@@ -1248,6 +1391,17 @@ const headerSearchData = encodeURIComponent(
         sugerenciasEl.style.display = "none";
         sugerenciasEl.innerHTML = "";
       }
+    }
+
+    const menuSearchButton = document.getElementById("menu-search-button");
+    if (menuSearchButton) {
+      menuSearchButton.addEventListener("click", function () {
+        if (menu) {
+          menu.classList.remove("active");
+          document.body.style.overflow = "";
+        }
+        abrirBuscador();
+      });
     }
 
     if (searchButton && searchInput) {

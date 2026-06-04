@@ -28,6 +28,7 @@ try {
         id: String(note.id),
         nombre: note.title,
         descripcion: note.subtitle || note.content.substring(0, 100),
+        content: note.content || "",
         imagenes: [
           note.image1,
           note.image2,
@@ -52,10 +53,11 @@ try {
   <div class="extra-sections" id="extra-sections">
     <SectionInfo />
     <AdBanner />
-    <Noticias />
     <section id="automatch" class="automatch-destacado">
       <AutoMatch autos={autos} />
     </section>
+    <Noticias />
+
     <AdBanner variant="mazda" />
     <Electricos />
     <Hibridos />
