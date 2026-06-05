@@ -872,12 +872,10 @@
   }
 
   .automatch-section h2 {
-    font-size: 28px;
+    font-size: 2.4rem !important;
   }
 
-  .titulo {
-    font-size: 1.6rem;
-  }
+ 
 
   .titulo::before,
   .titulo::after {
