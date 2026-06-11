@@ -34,28 +34,44 @@ const headerSearchData = encodeURIComponent(
     <div class="spacer"></div>
 
     <!-- Menú de navegación para escritorio -->
-    <nav id="menu-escritorio" class="menu-escritorio">
+    <nav id="menu-escritorio" class="menu-escritorio" aria-label="Navegación principal">
       <ul>
-        <li><a href="/#inicio" data-section="inicio">Inicio</a></li>
         <li>
-          <a href="/#noticias" data-section="noticias">Noticias</a>
+          <a href="/#automatch" data-section="automatch" class="nav-primary">AutoMatch</a>
         </li>
-        <li><a href="/#automatch" data-section="automatch">AutoMatch</a></li>
         <li>
-          <a href="/#lanzamientos" data-section="lanzamientos">Lanzamientos</a>
-        </li>
-
-        <li>
-          <a href="/#hibridos" data-section="hibridos">Híbridos</a>
+          <a href="/automatch-find" class="nav-cta">Encontrar mi auto</a>
         </li>
         <li>
           <a href="/#electricos" data-section="electricos">Eléctricos</a>
         </li>
         <li>
-          <a href="/#deportes" data-section="deportes">Deportes</a>
+          <a href="/#hibridos" data-section="hibridos">Híbridos</a>
         </li>
         <li>
-          <a href="/#pruebas" data-section="pruebas">Pruebas</a>
+          <a href="/#noticias" data-section="noticias">Noticias</a>
+        </li>
+        <li class="nav-dropdown">
+          <button
+            type="button"
+            class="nav-dropdown-toggle"
+            aria-expanded="false"
+            aria-haspopup="true"
+          >
+            Más
+            <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+          </button>
+          <ul class="nav-dropdown-menu">
+            <li>
+              <a href="/#lanzamientos" data-section="lanzamientos">Lanzamientos</a>
+            </li>
+            <li>
+              <a href="/#pruebas" data-section="pruebas">Pruebas</a>
+            </li>
+            <li>
+              <a href="/deportes">Deportes</a>
+            </li>
+          </ul>
         </li>
       </ul>
     </nav>
@@ -88,11 +104,11 @@ const headerSearchData = encodeURIComponent(
     <div class="brand-copy">
       <p class="brand-tagline">
         <span class="tagline-desktop">
-          La actualidad del sector automotor nacional e internacional:
-          lanzamientos, tendencias, tecnología y más.
+          Encuentra tu auto ideal con <strong>AutoMatch</strong> y explora
+          eléctricos, híbridos y lanzamientos en Colombia.
         </span>
         <span class="tagline-mobile">
-          Lanzamientos, tendencias y tecnologia automotriz.
+          AutoMatch y actualidad automotriz en Colombia.
         </span>
       </p>
     </div>
@@ -130,18 +146,26 @@ const headerSearchData = encodeURIComponent(
         <a href="/registro" class="menu-action-link">Registro</a>
       </div>
       <ul>
-        <li><a href="/#inicio" data-section="inicio">Inicio</a></li>
+        <li class="menu-mobile-group-label">Producto</li>
+        <li>
+          <a href="/#automatch" data-section="automatch" class="nav-primary">AutoMatch</a>
+        </li>
+        <li>
+          <a href="/automatch-find" class="nav-cta">Encontrar mi auto</a>
+        </li>
 
-        <li><a href="/#noticias" data-section="noticias">Noticias</a></li>
+        <li class="menu-mobile-group-label">Explorar</li>
+        <li><a href="/#electricos" data-section="electricos">Eléctricos</a></li>
+        <li><a href="/#hibridos" data-section="hibridos">Híbridos</a></li>
         <li>
           <a href="/#lanzamientos" data-section="lanzamientos">Lanzamientos</a>
         </li>
-        <li><a href="/#hibridos" data-section="hibridos">Híbridos</a></li>
-        <li><a href="/#electricos" data-section="electricos">Eléctricos</a></li>
-        <li><a href="/#deportes" data-section="deportes">Deportes</a></li>
         <li><a href="/#pruebas" data-section="pruebas">Pruebas</a></li>
+        <li><a href="/#noticias" data-section="noticias">Noticias</a></li>
 
-        <li><a href="/#automatch" data-section="automatch">AutoMatch</a></li>
+        <li class="menu-mobile-group-label">Más</li>
+        <li><a href="/deportes">Deportes</a></li>
+        <li><a href="/#inicio" data-section="inicio">Inicio</a></li>
       </ul>
     </div>
   </nav>
@@ -174,7 +198,7 @@ const headerSearchData = encodeURIComponent(
     height: auto;
     width: 100%;
     background: black;
-    font-family: "Georgia", serif;
+    font-family: var(--font-body);
     overflow: visible;
   }
 
@@ -269,7 +293,7 @@ const headerSearchData = encodeURIComponent(
 
   .menu-escritorio ul li a {
     color: #111;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     padding: 12px 18px;
     border-radius: 8px;
     text-decoration: none;
@@ -281,6 +305,121 @@ const headerSearchData = encodeURIComponent(
     background: #f1f1f1 !important;
     color: #111;
     transform: none;
+  }
+
+  .menu-escritorio .nav-primary {
+    color: var(--color-brand, #08341f);
+    font-weight: 700;
+  }
+
+  .menu-escritorio .nav-cta {
+    background: var(--color-brand, #08341f);
+    color: #fff !important;
+    font-weight: 700;
+    padding: 10px 16px;
+    border-radius: 999px;
+  }
+
+  .menu-escritorio .nav-cta:hover {
+    background: var(--color-brand-hover, #0a4a2b) !important;
+    color: #fff !important;
+  }
+
+  .nav-dropdown {
+    position: relative;
+  }
+
+  .nav-dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: none;
+    background: transparent;
+    color: #111;
+    font-size: 1.05rem;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .nav-dropdown-toggle:hover,
+  .nav-dropdown.is-open .nav-dropdown-toggle {
+    background: #f1f1f1;
+  }
+
+  .nav-dropdown-toggle i {
+    font-size: 0.72em;
+    transition: transform 0.2s ease;
+  }
+
+  .nav-dropdown.is-open .nav-dropdown-toggle i {
+    transform: rotate(180deg);
+  }
+
+  .nav-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.35rem);
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 190px;
+    list-style: none;
+    margin: 0;
+    padding: 0.4rem;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    z-index: 1300;
+  }
+
+  .nav-dropdown.is-open .nav-dropdown-menu,
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown:focus-within .nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .nav-dropdown-menu li {
+    margin: 0 !important;
+  }
+
+  .nav-dropdown-menu a {
+    display: block;
+    padding: 0.65rem 0.85rem !important;
+    border-radius: 6px;
+    font-size: 0.95rem !important;
+    text-transform: none;
+    white-space: nowrap;
+  }
+
+  .menu-mobile-group-label {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0 18px;
+    margin-top: 0.35rem;
+  }
+
+  .menu-content .nav-primary {
+    color: #f8ca26;
+    font-weight: 700;
+  }
+
+  .menu-content .nav-cta {
+    background: var(--color-brand, #08341f);
+    color: #fff !important;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
 
   /* Redes sociales icono */
@@ -821,14 +960,15 @@ const headerSearchData = encodeURIComponent(
     .menu-escritorio ul {
       display: flex;
       justify-content: center;
-      gap: 30px;
+      align-items: center;
+      gap: 8px;
       list-style: none;
       padding: 0;
       margin: 0;
     }
     .menu-escritorio ul li a {
       color: #111;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       padding: 12px 18px;
       border-radius: 8px;
       text-decoration: none;
@@ -839,12 +979,57 @@ const headerSearchData = encodeURIComponent(
         color 0.3s,
         transform 0.2s;
       text-transform: uppercase;
-      font-weight: 500;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    @media (min-width: 1024px) {
+      .menu-escritorio ul li a {
+        font-size: 1.22rem;
+        padding: 12px 20px;
+      }
+
+      .brand-tagline {
+        font-size: 1.08rem;
+        line-height: 1.55;
+      }
+
+      .search-input {
+        font-size: 1rem;
+      }
     }
     .menu-escritorio ul li a:hover {
       background: #f1f1f1;
       color: #111;
       transform: none;
+    }
+
+    .menu-escritorio ul li a.nav-cta {
+      background: var(--color-brand, #08341f) !important;
+      color: #fff !important;
+      border: 1px solid var(--color-brand, #08341f);
+      border-radius: 999px;
+      padding: 10px 18px;
+      box-shadow: 0 2px 8px rgba(8, 52, 31, 0.22);
+      white-space: nowrap;
+    }
+
+    .menu-escritorio ul li a.nav-cta:hover {
+      background: var(--color-brand-hover, #0a4a2b) !important;
+      color: #fff !important;
+      border-color: var(--color-brand-hover, #0a4a2b);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(8, 52, 31, 0.28);
+    }
+
+    .menu-escritorio ul li a.nav-primary {
+      color: var(--color-brand, #08341f) !important;
+      font-weight: 700;
+    }
+
+    .menu-escritorio ul li a.nav-primary:hover {
+      background: #e8f2ec !important;
+      color: var(--color-brand, #08341f) !important;
     }
 
     .social-icons {
@@ -988,19 +1173,25 @@ const headerSearchData = encodeURIComponent(
 
   .brand-tagline {
     margin: 0;
-    font-size: clamp(1.38rem, 2.8vw, 1.62rem);
-    font-weight: 600;
-    max-width: 760px;
-    color: #b5b5b6;
+    font-size: clamp(1.25rem, 2.4vw, 1.55rem);
+    font-weight: 500;
+    max-width: 42rem;
+    color: #e8ece9;
     position: relative;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    letter-spacing: 0.6px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    letter-spacing: 0.02em;
     animation: brandTextIn 0.75s ease-out both;
     text-align: left;
     justify-self: start;
-    line-height: 1.42;
-    text-transform: capitalize;
+    line-height: 1.5;
+    text-transform: none;
     padding-top: 20px;
+    font-family: var(--font-body, "Source Sans 3", sans-serif);
+  }
+
+  .brand-tagline strong {
+    color: #f0c14a;
+    font-weight: 700;
   }
 
   .tagline-mobile {
@@ -1170,6 +1361,23 @@ const headerSearchData = encodeURIComponent(
     window.addEventListener("resize", () => {
       syncAnchorOffset();
     });
+
+    const navDropdown = document.querySelector(".nav-dropdown");
+    const navDropdownToggle = document.querySelector(".nav-dropdown-toggle");
+
+    if (navDropdown && navDropdownToggle) {
+      navDropdownToggle.addEventListener("click", () => {
+        const isOpen = navDropdown.classList.toggle("is-open");
+        navDropdownToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!navDropdown.contains(event.target as Node)) {
+          navDropdown.classList.remove("is-open");
+          navDropdownToggle.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
 
     const hashLinks = document.querySelectorAll('a[href^="/#"], a[href^="#"]');
 

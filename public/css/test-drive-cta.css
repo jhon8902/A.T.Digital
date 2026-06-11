@@ -1,0 +1,172 @@
+.test-drive-cta {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 2rem auto 2.5rem;
+  padding: 1.75rem 1.5rem;
+  background: #ffffff;
+  border: 1px solid var(--color-border, #d8e5dc);
+  border-radius: var(--radius-card, 12px);
+  box-shadow: var(--shadow-card, 0 4px 16px rgba(8, 52, 31, 0.08));
+}
+
+.test-drive-cta__header h2 {
+  font-family: var(--font-display, "Barlow Condensed", sans-serif);
+  font-size: clamp(1.45rem, 2.5vw, 2rem);
+  color: var(--color-brand, #08341f);
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+.test-drive-cta__header p {
+  font-family: var(--font-body, "Source Sans Pro", sans-serif);
+  font-size: clamp(1rem, 1.2vw, 1.12rem);
+  color: #4a4a4a;
+  margin-bottom: 1.25rem;
+  line-height: 1.55;
+}
+
+.test-drive-cta__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.test-drive-cta__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.test-drive-cta__field--full {
+  grid-column: 1 / -1;
+}
+
+.test-drive-cta__field label {
+  font-family: var(--font-body, "Source Sans Pro", sans-serif);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #2f2f2f;
+}
+
+.test-drive-cta__field input,
+.test-drive-cta__field select,
+.test-drive-cta__field textarea {
+  width: 100%;
+  border: 1px solid #cfd8d2;
+  border-radius: 8px;
+  padding: 0.72rem 0.85rem;
+  font-family: var(--font-body, "Source Sans Pro", sans-serif);
+  font-size: 0.95rem;
+  color: #1f1f1f;
+  background: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.test-drive-cta__field input:focus,
+.test-drive-cta__field select:focus,
+.test-drive-cta__field textarea:focus {
+  outline: none;
+  border-color: var(--color-brand, #08341f);
+  box-shadow: 0 0 0 3px rgba(8, 52, 31, 0.12);
+}
+
+.test-drive-cta__field textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.test-drive-cta__consent {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-family: var(--font-body, "Source Sans Pro", sans-serif);
+  font-size: 0.86rem;
+  color: #555;
+  line-height: 1.45;
+}
+
+.test-drive-cta__consent input {
+  margin-top: 0.2rem;
+}
+
+.test-drive-cta__consent a {
+  color: var(--color-brand, #08341f);
+  text-decoration: underline;
+}
+
+.test-drive-cta__actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+.test-drive-cta__submit {
+  border: none;
+  border-radius: 999px;
+  padding: 0.78rem 1.5rem;
+  background: var(--color-brand, #08341f);
+  color: #fff;
+  font-family: var(--font-body, "Source Sans Pro", sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.test-drive-cta__submit:hover:not(:disabled) {
+  background: var(--color-brand-hover, #0a4a2b);
+}
+
+.test-drive-cta__submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.test-drive-cta__hint {
+  font-family: var(--font-body, "Source Sans Pro", sans-serif);
+  font-size: 0.84rem;
+  color: #666;
+}
+
+.test-drive-cta__hint i {
+  color: var(--color-accent, #e6b410);
+  margin-right: 0.25rem;
+}
+
+.test-drive-cta__message {
+  grid-column: 1 / -1;
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+  font-family: var(--font-body, "Source Sans Pro", sans-serif);
+  font-size: 0.9rem;
+  display: none;
+}
+
+.test-drive-cta__message.is-visible {
+  display: block;
+}
+
+.test-drive-cta__message--success {
+  background: #e8f5ee;
+  color: #1f5d3e;
+  border: 1px solid #bfdcc9;
+}
+
+.test-drive-cta__message--error {
+  background: #fdeeee;
+  color: #8a1f1f;
+  border: 1px solid #f0c3c3;
+}
+
+@media (max-width: 720px) {
+  .test-drive-cta {
+    width: calc(100% - 1.25rem);
+    padding: 1.25rem 1rem;
+  }
+
+  .test-drive-cta__grid {
+    grid-template-columns: 1fr;
+  }
+}

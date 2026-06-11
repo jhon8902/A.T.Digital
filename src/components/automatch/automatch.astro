@@ -1,41 +1,4 @@
 ---
-const staticAutos = [
-  {
-    id: "tesla-model-3",
-    nombre: "Maserati GranCabrio",
-    descripcion: "Sedán eléctrico con más de 500 km de autonomía.",
-    imagenes: [
-      "/img/automatch/maseratti-grancabrio.webp",
-      "/img/automatch/maserati-grancabrio1.webp",
-      "/img/automatch/maserati-grancabrio2.webp",
-      "/img/automatch/maserati-grancabrio3.webp",
-    ],
-  },
-  {
-    id: "bmw-i4",
-    nombre: "Subaru BRZ",
-    descripcion:
-      "Deportivo de alto rendimiento: potencia, precisión y emociones al máximo.",
-    imagenes: [
-      "/img/automatch/subaru brz 1.webp",
-      "/img/automatch/subaru brz.webp",
-      "/img/automatch/subaru brz 2.webp",
-      "/img/automatch/subaru brz 3.webp",
-    ],
-  },
-  {
-    id: "porsche-taycan",
-    nombre: "Bugatti Chiron",
-    descripcion: "El auto eléctrico más emocionante del mundo.",
-    imagenes: [
-      "/img/automatch/bugatti.webp",
-      "/img/automatch/bugatti1.webp",
-      "/img/automatch/bugatti2.webp",
-      "/img/automatch/bugatti3.webp",
-    ],
-  },
-];
-
 const { autos: incomingAutos = [], mode = "home" } = Astro.props;
 const HOME_VISIBLE_COUNT = 3;
 
@@ -44,14 +7,6 @@ function stripHtml(input = "") {
     .replace(/<[^>]*>/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-}
-
-function normalizeText(input = "") {
-  return String(input)
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
 }
 
 function toSingleLine(text = "", max = 96) {
@@ -64,29 +19,6 @@ function toSingleLine(text = "", max = 96) {
   const safeCut = cutAt > 20 ? cutAt : max;
   return `${clean.slice(0, safeCut).trim()}...`;
 }
-
-const defaultFactsByModel: Record<string, string[]> = {
-  "maserati grancabrio": [
-    "Convertible de lujo con enfoque GT y respuesta progresiva.",
-    "Cabina premium con acabados artesanales y gran nivel de detalle.",
-    "Tren motriz electrificado pensado para acelerar con suavidad y fuerza.",
-  ],
-  "subaru brz": [
-    "Coupe de traccion trasera con reparto de peso equilibrado.",
-    "Motor boxer 2.4L atmosferico con respuesta lineal en altas vueltas.",
-    "Puesta a punto enfocada en precision de chasis y control en curva.",
-  ],
-  "bugatti chiron": [
-    "Hiperdeportivo con arquitectura extrema y aerodinamica activa.",
-    "Motor W16 quad-turbo de altas prestaciones para uso de coleccion.",
-    "Ingenieria orientada a velocidad maxima y estabilidad a alta carga.",
-  ],
-  "maserati mcxtrema": [
-    "Modelo de pista con enfoque radical y produccion muy limitada.",
-    "V6 biturbo de alto rendimiento y calibracion orientada a circuito.",
-    "Aero funcional para generar carga y confianza en curvas rapidas.",
-  ],
-};
 
 function parseAutomatchMeta(content = "") {
   const match = String(content).match(/AUTOMATCH_META:([^>]*)-->/i);
@@ -126,26 +58,16 @@ const normalizedIncoming = Array.isArray(incomingAutos)
           ),
           metaTexts: parseAutomatchMeta(auto?.content || ""),
           imagenes: images.length > 0 ? images : ["/img/default.jpg"],
+          href: String(auto?.href || "/automatch-find"),
+          ctaLabel: String(auto?.ctaLabel || "Ver en AutoMatch"),
+          catalogId: auto?.catalogId,
+          noteId: auto?.noteId,
         };
       })
       .filter((auto) => auto.nombre && auto.imagenes.length > 0)
   : [];
 
-const incomingIdSet = new Set(
-  normalizedIncoming.map((auto) => String(auto.id)),
-);
-const incomingTitleSet = new Set(
-  normalizedIncoming.map((auto) => normalizeText(auto.nombre)),
-);
-
-const mergedAutos = [
-  ...normalizedIncoming,
-  ...staticAutos.filter(
-    (auto) =>
-      !incomingIdSet.has(String(auto.id)) &&
-      !incomingTitleSet.has(normalizeText(auto.nombre)),
-  ),
-];
+const mergedAutos = normalizedIncoming;
 
 const autosToRender =
   mode === "archive"
@@ -153,8 +75,6 @@ const autosToRender =
     : mergedAutos.slice(0, HOME_VISIBLE_COUNT);
 
 const autosWithTexts = autosToRender.map((auto: any) => {
-  const modelFacts =
-    defaultFactsByModel[normalizeText(auto.nombre)] || ([] as string[]);
   const firstSlideText = toSingleLine(auto.descripcion, 98);
 
   const texts = (auto.imagenes as string[]).map((_, index) => {
@@ -172,7 +92,6 @@ const autosWithTexts = autosToRender.map((auto: any) => {
     return {
       line1:
         customLine1 ||
-        modelFacts[index - 1] ||
         slideTopics[index % slideTopics.length] ||
         "Detalle destacado del modelo",
     };
@@ -191,13 +110,12 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
   <h2 class="titulo">
     <i class="fas fa-car titulo-icon"></i>
     {mode === "archive" ? "Mas contenido AutoMatch" : "AutoMatch"}
-    <i class="fas fa-heart titulo-icon titulo-icon--heart"></i>
   </h2>
   <p class="subtitulo">
     {
       mode === "archive"
         ? "Listado de fichas AutoMatch con el mismo formato de tarjetas y carrusel."
-        : "Infórmate, comenta y dale like a tus favoritos."
+        : "Explora modelos destacados y encuentra el auto ideal para ti."
     }
   </p>
 
@@ -205,34 +123,40 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     {
       autosWithTexts.map((auto: any) => (
         <article class="auto-card" data-id={auto.id}>
-          <div class="auto-carousel">
-            {(auto.imagenes as string[]).map((img, index) => (
-              <img
-                src={img}
-                alt={auto.nombre}
-                class={`auto-img ${index === 0 ? "visible" : "hidden"}`}
-                loading="lazy"
-                decoding="async"
-              />
-            ))}
-          </div>
-          <div class="auto-carousel-controls">
-            <button type="button" class="prev" aria-label="Imagen anterior">
-              <i class="fas fa-chevron-left" />
-            </button>
-            <div class="carousel-dots" aria-label="Navegacion de imagenes">
-              {(auto.imagenes as string[]).map((_, index) => (
-                <button
-                  type="button"
-                  class={`carousel-dot ${index === 0 ? "active" : ""}`}
-                  data-index={String(index)}
-                  aria-label={`Ir a la imagen ${index + 1}`}
+          <div class="auto-carousel-shell">
+            <div class="auto-carousel">
+              {(auto.imagenes as string[]).map((img, index) => (
+                <img
+                  src={img}
+                  alt={`${auto.nombre} — imagen ${index + 1}`}
+                  class={`auto-img ${index === 0 ? "visible" : "hidden"}`}
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority={index === 0 ? "high" : "auto"}
                 />
               ))}
             </div>
-            <button type="button" class="next" aria-label="Imagen siguiente">
-              <i class="fas fa-chevron-right" />
+            <button type="button" class="carousel-nav prev" aria-label="Imagen anterior">
+              <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
             </button>
+            <button type="button" class="carousel-nav next" aria-label="Imagen siguiente">
+              <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+            </button>
+            <div class="carousel-overlay-bar">
+              <div class="carousel-dots" aria-label="Navegacion de imagenes">
+                {(auto.imagenes as string[]).map((_, index) => (
+                  <button
+                    type="button"
+                    class={`carousel-dot ${index === 0 ? "active" : ""}`}
+                    data-index={String(index)}
+                    aria-label={`Ir a la imagen ${index + 1}`}
+                  />
+                ))}
+              </div>
+              <span class="carousel-counter">
+                1 / {(auto.imagenes as string[]).length}
+              </span>
+            </div>
           </div>
 
           <h3>{auto.nombre}</h3>
@@ -243,43 +167,10 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
               </p>
             ))}
           </div>
-
-          <div class="acciones">
-            <button class="btn-like" data-id={auto.id}>
-              <i class="fas fa-thumbs-up" /> <span>0</span>
-            </button>
-            <button class="btn-corazon" data-id={auto.id}>
-              <i class="fas fa-heart" /> <span>0</span>
-            </button>
-          </div>
-
-          <div class="comentarios">
-            <h4>
-              <i class="far fa-comment-dots" /> Comentarios{" "}
-              <span class="contador-comentarios">(0)</span>
-            </h4>
-            <ul class="lista-comentarios" />
-            <button class="btn-expand-comentarios" style="display: none;">
-              <i class="fas fa-chevron-down" /> Ver comentarios
-            </button>
-
-            <form class="form-comentario" data-id={auto.id}>
-              <input
-                type="text"
-                name="nombre"
-                placeholder="Tu nombre"
-                required
-              />
-              <textarea
-                name="mensaje"
-                placeholder="Escribe tu comentario..."
-                required
-              />
-              <button type="submit">
-                <i class="fas fa-paper-plane" /> Enviar
-              </button>
-            </form>
-          </div>
+          <a href={auto.href} class="auto-card-cta">
+            <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+            {auto.ctaLabel}
+          </a>
         </article>
       ))
     }
@@ -377,11 +268,6 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     opacity: 0.85;
   }
 
-  .titulo-icon--heart {
-    color: #e63946;
-    opacity: 1;
-  }
-
   .titulo::before,
   .titulo::after {
     content: "";
@@ -447,6 +333,27 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     margin-bottom: 0.35rem;
   }
 
+  .auto-card-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    margin-top: 0.65rem;
+    padding: 0.62rem 1rem;
+    border-radius: 999px;
+    background: #08341f;
+    color: #fff;
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  .auto-card-cta:hover {
+    background: #0a4228;
+    transform: translateY(-1px);
+  }
+
   .auto-texto {
     margin: 0;
     color: #000;
@@ -497,10 +404,18 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
   }
 
   /* ========== CARRUSEL DE IMÁGENES ========== */
+  .auto-carousel-shell {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0f1f17;
+    margin-bottom: 0.85rem;
+  }
+
   .auto-carousel {
     position: relative;
     overflow: hidden;
-    border-radius: 12px;
+    aspect-ratio: 3 / 2;
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: skeleton-loading 1.5s infinite;
@@ -521,16 +436,30 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
   }
 
   .auto-img {
+    position: absolute;
+    inset: 0;
     width: 100%;
+    height: 100%;
     border-radius: 12px;
-    display: none;
-    transition: opacity 0.4s ease;
-    aspect-ratio: 3 / 2;
     object-fit: cover;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
   }
 
   .auto-img.visible {
-    display: block;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    z-index: 1;
+  }
+
+  .auto-img.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 0;
   }
 
   .auto-img.entering {
@@ -548,383 +477,124 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     }
   }
 
-  .auto-carousel-controls {
-    display: flex;
+  .carousel-nav {
+    position: absolute;
+    top: 50%;
+    z-index: 4;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.95rem;
-    margin-top: 0.55rem;
-    margin-bottom: 0.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 50%;
+    padding: 0;
+    cursor: pointer;
+    color: #fff;
+    background: rgba(8, 52, 31, 0.78);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+    transform: translateY(-50%);
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease,
+      box-shadow 0.2s ease,
+      opacity 0.2s ease;
+    opacity: 0.94;
+  }
+
+  .carousel-nav i {
+    font-size: 0.95rem;
+  }
+
+  .carousel-nav.prev {
+    left: 12px;
+  }
+
+  .carousel-nav.next {
+    right: 12px;
+  }
+
+  .auto-carousel-shell:hover .carousel-nav,
+  .auto-carousel-shell:focus-within .carousel-nav {
+    opacity: 1;
+  }
+
+  .carousel-nav:hover {
+    background: rgba(8, 52, 31, 0.95);
+    transform: translateY(-50%) scale(1.06);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.32);
+  }
+
+  .carousel-nav:active {
+    transform: translateY(-50%) scale(0.96);
+  }
+
+  .carousel-overlay-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 1.6rem 0.85rem 0.7rem;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+    pointer-events: none;
+  }
+
+  .carousel-overlay-bar > * {
+    pointer-events: auto;
   }
 
   .carousel-dots {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.15rem 0.45rem;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.88);
-    border: 1px solid rgba(207, 213, 220, 0.95);
+    gap: 0.42rem;
   }
 
   .carousel-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
     border: none;
-    background: #b7c2ce;
+    background: rgba(255, 255, 255, 0.45);
     cursor: pointer;
     transition:
-      transform 0.2s ease,
+      width 0.2s ease,
       background-color 0.2s ease,
       opacity 0.2s ease;
-    opacity: 0.8;
+    opacity: 0.9;
+    padding: 0;
   }
 
   .carousel-dot:hover {
-    opacity: 1;
-    transform: scale(1.18);
+    background: rgba(255, 255, 255, 0.85);
   }
 
   .carousel-dot.active {
-    background: #1b5e3f;
-    transform: scale(1.28);
+    width: 22px;
+    background: #f0c14a;
     opacity: 1;
   }
 
-  .prev,
-  .next {
-    position: static;
-    width: 36px;
-    height: 36px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(145deg, #ffffff 0%, #f2f5f8 100%);
-    color: #26323f;
-    border: 1px solid #cfd7e0;
-    border-radius: 50%;
-    padding: 0;
-    font-size: 0.82rem;
-    cursor: pointer;
-    transition:
-      transform 0.2s,
-      box-shadow 0.2s,
-      background-color 0.2s,
-      color 0.2s,
-      border-color 0.2s;
-    box-shadow:
-      0 5px 14px rgba(19, 38, 57, 0.16),
-      0 1px 2px rgba(19, 38, 57, 0.08);
-  }
-
-  .prev:hover,
-  .next:hover {
-    background: #1b5e3f;
-    color: white;
-    border-color: #1b5e3f;
-    transform: scale(1.06);
-    box-shadow: 0 6px 16px rgba(27, 94, 63, 0.28);
-  }
-
-  .prev:active,
-  .next:active {
-    transform: scale(0.96);
-  }
-
-  /* ========== ACCIONES (LIKES Y CORAZONES) ========== */
-  .acciones {
-    display: flex;
-    justify-content: start;
-    gap: 1rem;
-    margin-top: 0.8rem;
-    flex-wrap: wrap;
-  }
-
-  .btn-like,
-  .btn-corazon {
-    border: none;
-    background: transparent;
-    color: #5f6b77;
-    cursor: pointer;
-    transition:
-      transform 0.2s,
-      color 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.25rem 0.5rem;
-    font-size: 1rem;
-  }
-
-  .btn-like i {
-    color: currentColor;
-    font-size: 1.3rem;
-    transition: color 0.2s;
-  }
-
-  .btn-like:hover i {
-    color: currentColor;
-  }
-
-  .btn-like:hover {
-    color: #0055cc;
-    transform: scale(1.08);
-  }
-
-  .btn-corazon i {
-    color: currentColor;
-    font-size: 1.3rem;
-    transition: color 0.2s;
-  }
-
-  .btn-corazon:hover i {
-    color: currentColor;
-  }
-
-  .btn-corazon:hover {
-    color: #d62828;
-    transform: scale(1.08);
-  }
-
-  .btn-like.activo {
-    color: #0077ff;
-  }
-
-  .btn-corazon.activo {
-    color: #e63946;
-  }
-
-  .btn-like.is-animating,
-  .btn-corazon.is-animating {
-    animation: pulse 0.3s ease;
-  }
-
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform: scale(1.4);
-    }
-  }
-
-  /* ========== SECCIÓN DE COMENTARIOS ========== */
-  .comentarios {
-    margin-top: 1rem;
-    text-align: left;
-  }
-
-  .comentarios h4 {
-    margin-bottom: 0.5rem;
-    color: #000;
+  .carousel-counter {
+    font-family: var(--font-body, "Source Sans 3", sans-serif);
+    font-size: 0.78rem;
     font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .comentarios h4 i {
-    color: #000;
-    font-size: 1rem;
-  }
-
-  .contador-comentarios {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #000;
-  }
-
-  .lista-comentarios {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 0.8rem;
-    max-height: 300px;
-    overflow-y: auto;
-  }
-
-  .lista-comentarios li {
-    background: #f7f8fa;
-    color: #000;
-    margin-bottom: 0.4rem;
-    padding: 0.5rem 0.8rem;
-    border-left: 4px solid #1b5e3f;
-    border-radius: 6px;
-    transition:
-      background 0.3s,
-      border-color 0.3s,
-      transform 0.3s;
-    font-size: 0.9rem;
-  }
-
-  .lista-comentarios li.nuevo {
-    animation: highlightComment 0.6s ease;
-  }
-
-  @keyframes highlightComment {
-    0% {
-      background: #fff8dc;
-      transform: translateX(-10px);
-    }
-    50% {
-      background: #fffb00;
-      transform: translateX(0);
-    }
-    100% {
-      background: #f7f8fa;
-      transform: translateX(0);
-    }
-  }
-
-  .lista-comentarios li.hidden {
-    display: none;
-  }
-
-  .btn-expand-comentarios {
-    background: transparent;
-    color: #1b5e3f;
-    border: 1px solid #1b5e3f;
-    border-radius: 6px;
-    padding: 0.4rem 0.8rem;
-    margin-top: 0.6rem;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 600;
-    transition: all 0.3s;
-  }
-
-  .btn-expand-comentarios:hover {
-    background: #1b5e3f;
-    color: white;
-  }
-
-  .btn-expand-comentarios.expanded {
-    background: #1b5e3f;
-    color: white;
-  }
-
-  @keyframes slideInComment {
-    from {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  .lista-comentarios li strong {
-    color: #000;
-    font-weight: 600;
-  }
-
-  .lista-comentarios li .fecha {
-    float: right;
-    font-size: 0.75rem;
-    color: #000;
-  }
-
-  .btn-vote-comment {
-    background: transparent;
-    color: #0077ff;
-    border: 1px solid #0077ff;
-    border-radius: 6px;
-    padding: 0.2rem 0.6rem;
-    cursor: pointer;
-    font-size: 0.75rem;
-    font-weight: 600;
-    transition: all 0.3s;
-    margin-top: 0.4rem;
-  }
-
-  .btn-vote-comment:hover:not(:disabled) {
-    background: #0077ff;
-    color: white;
-    transform: scale(1.1);
-  }
-
-  .btn-vote-comment:disabled {
-    background: #e0e0e0;
-    color: #888;
-    border-color: #ccc;
-    cursor: not-allowed;
-  }
-
-  .btn-vote-comment.voted::before {
-    content: "✓ ";
-    font-weight: 700;
-    margin-right: 0.2rem;
-  }
-
-  /* ========== FORMULARIO DE COMENTARIOS ========== */
-  .form-comentario {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    color: #1a1a2e;
-    margin-top: 1rem;
-  }
-
-  .form-comentario input,
-  .form-comentario textarea {
-    width: 100%;
-    padding: 0.6rem 0.8rem;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-    font-size: 0.9rem;
-    resize: none;
-    background: #fafafa;
-    font-family: inherit;
-    transition:
-      border 0.3s,
-      background 0.3s;
-  }
-
-  .form-comentario input::placeholder,
-  .form-comentario textarea::placeholder {
-    color: #555;
-    opacity: 1;
-  }
-
-  .form-comentario input:focus,
-  .form-comentario textarea:focus {
-    outline: none;
-    border-color: #e1a307;
-    background: white;
-  }
-
-  .form-comentario button {
-    background: #1b5e3f;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 0.6rem 1rem;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .form-comentario button i {
-    font-size: 0.9rem;
-  }
-
-  .form-comentario button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(225, 163, 7, 0.3);
-  }
-
-  .form-comentario button:active {
-    transform: scale(0.98);
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.92);
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    padding: 0.28rem 0.62rem;
   }
 
   /* ========== BOTÓN AUTOMATCH ========== */
@@ -1136,9 +806,6 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
       margin-top: 0.25rem;
     }
 
-    .lista-comentarios {
-      max-height: 200px;
-    }
   }
 
   @media (max-width: 480px) {
@@ -1166,7 +833,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
       border-radius: 0;
     }
 
-    .auto-img {
+    .auto-carousel {
       aspect-ratio: 16 / 10;
     }
 
@@ -1179,65 +846,21 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
       line-height: 1.48;
     }
 
-    .prev,
-    .next {
-      width: 34px;
-      height: 34px;
-      font-size: 0.76rem;
+    .carousel-nav {
+      width: 38px;
+      height: 38px;
     }
 
-    .auto-carousel-controls {
-      margin-top: 0.45rem;
-      margin-bottom: 0.55rem;
-      gap: 0.75rem;
+    .carousel-nav.prev {
+      left: 8px;
     }
 
-    .carousel-dots {
-      gap: 0.42rem;
-      padding: 0.12rem 0.38rem;
+    .carousel-nav.next {
+      right: 8px;
     }
 
-    .carousel-dot {
-      width: 7px;
-      height: 7px;
-    }
-
-    .acciones {
-      gap: 0.8rem;
-    }
-
-    .btn-like,
-    .btn-corazon {
-      font-size: 1.2rem;
-    }
-
-    .comentarios h4 {
-      font-size: 0.95rem;
-    }
-
-    .lista-comentarios li {
-      padding: 0.4rem 0.6rem;
-      font-size: 0.8rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .form-comentario button {
-      width: 95%;
-      margin: 0.15rem auto 0;
-      justify-content: center;
-      border-radius: 10px;
-      padding: 0.62rem 0.8rem;
-      font-size: 0.84rem;
-      letter-spacing: 0.4px;
-    }
-
-    .btn-expand-comentarios {
-      width: 95%;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: center;
-      padding: 0.52rem 0.8rem;
-      border-radius: 10px;
+    .carousel-counter {
+      font-size: 0.72rem;
     }
 
     .ver-mas-automatch-container {
@@ -1275,151 +898,27 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
       margin-top: 0;
     }
 
-    .lista-comentarios {
-      max-height: 150px;
-    }
   }
 </style>
 
 <script>
-  document.addEventListener("DOMContentLoaded", async () => {
-    type LikeType = "like" | "corazon";
-    type AutoMatchComment = {
-      nombre: string;
-      mensaje: string;
-      created_at?: string;
-    };
-
-    const likedState = JSON.parse(
-      localStorage.getItem("automatchLikedState") || "{}",
-    );
+  document.addEventListener("DOMContentLoaded", () => {
     const autoCards = Array.from(document.querySelectorAll(".auto-card"));
     const autoplayTimers = new Map<HTMLElement, number>();
     const AUTOPLAY_MS = 5000;
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     );
-    const autoIds = autoCards
-      .map((card) => (card as HTMLElement).dataset.id || "")
-      .filter(Boolean);
 
-    let clientId = localStorage.getItem("automatchClientId");
-    if (!clientId) {
-      clientId = `client-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
-      localStorage.setItem("automatchClientId", clientId);
-    }
-
-    function setCounter(autoId: string, tipo: LikeType, value: number) {
-      const selector = tipo === "like" ? ".btn-like" : ".btn-corazon";
-      const btn = document.querySelector(
-        `.auto-card[data-id="${autoId}"] ${selector}`,
-      );
-      if (!btn) return;
-      const span = btn.querySelector("span");
-      if (span) span.textContent = String(value || 0);
-    }
-
-    function pulseActionButton(button: HTMLElement) {
-      button.classList.add("is-animating");
-      setTimeout(() => button.classList.remove("is-animating"), 300);
-    }
-
-    function aplicarEstadoLikes() {
-      const actionButtons = document.querySelectorAll(
-        ".btn-like, .btn-corazon",
-      );
-      actionButtons.forEach((button) => {
-        if (!(button instanceof HTMLElement)) return;
-        const autoId = button.dataset.id;
-        if (!autoId) return;
-        const tipo = button.classList.contains("btn-like") ? "like" : "corazon";
-        const key = `${autoId}-${tipo}`;
-        button.classList.toggle("activo", Boolean(likedState[key]));
-      });
-    }
-
-    async function cargarLikes() {
-      if (autoIds.length === 0) return;
-      try {
-        const response = await fetch(
-          `/.netlify/functions/api-automatch-likes?auto_ids=${encodeURIComponent(autoIds.join(","))}`,
-        );
-        if (!response.ok) return;
-        const data = await response.json();
-        const counts = data?.counts || {};
-
-        autoIds.forEach((autoId) => {
-          setCounter(autoId, "like", counts?.[autoId]?.like || 0);
-          setCounter(autoId, "corazon", counts?.[autoId]?.corazon || 0);
-        });
-      } catch (error) {
-        // Evita choque con instrumentacion de consola en dev.
-        void error;
-      }
-    }
-
-    function createCommentItem(comment: AutoMatchComment) {
-      const li = document.createElement("li");
-      const dateStr = comment?.created_at
-        ? new Date(comment.created_at).toLocaleString("es-CO", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          })
-        : "";
-      li.innerHTML = `<strong>${comment.nombre}</strong> <span class="fecha">${dateStr}</span><br>${comment.mensaje}`;
-      li.classList.add("hidden");
-      return li;
-    }
-
-    async function cargarComentarios(autoId: string) {
-      const ul = document.querySelector(
-        `.auto-card[data-id="${autoId}"] .lista-comentarios`,
-      ) as HTMLElement | null;
-      const btnExpand = document.querySelector(
-        `.auto-card[data-id="${autoId}"] .btn-expand-comentarios`,
-      ) as HTMLButtonElement | null;
-      const contador = document.querySelector(
-        `.auto-card[data-id="${autoId}"] .contador-comentarios`,
-      ) as HTMLElement | null;
-      if (!ul || !btnExpand || !contador) return;
-
-      try {
-        const response = await fetch(
-          `/.netlify/functions/api-automatch-comments?auto_id=${encodeURIComponent(autoId)}`,
-        );
-        if (!response.ok) return;
-        const data = await response.json();
-        const comments = Array.isArray(data?.comments) ? data.comments : [];
-
-        ul.innerHTML = "";
-        comments.forEach((comment: AutoMatchComment) => {
-          ul.appendChild(createCommentItem(comment));
-        });
-        contador.textContent = `(${comments.length})`;
-        btnExpand.style.display = comments.length > 0 ? "block" : "none";
-      } catch (error) {
-        void autoId;
-        void error;
-      }
-    }
-
-    // Marcar imágenes como cargadas para remover skeleton loader
     document.querySelectorAll(".auto-img").forEach((img) => {
       const htmlImg = img as HTMLImageElement;
-      if (htmlImg.complete) {
+      if (htmlImg.complete && htmlImg.naturalWidth > 0) {
         htmlImg.closest(".auto-carousel")?.classList.add("loaded");
       }
       htmlImg.addEventListener("load", () => {
         htmlImg.closest(".auto-carousel")?.classList.add("loaded");
       });
     });
-
-    await cargarLikes();
-    aplicarEstadoLikes();
-    await Promise.all(autoIds.map((autoId) => cargarComentarios(autoId)));
 
     function animateTextEntry(textEl: HTMLElement | undefined) {
       if (!textEl) return;
@@ -1482,6 +981,11 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
       dots.forEach((dot, index) => {
         dot.classList.toggle("active", index === normalizedNext);
       });
+
+      const counter = card.querySelector(".carousel-counter");
+      if (counter) {
+        counter.textContent = `${normalizedNext + 1} / ${images.length}`;
+      }
     }
 
     function moveCarouselBy(card: HTMLElement, step: number) {
@@ -1536,20 +1040,17 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
       });
     });
 
-    // Clicks globales: carrusel + likes
-    document.addEventListener("click", async (e) => {
+    document.addEventListener("click", (e) => {
       const target = e.target;
       if (!(target instanceof HTMLElement)) return;
 
-      // Carrusel
       if (
-        target.matches(".next, .prev") ||
-        target.closest(".next, .prev") ||
-        target.matches(".carousel-dot")
+        target.matches(".carousel-nav, .carousel-dot") ||
+        target.closest(".carousel-nav")
       ) {
-        const trigger = target.matches(".next, .prev, .carousel-dot")
+        const trigger = target.matches(".carousel-nav, .carousel-dot")
           ? target
-          : target.closest(".next, .prev");
+          : target.closest(".carousel-nav");
         if (!(trigger instanceof HTMLElement)) return;
 
         const card = trigger.closest(".auto-card");
@@ -1566,7 +1067,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
           nextIndex = (current + 1) % images.length;
         } else if (trigger.matches(".prev")) {
           nextIndex = (current - 1 + images.length) % images.length;
-        } else {
+        } else if (trigger.matches(".carousel-dot")) {
           const dotIndex = Number(trigger.dataset.index);
           if (
             !Number.isNaN(dotIndex) &&
@@ -1579,170 +1080,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
 
         updateCarousel(card, nextIndex);
         startAutoplay(card);
-        return;
       }
-
-      // Likes y corazones persistentes
-      const actionButton = target.closest(".btn-like, .btn-corazon");
-      if (actionButton instanceof HTMLElement) {
-        const autoId = actionButton.dataset.id;
-        if (!autoId) return;
-        const tipo = actionButton.classList.contains("btn-like")
-          ? "like"
-          : "corazon";
-        const key = `${autoId}-${tipo}`;
-
-        if (likedState[key]) {
-          actionButton.classList.add("activo");
-          pulseActionButton(actionButton);
-          return;
-        }
-
-        try {
-          const response = await fetch(
-            "/.netlify/functions/api-automatch-like",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                auto_id: autoId,
-                tipo,
-                client_id: clientId,
-              }),
-            },
-          );
-
-          if (!response.ok) return;
-          const data = await response.json();
-          if (typeof data?.total === "number") {
-            const span = actionButton.querySelector("span");
-            if (span) span.textContent = String(data.total);
-          }
-
-          likedState[key] = true;
-          localStorage.setItem(
-            "automatchLikedState",
-            JSON.stringify(likedState),
-          );
-          actionButton.classList.add("activo");
-          pulseActionButton(actionButton);
-        } catch (error) {
-          void error;
-        }
-      }
-    });
-
-    // Nuevo comentario persistente
-    document.querySelectorAll(".form-comentario").forEach((form) => {
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const htmlForm = form as HTMLFormElement;
-        const autoId = htmlForm.dataset.id;
-        if (!autoId) return;
-
-        const nombreInput = htmlForm.querySelector(
-          'input[name="nombre"]',
-        ) as HTMLInputElement | null;
-        const mensajeInput = htmlForm.querySelector(
-          'textarea[name="mensaje"]',
-        ) as HTMLTextAreaElement | null;
-        const nombre = nombreInput?.value?.trim() || "";
-        const mensaje = mensajeInput?.value?.trim() || "";
-        if (!nombre || !mensaje) return;
-
-        try {
-          const response = await fetch(
-            "/.netlify/functions/api-automatch-comment",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ auto_id: autoId, nombre, mensaje }),
-            },
-          );
-
-          if (!response.ok) return;
-          const data = await response.json();
-          const savedComment = data?.comment;
-          if (!savedComment) return;
-
-          const ul = htmlForm.parentElement?.querySelector(
-            ".lista-comentarios",
-          ) as HTMLElement | null;
-          const contador = htmlForm.parentElement?.querySelector(
-            ".contador-comentarios",
-          ) as HTMLElement | null;
-          const btnExpand = htmlForm.parentElement?.querySelector(
-            ".btn-expand-comentarios",
-          ) as HTMLButtonElement | null;
-          if (!ul || !contador || !btnExpand) return;
-
-          const li = createCommentItem(savedComment);
-          li.classList.add("nuevo");
-          ul.prepend(li);
-
-          const total = ul.querySelectorAll("li").length;
-          contador.textContent = `(${total})`;
-          btnExpand.style.display = "block";
-
-          if (!btnExpand.classList.contains("expanded")) {
-            btnExpand.classList.add("expanded");
-            btnExpand.textContent = "Ocultar comentarios ⬆️";
-          }
-
-          ul.querySelectorAll("li").forEach((item) => {
-            item.classList.remove("hidden");
-          });
-
-          htmlForm.reset();
-          setTimeout(() => {
-            li.scrollIntoView({ behavior: "smooth", block: "nearest" });
-            li.classList.remove("nuevo");
-          }, 100);
-        } catch (error) {
-          void error;
-        }
-      });
-    });
-
-    // Expandir/Ocultar comentarios
-    let expandedCard: string | null = null;
-    document.querySelectorAll(".btn-expand-comentarios").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const htmlBtn = btn as HTMLButtonElement;
-        const ul = htmlBtn.parentElement?.querySelector(
-          ".lista-comentarios",
-        ) as HTMLElement | null;
-        const card = htmlBtn.closest(".auto-card") as HTMLElement | null;
-        const cardId = card?.dataset.id || null;
-        if (!ul) return;
-
-        const items = ul.querySelectorAll("li");
-        if (htmlBtn.classList.contains("expanded")) {
-          htmlBtn.classList.remove("expanded");
-          htmlBtn.textContent = "Ver comentarios ⬇️";
-          items.forEach((item) => item.classList.add("hidden"));
-          expandedCard = null;
-        } else {
-          if (expandedCard && expandedCard !== cardId) {
-            const otherBtn = document.querySelector(
-              `.auto-card[data-id="${expandedCard}"] .btn-expand-comentarios`,
-            ) as HTMLButtonElement | null;
-            const otherItems = document.querySelectorAll(
-              `.auto-card[data-id="${expandedCard}"] .lista-comentarios li`,
-            );
-            if (otherBtn) {
-              otherBtn.classList.remove("expanded");
-              otherBtn.textContent = "Ver comentarios ⬇️";
-            }
-            otherItems.forEach((item) => item.classList.add("hidden"));
-          }
-
-          htmlBtn.classList.add("expanded");
-          htmlBtn.textContent = "Ocultar comentarios ⬆️";
-          items.forEach((item) => item.classList.remove("hidden"));
-          expandedCard = cardId;
-        }
-      });
     });
   });
 </script>

@@ -31,6 +31,46 @@
   color: #08341f;
   font-weight: 700;
 }
+/* ========== DESIGN TOKENS ========== */
+:root {
+  --color-brand: #08341f;
+  --color-brand-hover: #0a4a2b;
+  --color-surface: #faf5f0;
+  --color-accent: #e6b410;
+  --color-border: #d8e5dc;
+  --font-display: "Barlow Condensed", sans-serif;
+  --font-body: "Source Sans 3", "Source Sans Pro", sans-serif;
+  --font-editorial: "Georgia", "Times New Roman", serif;
+  --radius-card: 12px;
+  --shadow-card: 0 4px 16px rgba(8, 52, 31, 0.08);
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --leading-body: 1.65;
+}
+
+html {
+  font-size: 100%;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 106.25%;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 112.5%;
+  }
+}
+
+@media (min-width: 1440px) {
+  html {
+    font-size: 118.75%;
+  }
+}
+
 /* ========== BASE GLOBAL DEL SITIO ========== */
 
 /* Reset básico */
@@ -46,10 +86,32 @@
 html, body {
   height: 100%;
   width: 100%;
-  font-family: "Georgia", serif;
-  background-color: #faf5f0;
-
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  background-color: var(--color-surface);
+  color: #1f1f1f;
   margin-bottom: 20px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--color-brand);
+  line-height: 1.2;
+}
+
+@media (min-width: 1024px) {
+  body.home-page,
+  body.nota-page,
+  body.nota-noticias,
+  body.nota-deportes {
+    font-size: var(--text-lg);
+  }
+
+  body.home-page h2,
+  body.home-page h3 {
+    font-size: clamp(1.65rem, 2.2vw, 2.15rem);
+  }
 }
 
 .ficha-contenido {
@@ -262,8 +324,8 @@ body.nota-deportes .noticia-titulo {
 body.nota-page .noticia-bloque .noticia-parrafo,
 body.nota-noticias .noticia-bloque .noticia-parrafo,
 body.nota-deportes .noticia-bloque .noticia-parrafo {
-  font-family: "Georgia", serif;
-  font-size: clamp(1.05rem, 1.4vw, 1.375rem);
+  font-family: var(--font-editorial);
+  font-size: clamp(1.12rem, 1.5vw, 1.45rem);
   line-height: 1.75;
   color: #3d3d3d;
   margin: 0;
@@ -387,22 +449,33 @@ body.nota-deportes .ficha-tecnica-profesional .ficha-item:hover {
 body.nota-page .ficha-tecnica-profesional .ficha-item strong,
 body.nota-noticias .ficha-tecnica-profesional .ficha-item strong,
 body.nota-deportes .ficha-tecnica-profesional .ficha-item strong {
-  display: block;
-  font-size: clamp(1rem, 1.2vw, 1.1rem);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
   color: #08341f;
   margin-bottom: 10px;
   font-weight: 700;
-  font-family: "Poppins", sans-serif;
+  font-family: var(--font-display);
+}
+
+body.nota-page .ficha-tecnica-profesional .ficha-item strong i,
+body.nota-noticias .ficha-tecnica-profesional .ficha-item strong i,
+body.nota-deportes .ficha-tecnica-profesional .ficha-item strong i {
+  color: var(--color-accent);
+  font-size: 0.95em;
+  width: 1.15em;
+  text-align: center;
 }
 
 body.nota-page .ficha-tecnica-profesional .ficha-item p,
 body.nota-noticias .ficha-tecnica-profesional .ficha-item p,
 body.nota-deportes .ficha-tecnica-profesional .ficha-item p {
-  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  font-size: clamp(1.02rem, 1.2vw, 1.15rem);
   line-height: 1.65;
   color: #444;
   margin: 0;
-  font-family: "Georgia", serif;
+  font-family: var(--font-editorial);
 }
 
 body.nota-page .ficha-tecnica-profesional .ficha-item.competidores,

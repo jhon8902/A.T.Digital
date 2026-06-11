@@ -13,7 +13,12 @@ type DeporteItem = {
   sortDate: number;
 };
 
-const HOME_VISIBLE_COUNT = 3;
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props as Props;
+const HOME_VISIBLE_COUNT = compact ? 2 : 3;
 
 function normalizeSourceScope(scope?: string) {
   return scope?.toLowerCase() === "internacional"
@@ -183,12 +188,13 @@ const destacada = allDeportes[0];
 const restoDeportes = allDeportes.slice(1);
 ---
 
-<section id="deportes" class="nota-container">
+<section id="deportes" class:list={["nota-container", compact && "nota-container--compact"]}>
   <div class="nota-header">
     <div class="icono-titulo">
       <i class="fa-sharp-duotone fa-solid fa-trophy"></i>
     </div>
-    <h1>Adrenalina Sobre Ruedas</h1>
+    {compact ? <p class="seccion-secundaria-label">Más contenido</p> : null}
+    {compact ? <h2>Adrenalina sobre ruedas</h2> : <h1>Adrenalina Sobre Ruedas</h1>}
     <p class="subtitulo">
       Descubre lo mejor del automovilismo y motociclismo mundial
     </p>
@@ -235,6 +241,7 @@ const restoDeportes = allDeportes.slice(1);
     </section>
 
     <!-- DERECHA -->
+    {!compact && (
     <aside class="curiosidades">
       <h3 class="curiosidades-title">Datos curiosos</h3>
       <div class="curiosidad-item">
@@ -256,6 +263,7 @@ const restoDeportes = allDeportes.slice(1);
         <p>Un motor de alto rendimiento puede girar más de 15.000 RPM.</p>
       </div>
     </aside>
+    )}
   </section>
 
   <section class="info-grid">
@@ -309,6 +317,32 @@ const restoDeportes = allDeportes.slice(1);
     overflow: hidden;
 
     background: rgb(248, 242, 219);
+  }
+
+  .nota-container--compact {
+    background: #f7f4ee;
+    border-top: 1px solid var(--color-border, #d8e5dc);
+  }
+
+  .nota-container--compact .nota-header {
+    height: auto;
+    min-height: 0;
+    padding: 2rem 1rem 1rem;
+  }
+
+  .nota-container--compact .nota-header h2 {
+    font-size: clamp(1.5rem, 2.5vw, 1.9rem);
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .seccion-secundaria-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 0.35rem;
   }
 
   .nota-header {

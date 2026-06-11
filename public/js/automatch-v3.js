@@ -1,4 +1,6 @@
-console.log("✅ AutoMatch v3 MVP optimizado cargado.");
+import { submitTestDrive } from "./test-drive-submit.js";
+
+console.log("AutoMatch v3 cargado.");
 
 // ========== GESTOR DE PERFIL ==========
 class UserProfile {
@@ -286,41 +288,53 @@ function mostrarResultado(auto, specs, matchPercentage) {
           <div class="match-fill" style="width: 0%;"></div>
         </div>
         <div class="match-percentage" style="opacity: 0;">
-          ${Math.round(matchPercentage)}% ❤️
+          ${Math.round(matchPercentage)}% compatibilidad
         </div>
         <p class="match-text">¡Tu AutoMatch perfecto!</p>
 
         <!-- CONCESIONARIO -->
         <div class="concesionario-info">
-          <h4>📍 ${auto.concesionario.nombre}</h4>
-          <p>📍 ${auto.concesionario.direccion}</p>
-          <p>📞 ${auto.concesionario.telefono}</p>
-          <p>⏰ ${auto.concesionario.horario}</p>
+          <h4><i class="fa-solid fa-store" aria-hidden="true"></i> ${auto.concesionario.nombre}</h4>
+          <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> ${auto.concesionario.direccion}</p>
+          <p><i class="fa-solid fa-phone" aria-hidden="true"></i> ${auto.concesionario.telefono}</p>
+          <p><i class="fa-regular fa-clock" aria-hidden="true"></i> ${auto.concesionario.horario}</p>
           
           <div class="botones-contacto">
             <a href="https://wa.me/${auto.concesionario.whatsapp}?text=Hola,%20me%20interesa%20el%20${encodeURIComponent(auto.nombre)}" 
                class="btn-contact whatsapp" target="_blank">
-              💬 WhatsApp
+              <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp
             </a>
             <a href="mailto:${auto.concesionario.email}?subject=Consulta%20sobre%20${encodeURIComponent(auto.nombre)}" 
                class="btn-contact email">
-              ✉️ Email
+              <i class="fa-regular fa-envelope" aria-hidden="true"></i> Email
             </a>
             <a href="tel:${auto.concesionario.telefono}" class="btn-contact phone">
-              📞 Llamar
+              <i class="fa-solid fa-phone" aria-hidden="true"></i> Llamar
             </a>
           </div>
         </div>
 
-        <!-- FORMULARIO TEST DRIVE -->
         <div class="formulario-test-drive">
-          <h4>🚗 Solicitar Test Drive</h4>
-          <form class="form-test-drive" data-auto-id="${auto.id}">
-            <input type="text" placeholder="Tu nombre" required>
-            <input type="email" placeholder="Tu email" required>
-            <input type="tel" placeholder="Tu teléfono" required>
-            <textarea placeholder="Mensaje (opcional)"></textarea>
-            <button type="submit" class="btn-submit">Solicitar Cita</button>
+          <h4><i class="fa-solid fa-car-side" aria-hidden="true"></i> Solicitar test drive</h4>
+          <form class="form-test-drive" data-auto-id="${auto.id}" data-dealer-id="${auto.concesionario.id || ""}">
+            <input type="text" name="nombre" placeholder="Tu nombre" required>
+            <select name="ciudad" required>
+              <option value="">Ciudad</option>
+              <option value="Bogotá">Bogotá</option>
+              <option value="Medellín">Medellín</option>
+              <option value="Cali">Cali</option>
+              <option value="Barranquilla">Barranquilla</option>
+              <option value="Otra">Otra</option>
+            </select>
+            <input type="email" name="email" placeholder="Tu email" required>
+            <input type="tel" name="telefono" placeholder="Tu teléfono" required>
+            <textarea name="mensaje" placeholder="Mensaje (opcional)"></textarea>
+            <label class="test-drive-consent">
+              <input type="checkbox" name="consent" required>
+              Acepto la política de privacidad y autorizo contacto comercial.
+            </label>
+            <button type="submit" class="btn-submit">Solicitar cita</button>
+            <p class="test-drive-feedback" role="status" aria-live="polite"></p>
           </form>
         </div>
       </div>
@@ -350,7 +364,7 @@ function mostrarAlternativas(alternativas, specs) {
   const contenedor = document.createElement("div");
   contenedor.classList.add("alternativas-section");
   contenedor.innerHTML = `
-    <h3>🚙 Otras opciones que también te pueden interesar:</h3>
+    <h3><i class="fa-solid fa-car-rear" aria-hidden="true"></i> Otras opciones que también te pueden interesar</h3>
     <div class="alternativas-grid">
       ${alternativas.map(auto => `
         <div class="auto-alternativa">
@@ -404,56 +418,51 @@ function setupGaleria() {
 // ========== FORMULARIO TEST DRIVE ==========
 function setupTestDrive(auto) {
   const forms = resultado.querySelectorAll(".form-test-drive");
-  forms.forEach(form => {
-    form.addEventListener("submit", (e) => {
+  forms.forEach((form) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const autoId = form.dataset.autoId;
-      const nombre = form.querySelector("input[type='text']").value;
-      const email = form.querySelector("input[type='email']").value;
-      const telefono = form.querySelector("input[type='tel']").value;
-      const mensaje = form.querySelector("textarea").value;
 
-      // Enviar a Netlify Function
-      fetch("/.netlify/functions/api-test-drive", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          autoId, 
-          nombre, 
-          email, 
-          telefono, 
-          mensaje,
-          autoNombre: auto.nombre,
-          concesionarioNombre: auto.concesionario.nombre
-        }),
-      })
-        .then(() => {
-          // Guardar lead para el dashboard del concesionario
-          const dealerId = auto.concesionario.id || 1; // Asumimos ID del concesionario
-          const leadData = {
-            id: Date.now(),
-            nombre,
-            email,
-            telefono,
-            autoNombre: auto.nombre,
-            presupuesto: document.getElementById("presupuesto")?.value,
-            mensaje,
-            estado: "pendiente",
-            fecha: new Date().toISOString()
-          };
+      const feedback = form.querySelector(".test-drive-feedback");
+      const consent = form.querySelector("input[name='consent']");
+      if (consent && !consent.checked) {
+        if (feedback) {
+          feedback.textContent = "Debes aceptar la política de privacidad.";
+          feedback.className = "test-drive-feedback is-error";
+        }
+        return;
+      }
 
-          // Guardar en localStorage para el dashboard
-          const leadsKey = `leads_dealer_${dealerId}`;
-          const existingLeads = JSON.parse(localStorage.getItem(leadsKey)) || [];
-          existingLeads.push(leadData);
-          localStorage.setItem(leadsKey, JSON.stringify(existingLeads));
+      const submitBtn = form.querySelector(".btn-submit");
+      if (submitBtn) submitBtn.disabled = true;
 
-          alert("✅ Solicitud enviada. El concesionario se contactará contigo pronto");
-          form.reset();
-        })
-        .catch(() => {
-          alert("❌ Error al enviar. Por favor intenta después");
-        });
+      const payload = {
+        autoId: form.dataset.autoId,
+        dealerId: form.dataset.dealerId ? Number(form.dataset.dealerId) : undefined,
+        nombre: form.querySelector("[name='nombre']")?.value?.trim(),
+        email: form.querySelector("[name='email']")?.value?.trim(),
+        telefono: form.querySelector("[name='telefono']")?.value?.trim(),
+        ciudad: form.querySelector("[name='ciudad']")?.value?.trim(),
+        mensaje: form.querySelector("[name='mensaje']")?.value?.trim(),
+        autoNombre: auto.nombre,
+        concesionarioNombre: auto.concesionario.nombre,
+        source: "automatch",
+      };
+
+      const result = await submitTestDrive(payload);
+
+      if (result.ok) {
+        if (feedback) {
+          feedback.textContent =
+            "Solicitud enviada. Un asesor te contactará en menos de 24 horas.";
+          feedback.className = "test-drive-feedback is-success";
+        }
+        form.reset();
+      } else if (feedback) {
+        feedback.textContent = result.error || "Error al enviar. Intenta después.";
+        feedback.className = "test-drive-feedback is-error";
+      }
+
+      if (submitBtn) submitBtn.disabled = false;
     });
   });
 }

@@ -1,6 +1,28 @@
 ---
 import Layout from "../layouts/Layout.astro";
-const { categoria, titulo } = Astro.props;
+import TestDriveCTA from "../components/leads/TestDriveCTA.astro";
+
+interface Props {
+  categoria: string;
+  titulo: string;
+  showTestDrive?: boolean;
+  autoNombre?: string;
+  noteId?: number;
+  autoId?: string | number;
+  dealerId?: number;
+  dealerNombre?: string;
+}
+
+const {
+  categoria,
+  titulo,
+  showTestDrive = false,
+  autoNombre,
+  noteId,
+  autoId,
+  dealerId,
+  dealerNombre,
+} = Astro.props as Props;
 
 let claseCategoria = "";
 switch (categoria?.toLowerCase()) {
@@ -21,4 +43,15 @@ switch (categoria?.toLowerCase()) {
   <section class={`articulo-container ${claseCategoria}`}>
     <slot />
   </section>
+  {
+    showTestDrive && autoNombre && (
+      <TestDriveCTA
+        autoNombre={autoNombre}
+        noteId={noteId}
+        autoId={autoId}
+        dealerId={dealerId}
+        dealerNombre={dealerNombre}
+      />
+    )
+  }
 </Layout>

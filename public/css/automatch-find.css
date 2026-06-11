@@ -603,15 +603,17 @@ input::placeholder {
 .formulario-test-drive {
   margin-top: 2rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, #e8f4f8, #f0f8ff);
-  border-radius: 1rem;
-  border: 2px solid #0077ff;
+  background: #ffffff;
+  border-radius: var(--radius-card, 12px);
+  border: 1px solid var(--color-border, #d8e5dc);
+  box-shadow: var(--shadow-card, 0 4px 16px rgba(8, 52, 31, 0.08));
 }
 
 .formulario-test-drive h4 {
-  color: #0077ff;
+  color: var(--color-brand, #08341f);
   margin: 0 0 1rem 0;
   font-size: 1.1rem;
+  font-family: var(--font-display, "Barlow Condensed", sans-serif);
 }
 
 .form-test-drive {
@@ -621,13 +623,14 @@ input::placeholder {
 }
 
 .form-test-drive input,
+.form-test-drive select,
 .form-test-drive textarea {
   padding: 0.8rem;
-  border: 2px solid #ddd;
-  border-radius: 0.6rem;
+  border: 1px solid #cfd8d2;
+  border-radius: 8px;
   font-size: 1rem;
   font-family: inherit;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .form-test-drive input::placeholder,
@@ -636,11 +639,37 @@ input::placeholder {
 }
 
 .form-test-drive input:focus,
+.form-test-drive select:focus,
 .form-test-drive textarea:focus {
   outline: none;
-  border-color: #0077ff;
+  border-color: var(--color-brand, #08341f);
   background: white;
-  box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(8, 52, 31, 0.12);
+}
+
+.test-drive-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.84rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+.test-drive-feedback {
+  display: none;
+  font-size: 0.88rem;
+  margin-top: 0.25rem;
+}
+
+.test-drive-feedback.is-success {
+  display: block;
+  color: #1f5d3e;
+}
+
+.test-drive-feedback.is-error {
+  display: block;
+  color: #8a1f1f;
 }
 
 .form-test-drive textarea {
@@ -649,11 +678,11 @@ input::placeholder {
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, #0077ff, #0063cc);
+  background: var(--color-brand, #08341f);
   color: white;
   padding: 0.9rem 1.5rem;
   border: none;
-  border-radius: 0.6rem;
+  border-radius: 999px;
   font-weight: 700;
   font-size: 0.95rem;
   cursor: pointer;

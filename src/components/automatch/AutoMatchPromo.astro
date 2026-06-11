@@ -1,0 +1,130 @@
+---
+interface Props {
+  variant?: "default" | "compact";
+  title?: string;
+  description?: string;
+}
+
+const {
+  variant = "default",
+  title = "¿Encontraste tu próximo auto?",
+  description = "Usa AutoMatch para comparar modelos, ver fichas y solicitar test drive con un asesor.",
+} = Astro.props;
+---
+
+<section class={`automatch-promo automatch-promo--${variant}`} aria-label="Promoción AutoMatch">
+  <div class="automatch-promo__copy">
+    <p class="automatch-promo__eyebrow">Herramienta destacada</p>
+    <h2>{title}</h2>
+    <p>{description}</p>
+  </div>
+  <div class="automatch-promo__actions">
+    <a href="/automatch-find" class="automatch-promo__btn automatch-promo__btn--primary">
+      <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+      Probar AutoMatch
+    </a>
+    <a href="/#automatch" class="automatch-promo__btn automatch-promo__btn--secondary">
+      <i class="fa-solid fa-car-side" aria-hidden="true"></i>
+      Ver fichas
+    </a>
+  </div>
+</section>
+
+<style>
+  .automatch-promo {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 1.5rem auto;
+    padding: 1.35rem 1.5rem;
+    border-radius: var(--radius-card, 12px);
+    border: 1px solid var(--color-border, #d8e5dc);
+    background: linear-gradient(135deg, #ffffff 0%, #eef6f0 100%);
+    box-shadow: var(--shadow-card, 0 4px 16px rgba(8, 52, 31, 0.08));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .automatch-promo__eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-brand, #08341f);
+    margin-bottom: 0.35rem;
+  }
+
+  .automatch-promo h2 {
+    font-family: var(--font-display, "Barlow Condensed", sans-serif);
+    font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+    color: var(--color-brand, #08341f);
+    margin-bottom: 0.35rem;
+  }
+
+  .automatch-promo__copy p:last-child {
+    font-family: var(--font-body);
+    color: #4a4a4a;
+    line-height: 1.55;
+    max-width: 52ch;
+  }
+
+  .automatch-promo__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .automatch-promo__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 999px;
+    padding: 0.72rem 1.15rem;
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .automatch-promo__btn--primary {
+    background: var(--color-brand, #08341f);
+    color: #fff;
+  }
+
+  .automatch-promo__btn--primary:hover {
+    background: var(--color-brand-hover, #0a4a2b);
+  }
+
+  .automatch-promo__btn--secondary {
+    background: #fff;
+    color: var(--color-brand, #08341f);
+    border: 1px solid var(--color-border, #d8e5dc);
+  }
+
+  .automatch-promo--compact {
+    padding: 1rem 1.15rem;
+    margin: 1rem auto;
+  }
+
+  .automatch-promo--compact h2 {
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+  }
+
+  @media (max-width: 720px) {
+    .automatch-promo {
+      width: calc(100% - 1.25rem);
+    }
+
+    .automatch-promo__actions {
+      width: 100%;
+    }
+
+    .automatch-promo__btn {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+</style>

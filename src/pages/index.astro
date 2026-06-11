@@ -7,40 +7,42 @@ import Electricos from "../components/electricos/Electricos.astro";
 import Deportes from "../components/deportes/deportes.astro";
 import Pruebas from "../components/pruebas/pruebas.astro";
 import AutoMatch from "../components/automatch/automatch.astro";
+import AutoMatchPromo from "../components/automatch/AutoMatchPromo.astro";
 import AdBanner from "../components/advertising/AdBanner.astro";
 import { getApiUrl, fetchWithTimeout } from "../lib/api";
+import {
+  buildAutomatchCarousel,
+  type AutomatchDbNote,
+} from "../lib/automatch-catalog";
 
-let autos: any[] = [];
+let autos: ReturnType<typeof buildAutomatchCarousel> = [];
 
 try {
   const apiUrl = getApiUrl("get-notes");
   const data = await fetchWithTimeout(apiUrl);
 
   if (data && Array.isArray(data)) {
-    autos = data
+    const automatchNotes: AutomatchDbNote[] = data
       .filter((note: any) => note.category?.toLowerCase() === "automatch")
-      .sort((a: any, b: any) => {
-        const aDate = a?.created_at ? new Date(a.created_at).getTime() : 0;
-        const bDate = b?.created_at ? new Date(b.created_at).getTime() : 0;
-        return bDate - aDate;
-      })
       .map((note: any) => ({
-        id: String(note.id),
-        nombre: note.title,
-        descripcion: note.subtitle || note.content.substring(0, 100),
+        id: note.id,
+        title: note.title,
+        subtitle: note.subtitle,
         content: note.content || "",
-        imagenes: [
-          note.image1,
-          note.image2,
-          note.image3,
-          note.image4,
-          note.image5,
-          note.image6,
-        ].filter(Boolean),
+        created_at: note.created_at,
+        image1: note.image1,
+        image2: note.image2,
+        image3: note.image3,
+        image4: note.image4,
+        image5: note.image5,
+        image6: note.image6,
       }));
+
+    autos = buildAutomatchCarousel(automatchNotes, { skipEditorialCover: true });
   }
 } catch (err) {
   console.error("Error cargando autos:", err);
+  autos = buildAutomatchCarousel([], { skipEditorialCover: true });
 }
 ---
 
@@ -56,14 +58,27 @@ try {
     <section id="automatch" class="automatch-destacado">
       <AutoMatch autos={autos} />
     </section>
-    <AdBanner />
+
+    <Electricos />
+    <AutoMatchPromo
+      title="Compara eléctricos con AutoMatch"
+      description="Filtra por autonomía, precio y uso. Encuentra el modelo ideal y solicita test drive."
+    />
+    <Hibridos />
     <Noticias />
 
-    <AdBanner variant="mazda" />
-    <Electricos />
-    <Hibridos />
-    <Deportes />
     <Pruebas />
+    <AutoMatchPromo
+      variant="compact"
+      title="¿Listo para probarlo en la vida real?"
+      description="AutoMatch te ayuda a elegir y conectarte con un asesor para test drive."
+    />
+
+    <section class="home-secondary-content" aria-label="Más contenido editorial">
+      <Deportes compact />
+    </section>
+
+    <AdBanner />
   </div>
 </Layout>
 
@@ -83,6 +98,10 @@ try {
   .automatch-destacado {
     margin-bottom: 1rem;
     animation: fadeInUp 0.7s ease-out;
+  }
+
+  .home-secondary-content {
+    opacity: 0.98;
   }
 
   /* Secciones siempre visibles con transiciones suaves */

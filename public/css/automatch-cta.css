@@ -1,0 +1,87 @@
+.automatch-cta {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 2rem auto 2.5rem;
+  padding: 1.75rem 1.5rem;
+  background: linear-gradient(135deg, #f8fbf9 0%, #ffffff 55%);
+  border: 1px solid var(--color-border, #d8e5dc);
+  border-radius: var(--radius-card, 12px);
+  box-shadow: var(--shadow-card, 0 4px 16px rgba(8, 52, 31, 0.08));
+}
+
+.automatch-cta__eyebrow {
+  font-family: var(--font-body, "Source Sans Pro", sans-serif);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent, #c9a227);
+  margin-bottom: 0.35rem;
+}
+
+.automatch-cta__header h2 {
+  font-family: var(--font-display, "Barlow Condensed", sans-serif);
+  font-size: clamp(1.45rem, 2.5vw, 2rem);
+  color: var(--color-brand, #08341f);
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+.automatch-cta__header p {
+  font-family: var(--font-body, "Source Sans Pro", sans-serif);
+  font-size: clamp(1rem, 1.2vw, 1.12rem);
+  color: #4a4a4a;
+  margin-bottom: 1.25rem;
+  line-height: 1.55;
+  max-width: 62ch;
+}
+
+.automatch-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.automatch-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.15rem;
+  border-radius: 999px;
+  font-family: var(--font-body, "Source Sans Pro", sans-serif);
+  font-size: 0.98rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.automatch-cta__btn--primary {
+  background: var(--color-brand, #08341f);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(8, 52, 31, 0.18);
+}
+
+.automatch-cta__btn--primary:hover {
+  transform: translateY(-1px);
+  background: #0a4228;
+}
+
+.automatch-cta__btn--secondary {
+  background: #fff;
+  color: var(--color-brand, #08341f);
+  border: 1px solid #c9d8cf;
+}
+
+.automatch-cta__btn--secondary:hover {
+  background: #f4f8f5;
+}
+
+@media (max-width: 640px) {
+  .automatch-cta__actions {
+    flex-direction: column;
+  }
+
+  .automatch-cta__btn {
+    justify-content: center;
+    width: 100%;
+  }
+}

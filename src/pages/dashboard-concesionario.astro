@@ -2,16 +2,20 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
+<link rel="stylesheet" href="/css/base.css" />
 <link rel="stylesheet" href="/css/dashboard-concesionario.css" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
 
-<Layout title="Dashboard Concesionario | A.T.Digital">
+<Layout title="Dashboard Concesionario | A.T.Digital" showChrome={false} bodyClass="dashboard-page">
   <div id="app">
-    <!-- SECCIÓN LOGIN -->
     <section id="login-section" class="login-section">
       <div class="login-container">
         <div class="login-card">
-          <h1>🏢 Panel de Concesionarios</h1>
-          <p class="subtitle">Acceda a su dashboard de leads y comisiones</p>
+          <h1>Panel de Concesionarios</h1>
+          <p class="subtitle">Accede a tus leads y comisiones de Auto-Tech-Digital.</p>
 
           <form id="login-form" class="login-form">
             <div class="form-group">
@@ -34,76 +38,65 @@ import Layout from "../layouts/Layout.astro";
               />
             </div>
 
-            <button type="submit" class="btn-login"
-              >Ingresar al Dashboard</button
-            >
+            <button type="submit" class="btn-login">Ingresar al dashboard</button>
           </form>
 
           <p class="login-note">
-            💡 Contacta a A.T.Digital para obtener tus credenciales
+            Contacta a Auto-Tech-Digital para obtener credenciales de acceso.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- SECCIÓN DASHBOARD -->
-    <section
-      id="dashboard-section"
-      class="dashboard-section"
-      style="display: none;"
-    >
-      <!-- Header del Dashboard -->
+    <section id="dashboard-section" class="dashboard-section" style="display: none;">
       <header class="dashboard-header">
         <div class="header-content">
           <div class="brand">
-            <h1>🚗 A.T.Digital Dashboard</h1>
+            <h1>A.T.Digital Dashboard</h1>
             <p id="dealer-name" class="dealer-name">Cargando...</p>
           </div>
-          <button id="btn-logout" class="btn-logout">Cerrar Sesión</button>
+          <button id="btn-logout" class="btn-logout" type="button">Cerrar sesión</button>
         </div>
       </header>
 
-      <!-- Contenido Principal -->
       <main class="dashboard-main">
-        <!-- Cards de Estadísticas -->
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-icon">📊</div>
+            <div class="stat-icon"><i class="fa-solid fa-chart-column" aria-hidden="true"></i></div>
             <div class="stat-content">
-              <h3>Leads Total</h3>
+              <h3>Leads total</h3>
               <p id="total-leads" class="stat-value">0</p>
             </div>
           </div>
 
           <div class="stat-card">
-            <div class="stat-icon">🎯</div>
+            <div class="stat-icon"><i class="fa-solid fa-bullseye" aria-hidden="true"></i></div>
             <div class="stat-content">
-              <h3>Este Mes</h3>
+              <h3>Este mes</h3>
               <p id="month-leads" class="stat-value">0</p>
             </div>
           </div>
 
           <div class="stat-card">
-            <div class="stat-icon">💰</div>
+            <div class="stat-icon"><i class="fa-solid fa-coins" aria-hidden="true"></i></div>
             <div class="stat-content">
-              <h3>Comisión Acumulada</h3>
+              <h3>Comisión acumulada</h3>
               <p id="total-commission" class="stat-value">$0</p>
             </div>
           </div>
 
           <div class="stat-card">
-            <div class="stat-icon">⭐</div>
+            <div class="stat-icon"><i class="fa-solid fa-circle-check" aria-hidden="true"></i></div>
             <div class="stat-content">
-              <h3>Contactos Confirmados</h3>
+              <h3>Contactos confirmados</h3>
               <p id="confirmed-contacts" class="stat-value">0</p>
             </div>
           </div>
         </div>
 
-        <!-- Tabla de Leads -->
         <div class="leads-section">
           <div class="section-header">
-            <h2>📋 Historial de Leads</h2>
+            <h2>Historial de leads</h2>
             <div class="filter-group">
               <select id="filter-status" class="filter-select">
                 <option value="all">Todos los estados</option>
@@ -137,33 +130,30 @@ import Layout from "../layouts/Layout.astro";
           </div>
 
           <div id="empty-state" class="empty-state" style="display: none;">
-            <div class="empty-icon">📭</div>
+            <div class="empty-icon"><i class="fa-regular fa-inbox" aria-hidden="true"></i></div>
             <p>No hay leads disponibles</p>
           </div>
         </div>
 
-        <!-- Sección de Comisiones -->
         <div class="commission-section">
-          <h2>💵 Detalles de Comisiones</h2>
+          <h2>Detalles de comisiones</h2>
           <div class="commission-grid">
             <div class="commission-card">
               <h3>Por contacto confirmado</h3>
-              <p class="commission-amount">$50,000 COP</p>
-              <p class="commission-desc">
-                Por cada lead que confirmas contacto
-              </p>
+              <p id="commission-rate-label" class="commission-amount">$50.000 COP</p>
+              <p class="commission-desc">Por cada lead que confirmes como contactado.</p>
             </div>
 
             <div class="commission-card">
               <h3>Límite mensual</h3>
               <p class="commission-amount">Sin límite</p>
-              <p class="commission-desc">Gana cuanto puedas</p>
+              <p class="commission-desc">Crece según tu capacidad de gestión comercial.</p>
             </div>
 
             <div class="commission-card">
               <h3>Próximo pago</h3>
               <p class="commission-amount">Fin de mes</p>
-              <p class="commission-desc">Transferencia automática</p>
+              <p class="commission-desc">Liquidación mensual de comisiones confirmadas.</p>
             </div>
           </div>
         </div>
