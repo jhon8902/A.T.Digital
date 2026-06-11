@@ -7,6 +7,7 @@ import Electricos from "../components/electricos/Electricos.astro";
 import Deportes from "../components/deportes/deportes.astro";
 import Pruebas from "../components/pruebas/pruebas.astro";
 import AutoMatch from "../components/automatch/automatch.astro";
+import AutoMatchPromo from "../components/automatch/AutoMatchPromo.astro";
 import AdBanner from "../components/advertising/AdBanner.astro";
 import { getApiUrl, fetchWithTimeout } from "../lib/api";
 
@@ -49,26 +50,37 @@ try {
   description="Descubre los mejores autos eléctricos, híbridos y lanzamientos en Colombia. Pruebas de manejo, fichas técnicas y noticias del mundo automotriz."
   class="home-page"
 >
-  <!-- ✅ SECCIONES VISIBLES -->
   <div class="extra-sections" id="extra-sections">
     <SectionInfo />
 
     <section id="automatch" class="automatch-destacado">
       <AutoMatch autos={autos} />
     </section>
-    <AdBanner />
+
+    <Electricos />
+    <AutoMatchPromo
+      title="Compara eléctricos con AutoMatch"
+      description="Filtra por autonomía, precio y uso. Encuentra el modelo ideal para ti."
+    />
+    <Hibridos />
     <Noticias />
 
-    <AdBanner variant="mazda" />
-    <Electricos />
-    <Hibridos />
-    <Deportes />
     <Pruebas />
+    <AutoMatchPromo
+      variant="compact"
+      title="¿Listo para encontrar tu próximo auto?"
+      description="Usa AutoMatch para comparar modelos y ver fichas destacadas."
+    />
+
+    <section class="home-secondary-content" aria-label="Más contenido editorial">
+      <Deportes compact />
+    </section>
+
+    <AdBanner />
   </div>
 </Layout>
 
 <style>
-  /* Animación suave de entrada para secciones */
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -85,7 +97,10 @@ try {
     animation: fadeInUp 0.7s ease-out;
   }
 
-  /* Secciones siempre visibles con transiciones suaves */
+  .home-secondary-content {
+    opacity: 0.98;
+  }
+
   .extra-sections {
     opacity: 1;
     transform: translateY(0);
@@ -133,5 +148,9 @@ try {
 
   .extra-sections > *:nth-child(9) {
     animation-delay: 1.35s;
+  }
+
+  .extra-sections > *:nth-child(10) {
+    animation-delay: 1.5s;
   }
 </style>

@@ -10,6 +10,7 @@ interface Props {
   source_scope?: "nacional" | "internacional";
   sourceScope?: "nacional" | "internacional";
   editor?: string;
+  showChrome?: boolean;
 }
 
 const {
@@ -23,6 +24,7 @@ const {
   source_scope,
   sourceScope,
   editor,
+  showChrome = true,
 } = Astro.props;
 
 const siteUrl = "https://autotechdigital.netlify.app";
@@ -184,17 +186,9 @@ import "swiper/css/pagination";
       rel="stylesheet"
     />
 
-    <!-- Fuentes -->
+    <!-- Fuentes (sistema tipográfico unificado) -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Lora&family=Montserrat:wght@400;700&family=Roboto:wght@400;700&family=Source+Sans+Pro:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Days+One&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -216,7 +210,7 @@ import "swiper/css/pagination";
   </head>
 
   <body class={finalBodyClass}>
-    <Header />
+    {showChrome && <Header />}
     <main>
       {
         layoutScope && (
@@ -242,7 +236,7 @@ import "swiper/css/pagination";
       }
       <slot />
     </main>
-    <Footer />
+    {showChrome && <Footer />}
     <script>
       // Observador global para animar títulos principales (h1, h2)
       document.addEventListener("DOMContentLoaded", function () {
@@ -290,7 +284,7 @@ import "swiper/css/pagination";
         gap: 0.35rem;
         border-radius: 999px;
         padding: 0.36rem 0.86rem;
-        font-family: "Montserrat", sans-serif;
+        font-family: var(--font-body);
         font-size: 0.8rem;
         font-weight: 600;
         letter-spacing: 0.02em;
