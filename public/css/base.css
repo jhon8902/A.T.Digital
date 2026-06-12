@@ -38,15 +38,48 @@
   --color-surface: #faf5f0;
   --color-accent: #e6b410;
   --color-border: #d8e5dc;
-  --font-display: "Barlow Condensed", sans-serif;
   --font-body: "Source Sans 3", "Source Sans Pro", sans-serif;
   --font-editorial: "Georgia", "Times New Roman", serif;
+  --font-display: var(--font-editorial);
   --radius-card: 12px;
   --shadow-card: 0 4px 16px rgba(8, 52, 31, 0.08);
   --text-base: 1rem;
   --text-lg: 1.125rem;
   --text-xl: 1.25rem;
   --leading-body: 1.65;
+
+  /* Home — escala tipográfica unificada */
+  --home-eyebrow: 0.82rem;
+  --home-section-title: clamp(2.1rem, 3.2vw, 2.95rem);
+  --home-section-lead: clamp(1.05rem, 1.35vw, 1.2rem);
+  --home-card-title: clamp(1.2rem, 1.35vw, 1.6rem);
+  --home-card-body: clamp(0.98rem, 1vw, 1.06rem);
+  --home-card-meta: 0.84rem;
+  --home-card-scope: 0.72rem;
+  --home-card-chip: 0.78rem;
+  --home-card-cta: 0.94rem;
+  --home-card-link: 0.92rem;
+  --home-section-cta: 1rem;
+  --home-news-featured: clamp(2rem, 2.5vw, 2.65rem);
+  --home-rail-title: clamp(1.2rem, 1.35vw, 1.6rem);
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --home-eyebrow: 0.875rem;
+    --home-section-title: 2.95rem;
+    --home-section-lead: 1.2rem;
+    --home-card-title: 1.6rem;
+    --home-card-body: 1.06rem;
+    --home-card-meta: 0.875rem;
+    --home-card-scope: 0.75rem;
+    --home-card-chip: 0.8125rem;
+    --home-card-cta: 0.98rem;
+    --home-card-link: 0.95rem;
+    --home-section-cta: 1.02rem;
+    --home-news-featured: 2.65rem;
+    --home-rail-title: 1.6rem;
+  }
 }
 
 html {

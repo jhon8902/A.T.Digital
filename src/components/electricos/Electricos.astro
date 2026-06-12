@@ -1,8 +1,21 @@
 ---
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
 
-let dynamicElectricos: any[] = [];
-const HOME_VISIBLE_COUNT = 5;
+type ElectricoItem = {
+  href: string;
+  img: string;
+  alt: string;
+  title: string;
+  description: string;
+  fecha?: string;
+  editor?: string;
+  source_scope?: string;
+  chips?: string[];
+  sortDate: number;
+};
+
+let dynamicElectricos: ElectricoItem[] = [];
+const HOME_VISIBLE_COUNT = 6;
 
 function normalizeSourceScope(scope?: string) {
   return scope?.toLowerCase() === "internacional"
@@ -54,7 +67,6 @@ const MESES_ES: Record<string, string> = {
 
 function parseDateValue(value?: string) {
   const cleaned = (value || "").replace(/^Publicado:\s*/i, "").trim();
-
   if (!cleaned) return 0;
 
   const direct = new Date(cleaned);
@@ -70,19 +82,43 @@ function parseDateValue(value?: string) {
   if (ddMonth) {
     const [, dd, monthStr] = ddMonth;
     const mm = MESES_ES[monthStr.toLowerCase()];
-    if (mm) {
-      return new Date(`2025-${mm}-${dd.padStart(2, "0")}`).getTime();
-    }
+    if (mm) return new Date(`2025-${mm}-${dd.padStart(2, "0")}`).getTime();
   }
 
   return 0;
 }
 
-// ✅ Función para extraer la primera imagen del HTML (para portada si no hay image1)
 function extractFirstImage(html?: string) {
   if (!html) return null;
   const match = html.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/i);
   return match ? match[1] : null;
+}
+
+function normalizeImg(src: string) {
+  return src
+    .replace(/^\.\.\//, "/")
+    .replace(/^img\//, "/img/")
+    .replace(/^\/\//, "/");
+}
+
+function buildChips(item: { description?: string; chips?: string[] }) {
+  if (item.chips?.length) return item.chips.slice(0, 3);
+
+  const chips: string[] = [];
+  const text = (item.description || "").toLowerCase();
+
+  const km = text.match(/(\d{2,4})\s*km/);
+  if (km) chips.push(`${km[1]} km autonomía`);
+
+  if (/suv/i.test(text)) chips.push("SUV");
+  if (/compacto/i.test(text)) chips.push("Compacto");
+  if (/urbano|ciudad/i.test(text)) chips.push("Uso urbano");
+  if (/premium|lujo/i.test(text)) chips.push("Premium");
+  if (/deportivo/i.test(text)) chips.push("Deportivo");
+  if (/carga/i.test(text)) chips.push("Carga rápida");
+
+  if (chips.length === 0) chips.push("100% eléctrico");
+  return chips.slice(0, 3);
 }
 
 try {
@@ -90,13 +126,9 @@ try {
   const data = await fetchWithTimeout(apiUrl);
 
   if (data && Array.isArray(data)) {
-    // ✅ Filtramos solo categoría "electricos"
     dynamicElectricos = data
       .filter((note) => note.category?.toLowerCase() === "electricos")
       .map((note) => {
-        // 🔹 Si tiene image1, usamos esa
-        // 🔹 Si no, usamos la primera imagen del contenido HTML
-        // 🔹 Si no hay ninguna, ponemos una por defecto
         const portada =
           note.image1?.trim() ||
           extractFirstImage(note.content) ||
@@ -104,7 +136,7 @@ try {
 
         return {
           href: `/notas/${note.id}`,
-          img: portada,
+          img: normalizeImg(portada),
           alt: note.title,
           title: note.title,
           description: note.subtitle || "",
@@ -121,27 +153,28 @@ try {
   console.error("Error cargando eléctricos dinámicos:", err);
 }
 
-// ✅ Notas estáticas (puedes dejar tus objetos como estaban)
-const staticElectricos = [
+const staticElectricos: Omit<ElectricoItem, "sortDate">[] = [
   {
     href: "/notas-electricos/nota-volvo-ex90",
-    img: "../img/volvo-ex90-electrico/volvo-ex90-portada.webp",
+    img: "/img/volvo-ex90-electrico/volvo-ex90-portada.webp",
     alt: "Volvo EX90",
     title: "Volvo EX90",
     description:
-      "No solo ofrece una autonomía de 500km sino que además llega con nuevo diseño vanguardista, es una de las más cotizadas en Colombia.",
+      "SUV eléctrico premium con autonomía de hasta 500 km, diseño vanguardista y uno de los más cotizados en Colombia.",
     fecha: "Publicado: 10-feb",
     source_scope: "nacional",
+    chips: ["500 km", "SUV", "Premium"],
   },
   {
     href: "/notas-electricos/nota-mini-cooper",
-    img: "../img/mini-cooper-electrico/mini-cooper-portada.webp",
+    img: "/img/mini-cooper-electrico/mini-cooper-portada.webp",
     alt: "Mini Cooper",
     title: "Mini Cooper",
     description:
-      "Lujo y tecnología en un compacto eléctrico capaz de satisfacer todas tus necesidades básicas y de confort.",
+      "Compacto eléctrico con enfoque urbano: lujo, tecnología y confort en un tamaño ideal para la ciudad.",
     fecha: "Publicado: 13-mar",
     source_scope: "nacional",
+    chips: ["Compacto", "Uso urbano", "Premium"],
   },
   {
     href: "/notas-electricos/nota-byd-sealion7",
@@ -149,9 +182,10 @@ const staticElectricos = [
     alt: "BYD Sealion 7",
     title: "BYD Sealion 7",
     description:
-      "Deportivo y sostenible sin perder su esencia, el diseño y lujo se combinan para ofrecer lo mejor.",
+      "SUV deportivo y sostenible que combina diseño, potencia y propuesta tecnológica para el mercado actual.",
     fecha: "Publicado: 13-mar",
     source_scope: "nacional",
+    chips: ["SUV", "Deportivo", "AWD"],
   },
   {
     href: "/notas-electricos/nota-peugeot-e3008",
@@ -159,27 +193,23 @@ const staticElectricos = [
     alt: "Peugeot E-3008",
     title: "Peugeot E-3008",
     description:
-      "Eléctrico y potente para la nueva era: si lo que quieres es que te vean, con este SUV lo logras.",
+      "SUV eléctrico con diseño llamativo, buen rendimiento y carga rápida para uso diario y viajes.",
     fecha: "Publicado: 24-mar",
     source_scope: "nacional",
+    chips: ["SUV", "Carga rápida", "Diseño"],
   },
   {
     href: "/notas-electricos/nota-renault-megane",
     img: "/img/renault-megane-e-tech/renault-megane-principal.webp",
     alt: "Renault Megane",
-    title: "Renault Megane",
+    title: "Renault Megane E-Tech",
     description:
-      "Compacto y eficiente para la movilidad urbana, además de futurista que compensa cualquier pero.",
+      "Compacto eficiente para movilidad urbana con estética futurista y buen equilibrio entre autonomía y confort.",
     fecha: "Publicado: 20-abril",
     source_scope: "nacional",
+    chips: ["Compacto", "E-Tech", "Uso urbano"],
   },
 ];
-
-// ✅ Juntamos dinámicas + estáticas (las 5 primeras)
-const staticElectricosWithDate = staticElectricos.map((note) => ({
-  ...note,
-  sortDate: parseDateValue(note.fecha),
-}));
 
 function slugTitle(t?: string) {
   return (t || "")
@@ -189,703 +219,102 @@ function slugTitle(t?: string) {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]/g, "");
 }
+
+const staticElectricosWithDate: ElectricoItem[] = staticElectricos.map(
+  (note) => ({
+    ...note,
+    img: normalizeImg(note.img),
+    sortDate: parseDateValue(note.fecha),
+  }),
+);
+
 const dynamicElectricosTitles = new Set(
   dynamicElectricos.map((n) => slugTitle(n.title)),
 );
+
 const deduplicatedStaticElectricos = staticElectricosWithDate.filter(
   (n) => !dynamicElectricosTitles.has(slugTitle(n.title)),
 );
+
 const allElectricos = [...dynamicElectricos, ...deduplicatedStaticElectricos]
   .sort((a, b) => b.sortDate - a.sortDate)
   .slice(0, HOME_VISIBLE_COUNT);
 ---
 
-<div id="electricos" class="electrico-container">
-  <div class="central-content">
-    <span class="icono-electricos">
-      <i class="fas fa-car-battery"></i>
-    </span>
+<link rel="stylesheet" href="/css/electricos-section.css" />
 
-    <h2>Carros Eléctricos</h2>
+<section
+  id="electricos"
+  class="electricos-section"
+  aria-labelledby="electricos-heading"
+>
+  <div class="electricos-inner">
+    <header class="electricos-head">
+      <p class="electricos-eyebrow">Movilidad eléctrica</p>
+      <h2 id="electricos-heading" class="electricos-title">Carros eléctricos</h2>
+      <p class="electricos-lead">
+        Modelos 100% eléctricos en Colombia: autonomía, carga y fichas para
+        comparar con AutoMatch.
+      </p>
+    </header>
+
+    {
+      allElectricos.length > 0 && (
+        <div class="electricos-grid">
+          {allElectricos.map((nota) => {
+            const chips = buildChips(nota);
+            const scope = normalizeSourceScope(nota.source_scope);
+            const fecha = cleanPublishedDate(nota.fecha);
+
+            return (
+              <article class="electrico-card">
+                <a href={nota.href} class="electrico-card__media">
+                  <img
+                    src={nota.img}
+                    alt={nota.alt}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </a>
+                <div class="electrico-card__body">
+                  <div class="electrico-card__meta">
+                    <span class={`electrico-scope electrico-scope--${scope}`}>
+                      {sourceScopeLabel(nota.source_scope)}
+                    </span>
+                    {fecha && (
+                      <span class="electrico-card__date">{fecha}</span>
+                    )}
+                  </div>
+                  <h3>
+                    <a href={nota.href}>{nota.title}</a>
+                  </h3>
+                  <div class="electrico-chips">
+                    {chips.map((chip) => (
+                      <span class="electrico-chip">{chip}</span>
+                    ))}
+                  </div>
+                  <p class="electrico-desc">{nota.description}</p>
+                  <div class="electrico-card__actions">
+                    <a href={nota.href} class="electrico-card__cta">
+                      Ver ficha
+                    </a>
+                    <a href="/automatch-find" class="electrico-card__automatch">
+                      Comparar en AutoMatch
+                    </a>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )
+    }
+
+    <footer class="electricos-footer">
+      <a href="/electricos" class="electricos-more">
+        Ver más modelos
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </footer>
   </div>
-  <p class="descripcion-electricos">
-    Modelos 100% eléctricos disponibles en el mercado nacional: autonomía,
-    tiempos de carga, conectividad y más.
-  </p>
-</div>
-
-<div class="grid-container">
-  {
-    allElectricos.length > 0 && (
-      <div class="imagen-destacada nueva-destacada">
-        <a href={allElectricos[0].href} class="destacada-link">
-          <div class="imagen-destacada-img">
-            <img
-              src={allElectricos[0].img}
-              alt={allElectricos[0].alt}
-              class="electrico-imagen"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-          <div class="texto-destacado">
-            <h2>{allElectricos[0].title}</h2>
-            <p class="texto-f">
-              <i class="fa-regular fa-user" aria-hidden="true" />
-              <span class="meta-author">
-                {allElectricos[0].editor || "Jhon Aparicio"}
-              </span>
-              <span class="meta-sep">•</span>
-              <i class="fa-regular fa-calendar" aria-hidden="true" />
-              <span class="meta-date">
-                {cleanPublishedDate(allElectricos[0].fecha)}
-              </span>
-            </p>
-            <span
-              class={
-                "scope-badge " +
-                (normalizeSourceScope(allElectricos[0].source_scope) ===
-                "internacional"
-                  ? "scope-badge--internacional"
-                  : "scope-badge--nacional")
-              }
-            >
-              {sourceScopeLabel(allElectricos[0].source_scope)}
-            </span>
-            <p>{allElectricos[0].description}</p>
-          </div>
-        </a>
-      </div>
-    )
-  }
-</div>
-
-<div class="imagenes-grid">
-  {
-    allElectricos.slice(1).map((nota) => (
-      <div class="imagen-card">
-        <a href={nota.href}>
-          <div class="imagen-card-img-wrapper">
-            <img
-              src={nota.img}
-              alt={nota.alt}
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-          <h2>{nota.title}</h2>
-          <p class="texto-f">
-            <i class="fa-regular fa-user" aria-hidden="true" />
-            <span class="meta-author">{nota.editor || "Jhon Aparicio"}</span>
-            <span class="meta-sep">•</span>
-            <i class="fa-regular fa-calendar" aria-hidden="true" />
-            <span class="meta-date">{cleanPublishedDate(nota.fecha)}</span>
-          </p>
-          <span
-            class={
-              "scope-badge " +
-              (normalizeSourceScope(nota.source_scope) === "internacional"
-                ? "scope-badge--internacional"
-                : "scope-badge--nacional")
-            }
-          >
-            {sourceScopeLabel(nota.source_scope)}
-          </span>
-          <p>{nota.description}</p>
-        </a>
-      </div>
-    ))
-  }
-</div>
-
-<div class="ver-mas-modelos-container">
-  <a href="/electricos" class="ver-mas-modelos-btn">Ver más modelos</a>
-</div>
-
-<style>
-  /* Contenedor principal */
-  .electrico-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    border-bottom: 20px solid rgb(250, 250, 250);
-    scroll-margin-top: 100px;
-    text-align: center;
-    width: 100%;
-    font-family: "Georgia", serif;
-  }
-
-  /* 🔥 ESTE ES EL CONTENEDOR QUE LIMITA TODO */
-  .central-content {
-    width: 100%;
-    max-width: 1400px; /* ⬅️ AJUSTA AQUÍ EL ANCHO TOTAL */
-    margin: 0 auto;
-    padding: 20px 0 0 0;
-  }
-
-  /* Animaciones */
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(0);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .central-content h2 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    width: 100%;
-    box-sizing: border-box;
-    position: relative;
-
-    font-size: clamp(40px, 5vw, 40px);
-    font-weight: bolder;
-    color: black;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: 2px 2px 6px rgba(16, 16, 16, 0.2);
-
-    margin-top: 10px;
-
-    opacity: 0;
-    transform: translateY(0);
-    transition: opacity 0.3s;
-  }
-
-  .central-content h2.animate-title {
-    animation: fadeInUp 1s ease-out;
-  }
-
-  .central-content h2 {
-    font-size: 32px;
-  }
-
-  /* 🔥 LÍNEAS (SIN LÍMITES) */
-  .central-content h2::before,
-  .central-content h2::after {
-    content: "";
-    flex: 1;
-    height: 2px;
-    background-color: #6c9b61;
-  }
-
-  /* Descripción */
-
-  .descripcion-electricos {
-    font-size: 1.3rem;
-    text-align: center;
-    color: rgb(34, 34, 34);
-    padding: 20px; /* Top reducido, laterales igual, bottom cero */
-    font-family: "Georgia", serif;
-    margin-top: -10px; /* (Opcional) más pegado aún si lo ves necesario */
-    margin-top: -20px;
-    font-weight: 500;
-  }
-
-  /* Icono */
-  .icono-electricos {
-    animation: pulse-move 2s ease-in-out infinite;
-  }
-
-  .icono-electricos i {
-    font-size: 70px;
-    color: #6c9b61;
-    margin-right: 14px;
-  }
-
-  @keyframes pulse-move {
-    0% {
-      transform: translateY(0) scale(1);
-    }
-    50% {
-      transform: translateY(-8px) scale(1.1);
-    }
-    100% {
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  .grid-container {
-    width: 100%;
-    max-width: none;
-    display: flex;
-    justify-content: center;
-    margin: 0;
-    padding: 0;
-  }
-
-  .nueva-destacada {
-    width: 100%;
-    max-width: none;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: stretch;
-
-    margin-top: 40px;
-    padding: 20px;
-    overflow: hidden;
-    border-radius: 10px;
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  .nueva-destacada:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  }
-
-  .destacada-link {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    text-decoration: none;
-    color: inherit;
-    width: 100%;
-  }
-
-  .texto-destacado {
-    flex: 1;
-    padding: 40px 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: white;
-    color: black;
-    text-align: left;
-
-    font-weight: 500;
-  }
-
-  .texto-destacado h2 {
-    font-size: 38px;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    font-weight: bold;
-    color: black;
-    border-bottom: 2px solid #6c9b61;
-    padding-bottom: 10px;
-    display: block;
-    width: 85%;
-  }
-
-  .texto-destacado p {
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 1.4;
-    margin-bottom: 10px;
-    font-family: "Georgia", serif;
-  }
-
-  .texto-destacado .texto-f {
-    font-size: 14px;
-    margin-top: 12px;
-    margin-bottom: 15px;
-    color: #666;
-    border-bottom: none;
-    width: auto;
-    display: inline-flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 0;
-    font-weight: 400;
-    font-family: "Georgia", serif;
-  }
-
-  .scope-badge {
-    display: inline-flex;
-    width: fit-content;
-    margin-bottom: 10px;
-    padding: 0;
-    border-radius: 0;
-    font-size: 0.72rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.35px;
-    color: #4b5563;
-    background: transparent;
-    border: none;
-  }
-
-  .scope-badge--nacional {
-    color: #4b5563;
-  }
-
-  .scope-badge--internacional {
-    color: #4b5563;
-  }
-
-  .imagen-destacada-img {
-    flex: 1;
-    min-width: 300px;
-    max-height: 100%;
-    overflow: hidden;
-  }
-
-  .imagen-destacada-img img,
-  .imagen-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.4s ease;
-  }
-
-  .nueva-destacada:hover .imagen-destacada-img img,
-  .imagen-card:hover .imagen-card-img-wrapper img {
-    transform: scale(1.1);
-  }
-
-  .imagenes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 10px;
-    width: 100%;
-    max-width: none;
-    margin-top: 40px;
-
-    padding: 20px; /* Elimina el padding lateral */
-  }
-
-  .imagen-card {
-    text-align: center;
-    position: relative;
-    background: white;
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .imagen-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  }
-
-  .imagen-card-img-wrapper {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .imagen-card img {
-    width: 100%;
-    height: 290px;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.4s ease;
-  }
-
-  .imagen-card h2 {
-    font-size: 22px;
-    font-weight: 600;
-    color: black;
-    border-bottom: 2px solid #6c9b61;
-    padding: 20px;
-    padding-bottom: 10px;
-    text-align: start;
-    position: relative;
-    display: block;
-    width: 90%;
-    text-transform: uppercase;
-  }
-
-  .imagen-card p {
-    font-size: 20px;
-    padding: 20px;
-    padding-top: 10px;
-    font-weight: 500;
-    color: black;
-    text-align: start;
-    text-transform: none;
-  }
-
-  .imagen-card .texto-f {
-    font-size: 14px;
-    color: #666;
-    position: static;
-    top: auto;
-    left: auto;
-    padding: 0 20px;
-    margin-top: 12px;
-    margin-bottom: 10px;
-    z-index: auto;
-    text-align: left;
-    text-transform: none;
-    border-bottom: none;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    font-weight: 400;
-    font-family: "Georgia", serif;
-  }
-
-  .imagen-card .scope-badge {
-    display: flex;
-    justify-content: flex-start;
-    margin: 0 20px 10px;
-    font-weight: 600;
-  }
-
-  .ver-mas-modelos-container {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    padding: 30px 48px 30px 20px;
-    box-sizing: border-box;
-  }
-
-  .ver-mas-modelos-btn {
-    display: inline-flex;
-    align-items: center;
-    text-decoration: none;
-    color: #6c9b61;
-    font-size: 15px;
-    font-weight: 700;
-    font-family: "Georgia", serif;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding: 0 0 3px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    background-image: linear-gradient(currentColor, currentColor);
-    background-repeat: no-repeat;
-    background-size: 0% 1.5px;
-    background-position: left bottom;
-    transition: background-size 0.35s ease;
-  }
-  .ver-mas-modelos-btn::before {
-    display: none;
-  }
-  .ver-mas-modelos-btn::after {
-    content: " →";
-    display: inline-block;
-    margin-left: 8px;
-    font-size: 14px;
-    letter-spacing: 0;
-    transition: transform 0.25s ease;
-  }
-  .ver-mas-modelos-btn:hover {
-    background-size: 100% 1.5px;
-  }
-  .ver-mas-modelos-btn:hover::before {
-    width: 56px;
-  }
-  .ver-mas-modelos-btn:hover::after {
-    transform: translateX(6px);
-  }
-
-  @media (max-width: 768px) {
-    .electrico-container {
-      padding: 0;
-    }
-
-    .grid-container,
-    .imagenes-grid {
-      width: 100%;
-      padding: 0;
-      margin: 0;
-    }
-
-    .imagen-destacada {
-      width: 100%;
-      margin: 0 0 24px;
-    }
-
-    .imagen-destacada-img,
-    .imagen-card-img-wrapper {
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
-      margin-right: calc(50% - 50vw);
-    }
-
-    .titulo-electricos {
-      font-size: 24px;
-      padding: 5px;
-    }
-
-    .descripcion-electricos {
-      width: 100%;
-      padding: 0 15px; /* espacio lateral */
-      margin: 5px 0; /* espacio arriba y abajo */
-      font-size: 16px;
-      text-align: center;
-      line-height: 1.5; /* mejor lectura */
-      display: block;
-      box-sizing: border-box;
-    }
-
-    .icono-electricos i {
-      font-size: 40px;
-      padding-top: 40px;
-    }
-
-    .imagenes-grid {
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-
-    .texto-destacado {
-      text-align: left;
-      padding: 10px 10px;
-    }
-
-    .texto-destacado h2 {
-      font-size: 22px;
-      border-bottom: 2px solid #6c9b61;
-      padding-bottom: 10px;
-      margin-bottom: 10px;
-    }
-
-    .texto-destacado p {
-      font-size: 16px;
-      padding: 10px;
-    }
-
-    .texto-destacado .texto-f {
-      text-align: left;
-      justify-content: flex-start;
-      width: 100%;
-      font-size: 13px;
-      color: #666;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      padding: 0;
-    }
-
-    .central-content {
-      padding: 0;
-    }
-
-    .central-content h1 {
-      display: flex;
-      flex-direction: column-reverse; /* Cambia el orden: título arriba, icono abajo */
-      align-items: center;
-      justify-content: center;
-      font-size: 44px;
-      text-align: center;
-      padding: 20px;
-      gap: 0;
-      margin: 0;
-    }
-
-    /* Ocultar lineas del titulo en movil */
-    .central-content h2::before,
-    .central-content h2::after {
-      display: none;
-    }
-
-    .central-content h2 {
-      font-size: 24px;
-    }
-
-    .icono-electricos {
-      margin-top: 10px;
-      margin-bottom: 0;
-    }
-
-    .icono-electricos i {
-      margin-bottom: 10px;
-      font-size: 60px;
-    }
-
-    .imagen-card img {
-      width: 100%;
-      height: 250px;
-    }
-
-    .imagen-card h2,
-    .imagen-card p,
-    .imagen-card .texto-f,
-    .imagen-card .scope-badge,
-    .texto-destacado {
-      padding-left: 16px;
-      padding-right: 16px;
-      box-sizing: border-box;
-    }
-
-    .imagen-card .scope-badge {
-      margin-left: 16px;
-      margin-right: 16px;
-    }
-
-    .imagen-card h2 {
-      font-size: 18px;
-      padding: 10px;
-      padding-top: 10px;
-      padding-bottom: 10px;
-      font-weight: 600;
-      border-bottom: 2px solid #6c9b61;
-    }
-
-    .imagen-card p {
-      font-size: 16px;
-      font-weight: 500;
-      color: black;
-      padding: 10px;
-    }
-
-    .imagen-card .texto-f {
-      font-size: 12px;
-      color: #666;
-      padding: 0 10px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: flex-start;
-      text-align: left;
-    }
-
-    .imagen-card .scope-badge {
-      display: flex;
-      justify-content: flex-start;
-      margin: 0 10px 10px;
-    }
-
-    .ver-mas-modelos-container {
-      padding: 20px 16px;
-      margin: 0;
-      justify-content: center;
-    }
-
-    .ver-mas-modelos-btn {
-      font-size: 12px;
-    }
-  }
-</style>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const tituloElectricos = document.querySelector(
-      ".electrico-container .central-content h2",
-    ) as HTMLElement;
-
-    if (!tituloElectricos) return;
-
-    const observerElectricos = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            tituloElectricos.classList.add("animate-title");
-            tituloElectricos.style.opacity = "1";
-          } else {
-            tituloElectricos.classList.remove("animate-title");
-            tituloElectricos.style.opacity = "0";
-          }
-        });
-      },
-      { threshold: 0.5 },
-    );
-
-    observerElectricos.observe(tituloElectricos);
-  });
-</script>
+</section>

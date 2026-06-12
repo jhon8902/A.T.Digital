@@ -7,8 +7,35 @@ const headerSearchData = encodeURIComponent(
 ---
 
 <header class="header">
-  <!-- Sección Superior: Redes Sociales, Búsqueda y Autenticación -->
-  <div class="top-bar">
+  <!-- Identidad editorial (se desplaza al hacer scroll) -->
+  <div class="brand-identity">
+    <div class="brand-copy">
+      <p class="brand-tagline">
+        <span class="tagline-desktop">
+          Encuentra tu auto ideal con <strong>AutoMatch</strong> y explora
+          eléctricos, híbridos y lanzamientos en Colombia.
+        </span>
+        <span class="tagline-mobile">
+          AutoMatch y actualidad automotriz en Colombia.
+        </span>
+      </p>
+    </div>
+    <div class="brand-mark">
+      <div class="brand-logo-frame">
+        <img
+          src="/img/autlogo2.png"
+          alt="AutoTech Digital"
+          class="brand-logo"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Barra de navegación (queda fija al hacer scroll) -->
+  <div class="top-bar-anchor" id="top-bar-anchor">
+  <div class="top-bar" id="site-top-bar">
     <!-- Redes Sociales a la Izquierda -->
     <div class="header-social-icons">
       <a href="/contacto" class="fa-solid fa-envelope" aria-label="Contacto">
@@ -36,6 +63,9 @@ const headerSearchData = encodeURIComponent(
     <!-- Menú de navegación para escritorio -->
     <nav id="menu-escritorio" class="menu-escritorio" aria-label="Navegación principal">
       <ul>
+        <li>
+          <a href="/" class="nav-home">Inicio</a>
+        </li>
         <li>
           <a href="/#automatch" data-section="automatch" class="nav-primary">AutoMatch</a>
         </li>
@@ -98,39 +128,23 @@ const headerSearchData = encodeURIComponent(
       <span>&#9776;</span>
     </button>
   </div>
-
-  <!-- Identidad Editorial -->
-  <div class="brand-identity">
-    <div class="brand-copy">
-      <p class="brand-tagline">
-        <span class="tagline-desktop">
-          Encuentra tu auto ideal con <strong>AutoMatch</strong> y explora
-          eléctricos, híbridos y lanzamientos en Colombia.
-        </span>
-        <span class="tagline-mobile">
-          AutoMatch y actualidad automotriz en Colombia.
-        </span>
-      </p>
-    </div>
-    <div class="brand-mark">
-      <div class="brand-logo-frame">
-        <img
-          src="/img/autlogo2.png"
-          alt="AutoTech Digital"
-          class="brand-logo"
-          loading="eager"
-          decoding="async"
-        />
-      </div>
-    </div>
   </div>
 
-  <section id="inicio">
-    <a
-      href="#inicio"
-      class="fa-solid fa-arrow-up boton-inicio"
-      title="Ir al inicio"></a>
-  </section>
+  <section id="inicio" aria-hidden="true"></section>
+
+  <a
+    href="/"
+    id="boton-inicio"
+    class="fa-solid fa-house boton-flotante boton-inicio"
+    title="Volver al inicio"
+    aria-label="Volver al inicio"></a>
+
+  <button
+    type="button"
+    id="boton-subir"
+    class="fa-solid fa-arrow-up boton-flotante boton-subir"
+    title="Subir"
+    aria-label="Subir al inicio de la página"></button>
 
   <!-- Menú hamburguesa para móvil -->
   <nav id="menu-hamburguesa" class="menu-hamburguesa">
@@ -165,7 +179,7 @@ const headerSearchData = encodeURIComponent(
 
         <li class="menu-mobile-group-label">Más</li>
         <li><a href="/deportes">Deportes</a></li>
-        <li><a href="/#inicio" data-section="inicio">Inicio</a></li>
+        <li><a href="/">Inicio</a></li>
       </ul>
     </div>
   </nav>
@@ -193,8 +207,7 @@ const headerSearchData = encodeURIComponent(
   /* Estilo principal del header */
   .header {
     position: relative;
-    display: flex;
-    flex-direction: column;
+    display: block;
     height: auto;
     width: 100%;
     background: black;
@@ -202,43 +215,9 @@ const headerSearchData = encodeURIComponent(
     overflow: visible;
   }
 
-  .header > .brand-identity {
-    order: 1;
-  }
-
-  .header > .top-bar {
-    order: 2;
-  }
-
-  .header > #inicio {
-    order: 3;
-  }
-
-  .header > .menu-hamburguesa {
-    order: 4;
-  }
-
-  /* icono casita de regreso */
-  .fa-solid.boton-inicio {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background-color: #e1a307; /* Fondo del icono */
-    color: black; /* Color del icono */
-    padding: 10px 15px; /* Espaciado interno */
-    border-radius: 100%; /* Forma circular */
-    text-align: center; /* Centrar el texto */
-    font-size: 34px; /* Tamaño del icono */
-    z-index: 1000; /* Asegura que esté encima de otros elementos */
-    cursor: pointer;
-    transition: background-color 0.3s;
-
-    font-weight: 600;
-  }
-
-  .fa-solid.boton-inicio:hover {
-    background-color: #555; /* Cambio de color en hover */
-    color: white;
+  .top-bar-anchor {
+    position: relative;
+    width: 100%;
   }
 
   /* clase para redes sociales contenedor */
@@ -248,12 +227,12 @@ const headerSearchData = encodeURIComponent(
     align-items: center;
     padding: 14px 20px;
     gap: 10px;
-    position: sticky;
+    position: relative;
     top: 0;
     left: 0;
-    width: 100%; /* Ocupa todo el ancho */
+    width: 100%;
     max-width: 100%;
-    box-sizing: border-box; /* Incluye padding en el width */
+    box-sizing: border-box;
     z-index: 1200;
     background-color: #fff;
     overflow-x: clip;
@@ -262,6 +241,19 @@ const headerSearchData = encodeURIComponent(
     box-shadow: none;
     margin: 0;
     border-bottom: 4px solid rgba(59, 43, 1, 0.16);
+    transition:
+      box-shadow 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .top-bar.is-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+    border-bottom-color: rgba(59, 43, 1, 0.22);
   }
 
   /* Espaciadores para centrar el menú */
@@ -305,6 +297,16 @@ const headerSearchData = encodeURIComponent(
     background: #f1f1f1 !important;
     color: #111;
     transform: none;
+  }
+
+  .menu-escritorio .nav-home {
+    color: #111;
+    font-weight: 700;
+  }
+
+  .menu-escritorio .nav-home:hover {
+    background: #f1f1f1 !important;
+    color: #111;
   }
 
   .menu-escritorio .nav-primary {
@@ -1042,34 +1044,66 @@ const headerSearchData = encodeURIComponent(
     }
   }
 
-  .boton-inicio {
+  .boton-flotante {
     position: fixed;
     bottom: 30px;
-    right: 30px;
     background: linear-gradient(135deg, #e1a307 60%, #b98f04 100%);
     color: #222;
-    padding: 12px 16px;
+    padding: 0;
     border-radius: 50%;
     box-shadow: 0 4px 16px rgba(225, 163, 7, 0.18);
-    font-size: 32px;
-    z-index: 1000;
+    font-size: 28px;
+    z-index: 1100;
     cursor: pointer;
+    text-decoration: none;
     transition:
       background 0.3s,
       color 0.3s,
-      transform 0.2s,
-      box-shadow 0.3s;
+      transform 0.25s ease,
+      box-shadow 0.3s,
+      opacity 0.25s ease;
     border: 2px solid #b98f04;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 56px;
+    height: 56px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12px);
   }
 
-  .boton-inicio:hover {
+  .boton-flotante.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .boton-flotante:hover {
     background: linear-gradient(135deg, #b98f04 60%, #e1a307 100%);
     color: #fff;
-    transform: scale(1.12) translateY(-6px);
+    transform: scale(1.08) translateY(-4px);
     box-shadow: 0 8px 24px rgba(225, 163, 7, 0.28);
+  }
+
+  .boton-flotante.is-visible:hover {
+    transform: scale(1.08) translateY(-4px);
+  }
+
+  .boton-subir {
+    right: 30px;
+  }
+
+  .boton-inicio {
+    right: 30px;
+  }
+
+  body.has-home-btn .boton-subir {
+    right: 94px;
+  }
+
+  body.has-home-btn .boton-inicio {
+    right: 30px;
   }
 
   #sugerencias {
@@ -1317,13 +1351,26 @@ const headerSearchData = encodeURIComponent(
     const menu = document.getElementById("menu-hamburguesa");
     const closeMenu = document.getElementById("close-menu");
     const overlay = document.getElementById("menu-overlay");
-    const topBar = document.querySelector(".top-bar") as HTMLElement | null;
+    const brandIdentity = document.querySelector(
+      ".brand-identity",
+    ) as HTMLElement | null;
+    const topBar = document.getElementById("site-top-bar") as HTMLElement | null;
+    const topBarAnchor = document.getElementById(
+      "top-bar-anchor",
+    ) as HTMLElement | null;
+    const botonInicio = document.getElementById(
+      "boton-inicio",
+    ) as HTMLAnchorElement | null;
+    const botonSubir = document.getElementById(
+      "boton-subir",
+    ) as HTMLButtonElement | null;
+    const SCROLL_TOP_THRESHOLD = 280;
 
     function getHeaderOffset() {
       const topBarHeight = topBar?.getBoundingClientRect().height || 0;
-      const isPinned = topBar
-        ? ["fixed", "sticky"].includes(window.getComputedStyle(topBar).position)
-        : false;
+      const brandBottom = brandIdentity?.getBoundingClientRect().bottom ?? 0;
+      const isPinned =
+        topBar?.classList.contains("is-fixed") || brandBottom <= 0;
       return Math.round((isPinned ? topBarHeight : 0) + 16);
     }
 
@@ -1332,6 +1379,44 @@ const headerSearchData = encodeURIComponent(
         "--header-anchor-offset",
         `${getHeaderOffset()}px`,
       );
+    }
+
+    function updatePinnedNav() {
+      if (!brandIdentity || !topBar || !topBarAnchor) return;
+
+      const shouldFix = brandIdentity.getBoundingClientRect().bottom <= 0;
+
+      if (shouldFix) {
+        topBar.classList.add("is-fixed");
+        topBarAnchor.style.height = `${topBar.offsetHeight}px`;
+      } else {
+        topBar.classList.remove("is-fixed");
+        topBarAnchor.style.height = "";
+      }
+
+      syncAnchorOffset();
+    }
+
+    function setupHomeButton() {
+      const onHome = isHomePath(window.location.pathname);
+      document.body.classList.toggle("has-home-btn", !onHome);
+
+      if (!botonInicio) return;
+
+      if (onHome) {
+        botonInicio.classList.remove("is-visible");
+      } else {
+        botonInicio.classList.add("is-visible");
+        botonInicio.setAttribute("href", "/");
+        botonInicio.setAttribute("title", "Volver al inicio");
+        botonInicio.setAttribute("aria-label", "Volver al inicio");
+      }
+    }
+
+    function updateScrollTopButton() {
+      if (!botonSubir) return;
+      const show = window.scrollY > SCROLL_TOP_THRESHOLD;
+      botonSubir.classList.toggle("is-visible", show);
     }
 
     function isHomePath(pathname: string) {
@@ -1356,10 +1441,26 @@ const headerSearchData = encodeURIComponent(
       return true;
     }
 
-    syncAnchorOffset();
+    setupHomeButton();
+    updatePinnedNav();
+    updateScrollTopButton();
+
+    botonSubir?.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        updatePinnedNav();
+        updateScrollTopButton();
+      },
+      { passive: true },
+    );
 
     window.addEventListener("resize", () => {
-      syncAnchorOffset();
+      updatePinnedNav();
+      updateScrollTopButton();
     });
 
     const navDropdown = document.querySelector(".nav-dropdown");

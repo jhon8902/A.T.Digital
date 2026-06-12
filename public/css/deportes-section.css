@@ -1,0 +1,259 @@
+/* ========== DEPORTES — home (compact) ========== */
+
+.deportes-section {
+  --dep-brand: var(--color-brand, #08341f);
+  --dep-accent: #b45309;
+  --dep-muted: #5a6470;
+  --dep-surface: #ffffff;
+  --dep-bg: #f4f5f7;
+  --dep-border: #e2e5ea;
+  --dep-chip: rgba(180, 83, 9, 0.1);
+
+  width: 100%;
+  background: var(--dep-bg);
+  padding: clamp(2.25rem, 4vw, 3.25rem) clamp(1rem, 3vw, 2rem);
+  scroll-margin-top: 5.5rem;
+}
+
+.deportes-inner {
+  width: min(1280px, 100%);
+  margin: 0 auto;
+}
+
+.deportes-head {
+  text-align: center;
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+}
+
+.deportes-eyebrow {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-eyebrow);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dep-accent);
+  margin: 0 0 0.45rem;
+}
+
+.deportes-title {
+  font-family: var(--font-display, "Georgia", serif);
+  font-size: var(--home-section-title);
+  font-weight: 700;
+  color: var(--dep-brand);
+  letter-spacing: 0.02em;
+  margin: 0 0 0.55rem;
+  line-height: 1.1;
+}
+
+.deportes-lead {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-section-lead);
+  line-height: 1.6;
+  color: var(--dep-muted);
+  max-width: 38rem;
+  margin: 0 auto;
+}
+
+.deportes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.25rem);
+}
+
+.deportes-grid--solo {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.deporte-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--dep-surface);
+  border: 1px solid var(--dep-border);
+  border-radius: calc(var(--radius-card, 12px) + 2px);
+  overflow: hidden;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+}
+
+.deporte-card:hover {
+  border-color: #d0b8a0;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+  transform: translateY(-2px);
+}
+
+.deporte-card__media {
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #111827;
+}
+
+.deporte-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.deporte-card:hover .deporte-card__media img {
+  transform: scale(1.03);
+}
+
+.deporte-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.4rem;
+  padding: 1rem 1.1rem 1.1rem;
+}
+
+.deporte-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+}
+
+.deporte-scope {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-card-scope);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+}
+
+.deporte-scope--nacional {
+  background: rgba(8, 52, 31, 0.09);
+  color: var(--dep-brand);
+}
+
+.deporte-scope--internacional {
+  background: rgba(15, 60, 120, 0.09);
+  color: #0f3c78;
+}
+
+.deporte-card__date {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-card-meta);
+  color: #8b939e;
+}
+
+.deporte-card__body h3 {
+  font-family: var(--font-display, "Georgia", serif);
+  font-size: var(--home-card-title);
+  font-weight: 700;
+  line-height: 1.12;
+  margin: 0;
+}
+
+.deporte-card__body h3 a {
+  color: var(--dep-brand);
+  text-decoration: none;
+}
+
+.deporte-card__body h3 a:hover {
+  color: #062818;
+}
+
+.deporte-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.deporte-chip {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-card-chip);
+  font-weight: 600;
+  color: #9a3412;
+  background: var(--dep-chip);
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+}
+
+.deporte-desc {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-card-body);
+  line-height: 1.55;
+  color: var(--dep-muted);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.deporte-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid #eef1f4;
+}
+
+.deporte-card__cta {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-card-cta);
+  font-weight: 600;
+  color: #fff;
+  background: var(--dep-brand);
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.deporte-card__cta:hover {
+  background: var(--color-brand-hover, #0a4a2b);
+}
+
+.deportes-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(1.35rem, 2.5vw, 1.75rem);
+}
+
+.deportes-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-section-cta);
+  font-weight: 600;
+  color: var(--dep-brand);
+  text-decoration: none;
+  padding: 0.62rem 1.15rem;
+  border: 1px solid var(--dep-border);
+  border-radius: 999px;
+  background: #fff;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.deportes-more:hover {
+  background: #f9fafb;
+  border-color: #cbd2dc;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .deportes-grid,
+  .deportes-grid--solo {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deporte-card,
+  .deporte-card__media img,
+  .deportes-more {
+    transition: none;
+  }
+
+  .deporte-card:hover {
+    transform: none;
+  }
+}

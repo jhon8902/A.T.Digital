@@ -10,6 +10,7 @@ type DeporteItem = {
   fecha?: string;
   editor?: string;
   source_scope?: string;
+  chips?: string[];
   sortDate: number;
 };
 
@@ -70,7 +71,6 @@ const MESES_ES: Record<string, string> = {
 
 function parseDateValue(value?: string) {
   const cleaned = (value || "").replace(/^Publicado:\s*/i, "").trim();
-
   if (!cleaned) return 0;
 
   const direct = new Date(cleaned);
@@ -86,9 +86,7 @@ function parseDateValue(value?: string) {
   if (ddMonth) {
     const [, dd, monthStr] = ddMonth;
     const mm = MESES_ES[monthStr.toLowerCase()];
-    if (mm) {
-      return new Date(`2025-${mm}-${dd.padStart(2, "0")}`).getTime();
-    }
+    if (mm) return new Date(`2025-${mm}-${dd.padStart(2, "0")}`).getTime();
   }
 
   return 0;
@@ -100,16 +98,35 @@ function extractFirstImage(html: string | undefined) {
   return match ? match[1] : null;
 }
 
+function buildChips(item: { description?: string; chips?: string[] }) {
+  if (item.chips?.length) return item.chips.slice(0, 3);
+
+  const chips: string[] = [];
+  const text = (item.description || "").toLowerCase();
+
+  if (/f1|fórmula|formula/i.test(text)) chips.push("F1");
+  if (/moto/i.test(text)) chips.push("Motociclismo");
+  if (/automovilismo|pista|carrera/i.test(text)) chips.push("Automovilismo");
+  if (/alto rendimiento|competición|competicion/i.test(text))
+    chips.push("Alto rendimiento");
+  if (/tecnolog/i.test(text)) chips.push("Tecnología");
+
+  if (chips.length === 0) chips.push("Deportes motor");
+  return chips.slice(0, 3);
+}
+
 const staticDeportes: DeporteItem[] = [
   {
     href: "/notas-deportes/nota-deportes-motos",
     img: "/img/img-deportes/deportes-motos-portada1.jpg",
     alt: "Deportes motorizados",
     title: "Adrenalina sobre ruedas",
-    description: "Cobertura de motociclismo y automovilismo de alto nivel.",
+    description:
+      "Cobertura de motociclismo y automovilismo de alto nivel en pista y calle.",
     fecha: "Publicado: 12-mar",
     editor: "Jhon Aparicio",
     source_scope: "nacional",
+    chips: ["Motociclismo", "Automovilismo", "Pista"],
     sortDate: parseDateValue("Publicado: 12-mar"),
   },
   {
@@ -117,10 +134,12 @@ const staticDeportes: DeporteItem[] = [
     img: "/img/img-deportes/subportada-deporte.webp",
     alt: "Máquinas de alto rendimiento",
     title: "Máquinas de alto rendimiento",
-    description: "Ingeniería extrema aplicada a la velocidad y la pista.",
+    description:
+      "Ingeniería extrema aplicada a la velocidad, la pista y la competición.",
     fecha: "Publicado: 13-mar",
     editor: "Jhon Aparicio",
     source_scope: "nacional",
+    chips: ["Alto rendimiento", "Pista", "Ingeniería"],
     sortDate: parseDateValue("Publicado: 13-mar"),
   },
   {
@@ -128,10 +147,12 @@ const staticDeportes: DeporteItem[] = [
     img: "/img/img-deportes/deporte-2.webp",
     alt: "Tecnología en deportes",
     title: "Tecnología de última generación",
-    description: "Materiales, telemetría y evolución técnica en competencia.",
+    description:
+      "Materiales, telemetría y evolución técnica en el automovilismo moderno.",
     fecha: "Publicado: 15-mar",
     editor: "Jhon Aparicio",
     source_scope: "nacional",
+    chips: ["Tecnología", "Telemetría", "Competición"],
     sortDate: parseDateValue("Publicado: 15-mar"),
   },
 ];
@@ -174,675 +195,100 @@ function slugTitle(t?: string) {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]/g, "");
 }
+
 const dynamicDeportesTitles = new Set(
   dynamicDeportes.map((n) => slugTitle(n.title)),
 );
+
 const deduplicatedStaticDeportes = staticDeportes.filter(
   (n) => !dynamicDeportesTitles.has(slugTitle(n.title)),
 );
+
 const allDeportes = [...dynamicDeportes, ...deduplicatedStaticDeportes]
   .sort((a, b) => b.sortDate - a.sortDate)
   .slice(0, HOME_VISIBLE_COUNT);
-
-const destacada = allDeportes[0];
-const restoDeportes = allDeportes.slice(1);
 ---
 
-<section id="deportes" class:list={["nota-container", compact && "nota-container--compact"]}>
-  <div class="nota-header">
-    <div class="icono-titulo">
-      <i class="fa-sharp-duotone fa-solid fa-trophy"></i>
-    </div>
-    {compact ? <p class="seccion-secundaria-label">Más contenido</p> : null}
-    {compact ? <h2>Adrenalina sobre ruedas</h2> : <h1>Adrenalina Sobre Ruedas</h1>}
-    <p class="subtitulo">
-      Descubre lo mejor del automovilismo y motociclismo mundial
-    </p>
-  </div>
+<link rel="stylesheet" href="/css/deportes-section.css" />
 
-  <section class="highlight-wrapper">
-    <!-- IZQUIERDA -->
-    <section class="highlight-banner">
-      <a href={destacada?.href || "/deportes"} class="highlight-note-link">
-        <img
-          src={destacada?.img ||
-            "/img/img-deportes/deportes-motos-portada1.jpg"}
-          alt={destacada?.alt || "Competencia de autos y motos"}
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="highlight-text">
-          <div class="texto-fecha texto-fecha--highlight">
-            <p>
-              <i class="fa-regular fa-user" aria-hidden="true"></i>
-              <span class="meta-author"
-                >{destacada?.editor || "Jhon Aparicio"}</span
-              >
-              <span class="meta-sep">•</span>
-              <i class="fa-regular fa-calendar" aria-hidden="true"></i>
-              <span class="meta-date"
-                >{cleanPublishedDate(destacada?.fecha)}</span
-              >
-            </p>
-          </div>
-          <span
-            class={`ambito-deporte ambito-deporte--${normalizeSourceScope(destacada?.source_scope)} ambito-deporte--highlight`}
-          >
-            {sourceScopeLabel(destacada?.source_scope)}
-          </span>
-          <p>
-            {
-              destacada?.description ||
-                "Descubre lo mejor del automovilismo y motociclismo mundial."
-            }
-          </p>
-        </div>
-      </a>
-    </section>
+<section
+  id="deportes"
+  class="deportes-section"
+  aria-labelledby="deportes-heading"
+>
+  <div class="deportes-inner">
+    <header class="deportes-head">
+      <p class="deportes-eyebrow">
+        {compact ? "Más del portal" : "Alto rendimiento"}
+      </p>
+      <h2 id="deportes-heading" class="deportes-title">
+        {compact ? "Deportes motor" : "Adrenalina sobre ruedas"}
+      </h2>
+      <p class="deportes-lead">
+        Automovilismo, motociclismo y competición: lo más reciente del mundo
+        deportivo sobre ruedas.
+      </p>
+    </header>
 
-    <!-- DERECHA -->
-    {!compact && (
-    <aside class="curiosidades">
-      <h3 class="curiosidades-title">Datos curiosos</h3>
-      <div class="curiosidad-item">
-        <span class="icon">🏁</span>
-        <p>
-          Un auto de F1 puede acelerar de 0 a 100 km/h en menos de 2 segundos.
-        </p>
-      </div>
-
-      <div class="curiosidad-item">
-        <span class="icon">🔥</span>
-        <p>
-          Los frenos de competición alcanzan temperaturas superiores a 1.000 °C.
-        </p>
-      </div>
-
-      <div class="curiosidad-item">
-        <span class="icon">⚙️</span>
-        <p>Un motor de alto rendimiento puede girar más de 15.000 RPM.</p>
-      </div>
-    </aside>
-    )}
-  </section>
-
-  <section class="info-grid">
     {
-      restoDeportes.map((nota) => (
-        <div class="info-item">
-          <a href={nota.href}>
-            <img
-              src={nota.img}
-              alt={nota.alt}
-              loading="lazy"
-              decoding="async"
-            />
-            <div class="texto-fecha">
-              <p>
-                <i class="fa-regular fa-user" aria-hidden="true" />
-                <span class="meta-author">
-                  {nota.editor || "Jhon Aparicio"}
-                </span>
-                <span class="meta-sep">•</span>
-                <i class="fa-regular fa-calendar" aria-hidden="true" />
-                <span class="meta-date">{cleanPublishedDate(nota.fecha)}</span>
-              </p>
-            </div>
-            <span
-              class={`ambito-deporte ambito-deporte--${normalizeSourceScope(nota.source_scope)}`}
-            >
-              {sourceScopeLabel(nota.source_scope)}
-            </span>
-            <h3>{nota.title}</h3>
-            <p>{nota.description}</p>
-          </a>
+      allDeportes.length > 0 && (
+        <div
+          class:list={[
+            "deportes-grid",
+            !compact && allDeportes.length >= 3 && "deportes-grid--solo",
+          ]}
+        >
+          {allDeportes.map((nota) => {
+            const chips = buildChips(nota);
+            const scope = normalizeSourceScope(nota.source_scope);
+            const fecha = cleanPublishedDate(nota.fecha);
+
+            return (
+              <article class="deporte-card">
+                <a href={nota.href} class="deporte-card__media">
+                  <img
+                    src={nota.img}
+                    alt={nota.alt}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </a>
+                <div class="deporte-card__body">
+                  <div class="deporte-card__meta">
+                    <span class={`deporte-scope deporte-scope--${scope}`}>
+                      {sourceScopeLabel(nota.source_scope)}
+                    </span>
+                    {fecha && (
+                      <span class="deporte-card__date">{fecha}</span>
+                    )}
+                  </div>
+                  <h3>
+                    <a href={nota.href}>{nota.title}</a>
+                  </h3>
+                  <div class="deporte-chips">
+                    {chips.map((chip) => (
+                      <span class="deporte-chip">{chip}</span>
+                    ))}
+                  </div>
+                  <p class="deporte-desc">{nota.description}</p>
+                  <div class="deporte-card__actions">
+                    <a href={nota.href} class="deporte-card__cta">
+                      Ver nota
+                    </a>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </div>
-      ))
+      )
     }
-    <div class="ver-mas-container">
-      <a href="/deportes" class="ver-mas-boton">Ver mas </a>
-    </div>
-  </section>
+
+    <footer class="deportes-footer">
+      <a href="/deportes" class="deportes-more">
+        Ver más deportes
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </footer>
+  </div>
 </section>
-
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  .nota-container {
-    width: 100%;
-    overflow: hidden;
-
-    background: rgb(248, 242, 219);
-  }
-
-  .nota-container--compact {
-    background: #f7f4ee;
-    border-top: 1px solid var(--color-border, #d8e5dc);
-  }
-
-  .nota-container--compact .nota-header {
-    height: auto;
-    min-height: 0;
-    padding: 2rem 1rem 1rem;
-  }
-
-  .nota-container--compact .nota-header h2 {
-    font-size: clamp(1.5rem, 2.5vw, 1.9rem);
-    font-weight: 800;
-    text-transform: uppercase;
-  }
-
-  .seccion-secundaria-label {
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #666;
-    margin-bottom: 0.35rem;
-  }
-
-  .nota-header {
-    height: 280px;
-    text-align: center;
-
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .nota-header h1 {
-    width: 100%;
-    font-size: 34px;
-    font-weight: 900;
-    text-transform: uppercase;
-    color: black;
-    padding: 15px 30px;
-    font-family: "Georgia", serif;
-    letter-spacing: 1px;
-
-    display: flex; /* 👈 clave */
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
-  }
-
-  /* Líneas */
-  .nota-header h1::before,
-  .nota-header h1::after {
-    content: "";
-    flex: 1;
-    height: 2px;
-    background-color: #e1a307;
-    max-width: 650px;
-  }
-
-  /* Línea derecha */
-  .nota-header h1::after {
-    /* nada extra, solo existe para simetría */
-  }
-
-  .icono-titulo {
-    color: #ebc460;
-    font-size: 50px;
-    background: #090808;
-    padding: 10px 10px;
-    border-radius: 50px;
-  }
-
-  .nota-header .subtitulo {
-    font-size: 23px;
-    padding-top: 0;
-    font-weight: 500;
-    color: black;
-    font-family: "Roboto", Arial, sans-serif;
-  }
-
-  .highlight-wrapper {
-    display: flex;
-    align-items: stretch; /* 🔥 clave */
-    width: 100%;
-    background: #f7f2dc; /* mismo fondo que el resto */
-  }
-
-  .highlight-banner {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .highlight-note-link {
-    display: flex;
-    flex-direction: column;
-    color: inherit;
-    text-decoration: none;
-    height: 100%;
-  }
-
-  .highlight-banner img {
-    width: 100%;
-    height: 600px;
-    object-fit: cover;
-    display: block;
-  }
-
-  .highlight-banner a {
-    display: block;
-    width: 100%;
-    position: relative;
-    text-decoration: none;
-    transition: transform 0.3s ease;
-  }
-
-  .highlight-banner a:hover img {
-    transform: scale(1.02);
-  }
-
-  .highlight-text {
-    width: 100%;
-    padding: 28px 24px 34px;
-    color: rgb(27, 27, 27);
-    text-align: left;
-    font-size: 30px;
-    font-weight: 500;
-    font-family: "Georgia", serif;
-    background: linear-gradient(180deg, #fbf2cf 0%, #f7edd0 100%);
-  }
-
-  .highlight-text .texto-fecha--highlight {
-    padding: 0;
-    margin: 6px 0 14px;
-  }
-
-  .highlight-text .ambito-deporte--highlight {
-    margin: 0 0 16px;
-    align-self: flex-start;
-  }
-
-  .highlight-text p {
-    font-size: 1.55rem;
-    line-height: 1.55;
-    color: #2c2c2c;
-    margin: 0;
-  }
-
-  .curiosidades {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 40px;
-    padding: 80px;
-    background: #ebc460;
-  }
-  .curiosidades-title {
-    font-size: 30px;
-    font-weight: 700;
-    color: #222;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    font-family: "Georgia", serif;
-  }
-
-  .curiosidad-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-  }
-
-  .curiosidad-item .icon {
-    font-size: 40px;
-    line-height: 1;
-  }
-
-  .curiosidad-item p {
-    font-size: 24px;
-    color: #222;
-    line-height: 1.4;
-  }
-
-  /* Grid de info */
-  .info-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    padding: 40px 20px;
-    width: 100%;
-    margin: 0;
-  }
-
-  .info-item {
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.08),
-      rgba(255, 255, 255, 0.02)
-    );
-    padding: 0;
-    text-align: start;
-    font-family: "Georgia", serif;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .info-item:hover {
-    transform: translateY(-8px);
-    border-color: rgba(255, 255, 255, 0.6);
-    box-shadow: 0 15px 40px rgba(134, 51, 51, 0.3);
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.12),
-      rgba(255, 255, 255, 0.05)
-    );
-  }
-
-  .info-item a {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .info-item img {
-    width: 100%;
-    aspect-ratio: 16/9;
-    object-fit: cover;
-    display: flex;
-    margin-bottom: 14px;
-  }
-
-  .info-item h3 {
-    margin-top: 0;
-    font-size: 1.6rem;
-    color: #000000;
-    font-weight: 900;
-    padding: 24px 20px 8px 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .info-item p {
-    font-size: 1.5rem;
-    padding: 0 20px 20px 20px;
-    font-family: "Roboto", Arial, sans-serif;
-    color: #393939;
-    line-height: 1.6;
-  }
-
-  .info-item .texto-fecha {
-    padding: 0 20px;
-    background: transparent;
-    font-weight: 500;
-    margin: 6px 0 12px 0;
-    display: block;
-    border-radius: 0;
-    text-transform: none;
-    letter-spacing: 0;
-    text-align: start;
-    width: 100%;
-  }
-
-  .info-item .texto-fecha p {
-    margin: 0;
-    padding: 0;
-    color: rgb(32, 32, 32);
-    font-size: 0.9rem;
-  }
-
-  .ambito-deporte {
-    display: inline-flex;
-    width: fit-content;
-    margin: 0 0 16px 20px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    color: #ffffff;
-  }
-
-  .ambito-deporte--nacional {
-    background: #1f6f43;
-  }
-
-  .ver-mas-container {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    padding: 30px 48px 30px 20px;
-    box-sizing: border-box;
-  }
-
-  .ver-mas-boton {
-    display: inline-flex;
-    align-items: center;
-    text-decoration: none;
-    color: #222;
-    font-size: 15px;
-    font-weight: 700;
-    font-family: "Georgia", serif;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding: 0 0 3px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    background-image: linear-gradient(currentColor, currentColor);
-    background-repeat: no-repeat;
-    background-size: 0% 1.5px;
-    background-position: left bottom;
-    transition: background-size 0.35s ease;
-  }
-  .ver-mas-boton::before {
-    display: none;
-  }
-  .ver-mas-boton::after {
-    content: " →";
-    display: inline-block;
-    margin-left: 8px;
-    font-size: 14px;
-    letter-spacing: 0;
-    transition: transform 0.25s ease;
-  }
-  .ver-mas-boton:hover {
-    background-size: 100% 1.5px;
-  }
-  .ver-mas-boton:hover::before {
-    width: 56px;
-  }
-  .ver-mas-boton:hover::after {
-    transform: translateX(6px);
-  }
-
-  /* Responsive */
-  @media (max-width: 1024px) {
-    .nota-header h1 {
-      font-size: 48px;
-    }
-
-    .nota-header .subtitulo {
-      font-size: 18px;
-    }
-
-    .highlight-text {
-      font-size: 24px;
-      padding: 24px 18px 28px;
-    }
-
-    .highlight-banner img {
-      height: 500px;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .nota-header {
-      height: auto;
-      padding: 30px 15px;
-    }
-
-    .nota-header h1 {
-      font-size: 36px;
-      padding: 10px 15px;
-      margin-bottom: 10px;
-    }
-
-    .nota-header .subtitulo {
-      font-size: 16px;
-      padding: 8px 15px;
-    }
-
-    .highlight-wrapper {
-      flex-direction: column;
-    }
-
-    .highlight-banner,
-    .curiosidades {
-      width: 100%;
-    }
-
-    .highlight-banner img {
-      height: 400px;
-    }
-
-    .highlight-text {
-      font-size: 20px;
-      padding: 22px 15px 24px;
-    }
-
-    .highlight-text p {
-      font-size: 1rem;
-    }
-
-    .curiosidades {
-      padding: 40px 20px;
-    }
-
-    .curiosidades-title {
-      font-size: 26px;
-      text-align: center;
-    }
-
-    .curiosidad-item {
-      gap: 15px;
-    }
-
-    .curiosidad-item p {
-      font-size: 16px;
-    }
-
-    .info-grid {
-      grid-template-columns: 1fr;
-      padding: 30px 15px;
-      gap: 15px;
-    }
-
-    .info-item h3 {
-      font-size: 1.3rem;
-      padding: 15px 15px 8px 15px;
-    }
-
-    .info-item p {
-      font-size: 0.9rem;
-      padding: 0 15px 15px 15px;
-    }
-
-    .info-item .texto-fecha {
-      padding: 0 15px;
-      margin: 6px 0 10px;
-    }
-
-    .ambito-deporte {
-      margin-left: 15px;
-      margin-bottom: 12px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .nota-header {
-      padding: 25px 10px;
-    }
-
-    .nota-header h1 {
-      font-size: 28px;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-
-    .nota-header .subtitulo {
-      font-size: 14px;
-      padding: 8px 10px;
-    }
-
-    .highlight-banner img {
-      height: 300px;
-    }
-
-    .highlight-text {
-      font-size: 18px;
-      padding: 18px 12px 22px;
-    }
-
-    .highlight-text p {
-      font-size: 0.95rem;
-    }
-
-    .curiosidades {
-      padding: 30px 15px;
-    }
-
-    .curiosidades-title {
-      font-size: 22px;
-    }
-
-    .curiosidad-item i {
-      font-size: 22px;
-    }
-
-    .curiosidad-item p {
-      font-size: 15px;
-    }
-
-    .info-grid {
-      grid-template-columns: 1fr;
-      padding: 20px 10px;
-      gap: 12px;
-    }
-
-    .info-item h3 {
-      font-size: 1.1rem;
-      padding: 12px 12px 6px 12px;
-    }
-
-    .info-item p {
-      font-size: 0.85rem;
-      padding: 0 12px 12px 12px;
-    }
-
-    .info-item .texto-fecha {
-      font-size: 0.75rem;
-      margin: 6px 0 8px;
-      padding: 0 12px;
-    }
-
-    .ambito-deporte {
-      margin-left: 12px;
-      margin-bottom: 10px;
-    }
-
-    .ver-mas-container {
-      padding: 20px 16px;
-      margin: 0;
-      justify-content: center;
-    }
-
-    .ver-mas-boton {
-      font-size: 12px;
-    }
-  }
-</style>

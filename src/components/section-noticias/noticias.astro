@@ -1,7 +1,19 @@
 ---
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
 
-let dynamicLanzamientos: any[] = [];
+type LanzamientoItem = {
+  href: string;
+  img: string;
+  alt: string;
+  title: string;
+  description: string;
+  fecha?: string;
+  editor?: string;
+  source_scope?: string;
+  sortDate: number;
+};
+
+let dynamicLanzamientos: LanzamientoItem[] = [];
 const HOME_VISIBLE_COUNT = 5;
 
 function normalizeSourceScope(scope?: string) {
@@ -27,34 +39,6 @@ function cleanPublishedDate(value?: string) {
   if (/^\d{1,2}-[a-záéíóúüñ]+$/i.test(cleaned)) return `${cleaned}-2025`;
   return cleaned;
 }
-
-const MESES_ES: Record<string, string> = {
-  ene: "01",
-  enero: "01",
-  feb: "02",
-  febrero: "02",
-  mar: "03",
-  marzo: "03",
-  abr: "04",
-  abril: "04",
-  may: "05",
-  mayo: "05",
-  jun: "06",
-  junio: "06",
-  jul: "07",
-  julio: "07",
-  ago: "08",
-  agosto: "08",
-  sep: "09",
-  sept: "09",
-  septiembre: "09",
-  oct: "10",
-  octubre: "10",
-  nov: "11",
-  noviembre: "11",
-  dic: "12",
-  diciembre: "12",
-};
 
 function parseDateValue(value?: string) {
   if (!value) return 0;
@@ -119,18 +103,27 @@ function parseDateValue(value?: string) {
   return 0;
 }
 
-// Traemos notas dinámicas desde Netlify
+function normalizeImg(src: string) {
+  return src
+    .replace(/^\.\//, "/")
+    .replace(/^\.\.\//, "/")
+    .replace(/^img\//, "/img/");
+}
+
+function normalizeHref(href: string) {
+  return href.replace(/^\.\//, "/");
+}
+
 try {
   const apiUrl = getApiUrl("get-notes");
   const data = await fetchWithTimeout(apiUrl);
 
   if (data && Array.isArray(data)) {
-    // Filtramos solo las de categoría "lanzamientos"
     dynamicLanzamientos = data
       .filter((note: any) => note.category?.toLowerCase() === "lanzamientos")
       .map((note: any) => ({
         href: `/notas/${note.id}`,
-        img: note.image1 || "/img/default.jpg",
+        img: normalizeImg(note.image1 || "/img/default.jpg"),
         alt: note.title,
         title: note.title,
         description: note.subtitle || "",
@@ -146,67 +139,59 @@ try {
   console.error("Error cargando lanzamientos dinámicos:", err);
 }
 
-// Notas estáticas originales
-const staticLanzamientos = [
+const staticLanzamientos: Omit<LanzamientoItem, "sortDate">[] = [
   {
-    href: "./noticias-nacionales/noticia-jeep-avenger",
+    href: "/noticias-nacionales/noticia-jeep-avenger",
     img: "/img/jeep-avenger/jeep-avenger-portada.webp",
-    alt: "JEEP AVENGER",
-    title: "JEEP AVENGER",
+    alt: "Jeep Avenger",
+    title: "Jeep Avenger",
     description:
-      "¿Sabías que el Jeep Avenger fue el primer modelo 100% eléctrico de la marca lanzado en Europa, ganando el premio 'Car of the Year 2023'?",
+      "El primer Jeep 100% eléctrico de la marca en Europa, ganador del Car of the Year 2023.",
     fecha: "Publicado: 2025-08-05",
-    destacada: true,
     source_scope: "nacional",
   },
   {
-    href: "./noticias-nacionales/noticia-kia-ev9",
+    href: "/noticias-nacionales/noticia-kia-ev9",
     img: "/img/kia-ev9/kia-ev9-portada.webp",
-    alt: "KIA EV-9",
-    title: "KIA EV-9",
+    alt: "KIA EV9",
+    title: "KIA EV9",
     description:
-      "El KIA EV9 es uno de los primeros SUV eléctricos en el mundo que puede recibir actualizaciones de software a distancia.",
+      "Uno de los primeros SUV eléctricos con actualizaciones de software a distancia (OTA).",
     fecha: "Publicado: 2025-08-01",
     source_scope: "nacional",
   },
   {
-    href: "./noticias-nacionales/noticia-mazda-ez6",
+    href: "/noticias-nacionales/noticia-mazda-ez6",
     img: "/img/mazda-ez6/mazda-ez6-portada.webp",
-    alt: "MAZDA EZ-6",
-    title: "MAZDA EZ-6",
+    alt: "Mazda EZ-6",
+    title: "Mazda EZ-6",
     description:
-      "‘Skyactiv’ Tecnología que optimiza el rendimiento y la eficiencia del motor híbrido, Mazda fue pionera en el uso del motor rotativo.",
+      "Tecnología Skyactiv aplicada a la electrificación con enfoque en eficiencia y rendimiento.",
     fecha: "Publicado: 2025-08-02",
     source_scope: "nacional",
   },
   {
-    href: "./noticias-nacionales/noticia-toyota-prado",
+    href: "/noticias-nacionales/noticia-toyota-prado",
     img: "/img/toyota-prado/toyota-prado-copia.webp",
-    alt: "TOYOTA PRADO",
-    title: "TOYOTA PRADO",
+    alt: "Toyota Prado",
+    title: "Toyota Prado",
     description:
-      "La Toyota Prado es famosa por su durabilidad en algunos países, es el vehículo preferido para condiciones extremas.",
+      "La nueva generación del SUV icónico, reconocido por su durabilidad en condiciones exigentes.",
     fecha: "Publicado: 2025-08-03",
     source_scope: "nacional",
   },
   {
-    href: "./noticias-nacionales/noticia-ford-f150",
+    href: "/noticias-nacionales/noticia-ford-f150",
     img: "/img/ford-f150/ford-f150-2.webp",
-    alt: "FORD F-150",
-    title: "FORD F-150",
+    alt: "Ford F-150 Lightning",
+    title: "Ford F-150 Lightning",
     description:
-      "La Ford F-150 Lightning puede alimentar una casa entera durante un corte de energía gracias a su batería de alta capacidad.",
+      "Pick-up eléctrica que puede alimentar una vivienda durante un corte de energía.",
     fecha: "Publicado: 2025-08-04",
     source_scope: "nacional",
   },
 ];
 
-const staticLanzamientosWithDate = staticLanzamientos.map((note) => ({
-  ...note,
-  sortDate: parseDateValue(note.fecha),
-}));
-
-// Mezclamos dinámicas y estáticas y ordenamos por fecha descendente
 function slugTitle(t?: string) {
   return (t || "")
     .trim()
@@ -215,781 +200,111 @@ function slugTitle(t?: string) {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]/g, "");
 }
+
+const staticLanzamientosWithDate: LanzamientoItem[] = staticLanzamientos.map(
+  (note) => ({
+    ...note,
+    href: normalizeHref(note.href),
+    img: normalizeImg(note.img),
+    sortDate: parseDateValue(note.fecha),
+  }),
+);
+
 const dynamicLanzamientosTitles = new Set(
   dynamicLanzamientos.map((n) => slugTitle(n.title)),
 );
+
 const deduplicatedStaticLanzamientos = staticLanzamientosWithDate.filter(
   (n) => !dynamicLanzamientosTitles.has(slugTitle(n.title)),
 );
-const mezcladas = [
+
+const homeLanzamientos = [
   ...dynamicLanzamientos,
   ...deduplicatedStaticLanzamientos,
-].sort((a, b) => b.sortDate - a.sortDate);
-
-// Nota destacada y el resto
-const destacada = mezcladas[0];
-const resto = mezcladas.slice(1, HOME_VISIBLE_COUNT);
+]
+  .sort((a, b) => b.sortDate - a.sortDate)
+  .slice(0, HOME_VISIBLE_COUNT);
 ---
 
-<section id="lanzamientos" class="noticias-container">
-  <div class="noticias-header">
-    <div class="noticias-icono">
-      <i class="fa-brands fa-galactic-republic"></i>
-    </div>
-    <h1 class="noticias-titulo">LANZAMIENTOS</h1>
-    <p class="descripcion-lanzamientos">
-      Lanzamientos nacionales: fichas técnicas, imágenes y versiones.
-    </p>
-  </div>
+<link rel="stylesheet" href="/css/lanzamientos-section.css" />
 
-  {
-    destacada && (
-      <a href={destacada.href} class="noticia-avenger-container">
-        <div class="noticia-avenger-texto">
-          <h3 class="noticia-texto-titulo">{destacada.title}</h3>
-          <p class="noticia-descripcion noticia-descripcion--destacada">
-            {destacada.description}
-          </p>
-          <span class="noticia-fecha noticia-fecha--destacada">
-            <i class="fa-regular fa-user" aria-hidden="true" />
-            <span class="meta-author">
-              {destacada.editor || "Jhon Aparicio"}
-            </span>
-            <span class="meta-sep">•</span>
-            <i class="fa-regular fa-calendar" aria-hidden="true" />
-            <span class="meta-date">{cleanPublishedDate(destacada.fecha)}</span>
-          </span>
-          <span
-            class={
-              "noticia-ambito " +
-              (normalizeSourceScope(destacada.source_scope) === "internacional"
-                ? "noticia-ambito--internacional"
-                : "noticia-ambito--nacional")
-            }
-          >
-            {sourceScopeLabel(destacada.source_scope)}
-          </span>
+<section
+  id="lanzamientos"
+  class="lanzamientos-section"
+  aria-labelledby="lanzamientos-heading"
+>
+  <div class="lanzamientos-inner">
+    <header class="lanzamientos-head">
+      <p class="lanzamientos-eyebrow">Novedades del mercado</p>
+      <h2 id="lanzamientos-heading" class="lanzamientos-title">Lanzamientos</h2>
+      <p class="lanzamientos-lead">
+        Los modelos que acaban de llegar o se presentan en Colombia: fichas,
+        versiones e imágenes.
+      </p>
+    </header>
+
+    {
+      homeLanzamientos.length > 0 && (
+        <div class="lanzamientos-feed">
+          {homeLanzamientos.map((nota, index) => {
+            const scope = normalizeSourceScope(nota.source_scope);
+            const fecha = cleanPublishedDate(nota.fecha);
+
+            return (
+              <article
+                class:list={[
+                  "lanzamiento-item",
+                  index === 0 && "is-latest",
+                ]}
+              >
+                <a href={nota.href} class="lanzamiento-item__media">
+                  <img
+                    src={nota.img}
+                    alt={nota.alt}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </a>
+                <div class="lanzamiento-item__body">
+                  {index === 0 && (
+                    <span class="lanzamiento-badge-new">Recién llegado</span>
+                  )}
+                  <div class="lanzamiento-item__meta">
+                    <span class={`lanzamiento-scope lanzamiento-scope--${scope}`}>
+                      {sourceScopeLabel(nota.source_scope)}
+                    </span>
+                    {fecha && (
+                      <span class="lanzamiento-item__date">{fecha}</span>
+                    )}
+                  </div>
+                  <h3>
+                    <a href={nota.href}>{nota.title}</a>
+                  </h3>
+                  <p class="lanzamiento-desc">{nota.description}</p>
+                  <div class="lanzamiento-item__actions">
+                    <a href={nota.href} class="lanzamiento-item__cta">
+                      Ver lanzamiento →
+                    </a>
+                    <a
+                      href="/automatch-find"
+                      class="lanzamiento-item__automatch"
+                    >
+                      Comparar en AutoMatch
+                    </a>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </div>
-        <img
-          src={destacada.img}
-          alt={destacada.alt}
-          class="noticia-avenger-imagen"
-          loading="lazy"
-          decoding="async"
-        />
+      )
+    }
+
+    <footer class="lanzamientos-footer">
+      <a href="/lanzamientos" class="lanzamientos-more">
+        Ver más lanzamientos
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
       </a>
-    )
-  }
-
-  {
-    resto.map((nota) => (
-      <a href={nota.href} class="noticia-container">
-        <div class="noticia-imagen-wrapper">
-          <img
-            src={nota.img}
-            alt={nota.alt}
-            class="noticia-imagen"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-        <div class="noticia-texto">
-          <h3 class="noticia-texto-titulo">{nota.title}</h3>
-          <span class="noticia-fecha">
-            <i class="fa-regular fa-user" aria-hidden="true" />
-            <span class="meta-author">{nota.editor || "Jhon Aparicio"}</span>
-            <span class="meta-sep">•</span>
-            <i class="fa-regular fa-calendar" aria-hidden="true" />
-            <span class="meta-date">{cleanPublishedDate(nota.fecha)}</span>
-          </span>
-          <span
-            class={
-              "noticia-ambito " +
-              (normalizeSourceScope(nota.source_scope) === "internacional"
-                ? "noticia-ambito--internacional"
-                : "noticia-ambito--nacional")
-            }
-          >
-            {sourceScopeLabel(nota.source_scope)}
-          </span>
-          <p class="noticia-descripcion">{nota.description}</p>
-        </div>
-      </a>
-    ))
-  }
-
-  <div class="ver-mas-noticias-container">
-    <a href="/lanzamientos" class="ver-mas-noticias-btn">Ver más lanzamientos</a
-    >
+    </footer>
   </div>
 </section>
-
-<style>
-  html {
-    scroll-behavior: smooth;
-  }
-
-  html,
-  body {
-    background: white;
-  }
-  /*#183b55*/
-  section {
-    scroll-margin-top: 100px;
-  }
-  /* Contenedor principal */
-
-  .noticias-container {
-    box-sizing: border-box;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    background: rgb(219, 211, 195);
-    position: relative;
-
-    font-family: "Georgia", serif;
-  }
-
-  .noticias-header {
-    grid-column: 1 / -1;
-
-    padding: 40px 0 30px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    margin-bottom: 10px;
-  }
-
-  .noticias-header .noticias-icono {
-    background: none;
-    padding: 0;
-    margin-bottom: 10px;
-  }
-
-  .noticias-header .noticias-titulo {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 25px;
-    width: min(100%, 90%);
-    opacity: 1;
-    background: none;
-    color: rgb(32, 32, 32);
-    font-size: 32px;
-    font-weight: 600;
-    margin: 0;
-    padding: 0;
-    letter-spacing: 2px;
-    text-transform: none;
-    font-family: "Georgia", serif;
-  }
-
-  .noticias-header .noticias-titulo::before,
-  .noticias-header .noticias-titulo::after {
-    content: "";
-    flex: 1;
-    height: 2px;
-    background-color: #453302e7;
-    max-width: 650px;
-  }
-
-  .noticias-header .descripcion-lanzamientos {
-    color: black;
-    background: none;
-    font-size: 1.4rem;
-    margin: 0;
-    padding: 10px 0 0 0;
-    font-weight: 500;
-
-    text-align: center;
-  }
-
-  .noticias-titulo {
-    opacity: 0;
-    transform: translateY(0);
-    transition: opacity 0.3s;
-  }
-
-  .noticias-titulo.visible {
-    animation: fadeInUp 1s ease-out;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(0);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .noticias-icono {
-    text-align: center;
-    margin-top: 0;
-    padding-top: 20px;
-    padding: 40px;
-  }
-
-  .noticias-icono i {
-    color: #453302e7;
-    font-size: 58px;
-    animation: girar 2s linear infinite;
-  }
-
-  /*@keyframes girar {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }*/
-
-  .noticia-container {
-    border-radius: 5px;
-    overflow: hidden;
-    display: grid;
-    grid-template-rows: 50% 50%;
-    min-height: 470px;
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .noticia-container:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  }
-
-  .noticia-imagen-wrapper {
-    position: relative;
-    overflow: hidden;
-    height: 100%;
-    background: rgb(206, 198, 181);
-  }
-
-  .noticia-imagen {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-    transition: transform 0.4s ease;
-    transform-origin: center center;
-    will-change: transform;
-  }
-
-  .noticia-avenger-imagen {
-    width: 100%;
-    height: 356px;
-    object-fit: cover;
-    object-position: center center;
-    display: block;
-    transition: transform 0.4s ease;
-  }
-
-  .noticia-container:hover .noticia-imagen,
-  .noticia-avenger-container:hover .noticia-avenger-imagen {
-    transform: scale(1.05);
-  }
-
-  @media (hover: none), (pointer: coarse) {
-    .noticia-container:hover,
-    .noticia-avenger-container:hover {
-      transform: none;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .noticia-avenger-container:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .noticia-container:hover .noticia-imagen,
-    .noticia-avenger-container:hover .noticia-avenger-imagen {
-      transform: none;
-    }
-  }
-
-  .noticia-texto {
-    padding: 18px 16px 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 8px;
-    color: black;
-    height: 100%;
-    box-sizing: border-box;
-  }
-
-  .noticia-texto-titulo {
-    font-size: 26px;
-    margin-bottom: 0;
-    color: black;
-    font-weight: 600;
-
-    padding: 5px 0;
-    text-align: start;
-    text-transform: uppercase;
-  }
-
-  .noticia-descripcion {
-    font-size: 20px;
-    color: #453302e7;
-    line-height: 1.6;
-
-    text-transform: none;
-    font-weight: 500;
-  }
-
-  .noticia-descripcion--destacada {
-    margin-top: 10px;
-  }
-
-  .noticia-fecha {
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    font-size: 0.95em;
-    color: #183b55;
-    margin-top: 4px;
-    margin-bottom: 4px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-
-  .noticia-fecha--destacada {
-    margin-top: 10px;
-    margin-bottom: 12px;
-    justify-content: center;
-  }
-
-  .noticia-ambito {
-    display: inline-flex;
-    width: fit-content;
-    margin-top: 0;
-    margin-bottom: 6px;
-    padding: 0;
-    border-radius: 0;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.35px;
-    color: #4b5563;
-    background: transparent;
-    border: none;
-  }
-
-  .noticia-ambito--nacional {
-    color: #4b5563;
-  }
-
-  .noticia-ambito--internacional {
-    color: #4b5563;
-  }
-
-  /* --- Jeep Avenger noticia especial --- */
-  .noticia-avenger-container {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    margin-bottom: 30px;
-    border-radius: 10px;
-    overflow: hidden;
-    width: 100%;
-    max-width: 100%;
-    min-height: 350px;
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  .noticia-avenger-container:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  }
-  .noticia-avenger-texto {
-    padding: 46px 34px 30px;
-
-    color: #453302e7;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    text-align: center;
-  }
-  .noticia-avenger-texto .noticia-texto-titulo {
-    color: black;
-    font-size: 30px;
-    font-weight: 600;
-    background: transparent;
-    display: inline-block;
-    /*border-bottom: 2px solid #4e3e02;*/
-    padding-bottom: 5px;
-    margin-bottom: 0;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .noticia-avenger-texto .noticia-descripcion {
-    color: #453302e7;
-    font-size: 24px;
-
-    background: transparent;
-
-    font-weight: 500;
-    margin-top: 6px;
-  }
-
-  .noticia-avenger-texto .noticia-ambito {
-    align-self: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 12px;
-    font-weight: 600;
-    color: #4b5563;
-  }
-
-  .noticia-avenger-imagen {
-    width: 100%;
-    height: 520px;
-    min-height: unset;
-    object-fit: cover;
-    display: block;
-    border-radius: 0 10px 10px 0;
-  }
-
-  .noticia-avenger-link {
-    display: block;
-    background: rgb(209, 208, 208);
-    color: black;
-    padding: 8px 18px;
-    border-radius: 6px;
-    font-weight: bold;
-    text-decoration: none;
-    margin: 30px auto 0 auto;
-    font-size: 20px;
-    text-align: center;
-    border: none;
-    width: fit-content;
-    transition:
-      background 0.2s,
-      color 0.2s;
-    grid-column: 1 / -1; /* Hace que el botón ocupe todo el ancho del grid */
-    justify-self: center; /* Centra el botón horizontalmente */
-  }
-  .noticia-avenger-link:hover {
-    background: #e9c02d;
-    color: black;
-  }
-
-  .noticia-avenger-texto,
-  .noticia-avenger-imagen {
-    flex: 1 1 50%;
-    max-width: 50%;
-  }
-
-  /* Animación del título */
-  @keyframes fadeInTitle {
-    from {
-      opacity: 0;
-      transform: translateY(-40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes zoomInFade {
-    from {
-      opacity: 0;
-      transform: scale(0.7) translateY(-40px);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-    }
-  }
-
-  /* Botón Ver más noticias */
-  .ver-mas-noticias-container {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: flex-end;
-    padding: 30px 48px 30px 20px;
-    box-sizing: border-box;
-  }
-
-  .ver-mas-noticias-btn {
-    display: inline-flex;
-    align-items: center;
-    text-decoration: none;
-    color: #1f6f43;
-    font-size: 15px;
-    font-weight: 700;
-    font-family: "Georgia", serif;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding: 0 0 3px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    background-image: linear-gradient(currentColor, currentColor);
-    background-repeat: no-repeat;
-    background-size: 0% 1.5px;
-    background-position: left bottom;
-    transition: background-size 0.35s ease;
-  }
-  .ver-mas-noticias-btn::before {
-    display: none;
-  }
-  .ver-mas-noticias-btn::after {
-    content: " →";
-    display: inline-block;
-    margin-left: 8px;
-    font-size: 14px;
-    letter-spacing: 0;
-    transition: transform 0.25s ease;
-  }
-  .ver-mas-noticias-btn:hover {
-    background-size: 100% 1.5px;
-  }
-  .ver-mas-noticias-btn:hover::before {
-    width: 56px;
-  }
-  .ver-mas-noticias-btn:hover::after {
-    transform: translateX(6px);
-  }
-
-  @media (max-width: 900px) {
-    .noticias-titulo {
-      font-size: 60px !important;
-      padding: 10px 0;
-    }
-    .noticias-container {
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-
-    .noticia-container {
-      min-height: 430px;
-    }
-
-    .noticia-imagen-wrapper {
-      background: transparent;
-    }
-
-    .noticia-imagen {
-      object-fit: cover;
-      padding: 0;
-    }
-
-    .noticia-avenger-container {
-      flex-direction: column-reverse;
-    }
-
-    .noticia-avenger-texto,
-    .noticia-avenger-imagen {
-      max-width: 100%;
-      flex: 1 1 100%;
-    }
-
-    .noticia-avenger-imagen {
-      height: 480px;
-      width: 100%;
-      object-fit: cover;
-    }
-
-    .noticia-avenger-texto {
-      padding: 24px 14px 18px;
-      text-align: start;
-      align-items: flex-start;
-      gap: 8px;
-    }
-
-    .noticia-fecha--destacada {
-      justify-content: flex-start;
-      margin-top: 8px;
-      margin-bottom: 14px;
-    }
-
-    .noticia-avenger-texto .noticia-ambito {
-      align-self: flex-start;
-      margin-left: 0;
-      margin-right: 0;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .noticias-header .noticias-titulo::before,
-    .noticias-header .noticias-titulo::after {
-      display: none;
-    }
-
-    .noticias-container {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .noticias-titulo {
-      font-size: 24px !important;
-      padding: 10px 0;
-      text-transform: none;
-    }
-
-    .descripcion-lanzamientos {
-      font-size: 16px !important;
-      padding: 10px;
-      margin-top: 0;
-      text-align: center;
-      background: white;
-      color: black;
-      text-transform: none;
-      width: 90%;
-    }
-
-    .noticias-icono {
-      background-color: white;
-      padding: 20px;
-    }
-
-    .noticias-icono i {
-      font-size: 36px;
-      color: #f1bf0b;
-      background: #183b55;
-      padding: 10px;
-      border-radius: 50px;
-    }
-
-    .noticia-avenger-imagen,
-    .noticia-imagen {
-      height: 260px;
-      max-height: 260px;
-    }
-
-    .noticia-avenger-texto {
-      text-align: center;
-      align-items: center;
-      padding: 20px 12px 16px;
-    }
-
-    .noticia-avenger-texto .noticia-texto-titulo {
-      font-size: 22px;
-      text-align: center;
-      margin-left: 0;
-      margin-right: 0;
-      display: block;
-    }
-
-    .noticia-avenger-texto .noticia-descripcion {
-      color: black;
-      font-size: 16px;
-      background: transparent;
-    }
-
-    .noticia-avenger-texto .noticia-ambito {
-      align-self: center;
-      margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 10px;
-    }
-
-    .noticia-fecha {
-      font-size: 0.9rem;
-      line-height: 1.3;
-      margin-top: 10px;
-    }
-
-    .noticia-container {
-      display: grid;
-      grid-template-rows: 50% 50%;
-      min-height: 400px;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .noticia-imagen-wrapper {
-      min-width: 100%;
-      width: 100%;
-      height: 100%;
-    }
-
-    .noticia-imagen {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      padding: 0;
-      display: block;
-    }
-
-    .noticia-texto {
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      height: 100%;
-    }
-
-    .noticia-texto-titulo {
-      font-size: 18px;
-      text-align: start;
-      font-weight: 600;
-      border-bottom: 2px solid #6b7280;
-      margin-bottom: 6px;
-      padding-bottom: 4px;
-    }
-
-    .noticia-descripcion {
-      font-size: 15px;
-      line-height: 1.4;
-      margin-bottom: 4px;
-    }
-
-    .ver-mas-noticias-btn {
-      font-size: 12px;
-    }
-    .ver-mas-noticias-container {
-      justify-content: center;
-    }
-  }
-</style>
-
-<script>
-  document.addEventListener("DOMContentLoaded", async function () {
-    const tituloLanzamientos = document.querySelector(
-      "#lanzamientos .noticias-titulo",
-    ) as HTMLElement;
-
-    if (!tituloLanzamientos) return;
-
-    // Animación con IntersectionObserver - MISMO PATRÓN QUE HÍBRIDOS
-    const observerLanzamientos = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            tituloLanzamientos.classList.add("visible");
-            tituloLanzamientos.style.opacity = "1";
-          } else {
-            tituloLanzamientos.classList.remove("visible");
-            tituloLanzamientos.style.opacity = "0";
-          }
-        });
-      },
-      { threshold: 0.5 },
-    );
-    observerLanzamientos.observe(tituloLanzamientos);
-  });
-</script>

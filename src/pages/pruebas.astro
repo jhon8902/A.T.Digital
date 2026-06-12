@@ -42,7 +42,7 @@ function cleanPublishedDate(value?: string) {
 
 const staticPruebas: PruebaItem[] = [
   {
-    title: "FORD F-150",
+    title: "Ford F-150",
     subtitle:
       "En nuestra prueba destacada tenemos a la Ford F-150, una pick-up que te brinda todo lo que necesitas para esos viajes fuera de la ciudad.",
     video: "/img/videos-pruebas/ford f-150.mp4",
@@ -51,7 +51,7 @@ const staticPruebas: PruebaItem[] = [
     sortDate: new Date("2025-08-10").getTime(),
   },
   {
-    title: "XIAOMI YU7",
+    title: "Xiaomi YU7",
     subtitle:
       "Diseño y tecnología en armonía, el carro de Xiaomi rompiendo récord como el más vendido en poco tiempo.",
     video: "/img/videos-pruebas/xiaomi YU7.mp4",
@@ -60,7 +60,7 @@ const staticPruebas: PruebaItem[] = [
     sortDate: new Date("2025-08-09").getTime(),
   },
   {
-    title: "NISSAN QASHQAI",
+    title: "Nissan Qashqai",
     subtitle:
       "Con nueva parrilla, la Nissan Qashqai nos sorprende con sus cambios en tecnología y seguridad.",
     video: "/img/videos-pruebas/nissan qashqai.mp4",
@@ -69,7 +69,7 @@ const staticPruebas: PruebaItem[] = [
     sortDate: new Date("2025-08-08").getTime(),
   },
   {
-    title: "MAZDA ICONIC",
+    title: "Mazda Iconic",
     subtitle:
       "El diseño de este Mazda Iconic es muy moderno y elegante, destaca por sus líneas deportivas y detalles innovadores.",
     video: "/img/videos-pruebas/prueba-mazda.mp4",
@@ -87,7 +87,7 @@ const staticPruebas: PruebaItem[] = [
     sortDate: new Date("2025-08-06").getTime(),
   },
   {
-    title: "KIA K4 XLINE",
+    title: "Kia K4 X-Line",
     subtitle:
       "La marca no quiere dejar los automóviles, por eso nos presenta el K4 Xline: deportivo, seguro y muy confortable.",
     video: "/img/videos-pruebas/video-kia-k4.mp4",
@@ -96,7 +96,7 @@ const staticPruebas: PruebaItem[] = [
     sortDate: new Date("2025-08-05").getTime(),
   },
   {
-    title: "ZEEKR 007 GT",
+    title: "Zeekr 007 GT",
     subtitle:
       "El ZEEKR 007 GT fue lanzado en China en abril del 2025 y a Europa llegará como 007 GT.",
     video: "/img/videos-pruebas/video-zeekr.mp4",
@@ -167,14 +167,21 @@ function pageHref(page: number) {
   title="Videos de Pruebas de Manejo | Auto-Tech-Digital"
   description="Mira los mejores videos de pruebas de manejo de autos eléctricos, híbridos y de alto rendimiento en Colombia. Opiniones honestas y análisis en detalle."
 >
-  <section class="pruebas-archivo">
-    <div class="archivo-header">
-      <h1>Más videos de pruebas</h1>
-      <p>
-        Archivo de test drives: aquí aparecen los videos/notas que ya salieron
-        de la portada principal.
+  <link rel="stylesheet" href="/css/pruebas.css" />
+
+  <div class="pruebas-archivo-page">
+  <section
+    class="pruebas-archivo"
+    data-pruebas-channel
+    aria-labelledby="archivo-pruebas-title"
+  >
+    <header class="pruebas-head">
+      <p class="pruebas-eyebrow">Archivo</p>
+      <h1 id="archivo-pruebas-title" class="pruebas-title">Más videos de pruebas</h1>
+      <p class="pruebas-lead">
+        Test drives y análisis en video que ya salieron de la portada principal.
       </p>
-    </div>
+    </header>
 
     {
       archivePruebas.length === 0 && allPruebas.length > 0 && (
@@ -191,53 +198,95 @@ function pageHref(page: number) {
       )
     }
 
-    <div class="archivo-grid">
-      {
-        paginatedPruebas.map((item) => (
-          <article class="archivo-card">
-            <div class="archivo-media">
-              {item.video ? (
-                <video controls preload="metadata">
-                  <source src={item.video} type="video/mp4" />
-                  Tu navegador no soporta videos HTML5.
-                </video>
-              ) : item.image ? (
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  loading="lazy"
-                  decoding="async"
-                />
-              ) : (
-                <div class="archivo-placeholder">Sin media</div>
-              )}
-            </div>
-
-            <div class="archivo-content">
-              <span class={sourceScopeClass(item.source_scope)}>
-                {sourceScopeLabel(item.source_scope)}
+    {
+      paginatedPruebas.length > 0 && (
+        <div class="pruebas-rail-wrap pruebas-rail-wrap--archivo">
+          <div class="pruebas-rail-toolbar">
+            <h2 class="pruebas-rail-title">Episodios del archivo</h2>
+            <div class="pruebas-rail-controls">
+              <span class="pruebas-rail-counter" data-rail-counter aria-live="polite">
+                1 / {paginatedPruebas.length}
               </span>
-              <h2>{item.title}</h2>
-              <p class="archivo-date">
-                <i class="fa-regular fa-user" aria-hidden="true" />
-                <span class="meta-author">
-                  {item.editor || "Jhon Aparicio"}
-                </span>
-                <span class="meta-sep">•</span>
-                <i class="fa-regular fa-calendar" aria-hidden="true" />
-                <span class="meta-date">{cleanPublishedDate(item.fecha)}</span>
-              </p>
-              {item.subtitle && <p class="archivo-desc">{item.subtitle}</p>}
-              {item.href && (
-                <a href={item.href} class="archivo-link">
-                  Ver nota completa →
-                </a>
-              )}
+              <div class="pruebas-rail-nav" aria-label="Navegación del carril">
+                <button
+                  type="button"
+                  class="pruebas-rail-btn prev"
+                  aria-label="Episodio anterior"
+                >
+                  <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                </button>
+                <button
+                  type="button"
+                  class="pruebas-rail-btn next"
+                  aria-label="Siguiente episodio"
+                >
+                  <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </button>
+              </div>
             </div>
-          </article>
-        ))
-      }
-    </div>
+          </div>
+
+          <div class="pruebas-rail-viewport">
+            <div class="pruebas-rail" data-pruebas-rail tabindex="0" aria-label="Archivo de videos">
+              {paginatedPruebas.map((item, index) => (
+                <article class="prueba-rail-card">
+                  <div class="prueba-rail-card__media" data-video-card>
+                    {item.video ? (
+                      <>
+                        <video playsinline preload="metadata">
+                          <source src={item.video} type="video/mp4" />
+                          Tu navegador no soporta videos HTML5.
+                        </video>
+                        <button
+                          type="button"
+                          class="prueba-play"
+                          aria-label={`Reproducir video de ${item.title}`}
+                        />
+                      </>
+                    ) : item.image ? (
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      <div class="archivo-placeholder">Sin media</div>
+                    )}
+                  </div>
+                  <div class="prueba-rail-card__body">
+                    <span class={sourceScopeClass(item.source_scope)}>
+                      {sourceScopeLabel(item.source_scope)}
+                    </span>
+                    <h4>{item.title}</h4>
+                    <p class="archivo-meta">
+                      <i class="fa-regular fa-user" aria-hidden="true" />
+                      <span>{item.editor || "Jhon Aparicio"}</span>
+                      <span class="meta-sep">•</span>
+                      <i class="fa-regular fa-calendar" aria-hidden="true" />
+                      <span>{cleanPublishedDate(item.fecha)}</span>
+                    </p>
+                    {item.subtitle && (
+                      <p class="prueba-rail-desc">{item.subtitle}</p>
+                    )}
+                    <div class="prueba-rail-actions">
+                      {item.href && (
+                        <a href={item.href} class="archivo-link">
+                          Ver nota
+                        </a>
+                      )}
+                      <a href="/automatch-find" class="prueba-rail-automatch">
+                        Comparar en AutoMatch
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    }
 
     {
       totalPages > 1 && (
@@ -265,190 +314,7 @@ function pageHref(page: number) {
       )
     }
   </section>
+  </div>
+
+  <script type="module" src="/js/pruebas-channel.js"></script>
 </Layout>
-
-<style>
-  .pruebas-archivo {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 40px 20px 70px;
-    font-family: "Barlow", "Segoe UI", sans-serif;
-  }
-
-  .archivo-header {
-    text-align: center;
-    margin-bottom: 28px;
-  }
-
-  .archivo-header h1 {
-    font-size: clamp(30px, 4vw, 44px);
-    margin-bottom: 10px;
-  }
-
-  .archivo-header p {
-    max-width: 760px;
-    margin: 0 auto;
-    color: #4d5661;
-    font-size: 18px;
-  }
-
-  .archivo-empty {
-    text-align: center;
-    margin: 20px auto 30px;
-    max-width: 760px;
-    font-size: 18px;
-    color: #4d5661;
-  }
-
-  .archivo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-    gap: 20px;
-  }
-
-  .archivo-card {
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
-  }
-
-  .archivo-media {
-    width: 100%;
-    background: #0f1720;
-    min-height: 180px;
-  }
-
-  .archivo-media video,
-  .archivo-media img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-  }
-
-  .archivo-placeholder {
-    display: grid;
-    place-items: center;
-    height: 180px;
-    color: #b0bac5;
-    font-size: 14px;
-  }
-
-  .archivo-content {
-    padding: 16px;
-  }
-
-  .archivo-scope {
-    display: inline-flex;
-    align-items: center;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    margin-bottom: 10px;
-  }
-
-  .archivo-scope--nacional {
-    background: rgba(12, 82, 37, 0.12);
-    color: #0c5225;
-  }
-
-  .archivo-scope--internacional {
-    background: rgba(15, 60, 120, 0.12);
-    color: #0f3c78;
-  }
-
-  .archivo-content h2 {
-    font-size: 24px;
-    margin-bottom: 6px;
-    color: #0f1720;
-  }
-
-  .archivo-date {
-    font-size: 14px;
-    color: #6b7280;
-    margin-bottom: 8px;
-  }
-
-  .archivo-desc {
-    color: #374151;
-    line-height: 1.45;
-    margin-bottom: 10px;
-  }
-
-  .archivo-link {
-    color: #0b5ed7;
-    font-weight: 600;
-    text-decoration: none;
-  }
-
-  .archivo-link:hover {
-    text-decoration: underline;
-  }
-
-  .archivo-pagination {
-    margin-top: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 18px;
-    flex-wrap: wrap;
-    background: #f8f7f4;
-    border-radius: 16px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
-    padding: 18px 32px;
-    min-width: 320px;
-    border: 1px solid #ece7df;
-  }
-
-  .archivo-page-btn {
-    text-decoration: none;
-    color: #222;
-    border: 1.5px solid #e0d9ce;
-    padding: 10px 22px;
-    border-radius: 999px;
-    font-size: 16px;
-    font-weight: 600;
-    background: linear-gradient(90deg, #fff 80%, #f6f3ee 100%);
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.04);
-    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    outline: none;
-    position: relative;
-  }
-
-  .archivo-page-btn:hover:not(.is-disabled),
-  .archivo-page-btn:focus-visible:not(.is-disabled) {
-    background: linear-gradient(90deg, #f6f3ee 60%, #e9e3d7 100%);
-    color: #0e3a5e;
-    border-color: #b6a98b;
-    box-shadow: 0 2px 8px 0 rgba(30, 41, 59, 0.1);
-    transform: translateY(-2px) scale(1.04);
-  }
-
-  .archivo-page-btn.is-disabled {
-    pointer-events: none;
-    opacity: 0.45;
-    background: #f3f3f3;
-    color: #aaa;
-    border-color: #e0d9ce;
-    box-shadow: none;
-    transform: none;
-  }
-
-  .archivo-page-indicator {
-    font-size: 16px;
-    font-weight: 700;
-    color: #2a2a2a;
-    letter-spacing: 0.01em;
-    padding: 0 10px;
-    background: transparent;
-    border-radius: 8px;
-    transition: color 0.18s;
-  }
-</style>

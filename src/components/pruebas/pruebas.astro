@@ -10,31 +10,30 @@ type PruebaItem = {
   sortDate: number;
 };
 
-// Base estática de videos
 const staticPruebas: PruebaItem[] = [
   {
-    title: "FORD F-150",
+    title: "Ford F-150",
     subtitle:
-      "En nuestra prueba destacada tenemos a la Ford F-150, una pick-up que te brinda todo lo que necesitas para esos viajes fuera de la ciudad. Descubre la emoción de nuestro modelo estrella.",
+      "La Ford F-150 es una pick-up que te brinda todo lo que necesitas para esos viajes fuera de la ciudad. Descubre la emoción de nuestro modelo estrella.",
     video: "/img/videos-pruebas/ford f-150.mp4",
     sortDate: new Date("2025-08-10").getTime(),
   },
   {
-    title: "XIAOMI YU7",
+    title: "Xiaomi YU7",
     subtitle:
       "Diseño y tecnología en armonía, el carro de Xiaomi rompiendo récord como el más vendido en poco tiempo.",
     video: "/img/videos-pruebas/xiaomi YU7.mp4",
     sortDate: new Date("2025-08-09").getTime(),
   },
   {
-    title: "NISSAN QASHQAI",
+    title: "Nissan Qashqai",
     subtitle:
       "Con nueva parrilla, la Nissan Qashqai nos sorprende con sus cambios en tecnología y seguridad.",
     video: "/img/videos-pruebas/nissan qashqai.mp4",
     sortDate: new Date("2025-08-08").getTime(),
   },
   {
-    title: "MAZDA ICONIC",
+    title: "Mazda Iconic",
     subtitle:
       "El diseño de este Mazda Iconic es muy moderno y elegante, destaca por sus líneas deportivas y detalles innovadores.",
     video: "/img/videos-pruebas/prueba-mazda.mp4",
@@ -48,14 +47,14 @@ const staticPruebas: PruebaItem[] = [
     sortDate: new Date("2025-08-06").getTime(),
   },
   {
-    title: "KIA K4 XLINE",
+    title: "Kia K4 X-Line",
     subtitle:
       "La marca no quiere dejar los automóviles, por eso nos presenta el K4 Xline: deportivo, seguro y muy confortable.",
     video: "/img/videos-pruebas/video-kia-k4.mp4",
     sortDate: new Date("2025-08-05").getTime(),
   },
   {
-    title: "ZEEKR 007 GT",
+    title: "Zeekr 007 GT",
     subtitle:
       "El ZEEKR 007 GT fue lanzado en China en abril del 2025 y a Europa llegará como 007 GT.",
     video: "/img/videos-pruebas/video-zeekr.mp4",
@@ -86,6 +85,7 @@ try {
 }
 
 const HOME_VISIBLE_COUNT = staticPruebas.length;
+
 function slugTitle(t?: string) {
   return (t || "")
     .trim()
@@ -94,6 +94,7 @@ function slugTitle(t?: string) {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]/g, "");
 }
+
 const dynamicPruebasTitles = new Set(
   dynamicPruebas.map((n) => slugTitle(n.title)),
 );
@@ -105,755 +106,113 @@ const allPruebas = [...dynamicPruebas, ...deduplicatedStaticPruebas].sort(
 );
 
 const homePruebas = allPruebas.slice(0, HOME_VISIBLE_COUNT);
-const destacada = homePruebas[0];
-const resto = homePruebas.slice(1);
 ---
 
-<section id="pruebas" class="pruebas-container">
-  <div class="pruebas-header">
-    <div class="pruebas-icono">
-      <i class="fa-solid fa-video"></i>
-    </div>
-    <h1 class="pruebas-titulo">TEST DRIVE VIDEOS</h1>
-    <p class="descripcion-pruebas">
-      Ponemos a prueba todos los vehículos, te contamos lo más relevante de cada
-      una de las marcas.
-    </p>
-  </div>
+<link rel="stylesheet" href="/css/pruebas.css" />
 
-  {
-    destacada && (
-      <div class="prueba-destacada-container">
-        <div class="prueba-destacada-video">
-          <video width="100%" height="auto" controls>
-            <source src={destacada.video} type="video/mp4" />
-            Tu navegador no soporta videos HTML5.
-          </video>
-        </div>
-        <div class="prueba-destacada-texto">
-          <h2>{destacada.title}</h2>
-          <p>{destacada.subtitle}</p>
-          <a href="/pruebas" class="btn-ver-video">
-            Ver más videos
-          </a>
-        </div>
-      </div>
-    )
-  }
+<section
+  id="pruebas"
+  class="pruebas-section"
+  data-pruebas-channel
+  aria-labelledby="pruebas-heading"
+>
+  <div class="pruebas-inner">
+    <header class="pruebas-head">
+      <p class="pruebas-eyebrow">Test drive en video</p>
+      <h2 id="pruebas-heading" class="pruebas-title">Pruebas de manejo</h2>
+      <p class="pruebas-lead">
+        Ponemos a prueba los vehículos más relevantes del mercado y te contamos
+        lo esencial de cada marca en formato video.
+      </p>
+    </header>
 
-  <div class="pruebas-grid">
     {
-      resto.map((prueba, index) => (
-        <div class="prueba-card" style={`--i: ${index}`}>
-          <div class="prueba-imagen-wrapper">
-            <video width="100%" height="auto" controls>
-              <source src={prueba.video} type="video/mp4" />
-              Tu navegador no soporta videos HTML5.
-            </video>
+      homePruebas.length > 0 && (
+        <div class="pruebas-rail-wrap">
+          <div class="pruebas-rail-toolbar">
+            <h3 class="pruebas-rail-title">Episodios</h3>
+            <div class="pruebas-rail-controls">
+              <span class="pruebas-rail-counter" data-rail-counter aria-live="polite">
+                1 / {homePruebas.length}
+              </span>
+              <div class="pruebas-rail-nav" aria-label="Navegación del carril">
+                <button
+                  type="button"
+                  class="pruebas-rail-btn prev"
+                  aria-label="Episodio anterior"
+                >
+                  <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                </button>
+                <button
+                  type="button"
+                  class="pruebas-rail-btn next"
+                  aria-label="Siguiente episodio"
+                >
+                  <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="prueba-info">
-            <h3>{prueba.title}</h3>
-            <p>{prueba.subtitle}</p>
+
+          <div class="pruebas-rail-viewport">
+            <div class="pruebas-rail" data-pruebas-rail tabindex="0" aria-label="Carril de videos">
+            {homePruebas.map((prueba, index) => (
+              <article class="prueba-rail-card" style={`--rail-i: ${index}`}>
+                <div class="prueba-rail-card__media" data-video-card>
+                  {prueba.video ? (
+                    <>
+                      <video playsinline preload="metadata">
+                        <source src={prueba.video} type="video/mp4" />
+                      </video>
+                      <button
+                        type="button"
+                        class="prueba-play"
+                        aria-label={`Reproducir video de ${prueba.title}`}
+                      />
+                    </>
+                  ) : prueba.image ? (
+                    <img
+                      src={prueba.image}
+                      alt={prueba.title}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <div class="archivo-placeholder">Sin video</div>
+                  )}
+                </div>
+                <div class="prueba-rail-card__body">
+                  <p class="prueba-rail-ep">
+                    Episodio {index + 1}
+                  </p>
+                  <h4>{prueba.title}</h4>
+                  <p class="prueba-rail-desc">{prueba.subtitle}</p>
+                  <div class="prueba-rail-actions">
+                    {prueba.href && (
+                      <a href={prueba.href} class="archivo-link">
+                        Ver nota
+                      </a>
+                    )}
+                    <a href="/automatch-find" class="prueba-rail-automatch">
+                      Comparar en AutoMatch
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ))}
+            </div>
           </div>
         </div>
-      ))
+      )
     }
-  </div>
 
-  <div class="ver-mas-videos-container">
-    <a href="/pruebas" class="ver-mas-videos-btn">Ver más videos</a>
+    <div class="pruebas-footer">
+      <a href="/pruebas" class="pruebas-more">
+        Ver más videos
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
   </div>
 </section>
 
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  .pruebas-container {
-    --sport-bg: #f7f8fa;
-    --sport-panel: #ffffff;
-    --sport-panel-2: #f2f4f7;
-    --sport-accent: #08341f;
-    --sport-accent-2: #f19f1b;
-    --sport-text: #0f172a;
-    --sport-muted: #4b5563;
-    width: 100%;
-    background: linear-gradient(180deg, #fafbfc 0%, #f2f5f8 100%);
-    padding: 80px 0 90px;
-    border-bottom: 4px solid var(--sport-accent-2);
-    color: var(--sport-text);
-    font-family: Georgia, "Times New Roman", serif;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .pruebas-container::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(120deg, rgba(8, 52, 31, 0.04), transparent 40%),
-      repeating-linear-gradient(
-        135deg,
-        rgba(8, 52, 31, 0.03) 0 1px,
-        transparent 1px 12px
-      );
-    pointer-events: none;
-  }
-
-  .pruebas-header {
-    text-align: center;
-    margin-bottom: 60px;
-    padding: 0 20px;
-    position: relative;
-    z-index: 1;
-    animation: fade-rise 0.8s ease both;
-  }
-
-  .pruebas-icono {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 86px;
-    height: 86px;
-    background: linear-gradient(
-      135deg,
-      var(--sport-accent) 0%,
-      var(--sport-accent-2) 100%
-    );
-    border-radius: 22px;
-    margin-bottom: 18px;
-    box-shadow: 0 12px 30px rgba(57, 255, 136, 0.25);
-    transform: rotate(-6deg);
-  }
-
-  .pruebas-icono i {
-    font-size: 38px;
-    color: #ffffff;
-  }
-
-  .pruebas-titulo {
-    font-size: clamp(50px, 6vw, 76px);
-    font-weight: 700;
-    margin-bottom: 14px;
-    color: var(--sport-accent);
-    letter-spacing: 0;
-    opacity: 0;
-    transform: translateY(0);
-    transition: none;
-  }
-
-  .pruebas-titulo.in-view {
-    animation: fadeInUp 1s ease-out;
-  }
-
-  .descripcion-pruebas {
-    font-size: 21px;
-    color: var(--sport-muted);
-    max-width: 760px;
-    margin: 0 auto;
-    line-height: 1.85;
-    font-weight: 400;
-  }
-
-  .prueba-destacada-container {
-    display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: 50px;
-    padding: 60px;
-    max-width: 1600px;
-    margin: 0 auto 60px;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-    animation: fade-rise 0.9s ease both;
-  }
-
-  .prueba-destacada-video {
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
-    border: 1px solid #dbe2ea;
-    background: var(--sport-panel);
-    aspect-ratio: 4 / 3;
-  }
-
-  .prueba-destacada-video video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    background-color: #edf2f7;
-  }
-
-  .prueba-destacada-texto h2 {
-    font-size: clamp(40px, 5vw, 58px);
-    font-weight: 700;
-    margin-bottom: 16px;
-    color: var(--sport-accent);
-    letter-spacing: 0;
-    line-height: 1.15;
-  }
-
-  .prueba-destacada-texto p {
-    font-size: 21px;
-    line-height: 1.85;
-    margin-bottom: 28px;
-    color: var(--sport-muted);
-    font-weight: 400;
-  }
-
-  .btn-ver-video {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: linear-gradient(
-      135deg,
-      var(--sport-accent) 0%,
-      var(--sport-accent-2) 100%
-    );
-    color: #ffffff;
-    padding: 14px 40px;
-    font-size: 17px;
-    font-weight: 700;
-    border-radius: 999px;
-    text-decoration: none;
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease;
-    cursor: pointer;
-    border: none;
-    box-shadow: 0 10px 24px rgba(8, 52, 31, 0.22);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .btn-ver-video:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 16px 34px rgba(8, 52, 31, 0.26);
-  }
-
-  /* Grid de pruebas */
-  .pruebas-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
-    padding: 0 60px;
-    margin-bottom: 60px;
-    max-width: 1600px;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    z-index: 1;
-  }
-
-  .prueba-card {
-    background: linear-gradient(160deg, #ffffff 0%, var(--sport-panel-2) 100%);
-    border-radius: 18px;
-    overflow: hidden;
-    transition:
-      transform 0.35s ease,
-      box-shadow 0.35s ease,
-      border-color 0.35s ease;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
-    animation: card-rise 0.7s ease both;
-    animation-delay: calc(var(--i) * 80ms);
-  }
-
-  .prueba-card:hover {
-    transform: translateY(-10px) scale(1.01);
-    border-color: rgba(8, 52, 31, 0.35);
-    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.16);
-  }
-
-  .prueba-imagen-wrapper {
-    width: 100%;
-    aspect-ratio: 6 / 6;
-    overflow: hidden;
-    background: #edf2f7;
-  }
-
-  .prueba-imagen-wrapper video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    background-color: #edf2f7;
-  }
-
-  .prueba-imagen-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  /* Miniatura con overlay y "play" para indicar video */
-  .prueba-thumb {
-    display: block;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .prueba-thumb::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0) 40%,
-      rgba(0, 0, 0, 0.28) 100%
-    );
-    transition: background 0.25s ease;
-    pointer-events: none;
-  }
-
-  .prueba-thumb::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-40%, -50%);
-    width: 0;
-    height: 0;
-    border-left: 18px solid rgba(255, 255, 255, 0.95);
-    border-top: 12px solid transparent;
-    border-bottom: 12px solid transparent;
-    pointer-events: none;
-  }
-
-  .prueba-thumb:hover::before {
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0) 30%,
-      rgba(0, 0, 0, 0.45) 100%
-    );
-  }
-
-  .prueba-thumb:hover::after {
-    transform: translate(-40%, -50%) scale(1.05);
-  }
-
-  .prueba-info {
-    padding: 26px 26px 30px;
-  }
-
-  .prueba-info h3 {
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    color: var(--sport-accent);
-    text-transform: none;
-    letter-spacing: 0;
-    line-height: 1.2;
-  }
-
-  .prueba-info p {
-    font-size: 19px;
-    color: var(--sport-muted);
-    margin-bottom: 0;
-    line-height: 1.75;
-  }
-
-  /* Botón Ver más videos */
-  .ver-mas-videos-container {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0 60px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .ver-mas-videos-btn {
-    display: inline-flex;
-    align-items: center;
-    text-decoration: none;
-    color: var(--sport-accent);
-    font-size: 15px;
-    font-weight: 700;
-    font-family: "Georgia", serif;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding: 0 0 3px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    background-image: linear-gradient(currentColor, currentColor);
-    background-repeat: no-repeat;
-    background-size: 0% 1.5px;
-    background-position: left bottom;
-    transition: background-size 0.35s ease;
-  }
-  .ver-mas-videos-btn::before {
-    display: none;
-  }
-  .ver-mas-videos-btn::after {
-    content: " →";
-    display: inline-block;
-    margin-left: 8px;
-    font-size: 14px;
-    letter-spacing: 0;
-    transition: transform 0.25s ease;
-  }
-  .ver-mas-videos-btn:hover {
-    background-size: 100% 1.5px;
-  }
-  .ver-mas-videos-btn:hover::after {
-    transform: translateX(6px);
-  }
-
-  @keyframes fade-rise {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(0);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes zoomInFade {
-    from {
-      opacity: 0;
-      transform: scale(0.7) translateY(-40px);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-    }
-  }
-
-  @keyframes card-rise {
-    from {
-      opacity: 0;
-      transform: translateY(16px) scale(0.98);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  /* Responsive - Tablet Large (1024px) */
-  @media (max-width: 1024px) {
-    .pruebas-header {
-      margin-bottom: 50px;
-      padding: 0 30px;
-    }
-
-    .prueba-destacada-container {
-      grid-template-columns: 1fr;
-      padding: 40px 30px;
-      gap: 30px;
-      margin-bottom: 50px;
-    }
-
-    .prueba-destacada-texto h2 {
-      font-size: 42px;
-      margin-bottom: 15px;
-    }
-
-    .pruebas-grid {
-      grid-template-columns: repeat(2, 1fr);
-      padding: 0 30px;
-      gap: 25px;
-    }
-
-    .prueba-info {
-      padding: 20px;
-    }
-
-    .prueba-info h3 {
-      font-size: 28px;
-    }
-
-    .prueba-info p {
-      font-size: 18px;
-    }
-
-    .btn-ver-video {
-      padding: 14px 36px;
-      font-size: 17px;
-    }
-  }
-
-  /* Responsive - Tablet (768px) */
-  @media (max-width: 768px) {
-    .pruebas-container {
-      padding: 50px 0;
-    }
-
-    .pruebas-header {
-      margin-bottom: 40px;
-      padding: 0 20px;
-    }
-
-    .pruebas-icono {
-      width: 60px;
-      height: 60px;
-      margin-bottom: 15px;
-    }
-
-    .pruebas-icono i {
-      font-size: 30px;
-    }
-
-    .pruebas-titulo {
-      font-size: 44px;
-      letter-spacing: 0;
-      margin-bottom: 12px;
-    }
-
-    .descripcion-pruebas {
-      font-size: 18px;
-      max-width: 100%;
-    }
-
-    .prueba-destacada-container {
-      grid-template-columns: 1fr;
-      padding: 25px 20px;
-      gap: 20px;
-      margin-bottom: 35px;
-    }
-
-    .prueba-destacada-video {
-      border-radius: 12px;
-    }
-
-    .prueba-destacada-video video {
-      width: 100%;
-    }
-
-    .prueba-destacada-texto h2 {
-      font-size: 32px;
-      margin-bottom: 12px;
-    }
-
-    .prueba-destacada-texto p {
-      font-size: 18px;
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
-
-    .btn-ver-video {
-      padding: 12px 28px;
-      font-size: 16px;
-    }
-
-    .pruebas-grid {
-      grid-template-columns: 1fr;
-      padding: 0 20px;
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-
-    .prueba-card {
-      border-radius: 12px;
-    }
-
-    .prueba-imagen-wrapper {
-      aspect-ratio: 4 / 3;
-    }
-
-    .prueba-info {
-      padding: 18px;
-    }
-
-    .prueba-info h3 {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-
-    .prueba-info p {
-      font-size: 17px;
-      margin-bottom: 12px;
-    }
-
-    .ver-mas-videos-container {
-      padding: 0 20px;
-      justify-content: center;
-    }
-
-    .ver-mas-videos-btn {
-      font-size: 12px;
-    }
-  }
-
-  /* Responsive - Mobile (480px) */
-  @media (max-width: 480px) {
-    .pruebas-container {
-      padding: 35px 0;
-    }
-
-    .pruebas-header {
-      margin-bottom: 30px;
-      padding: 0 15px;
-    }
-
-    .pruebas-icono {
-      width: 50px;
-      height: 50px;
-      margin-bottom: 12px;
-    }
-
-    .pruebas-icono i {
-      font-size: 24px;
-    }
-
-    .pruebas-titulo {
-      font-size: 32px;
-      letter-spacing: 0;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-
-    .descripcion-pruebas {
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    .prueba-destacada-container {
-      padding: 15px;
-      margin-bottom: 30px;
-      gap: 15px;
-    }
-
-    .prueba-destacada-video {
-      border-radius: 10px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-    }
-
-    .prueba-destacada-texto h2 {
-      font-size: 26px;
-      margin-bottom: 10px;
-    }
-
-    .prueba-destacada-texto p {
-      font-size: 16px;
-      margin-bottom: 15px;
-      line-height: 1.5;
-    }
-
-    .btn-ver-video {
-      padding: 11px 22px;
-      font-size: 15px;
-      width: 100%;
-    }
-
-    .pruebas-grid {
-      padding: 0 15px;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-
-    .prueba-card {
-      border-radius: 10px;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-    }
-
-    .prueba-imagen-wrapper {
-      aspect-ratio: 4 / 3;
-    }
-
-    .prueba-info {
-      padding: 15px;
-    }
-
-    .prueba-info h3 {
-      font-size: 22px;
-      margin-bottom: 8px;
-    }
-
-    .prueba-info p {
-      font-size: 17px;
-      margin-bottom: 0;
-    }
-
-    .ver-mas-videos-container {
-      padding: 0 15px;
-      justify-content: center;
-    }
-
-    .ver-mas-videos-btn {
-      font-size: 12px;
-    }
-  }
-
-  /* Responsive - Small Mobile (320px) */
-  @media (max-width: 360px) {
-    .pruebas-titulo {
-      font-size: 26px;
-    }
-
-    .descripcion-pruebas {
-      font-size: 15px;
-    }
-
-    .prueba-destacada-texto h2 {
-      font-size: 22px;
-    }
-
-    .prueba-destacada-texto p {
-      font-size: 15px;
-    }
-
-    .btn-ver-video {
-      font-size: 14px;
-      padding: 10px 18px;
-    }
-    .ver-mas-videos-btn {
-      font-size: 11px;
-    }
-
-    .prueba-info h3 {
-      font-size: 20px;
-    }
-
-    .prueba-info p {
-      font-size: 16px;
-    }
-  }
-</style>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const tituloPruebas = document.querySelector(
-      "#pruebas .pruebas-titulo",
-    ) as HTMLElement;
-
-    if (!tituloPruebas) return;
-
-    const observerPruebas = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            tituloPruebas.classList.add("in-view");
-            tituloPruebas.style.opacity = "1";
-          } else {
-            tituloPruebas.classList.remove("in-view");
-            tituloPruebas.style.opacity = "0";
-          }
-        });
-      },
-      { threshold: 0.5 },
-    );
-
-    observerPruebas.observe(tituloPruebas);
-  });
-</script>
+<script type="module" src="/js/pruebas-channel.js"></script>

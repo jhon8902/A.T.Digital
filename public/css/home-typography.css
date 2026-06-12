@@ -1,0 +1,111 @@
+/* Tipografía unificada — home (carga al final para igualar secciones) */
+
+body.home-page .electricos-eyebrow,
+body.home-page .hibridos-eyebrow,
+body.home-page .lanzamientos-eyebrow,
+body.home-page .deportes-eyebrow,
+body.home-page .pruebas-eyebrow,
+body.home-page .noticias-home-eyebrow {
+  font-size: var(--home-eyebrow);
+}
+
+body.home-page .electricos-title,
+body.home-page .hibridos-title,
+body.home-page .lanzamientos-title,
+body.home-page .deportes-title,
+body.home-page .pruebas-title,
+body.home-page .section-info .info-titulo {
+  font-size: var(--home-section-title) !important;
+}
+
+body.home-page .electricos-lead,
+body.home-page .hibridos-lead,
+body.home-page .lanzamientos-lead,
+body.home-page .deportes-lead,
+body.home-page .pruebas-lead,
+body.home-page .noticias-home-lead {
+  font-size: var(--home-section-lead);
+}
+
+/* Títulos de tarjetas pequeñas — mismo tamaño que Noticias */
+body.home-page .electrico-card__body h3,
+body.home-page .hibrido-card__body h3,
+body.home-page .deporte-card__body h3,
+body.home-page .lanzamiento-item__body h3,
+body.home-page .prueba-rail-card__body h4,
+body.home-page .section-info .news-card:not(.news-card--featured):not(.news-card--insight) .news-title {
+  font-size: var(--home-card-title) !important;
+}
+
+/* Destacado de Noticias — más grande, solo esa tarjeta */
+body.home-page .section-info .news-card--featured .news-title {
+  font-size: var(--home-news-featured) !important;
+}
+
+body.home-page .electrico-desc,
+body.home-page .hibrido-desc,
+body.home-page .deporte-desc,
+body.home-page .lanzamiento-desc,
+body.home-page .prueba-rail-desc {
+  font-size: var(--home-card-body);
+}
+
+body.home-page .electrico-card__date,
+body.home-page .hibrido-card__date,
+body.home-page .deporte-card__date,
+body.home-page .lanzamiento-item__date,
+body.home-page .section-info .news-date {
+  font-size: var(--home-card-meta);
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+}
+
+body.home-page .electrico-scope,
+body.home-page .hibrido-scope,
+body.home-page .deporte-scope,
+body.home-page .lanzamiento-scope,
+body.home-page .section-info .scope-tag,
+body.home-page .section-info .news-tag {
+  font-size: var(--home-card-scope);
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+}
+
+body.home-page .electrico-chip,
+body.home-page .hibrido-chip,
+body.home-page .deporte-chip {
+  font-size: var(--home-card-chip);
+}
+
+body.home-page .electrico-card__cta,
+body.home-page .hibrido-card__cta,
+body.home-page .deporte-card__cta,
+body.home-page .lanzamiento-item__cta {
+  font-size: var(--home-card-cta);
+}
+
+body.home-page .electrico-card__automatch,
+body.home-page .hibrido-card__automatch,
+body.home-page .deporte-card__automatch,
+body.home-page .lanzamiento-item__automatch {
+  font-size: var(--home-card-link);
+}
+
+body.home-page .electricos-more,
+body.home-page .hibridos-more,
+body.home-page .deportes-more,
+body.home-page .lanzamientos-more,
+body.home-page .pruebas-more,
+body.home-page .section-info .ver-mas-noticias-btn {
+  font-size: var(--home-section-cta);
+}
+
+body.home-page .pruebas-rail-title {
+  font-size: var(--home-rail-title);
+}
+
+body.home-page .automatch-promo h2 {
+  font-size: var(--home-card-title);
+}
+
+body.home-page .automatch-promo__copy p:last-child {
+  font-size: var(--home-card-body);
+}

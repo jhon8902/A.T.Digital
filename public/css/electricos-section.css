@@ -1,0 +1,283 @@
+/* ========== ELÉCTRICOS — catálogo home ========== */
+
+.electricos-section {
+  --ev-brand: var(--color-brand, #08341f);
+  --ev-accent: var(--color-accent, #e6b410);
+  --ev-muted: #5a6470;
+  --ev-surface: #ffffff;
+  --ev-bg: #f4f5f7;
+  --ev-border: #e2e5ea;
+  --ev-chip: rgba(8, 52, 31, 0.08);
+
+  width: 100%;
+  background: var(--ev-bg);
+  padding: clamp(2.75rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem);
+  scroll-margin-top: 5.5rem;
+}
+
+.electricos-inner {
+  width: min(1280px, 100%);
+  margin: 0 auto;
+}
+
+.electricos-head {
+  text-align: center;
+  margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+}
+
+.electricos-eyebrow {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-eyebrow);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ev-accent);
+  margin: 0 0 0.45rem;
+}
+
+.electricos-title {
+  font-family: var(--font-display, "Georgia", serif);
+  font-size: var(--home-section-title);
+  font-weight: 700;
+  color: var(--ev-brand);
+  letter-spacing: 0.02em;
+  margin: 0 0 0.65rem;
+  line-height: 1.1;
+}
+
+.electricos-lead {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-section-lead);
+  line-height: 1.65;
+  color: var(--ev-muted);
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.electricos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.35rem);
+}
+
+.electrico-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--ev-surface);
+  border: 1px solid var(--ev-border);
+  border-radius: calc(var(--radius-card, 12px) + 2px);
+  overflow: hidden;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+}
+
+.electrico-card:hover {
+  border-color: #c8ced8;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+  transform: translateY(-2px);
+}
+
+.electrico-card__media {
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #111827;
+}
+
+.electrico-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.electrico-card:hover .electrico-card__media img {
+  transform: scale(1.03);
+}
+
+.electrico-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1rem 1.1rem 1.15rem;
+  gap: 0.45rem;
+}
+
+.electrico-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+}
+
+.electrico-scope {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-card-scope);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+}
+
+.electrico-scope--nacional {
+  background: rgba(8, 52, 31, 0.09);
+  color: var(--ev-brand);
+}
+
+.electrico-scope--internacional {
+  background: rgba(15, 60, 120, 0.09);
+  color: #0f3c78;
+}
+
+.electrico-card__date {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-card-meta);
+  color: #8b939e;
+}
+
+.electrico-card__body h3 {
+  font-family: var(--font-display, "Georgia", serif);
+  font-size: var(--home-card-title);
+  font-weight: 700;
+  line-height: 1.12;
+  margin: 0;
+}
+
+.electrico-card__body h3 a {
+  color: var(--ev-brand);
+  text-decoration: none;
+}
+
+.electrico-card__body h3 a:hover {
+  color: #062818;
+}
+
+.electrico-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.electrico-chip {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-card-chip);
+  font-weight: 600;
+  color: var(--ev-brand);
+  background: var(--ev-chip);
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+}
+
+.electrico-desc {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-card-body);
+  line-height: 1.55;
+  color: var(--ev-muted);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.electrico-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
+  margin-top: auto;
+  padding-top: 0.55rem;
+  border-top: 1px solid #eef1f4;
+}
+
+.electrico-card__cta {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-card-cta);
+  font-weight: 600;
+  color: #fff;
+  background: var(--ev-brand);
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.electrico-card__cta:hover {
+  background: var(--color-brand-hover, #0a4a2b);
+}
+
+.electrico-card__automatch {
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-card-link);
+  font-weight: 600;
+  color: #9a7200;
+  text-decoration: none;
+}
+
+.electrico-card__automatch:hover {
+  text-decoration: underline;
+}
+
+.electricos-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+}
+
+.electricos-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: var(--home-section-cta);
+  font-weight: 600;
+  color: var(--ev-brand);
+  text-decoration: none;
+  padding: 0.62rem 1.15rem;
+  border: 1px solid var(--ev-border);
+  border-radius: 999px;
+  background: #fff;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.electricos-more:hover {
+  background: #f9fafb;
+  border-color: #cbd2dc;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 1024px) {
+  .electricos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .electricos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .electrico-card__cta {
+    flex: 1;
+    text-align: center;
+  }
+
+  .electrico-card__automatch {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .electrico-card,
+  .electrico-card__media img,
+  .electricos-more {
+    transition: none;
+  }
+
+  .electrico-card:hover {
+    transform: none;
+  }
+}
