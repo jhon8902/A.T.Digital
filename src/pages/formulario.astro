@@ -312,8 +312,9 @@ const cloudinaryFolder =
           </label>
 
           <p id="automatchModeHint" class="storage-tip" hidden>
-            Modo AutoMatch activo: se guarda como ficha corta para carrusel
-            (titulo, subtitulo e imagenes). Campos de nota larga ocultos.
+            Modo AutoMatch: ficha para carrusel y buscador. Completa los datos
+            de catálogo (tipo, uso, precio) para que el modelo aparezca en
+            /automatch-find con match correcto.
           </p>
 
           <label>
@@ -371,6 +372,65 @@ const cloudinaryFolder =
                 posición 1 llenará image1, la 2 llenará image2, y así
                 sucesivamente.
               </p>
+            </div>
+          </fieldset>
+
+          <fieldset id="automatchCatalogGroup" class="group-box automatch-catalog-box" hidden>
+            <legend>Datos para el buscador AutoMatch</legend>
+            <p class="storage-tip">
+              Estos campos alimentan <strong>/automatch-find</strong>. El tipo
+              de motor es obligatorio para aparecer en búsquedas filtradas.
+            </p>
+            <div class="grid-2">
+              <label>
+                Tipo de motor
+                <select name="automatch_tipo" required>
+                  <option value="">Seleccionar...</option>
+                  <option value="eléctrico">Eléctrico</option>
+                  <option value="híbrido">Híbrido</option>
+                  <option value="gasolina">Gasolina</option>
+                </select>
+              </label>
+
+              <label>
+                Tipo de uso
+                <select name="automatch_uso" required>
+                  <option value="">Seleccionar...</option>
+                  <option value="urbano">Urbano</option>
+                  <option value="familiar">Familiar</option>
+                  <option value="trabajo">Trabajo</option>
+                  <option value="deportivo">Deportivo</option>
+                </select>
+              </label>
+
+              <label>
+                Condición
+                <select name="automatch_condicion">
+                  <option value="nuevo" selected>Nuevo (0 km)</option>
+                  <option value="seminuevo">Seminuevo</option>
+                  <option value="usado">Usado certificado</option>
+                </select>
+              </label>
+
+              <label>
+                Ciudad principal
+                <input
+                  type="text"
+                  name="automatch_ciudad"
+                  placeholder="Ej: Bogotá"
+                />
+              </label>
+
+              <label class="grid-span-2">
+                Precio referencial (COP)
+                <input
+                  type="text"
+                  name="automatch_precio_cop"
+                  placeholder="Ej: 185000000"
+                  inputmode="numeric"
+                  required
+                />
+              </label>
             </div>
           </fieldset>
 
@@ -815,6 +875,23 @@ const cloudinaryFolder =
           font-weight: 700;
           color: #1e3a8a;
           font-size: 14px;
+        }
+
+        .automatch-catalog-box {
+          border-color: rgba(8, 52, 31, 0.25);
+          background: linear-gradient(
+            180deg,
+            rgba(240, 253, 245, 0.95) 0%,
+            rgba(255, 255, 255, 0.95) 100%
+          );
+        }
+
+        .automatch-catalog-box legend {
+          color: #08341f;
+        }
+
+        .grid-span-2 {
+          grid-column: 1 / -1;
         }
 
         button {

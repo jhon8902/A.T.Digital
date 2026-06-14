@@ -1,0 +1,42 @@
+---
+interface Props {
+  autoNombre: string;
+  variant?: "inline" | "sidebar";
+  reason?: "internacional" | "sin-dealer" | "deportes";
+}
+
+const { autoNombre, variant = "inline", reason = "sin-dealer" } = Astro.props;
+
+const copyByReason = {
+  internacional:
+    "Este modelo se presenta en contexto internacional. Usa AutoMatch para comparar alternativas similares disponibles en Colombia.",
+  "sin-dealer":
+    "Aún no hay test drive directo para este modelo. AutoMatch te ayuda a comparar opciones y encontrar el auto ideal.",
+  deportes:
+    "Contenido deportivo y aspiracional. Explora modelos reales en Colombia con AutoMatch.",
+};
+---
+
+<link rel="stylesheet" href="/css/automatch-cta.css" />
+
+<section
+  class={`automatch-cta automatch-cta--${variant}`}
+  aria-labelledby="automatch-cta-title"
+>
+  <div class="automatch-cta__header">
+    <p class="automatch-cta__eyebrow">AutoMatch</p>
+    <h2 id="automatch-cta-title">¿Te interesa el {autoNombre}?</h2>
+    <p>{copyByReason[reason]}</p>
+  </div>
+
+  <div class="automatch-cta__actions">
+    <a href="/automatch-find" class="automatch-cta__btn automatch-cta__btn--primary">
+      <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+      Comparar en Colombia
+    </a>
+    <a href="/#automatch" class="automatch-cta__btn automatch-cta__btn--secondary">
+      <i class="fa-solid fa-car-side" aria-hidden="true"></i>
+      Ver fichas destacadas
+    </a>
+  </div>
+</section>

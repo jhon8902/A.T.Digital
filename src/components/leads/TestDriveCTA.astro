@@ -1,0 +1,118 @@
+---
+interface Props {
+  autoNombre: string;
+  autoId?: string | number;
+  noteId?: number;
+  dealerId?: number;
+  dealerNombre?: string;
+  variant?: "inline" | "sidebar";
+}
+
+const {
+  autoNombre,
+  autoId,
+  noteId,
+  dealerId,
+  dealerNombre,
+  variant = "inline",
+} = Astro.props;
+
+const source = noteId ? "nota" : "automatch";
+---
+
+<link rel="stylesheet" href="/css/test-drive-cta.css" />
+
+<section
+  class={`test-drive-cta test-drive-cta--${variant}`}
+  aria-labelledby="test-drive-title"
+>
+  <div class="test-drive-cta__header">
+    <h2 id="test-drive-title">¿Te interesa el {autoNombre}?</h2>
+    <p>Solicita un test drive con un asesor autorizado.</p>
+  </div>
+
+  <form
+    class="test-drive-cta__form test-drive-cta__grid"
+    data-auto-nombre={autoNombre}
+    data-auto-id={autoId ? String(autoId) : undefined}
+    data-note-id={noteId ? String(noteId) : undefined}
+    data-dealer-id={dealerId ? String(dealerId) : undefined}
+    data-dealer-nombre={dealerNombre}
+    data-source={source}
+  >
+    <div class="test-drive-cta__field">
+      <label for={`td-nombre-${noteId || autoId || "x"}`}>Nombre completo</label>
+      <input
+        id={`td-nombre-${noteId || autoId || "x"}`}
+        name="nombre"
+        type="text"
+        autocomplete="name"
+        required
+      />
+    </div>
+
+    <div class="test-drive-cta__field">
+      <label for={`td-ciudad-${noteId || autoId || "x"}`}>Ciudad</label>
+      <select id={`td-ciudad-${noteId || autoId || "x"}`} name="ciudad" required>
+        <option value="">Selecciona</option>
+        <option value="Bogotá">Bogotá</option>
+        <option value="Medellín">Medellín</option>
+        <option value="Cali">Cali</option>
+        <option value="Barranquilla">Barranquilla</option>
+        <option value="Otra">Otra</option>
+      </select>
+    </div>
+
+    <div class="test-drive-cta__field">
+      <label for={`td-email-${noteId || autoId || "x"}`}>Correo electrónico</label>
+      <input
+        id={`td-email-${noteId || autoId || "x"}`}
+        name="email"
+        type="email"
+        autocomplete="email"
+        required
+      />
+    </div>
+
+    <div class="test-drive-cta__field">
+      <label for={`td-tel-${noteId || autoId || "x"}`}>Teléfono</label>
+      <input
+        id={`td-tel-${noteId || autoId || "x"}`}
+        name="telefono"
+        type="tel"
+        autocomplete="tel"
+        required
+      />
+    </div>
+
+    <div class="test-drive-cta__field test-drive-cta__field--full">
+      <label for={`td-msg-${noteId || autoId || "x"}`}>Mensaje (opcional)</label>
+      <textarea
+        id={`td-msg-${noteId || autoId || "x"}`}
+        name="mensaje"
+        placeholder="Cuéntanos cuándo te gustaría la prueba de manejo"
+      ></textarea>
+    </div>
+
+    <label class="test-drive-cta__consent">
+      <input type="checkbox" name="consent" required />
+      <span>
+        Acepto la <a href="/politica-privacidad" target="_blank" rel="noopener"
+          >política de privacidad</a
+        > y autorizo el contacto comercial.
+      </span>
+    </label>
+
+    <div class="test-drive-cta__actions">
+      <button type="submit" class="test-drive-cta__submit">Solicitar test drive</button>
+      <p class="test-drive-cta__hint">
+        <i class="fa-regular fa-clock" aria-hidden="true"></i>
+        Respuesta estimada: menos de 24 h
+      </p>
+    </div>
+
+    <div class="test-drive-cta__message" role="status" aria-live="polite"></div>
+  </form>
+</section>
+
+<script type="module" src="/js/test-drive-cta.js"></script>

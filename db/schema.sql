@@ -197,4 +197,35 @@ CREATE INDEX IF NOT EXISTS idx_test_drives_estado ON test_drives(estado);
 CREATE INDEX IF NOT EXISTS idx_test_drives_concesionario ON test_drives(concesionario_id);
 CREATE INDEX IF NOT EXISTS idx_test_drives_created_at ON test_drives(created_at DESC);
 
+ALTER TABLE test_drives ADD COLUMN IF NOT EXISTS note_id INTEGER REFERENCES notes(id);
+ALTER TABLE test_drives ADD COLUMN IF NOT EXISTS source TEXT DEFAULT 'automatch';
+
+CREATE TABLE IF NOT EXISTS dealers (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  phone TEXT,
+  whatsapp TEXT,
+  city TEXT,
+  commission_rate INTEGER NOT NULL DEFAULT 50000,
+  active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS dealer_vehicles (
+  id SERIAL PRIMARY KEY,
+  dealer_id INTEGER NOT NULL REFERENCES dealers(id) ON DELETE CASCADE,
+  auto_id TEXT,
+  note_id INTEGER REFERENCES notes(id) ON DELETE SET NULL,
+  brand TEXT,
+  model TEXT,
+  active BOOLEAN NOT NULL DEFAULT true,
+  UNIQUE (dealer_id, auto_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_dealer_vehicles_auto_id ON dealer_vehicles(auto_id);
+CREATE INDEX IF NOT EXISTS idx_dealer_vehicles_note_id ON dealer_vehicles(note_id);
+CREATE INDEX IF NOT EXISTS idx_dealer_vehicles_dealer_id ON dealer_vehicles(dealer_id);
+
 COMMIT;

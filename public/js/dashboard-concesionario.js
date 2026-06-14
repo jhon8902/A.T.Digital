@@ -1,26 +1,3 @@
-console.log("✅ Dashboard Concesionario cargado");
-
-// ========== DATOS DE PRUEBA - SUSTITUIR CON BD REAL ==========
-const DEALERSHIPS = [
-  {
-    id: 1,
-    name: "Concesionario Central Bogotá",
-    email: "info@central-bogota.co",
-    password: "demo123", // En producción: hash
-    phone: "+573001234567",
-    commissionRate: 50000 // COP por lead confirmado
-  },
-  {
-    id: 2,
-    name: "AutoMatch Premium Medellín",
-    email: "info@automatch-medellin.co",
-    password: "demo123",
-    phone: "+573107654321",
-    commissionRate: 50000
-  }
-];
-
-// ========== ELEMENTOS DEL DOM ==========
 const loginSection = document.getElementById("login-section");
 const dashboardSection = document.getElementById("dashboard-section");
 const loginForm = document.getElementById("login-form");
@@ -29,12 +6,11 @@ const filterStatus = document.getElementById("filter-status");
 const dealerName = document.getElementById("dealer-name");
 const leadsTableBody = document.getElementById("leads-tbody");
 const emptyState = document.getElementById("empty-state");
+const commissionRateLabel = document.getElementById("commission-rate-label");
 
-// ========== ESTADO GLOBAL ==========
-let currentUser = JSON.parse(localStorage.getItem("currentDealerUser")) || null;
+let currentDealer = null;
 let allLeads = [];
 
-// ========== MOSTRAR/OCULTAR SECCIONES ==========
 function showLoginSection() {
   loginSection.style.display = "flex";
   dashboardSection.style.display = "none";
@@ -45,217 +21,203 @@ function showDashboardSection() {
   dashboardSection.style.display = "block";
 }
 
-// ========== LOGIN ==========
-loginForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+function formatMoney(value) {
+  return `$${Number(value || 0).toLocaleString("es-CO")} COP`;
+}
 
-  const email = document.getElementById("dealer-email").value;
-  const password = document.getElementById("dealer-password").value;
+function formatDate(value) {
+  if (!value) return "-";
+  return new Date(value).toLocaleDateString("es-CO");
+}
 
-  // Buscar dealer
-  const dealer = DEALERSHIPS.find(d => d.email === email && d.password === password);
+async function apiRequest(path, options = {}) {
+  const response = await fetch(path, {
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+    ...options,
+  });
 
-  if (dealer) {
-    // Guardar sesión
-    localStorage.setItem("currentDealerUser", JSON.stringify({
-      id: dealer.id,
-      name: dealer.name,
-      email: dealer.email,
-      phone: dealer.phone,
-      commissionRate: dealer.commissionRate
-    }));
-
-    currentUser = JSON.parse(localStorage.getItem("currentDealerUser"));
-    dealerName.textContent = dealer.name;
-
-    loginForm.reset();
-    loadLeads();
-    showDashboardSection();
-  } else {
-    alert("❌ Email o contraseña incorrectos");
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || data.message || `Error ${response.status}`);
   }
-});
 
-// ========== LOGOUT ==========
-btnLogout.addEventListener("click", () => {
-  localStorage.removeItem("currentDealerUser");
-  currentUser = null;
-  allLeads = [];
-  leadsTableBody.innerHTML = "";
-  showLoginSection();
-  loginForm.reset();
-});
+  return data;
+}
 
-// ========== CARGAR LEADS ==========
-async function loadLeads() {
+async function loadSession() {
   try {
-    // Simulamos cargar leads desde IndexedDB o localStorage
-    // En producción: fetch desde API
-    const savedLeads = localStorage.getItem(`leads_dealer_${currentUser.id}`);
-    allLeads = savedLeads ? JSON.parse(savedLeads) : [];
-
-    updateStats();
-    renderLeads(allLeads);
-  } catch (error) {
-    console.error("Error cargando leads:", error);
+    currentDealer = await apiRequest("/api/dealer/me");
+    dealerName.textContent = currentDealer.name;
+    if (commissionRateLabel) {
+      commissionRateLabel.textContent = formatMoney(currentDealer.commissionRate);
+    }
+    showDashboardSection();
+    await Promise.all([loadStats(), loadLeads()]);
+  } catch {
+    currentDealer = null;
+    showLoginSection();
   }
 }
 
-// ========== ACTUALIZAR ESTADÍSTICAS ==========
-function updateStats() {
-  const totalLeads = allLeads.length;
-  const monthLeads = allLeads.filter(l => {
-    const leadDate = new Date(l.fecha);
-    const today = new Date();
-    return leadDate.getMonth() === today.getMonth() &&
-           leadDate.getFullYear() === today.getFullYear();
-  }).length;
-
-  const confirmedLeads = allLeads.filter(l => l.estado === "confirmado").length;
-  const totalCommission = confirmedLeads * currentUser.commissionRate;
-
-  document.getElementById("total-leads").textContent = totalLeads;
-  document.getElementById("month-leads").textContent = monthLeads;
-  document.getElementById("total-commission").textContent = `$${totalCommission.toLocaleString()}`;
-  document.getElementById("confirmed-contacts").textContent = confirmedLeads;
+async function loadStats() {
+  const stats = await apiRequest("/api/dealer/stats");
+  document.getElementById("total-leads").textContent = stats.totalLeads;
+  document.getElementById("month-leads").textContent = stats.monthLeads;
+  document.getElementById("total-commission").textContent = formatMoney(
+    stats.totalCommission,
+  );
+  document.getElementById("confirmed-contacts").textContent = stats.confirmedLeads;
 }
 
-// ========== RENDERIZAR TABLA DE LEADS ==========
+async function loadLeads() {
+  const estado = filterStatus?.value || "all";
+  const query = estado === "all" ? "" : `?estado=${encodeURIComponent(estado)}`;
+  allLeads = await apiRequest(`/api/dealer/leads${query}`);
+  renderLeads(allLeads);
+}
+
 function renderLeads(leads) {
   leadsTableBody.innerHTML = "";
 
-  if (leads.length === 0) {
-    leadsTableBody.innerHTML = '<tr class="loading-row"><td colspan="8">No hay leads para mostrar</td></tr>';
+  if (!leads.length) {
+    leadsTableBody.innerHTML =
+      '<tr class="loading-row"><td colspan="8">No hay leads para mostrar</td></tr>';
     emptyState.style.display = "block";
     return;
   }
 
   emptyState.style.display = "none";
+  const rate = currentDealer?.commissionRate || 0;
 
-  leads.forEach(lead => {
+  leads.forEach((lead) => {
     const row = document.createElement("tr");
     const statusClass = `status-${lead.estado}`;
-    const comisionEstado = lead.estado === "confirmado" ?
-      `$${currentUser.commissionRate.toLocaleString()}` :
-      "-";
+    const commission =
+      lead.estado === "confirmado" ? formatMoney(rate) : "-";
 
     row.innerHTML = `
-      <td>${new Date(lead.fecha).toLocaleDateString("es-CO")}</td>
+      <td>${formatDate(lead.created_at)}</td>
       <td><strong>${lead.nombre}</strong></td>
       <td>${lead.email}</td>
       <td>${lead.telefono}</td>
-      <td>${lead.autoNombre}</td>
-      <td>
-        <span class="status-badge ${statusClass}">
-          ${lead.estado}
-        </span>
-      </td>
-      <td><strong>${comisionEstado}</strong></td>
+      <td>${lead.auto_nombre || "-"}</td>
+      <td><span class="status-badge ${statusClass}">${lead.estado}</span></td>
+      <td><strong>${commission}</strong></td>
       <td>
         <div class="action-buttons">
-          ${lead.estado !== "confirmado" ? 
-            `<button class="btn-small btn-confirm" onclick="confirmLead(${lead.id})">✓ Confirmar</button>` :
-            ""
+          ${
+            lead.estado !== "confirmado"
+              ? `<button class="btn-small btn-confirm" data-action="confirm" data-id="${lead.id}">Confirmar</button>`
+              : ""
           }
-          <button class="btn-small btn-view" onclick="viewLeadDetail(${lead.id})">Ver</button>
+          ${
+            lead.estado === "pendiente"
+              ? `<button class="btn-small btn-contact" data-action="contact" data-id="${lead.id}">Contactado</button>`
+              : ""
+          }
+          <button class="btn-small btn-view" data-action="view" data-id="${lead.id}">Ver</button>
         </div>
       </td>
     `;
+
     leadsTableBody.appendChild(row);
   });
 }
 
-// ========== CONFIRMAR LEAD ==========
-function confirmLead(leadId) {
-  const lead = allLeads.find(l => l.id === leadId);
-  if (lead && lead.estado !== "confirmado") {
-    lead.estado = "confirmado";
-    lead.fechaConfirmacion = new Date().toISOString();
-
-    // Guardar cambio
-    localStorage.setItem(`leads_dealer_${currentUser.id}`, JSON.stringify(allLeads));
-
-    // Actualizar UI
-    updateStats();
-    renderLeads(filters());
-
-    alert("✅ Lead confirmado. Comisión registrada.");
-  }
+async function updateLeadStatus(leadId, estado) {
+  await apiRequest(`/api/dealer/leads/${leadId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ estado }),
+  });
+  await Promise.all([loadStats(), loadLeads()]);
 }
 
-// ========== VER DETALLES DEL LEAD ==========
 function viewLeadDetail(leadId) {
-  const lead = allLeads.find(l => l.id === leadId);
-  if (lead) {
-    const details = `
-📋 DETALLES DEL LEAD
+  const lead = allLeads.find((item) => Number(item.id) === Number(leadId));
+  if (!lead) return;
 
-👤 Cliente:
-   Nombre: ${lead.nombre}
-   Email: ${lead.email}
-   Teléfono: ${lead.telefono}
-   Edad: ${lead.edad || "No especificada"}
+  const details = [
+    `Cliente: ${lead.nombre}`,
+    `Email: ${lead.email}`,
+    `Teléfono: ${lead.telefono}`,
+    `Ciudad: ${lead.ciudad || "No especificada"}`,
+    `Vehículo: ${lead.auto_nombre || "-"}`,
+    `Estado: ${lead.estado}`,
+    `Fuente: ${lead.source || "-"}`,
+    `Fecha: ${new Date(lead.created_at).toLocaleString("es-CO")}`,
+    `Mensaje: ${lead.mensaje || "Sin mensaje"}`,
+  ].join("\n");
 
-🚗 Vehículo:
-   ${lead.autoNombre}
-   Presupuesto: ${lead.presupuesto || "No especificado"}
-
-📅 Información:
-   Fecha: ${new Date(lead.fecha).toLocaleString("es-CO")}
-   Estado: ${lead.estado}
-   
-💬 Mensaje: ${lead.mensaje || "Sin mensaje"}
-    `;
-    alert(details);
-  }
+  alert(details);
 }
 
-// ========== FILTRAR LEADS ==========
-function filters() {
-  const selectedStatus = filterStatus.value;
-  if (selectedStatus === "all") {
-    return allLeads;
-  }
-  return allLeads.filter(l => l.estado === selectedStatus);
-}
+loginForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-filterStatus.addEventListener("change", () => {
-  renderLeads(filters());
-});
+  const email = document.getElementById("dealer-email").value;
+  const password = document.getElementById("dealer-password").value;
+  const submitBtn = loginForm.querySelector(".btn-login");
 
-// ========== WEBHOOK PARA RECIBIR NUEVOS LEADS ==========
-// Cuando el usuario envía test drive, se llama a esta función
-window.addNewLead = function(leadData) {
-  if (!currentUser) return;
-
-  const newLead = {
-    id: Date.now(),
-    ...leadData,
-    estado: "pendiente",
-    fecha: new Date().toISOString()
-  };
-
-  allLeads.push(newLead);
-  localStorage.setItem(`leads_dealer_${currentUser.id}`, JSON.stringify(allLeads));
-
-  updateStats();
-  renderLeads(filters());
-};
-
-// ========== SINCRONIZAR LEADS DESDE LA PÁGINA PRINCIPAL ==========
-window.addEventListener("storage", (e) => {
-  if (e.key === `leads_dealer_${currentUser?.id}`) {
-    allLeads = JSON.parse(e.newValue) || [];
-    updateStats();
-    renderLeads(filters());
+  try {
+    if (submitBtn) submitBtn.disabled = true;
+    currentDealer = await apiRequest("/api/dealer/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    });
+    dealerName.textContent = currentDealer.name;
+    loginForm.reset();
+    showDashboardSection();
+    await Promise.all([loadStats(), loadLeads()]);
+  } catch (error) {
+    alert(error.message || "Credenciales inválidas");
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
   }
 });
 
-// ========== INICIALIZACIÓN ==========
-if (currentUser) {
-  dealerName.textContent = currentUser.name;
-  showDashboardSection();
-  loadLeads();
-} else {
+btnLogout?.addEventListener("click", async () => {
+  try {
+    await apiRequest("/api/dealer/logout", { method: "POST" });
+  } catch {
+    // Ignorar error de logout
+  }
+
+  currentDealer = null;
+  allLeads = [];
+  leadsTableBody.innerHTML = "";
   showLoginSection();
-}
+  loginForm?.reset();
+});
+
+filterStatus?.addEventListener("change", () => {
+  loadLeads().catch((error) => {
+    console.error(error);
+    alert("No se pudieron cargar los leads.");
+  });
+});
+
+leadsTableBody?.addEventListener("click", async (event) => {
+  const button = event.target.closest("button[data-action]");
+  if (!button) return;
+
+  const leadId = Number(button.dataset.id);
+  const action = button.dataset.action;
+
+  try {
+    if (action === "confirm") {
+      await updateLeadStatus(leadId, "confirmado");
+    } else if (action === "contact") {
+      await updateLeadStatus(leadId, "contactado");
+    } else if (action === "view") {
+      viewLeadDetail(leadId);
+    }
+  } catch (error) {
+    alert(error.message || "No se pudo actualizar el lead.");
+  }
+});
+
+loadSession();

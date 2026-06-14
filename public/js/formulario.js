@@ -12,6 +12,7 @@
   const automatchModeHint = document.getElementById("automatchModeHint");
   const contentFieldGroup = document.getElementById("contentFieldGroup");
   const automatchTextGroup = document.getElementById("automatchTextGroup");
+  const automatchCatalogGroup = document.getElementById("automatchCatalogGroup");
   const cloudinaryFilesInput = document.getElementById("cloudinaryFiles");
   const uploadCloudinaryBtn = document.getElementById("uploadCloudinaryBtn");
   const cloudinaryQueue = document.getElementById("cloudinaryQueue");
@@ -62,6 +63,11 @@
     "spec_competidores",
     "spec_traccion",
     "spec_precio_cop",
+    "automatch_tipo",
+    "automatch_uso",
+    "automatch_condicion",
+    "automatch_ciudad",
+    "automatch_precio_cop",
     "texto_img2_linea1",
     "texto_img3_linea1",
     "texto_img4_linea1",
@@ -120,6 +126,13 @@
     });
   }
 
+  function setFieldRequired(name, required) {
+    const el = byName(name);
+    if (el instanceof HTMLInputElement || el instanceof HTMLSelectElement) {
+      el.required = required;
+    }
+  }
+
   function applyCategoryMode() {
     const categoryValue = getFieldValue("category");
     const contentField = byName("content");
@@ -161,6 +174,15 @@
       automatchTextGroup.hidden = !automatchMode;
       setBlockEnabled(automatchTextGroup, automatchMode);
     }
+
+    if (automatchCatalogGroup instanceof HTMLElement) {
+      automatchCatalogGroup.hidden = !automatchMode;
+      setBlockEnabled(automatchCatalogGroup, automatchMode);
+    }
+
+    setFieldRequired("automatch_tipo", automatchMode);
+    setFieldRequired("automatch_uso", automatchMode);
+    setFieldRequired("automatch_precio_cop", automatchMode);
 
     fullNoteBlocks.forEach(function (block) {
       if (block instanceof HTMLElement) {
@@ -434,17 +456,58 @@
         try {
           const parsed = JSON.parse(decodeURIComponent(metaMatch[1]));
           const texts = parsed && parsed.texts ? parsed.texts : {};
+          const catalog = parsed && parsed.catalog ? parsed.catalog : {};
 
           for (let i = 2; i <= 6; i += 1) {
             const key = "img" + String(i);
             const item = texts[key] || {};
             setFieldValue("texto_img" + String(i) + "_linea1", item.line1 || "");
           }
+
+          setFieldValue("automatch_tipo", catalog.tipo || "");
+          setFieldValue("automatch_uso", catalog.uso || "");
+          setFieldValue(
+            "automatch_condicion",
+            catalog.condicion || "nuevo"
+          );
+          setFieldValue("automatch_ciudad", catalog.ciudad || "");
+          setFieldValue(
+            "automatch_precio_cop",
+            catalog.precio_cop ? String(catalog.precio_cop) : ""
+          );
         } catch (_error) {
           for (let i = 2; i <= 6; i += 1) {
             setFieldValue("texto_img" + String(i) + "_linea1", "");
           }
         }
+      }
+
+      if (!getFieldValue("automatch_tipo") && note.spec_motorizacion) {
+        const motor = String(note.spec_motorizacion).toLowerCase();
+        if (motor.includes("electr")) {
+          setFieldValue("automatch_tipo", "eléctrico");
+        } else if (motor.includes("hibrid") || motor.includes("hybrid")) {
+          setFieldValue("automatch_tipo", "híbrido");
+        } else if (motor.includes("gasolina") || motor.includes("diesel")) {
+          setFieldValue("automatch_tipo", "gasolina");
+        }
+      }
+
+      if (!getFieldValue("automatch_uso") && note.spec_segmento) {
+        const segmento = String(note.spec_segmento).toLowerCase();
+        if (segmento.includes("deport")) {
+          setFieldValue("automatch_uso", "deportivo");
+        } else if (segmento.includes("suv") || segmento.includes("famil")) {
+          setFieldValue("automatch_uso", "familiar");
+        } else if (segmento.includes("pickup") || segmento.includes("trabajo")) {
+          setFieldValue("automatch_uso", "trabajo");
+        } else {
+          setFieldValue("automatch_uso", "urbano");
+        }
+      }
+
+      if (!getFieldValue("automatch_precio_cop") && note.spec_precio_cop) {
+        setFieldValue("automatch_precio_cop", String(note.spec_precio_cop));
       }
     }
 
@@ -688,6 +751,27 @@
         return;
       }
 
+      const catalogTipo = String(data.automatch_tipo || "").trim();
+      const catalogUso = String(data.automatch_uso || "").trim();
+      const catalogPrecio = String(data.automatch_precio_cop || "").trim();
+
+      if (!catalogTipo || !catalogUso || !catalogPrecio) {
+        setMessage(
+          "Completa tipo de motor, uso y precio COP en Datos para el buscador",
+          "red"
+        );
+        return;
+      }
+
+      if (!String(data.image1 || "").trim()) {
+        setMessage("Agrega al menos la imagen 1 (portada) para AutoMatch", "red");
+        return;
+      }
+
+      data.spec_precio_cop = catalogPrecio;
+      data.spec_motorizacion = catalogTipo;
+      data.spec_segmento = catalogUso;
+
       const texts = {};
       for (let i = 2; i <= 6; i += 1) {
         const line1 = String(data["texto_img" + String(i) + "_linea1"] || "").trim();
@@ -696,7 +780,17 @@
         }
       }
 
-      const encodedMeta = encodeURIComponent(JSON.stringify({ texts }));
+      const catalog = {
+        tipo: catalogTipo,
+        uso: catalogUso,
+        condicion: String(data.automatch_condicion || "nuevo").trim(),
+        ciudad: String(data.automatch_ciudad || "").trim(),
+        precio_cop: catalogPrecio,
+      };
+
+      const encodedMeta = encodeURIComponent(
+        JSON.stringify({ texts, catalog })
+      );
       data.content = `<p>${autoSubtitle}</p><!--AUTOMATCH_META:${encodedMeta}-->`;
     }
 

@@ -1,6 +1,9 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import TestDriveCTA from "../../components/leads/TestDriveCTA.astro";
+import AutoMatchCTA from "../../components/leads/AutoMatchCTA.astro";
 import RelatedNotes from "./RelatedNotes.astro";
+import { getDealerForNote, type NoteDealerInfo } from "../../lib/leads";
 export const prerender = false;
 
 // ✅ Definimos la interfaz del tipo de nota
@@ -88,6 +91,34 @@ try {
   note = await fetchNoteWithFallback(id);
 } catch (err) {
   console.error("❌ Error al obtener nota:", err);
+}
+
+type NoteCtaKind = "test-drive" | "automatch";
+type AutoMatchCtaReason = "internacional" | "sin-dealer" | "deportes";
+
+let noteCta: NoteCtaKind = "automatch";
+let automatchReason: AutoMatchCtaReason = "sin-dealer";
+let dealerInfo: NoteDealerInfo | null = null;
+
+if (note) {
+  const category = (note.category || "").toLowerCase();
+  const scope = (note.source_scope || "nacional").toLowerCase();
+
+  if (category === "deportes") {
+    noteCta = "automatch";
+    automatchReason = "deportes";
+  } else if (scope === "internacional") {
+    noteCta = "automatch";
+    automatchReason = "internacional";
+  } else {
+    dealerInfo = await getDealerForNote(note.id);
+    if (dealerInfo) {
+      noteCta = "test-drive";
+    } else {
+      noteCta = "automatch";
+      automatchReason = "sin-dealer";
+    }
+  }
 }
 
 // ✅ Extraer primera imagen
@@ -278,20 +309,33 @@ const priceSpec =
   undefined;
 
 const technicalSpecCards = [
-  { label: "💰 Precio estimado:", value: priceSpec },
-  { label: "🚗 Versiones:", value: note?.spec_versiones },
-  { label: "⚙️ Motor:", value: note?.spec_motorizacion },
-  { label: "🔥 Potencia:", value: note?.spec_potencia_hp },
-  { label: "⚡ Torque:", value: note?.spec_torque_nm },
-  { label: "🔋 Batería y Autonomía:", value: batteryAutonomy },
-  { label: "⏱️ Aceleración:", value: note?.spec_aceleracion_0_100 },
-  { label: "🔌 Carga:", value: chargingSpec },
-  { label: "🛡️ Seguridad:", value: note?.spec_seguridad },
-  { label: "📱 Equipamiento:", value: note?.spec_equipamiento },
-  { label: "✅ Pros:", value: note?.spec_pros },
-  { label: "❌ Contras:", value: note?.spec_contras },
+  { label: "Precio estimado", icon: "fa-solid fa-tags", value: priceSpec },
+  { label: "Versiones", icon: "fa-solid fa-car-side", value: note?.spec_versiones },
+  { label: "Motor", icon: "fa-solid fa-gears", value: note?.spec_motorizacion },
+  { label: "Potencia", icon: "fa-solid fa-gauge-high", value: note?.spec_potencia_hp },
+  { label: "Torque", icon: "fa-solid fa-bolt", value: note?.spec_torque_nm },
   {
-    label: "🏁 Competidores Directos:",
+    label: "Batería y autonomía",
+    icon: "fa-solid fa-battery-full",
+    value: batteryAutonomy,
+  },
+  {
+    label: "Aceleración",
+    icon: "fa-regular fa-clock",
+    value: note?.spec_aceleracion_0_100,
+  },
+  { label: "Carga", icon: "fa-solid fa-charging-station", value: chargingSpec },
+  { label: "Seguridad", icon: "fa-solid fa-shield-halved", value: note?.spec_seguridad },
+  {
+    label: "Equipamiento",
+    icon: "fa-solid fa-mobile-screen-button",
+    value: note?.spec_equipamiento,
+  },
+  { label: "Pros", icon: "fa-solid fa-circle-check", value: note?.spec_pros },
+  { label: "Contras", icon: "fa-solid fa-circle-xmark", value: note?.spec_contras },
+  {
+    label: "Competidores directos",
+    icon: "fa-solid fa-flag-checkered",
     value: note?.spec_competidores,
     className: "competidores",
   },
@@ -463,7 +507,10 @@ const useSmartImageFrame =
                 <div class="ficha-grid">
                   {technicalSpecCards.map((item) => (
                     <div class={`ficha-item ${item.className || ""}`.trim()}>
-                      <strong>{item.label}</strong>
+                      <strong>
+                        {item.icon && <i class={item.icon} aria-hidden="true" />}
+                        <span>{item.label}</span>
+                      </strong>
                       <p>{item.value}</p>
                     </div>
                   ))}
@@ -534,6 +581,23 @@ const useSmartImageFrame =
           }
         </article>
 
+        {
+          noteCta === "test-drive" ? (
+            <TestDriveCTA
+              autoNombre={note.title}
+              noteId={note.id}
+              autoId={String(note.id)}
+              dealerId={dealerInfo?.dealerId}
+              dealerNombre={dealerInfo?.dealerNombre}
+            />
+          ) : (
+            <AutoMatchCTA
+              autoNombre={note.title}
+              reason={automatchReason}
+            />
+          )
+        }
+
         <!-- Notas relacionadas -->
         {note?.category && (
           <RelatedNotes currentId={note.id} category={note.category} />
@@ -556,7 +620,7 @@ const useSmartImageFrame =
         -->
       </section>
     ) : (
-      <p>Nota no encontrada ❌</p>
+      <p><i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i> Nota no encontrada</p>
     )
   }
 </Layout>

@@ -5,31 +5,36 @@ import AutoMatchBanner from "../components/automatch/AutoMatchBanner.astro";
 
 <link rel="stylesheet" href="/css/automatch-find.css" />
 
-<Layout title="AutoMatch Inteligente 🚗❤️">
+<Layout title="AutoMatch | Encuentra tu auto ideal en Colombia">
   <section class="automatch-page">
-    <h1>Encuentra tu Auto Ideal con <span>AutoMatch</span> 🤖</h1>
-    <p class="intro">
-      Cuéntanos un poco de ti y te mostraremos el vehículo que más se adapta a
-      tus necesidades. Tu perfil nos ayudará a mejores recomendaciones.
-    </p>
+    <header class="automatch-find-hero">
+      <p class="automatch-find-hero__eyebrow">Herramienta inteligente · Colombia</p>
+      <h1 class="automatch-find-hero__title">
+        Encuentra tu auto ideal con <span>AutoMatch</span>
+      </h1>
+      <p class="automatch-find-hero__lead">
+        Responde unas preguntas sobre presupuesto, uso y ciudad. Te mostramos el
+        modelo que mejor encaja y puedes solicitar test drive con un asesor.
+      </p>
+      <a href="/" class="automatch-find-hero__back">← Volver al inicio</a>
+    </header>
 
     <AutoMatchBanner />
 
-    <!-- Perfil usuario -->
-    <div class="user-profile-form">
-      <h3>👤 Tu Perfil (Opcional)</h3>
-      <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
-        Completa tu perfil para que AutoMatch te entienda mejor y recomiende
-        vehículos solo para ti.
+    <details class="user-profile-form">
+      <summary>Tu perfil (opcional)</summary>
+      <p class="user-profile-form__hint">
+        Guardamos estos datos en tu navegador para afinar recomendaciones en
+        futuras búsquedas.
       </p>
       <form id="user-profile-form">
-        <label>Nombre / Alias</label>
-        <input type="text" id="user-name" placeholder="Mi nombre..." />
+        <label for="user-name">Nombre / alias</label>
+        <input type="text" id="user-name" placeholder="Tu nombre" />
 
-        <label>Ciudad / País</label>
-        <input type="text" id="user-city" placeholder="Ej: Bogotá, Colombia" />
+        <label for="user-city">Ciudad</label>
+        <input type="text" id="user-city" placeholder="Ej: Bogotá" />
 
-        <label>Edad (opcional)</label>
+        <label for="user-age">Edad (opcional)</label>
         <input
           type="number"
           id="user-age"
@@ -38,41 +43,35 @@ import AutoMatchBanner from "../components/automatch/AutoMatchBanner.astro";
           max="120"
         />
 
-        <label>Preferencias de vehículos</label>
+        <label for="user-preferences">Preferencia de carrocería</label>
         <select id="user-preferences">
-          <option value="">-- Selecciona una o más --</option>
-          <option value="suv">🚙 SUV</option>
-          <option value="sedan">🚗 Sedán</option>
-          <option value="hatchback">🚕 Hatchback</option>
-          <option value="pickup">🚛 Pickup</option>
-          <option value="convertible">🏎️ Convertible</option>
+          <option value="">Seleccionar...</option>
+          <option value="suv">SUV</option>
+          <option value="sedan">Sedán</option>
+          <option value="hatchback">Hatchback</option>
+          <option value="pickup">Pickup</option>
+          <option value="convertible">Convertible</option>
         </select>
-
-        <p style="font-size: 0.85rem; color: #888; margin-top: 1rem;">
-          💡 Tip: Tu perfil se guarda localmente. Esto nos ayuda a recordarte y
-          a hacer mejores recomendaciones.
-        </p>
       </form>
-    </div>
+    </details>
 
     <div class="automatch-container">
-      <!-- Formulario a la izquierda -->
       <form id="automatch-form" class="form-section">
-        <h3 style="color: #1b5e3f; margin-bottom: 1rem;">🔍 Búsqueda</h3>
+        <h2 class="form-section__title">Cuéntanos qué buscas</h2>
 
-        <label>Presupuesto (en millones)</label>
+        <label for="presupuesto">Presupuesto (millones COP)</label>
         <select id="presupuesto" required>
           <option value="">Seleccionar...</option>
-          <option value="20-40">$20 - $40 millones</option>
-          <option value="40-60">$40 - $60 millones</option>
-          <option value="60-80">$60 - $80 millones</option>
-          <option value="80-100">$80 - $100 millones</option>
-          <option value="100-150">$100 - $150 millones</option>
-          <option value="150-200">$150 - $200 millones</option>
+          <option value="20-40">$20 – $40 millones</option>
+          <option value="40-60">$40 – $60 millones</option>
+          <option value="60-80">$60 – $80 millones</option>
+          <option value="80-100">$80 – $100 millones</option>
+          <option value="100-150">$100 – $150 millones</option>
+          <option value="150-200">$150 – $200 millones</option>
           <option value="200+">Más de $200 millones</option>
         </select>
 
-        <label>Tipo de uso</label>
+        <label for="uso">Tipo de uso</label>
         <select id="uso" required>
           <option value="">Seleccionar...</option>
           <option value="urbano">Urbano</option>
@@ -81,7 +80,7 @@ import AutoMatchBanner from "../components/automatch/AutoMatchBanner.astro";
           <option value="deportivo">Deportivo</option>
         </select>
 
-        <label>Tipo de vehículo</label>
+        <label for="tipo">Tipo de vehículo</label>
         <select id="tipo" required>
           <option value="">Seleccionar...</option>
           <option value="gasolina">Gasolina</option>
@@ -89,16 +88,16 @@ import AutoMatchBanner from "../components/automatch/AutoMatchBanner.astro";
           <option value="eléctrico">Eléctrico</option>
         </select>
 
-        <label>Condición del vehículo</label>
+        <label for="condicion">Condición</label>
         <select id="condicion" required>
           <option value="">Seleccionar...</option>
           <option value="nuevo">Nuevo (0 km)</option>
-          <option value="seminuevo">Seminuevo (1-3 años)</option>
+          <option value="seminuevo">Seminuevo (1–3 años)</option>
           <option value="usado">Usado (más de 3 años)</option>
-          <option value="ambos">Me interesan ambos</option>
+          <option value="ambos">Nuevo o usado</option>
         </select>
 
-        <label>Ciudad</label>
+        <label for="ciudad">Ciudad</label>
         <input type="text" id="ciudad" placeholder="Ej: Bogotá" required />
 
         <div class="button-group">
@@ -107,24 +106,21 @@ import AutoMatchBanner from "../components/automatch/AutoMatchBanner.astro";
             type="button"
             id="btn-nueva-busqueda"
             class="btn-nueva-busqueda"
-            style="display: none;"
+            hidden
           >
-            ↻ Nueva Búsqueda
+            Nueva búsqueda
           </button>
         </div>
       </form>
 
-      <!-- Indicador de carga -->
-      <div id="loading" class="loading-spinner">
+      <div id="loading" class="loading-spinner" hidden>
         <div class="spinner"></div>
-        <p class="loading-text">Buscando tu AutoMatch perfecto...</p>
+        <p class="loading-text">Buscando tu AutoMatch...</p>
       </div>
 
-      <!-- Resultados a la derecha -->
       <div id="resultado" class="resultado resultado-section"></div>
     </div>
   </section>
 
-  <!-- ✅ Carga del JS v3 MVP optimizado -->
   <script type="module" src="/js/automatch-v3.js" defer></script>
 </Layout>

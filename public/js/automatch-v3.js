@@ -1,4 +1,7 @@
-console.log("✅ AutoMatch v3 MVP optimizado cargado.");
+import { submitTestDrive } from "./test-drive-submit.js";
+import { rankVehicles, buildMatchSummary } from "./automatch-match.js";
+
+console.log("AutoMatch v3 cargado.");
 
 // ========== GESTOR DE PERFIL ==========
 class UserProfile {
@@ -74,19 +77,37 @@ const smartAlgorithm = new SmartAlgorithm(userProfile);
 let autosData = []; // Se cargará desde JSON
 let specsData = {};  // Se cargará desde JSON
 
-// ========== CARGAR DATOS EXTERNOS ==========
+// ========== CARGAR CATÁLOGO UNIFICADO ==========
 async function loadData() {
+  try {
+    const response = await fetch("/api/automatch-catalog");
+    if (response.ok) {
+      const data = await response.json();
+      autosData = data.autos || [];
+      specsData = data.specs || {};
+      console.log(
+        "Catálogo unificado cargado:",
+        autosData.length,
+        "vehículos",
+        data.meta?.source || "",
+      );
+      return;
+    }
+  } catch (error) {
+    console.warn("API de catálogo no disponible, usando JSON local.", error);
+  }
+
   try {
     const [autosRes, specsRes] = await Promise.all([
       fetch("/data/automatch/autos.json"),
-      fetch("/data/automatch/specs.json")
+      fetch("/data/automatch/specs.json"),
     ]);
 
     autosData = await autosRes.json();
     specsData = await specsRes.json();
-    console.log("✅ Datos cargados:", autosData.length, "autos");
+    console.log("Catálogo local cargado:", autosData.length, "autos");
   } catch (error) {
-    console.error("❌ Error cargando datos:", error);
+    console.error("Error cargando datos:", error);
   }
 }
 
@@ -123,6 +144,7 @@ if (form) {
     e.preventDefault();
 
     // Mostrar indicador de carga
+    loading.hidden = false;
     loading.classList.add("active");
     resultado.innerHTML = "";
 
@@ -143,77 +165,62 @@ if (form) {
 
     const uso = document.getElementById("uso").value;
     const tipo = document.getElementById("tipo").value;
-    const ciudad = document.getElementById("ciudad").value.toLowerCase();
+    const condicion = document.getElementById("condicion").value;
+    const ciudad = document.getElementById("ciudad").value;
 
-    // Algoritmo de búsqueda
+    const prefs = { tipo, uso, ciudad, presupuesto, condicion };
     const userLikes = userProfile.getLikes();
-    let mejorAuto = null;
-    let mejorMatch = 0;
-    let alternativas = [];
 
-    autosData.forEach((auto) => {
-      let score = 0;
-
-      // Tipo: 40pts
-      if (auto.tipo === tipo) score += 40;
-
-      // Precio: 30pts
-      const diff = Math.abs(auto.precio - presupuesto);
-      const maxDiff = presupuesto * 0.15;
-      if (diff <= maxDiff) {
-        score += 30 * (1 - diff / maxDiff);
-      }
-
-      // Uso: 20pts
-      if (auto.uso === uso) score += 20;
-
-      // Ciudad: 10pts
-      if (auto.ciudad === ciudad) score += 10;
-
-      // Aplicar algoritmo inteligente
-      score = smartAlgorithm.calculateScore(auto, score, userLikes);
-
-      if (score > mejorMatch) {
-        if (mejorAuto) alternativas.push(mejorAuto);
-        mejorMatch = score;
-        mejorAuto = auto;
-      } else if (score > mejorMatch - 15) {
-        alternativas.push(auto);
-      }
+    const { best, alternativas, eligibleCount } = rankVehicles(autosData, prefs, {
+      applyLikesBonus: (auto, baseScore) =>
+        smartAlgorithm.calculateScore(auto, baseScore, userLikes),
     });
 
-    if (mejorAuto) {
-      // Guardar like en historial
-      userProfile.addLike(mejorAuto.id, mejorAuto);
-      const matchPercentage = Math.min(mejorMatch, 100);
+    if (best) {
+      const mejorAuto = best.vehicle;
+      const matchPercentage = best.match.score;
       const specs = specsData[mejorAuto.especificaciones_id] || {};
+      const matchSummary = buildMatchSummary(best.match.breakdown, prefs);
 
-      // Ocultar indicador de carga
       loading.classList.remove("active");
+      loading.hidden = true;
 
-      // Mostrar resultado principal
-      mostrarResultado(mejorAuto, specs, matchPercentage);
+      userProfile.addLike(mejorAuto.id, mejorAuto);
+      mostrarResultado(
+        mejorAuto,
+        specs,
+        matchPercentage,
+        best.match.breakdown,
+        matchSummary,
+      );
 
-      // Mostrar alternativas
       if (alternativas.length > 0) {
-        mostrarAlternativas(alternativas.slice(0, 3), specsData);
+        mostrarAlternativas(
+          alternativas.map((item) => item.vehicle),
+          specsData,
+        );
       }
 
-      // Mostrar botón de nueva búsqueda
-      btnNuevaBusqueda.style.display = "block";
+      btnNuevaBusqueda.hidden = false;
 
-      // Scroll automático a los resultados
       setTimeout(() => {
         resultado.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 300);
     } else {
-      // Ocultar indicador de carga
       loading.classList.remove("active");
+      loading.hidden = true;
+
+      const tipoCount = autosData.filter((auto) => auto.tipo === tipo).length;
+      const hint =
+        tipoCount === 0
+          ? `No hay vehículos ${tipo} en el catálogo todavía.`
+          : `Hay ${tipoCount} ${tipo}(s), pero ninguno cumple condición, presupuesto u otros filtros.`;
 
       resultado.innerHTML = `
-        <div class="auto-card">>
-          <p class="no-match">❌ No encontramos coincidencias exactas.</p>
-          <p>Prueba ajustando tus preferencias.</p>
+        <div class="auto-card auto-card--empty">
+          <p class="no-match">No encontramos coincidencias con tu búsqueda.</p>
+          <p>${hint} Prueba relajar condición o ajustar presupuesto y ciudad.</p>
+          <p class="match-meta">Vehículos evaluados: ${autosData.length} · Elegibles: ${eligibleCount}</p>
         </div>
       `;
     }
@@ -221,22 +228,42 @@ if (form) {
 }
 
 // ========== MOSTRAR RESULTADO PRINCIPAL ==========
-function mostrarResultado(auto, specs, matchPercentage) {
-  const condicionBadge = auto.condicion === "nuevo" ? "🆕 Nuevo (0 km)" :
-                         auto.condicion === "seminuevo" ? "⭐ Seminuevo" : "✅ Usado Certificado";
+function mostrarResultado(auto, specs, matchPercentage, breakdown = [], matchSummary = "") {
+  const condicionBadge = auto.condicion === "nuevo" ? "Nuevo (0 km)" :
+                         auto.condicion === "seminuevo" ? "Seminuevo" : "Usado certificado";
 
   const galeriaHTML = auto.galeria.map((img, idx) => `
     <img src="${img}" alt="${auto.nombre}" class="galeria-img ${idx === 0 ? 'visible' : 'hidden'}" loading="lazy">
   `).join("");
 
+  const breakdownHTML = breakdown.length
+    ? `
+    <ul class="match-breakdown" aria-label="Detalle de compatibilidad">
+      ${breakdown
+        .map(
+          (item) => `
+        <li class="match-breakdown__item ${item.ok ? "is-ok" : "is-miss"}">
+          <span class="match-breakdown__label">${item.label}</span>
+          <span class="match-breakdown__pts">${item.pts} pts</span>
+          ${item.detail ? `<span class="match-breakdown__detail">${item.detail}</span>` : ""}
+        </li>`,
+        )
+        .join("")}
+    </ul>
+  `
+    : "";
+
   const especsHTML = specs.equipamiento ? `
     <div class="specs-section">
-      <h4>⚙️ Equipamiento & Características</h4>
+      <h4>Equipamiento y características</h4>
       <ul class="specs-list">
-        ${specs.equipamiento.slice(0, 8).map(e => `<li>✓ ${e}</li>`).join("")}
+        ${specs.equipamiento.slice(0, 8).map(e => `<li>${e}</li>`).join("")}
       </ul>
     </div>
-  ` : "";
+  `     : "";
+
+  const summaryText =
+    matchSummary || "Tu mejor coincidencia según tu perfil";
 
   resultado.innerHTML = `
     <div class="auto-card principal" style="animation: fadeIn 0.6s ease;">
@@ -245,8 +272,8 @@ function mostrarResultado(auto, specs, matchPercentage) {
       <div class="auto-galeria">
         <div class="galeria-container">
           ${galeriaHTML}
-          <button class="galeria-prev">❮</button>
-          <button class="galeria-next">❯</button>
+          <button type="button" class="galeria-prev" aria-label="Imagen anterior"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+          <button type="button" class="galeria-next" aria-label="Imagen siguiente"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
           <div class="galeria-dots">
             ${auto.galeria.map((_, idx) => `<span class="dot ${idx === 0 ? 'active' : ''}" data-index="${idx}"></span>`).join("")}
           </div>
@@ -281,46 +308,60 @@ function mostrarResultado(auto, specs, matchPercentage) {
 
         ${especsHTML}
 
+        ${breakdownHTML}
+
         <!-- MATCH BAR -->
         <div class="match-bar">
           <div class="match-fill" style="width: 0%;"></div>
         </div>
         <div class="match-percentage" style="opacity: 0;">
-          ${Math.round(matchPercentage)}% ❤️
+          ${Math.round(matchPercentage)}% compatibilidad
         </div>
-        <p class="match-text">¡Tu AutoMatch perfecto!</p>
+        <p class="match-text">${summaryText}</p>
 
         <!-- CONCESIONARIO -->
         <div class="concesionario-info">
-          <h4>📍 ${auto.concesionario.nombre}</h4>
-          <p>📍 ${auto.concesionario.direccion}</p>
-          <p>📞 ${auto.concesionario.telefono}</p>
-          <p>⏰ ${auto.concesionario.horario}</p>
+          <h4><i class="fa-solid fa-store" aria-hidden="true"></i> ${auto.concesionario.nombre}</h4>
+          <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> ${auto.concesionario.direccion}</p>
+          <p><i class="fa-solid fa-phone" aria-hidden="true"></i> ${auto.concesionario.telefono}</p>
+          <p><i class="fa-regular fa-clock" aria-hidden="true"></i> ${auto.concesionario.horario}</p>
           
           <div class="botones-contacto">
             <a href="https://wa.me/${auto.concesionario.whatsapp}?text=Hola,%20me%20interesa%20el%20${encodeURIComponent(auto.nombre)}" 
                class="btn-contact whatsapp" target="_blank">
-              💬 WhatsApp
+              <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp
             </a>
             <a href="mailto:${auto.concesionario.email}?subject=Consulta%20sobre%20${encodeURIComponent(auto.nombre)}" 
                class="btn-contact email">
-              ✉️ Email
+              <i class="fa-regular fa-envelope" aria-hidden="true"></i> Email
             </a>
             <a href="tel:${auto.concesionario.telefono}" class="btn-contact phone">
-              📞 Llamar
+              <i class="fa-solid fa-phone" aria-hidden="true"></i> Llamar
             </a>
           </div>
         </div>
 
-        <!-- FORMULARIO TEST DRIVE -->
         <div class="formulario-test-drive">
-          <h4>🚗 Solicitar Test Drive</h4>
-          <form class="form-test-drive" data-auto-id="${auto.id}">
-            <input type="text" placeholder="Tu nombre" required>
-            <input type="email" placeholder="Tu email" required>
-            <input type="tel" placeholder="Tu teléfono" required>
-            <textarea placeholder="Mensaje (opcional)"></textarea>
-            <button type="submit" class="btn-submit">Solicitar Cita</button>
+          <h4><i class="fa-solid fa-car-side" aria-hidden="true"></i> Solicitar test drive</h4>
+          <form class="form-test-drive" data-auto-id="${auto.catalogId || auto.id}" data-note-id="${auto.noteId || ""}" data-dealer-id="${auto.concesionario.id || ""}">
+            <input type="text" name="nombre" placeholder="Tu nombre" required>
+            <select name="ciudad" required>
+              <option value="">Ciudad</option>
+              <option value="Bogotá">Bogotá</option>
+              <option value="Medellín">Medellín</option>
+              <option value="Cali">Cali</option>
+              <option value="Barranquilla">Barranquilla</option>
+              <option value="Otra">Otra</option>
+            </select>
+            <input type="email" name="email" placeholder="Tu email" required>
+            <input type="tel" name="telefono" placeholder="Tu teléfono" required>
+            <textarea name="mensaje" placeholder="Mensaje (opcional)"></textarea>
+            <label class="test-drive-consent">
+              <input type="checkbox" name="consent" required>
+              Acepto la política de privacidad y autorizo contacto comercial.
+            </label>
+            <button type="submit" class="btn-submit">Solicitar cita</button>
+            <p class="test-drive-feedback" role="status" aria-live="polite"></p>
           </form>
         </div>
       </div>
@@ -350,7 +391,7 @@ function mostrarAlternativas(alternativas, specs) {
   const contenedor = document.createElement("div");
   contenedor.classList.add("alternativas-section");
   contenedor.innerHTML = `
-    <h3>🚙 Otras opciones que también te pueden interesar:</h3>
+    <h3><i class="fa-solid fa-car-rear" aria-hidden="true"></i> Otras opciones que también te pueden interesar</h3>
     <div class="alternativas-grid">
       ${alternativas.map(auto => `
         <div class="auto-alternativa">
@@ -404,56 +445,52 @@ function setupGaleria() {
 // ========== FORMULARIO TEST DRIVE ==========
 function setupTestDrive(auto) {
   const forms = resultado.querySelectorAll(".form-test-drive");
-  forms.forEach(form => {
-    form.addEventListener("submit", (e) => {
+  forms.forEach((form) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const autoId = form.dataset.autoId;
-      const nombre = form.querySelector("input[type='text']").value;
-      const email = form.querySelector("input[type='email']").value;
-      const telefono = form.querySelector("input[type='tel']").value;
-      const mensaje = form.querySelector("textarea").value;
 
-      // Enviar a Netlify Function
-      fetch("/.netlify/functions/api-test-drive", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          autoId, 
-          nombre, 
-          email, 
-          telefono, 
-          mensaje,
-          autoNombre: auto.nombre,
-          concesionarioNombre: auto.concesionario.nombre
-        }),
-      })
-        .then(() => {
-          // Guardar lead para el dashboard del concesionario
-          const dealerId = auto.concesionario.id || 1; // Asumimos ID del concesionario
-          const leadData = {
-            id: Date.now(),
-            nombre,
-            email,
-            telefono,
-            autoNombre: auto.nombre,
-            presupuesto: document.getElementById("presupuesto")?.value,
-            mensaje,
-            estado: "pendiente",
-            fecha: new Date().toISOString()
-          };
+      const feedback = form.querySelector(".test-drive-feedback");
+      const consent = form.querySelector("input[name='consent']");
+      if (consent && !consent.checked) {
+        if (feedback) {
+          feedback.textContent = "Debes aceptar la política de privacidad.";
+          feedback.className = "test-drive-feedback is-error";
+        }
+        return;
+      }
 
-          // Guardar en localStorage para el dashboard
-          const leadsKey = `leads_dealer_${dealerId}`;
-          const existingLeads = JSON.parse(localStorage.getItem(leadsKey)) || [];
-          existingLeads.push(leadData);
-          localStorage.setItem(leadsKey, JSON.stringify(existingLeads));
+      const submitBtn = form.querySelector(".btn-submit");
+      if (submitBtn) submitBtn.disabled = true;
 
-          alert("✅ Solicitud enviada. El concesionario se contactará contigo pronto");
-          form.reset();
-        })
-        .catch(() => {
-          alert("❌ Error al enviar. Por favor intenta después");
-        });
+      const payload = {
+        autoId: form.dataset.autoId,
+        noteId: form.dataset.noteId ? Number(form.dataset.noteId) : undefined,
+        dealerId: form.dataset.dealerId ? Number(form.dataset.dealerId) : undefined,
+        nombre: form.querySelector("[name='nombre']")?.value?.trim(),
+        email: form.querySelector("[name='email']")?.value?.trim(),
+        telefono: form.querySelector("[name='telefono']")?.value?.trim(),
+        ciudad: form.querySelector("[name='ciudad']")?.value?.trim(),
+        mensaje: form.querySelector("[name='mensaje']")?.value?.trim(),
+        autoNombre: auto.nombre,
+        concesionarioNombre: auto.concesionario.nombre,
+        source: "automatch",
+      };
+
+      const result = await submitTestDrive(payload);
+
+      if (result.ok) {
+        if (feedback) {
+          feedback.textContent =
+            "Solicitud enviada. Un asesor te contactará en menos de 24 horas.";
+          feedback.className = "test-drive-feedback is-success";
+        }
+        form.reset();
+      } else if (feedback) {
+        feedback.textContent = result.error || "Error al enviar. Intenta después.";
+        feedback.className = "test-drive-feedback is-error";
+      }
+
+      if (submitBtn) submitBtn.disabled = false;
     });
   });
 }
@@ -467,9 +504,10 @@ if (btnNuevaBusqueda) {
     // Limpiar resultados
     resultado.innerHTML = "";
     loading.classList.remove("active");
+    loading.hidden = true;
 
     // Ocultar botón de nueva búsqueda
-    btnNuevaBusqueda.style.display = "none";
+    btnNuevaBusqueda.hidden = true;
 
     // Scroll a formulario
     form.scrollIntoView({ behavior: "smooth", block: "start" });
