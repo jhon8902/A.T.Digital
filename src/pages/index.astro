@@ -53,11 +53,11 @@ try {
 >
   <!-- ✅ SECCIONES VISIBLES -->
   <div class="extra-sections" id="extra-sections">
-    <SectionInfo />
-
     <section id="automatch" class="automatch-destacado">
       <AutoMatch autos={autos} />
     </section>
+
+    <SectionInfo />
 
     <Electricos />
     <AutoMatchPromo
@@ -96,8 +96,14 @@ try {
   }
 
   .automatch-destacado {
-    margin-bottom: 1rem;
+    margin: 0;
+    padding: 0;
     animation: fadeInUp 0.7s ease-out;
+    overflow: hidden;
+  }
+
+  .automatch-destacado :global(.automatch-home) {
+    margin: 0;
   }
 
   .home-secondary-content {

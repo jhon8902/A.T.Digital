@@ -1,4 +1,5 @@
 import catalogData from "../data/automatch/autos.json";
+import specsData from "../data/automatch/specs.json";
 
 export interface AutomatchDbNote {
   id: number | string;
@@ -31,9 +32,82 @@ interface CatalogAuto {
   id: number;
   nombre: string;
   descripcion: string;
+  tipo: string;
+  uso: string;
+  precio: number;
+  ciudad: string;
+  condicion: string;
+  año?: number;
   imagen_principal: string;
   galeria: string[];
+  especificaciones_id: string;
+  concesionario: AutomatchConcesionario;
 }
+
+export interface AutomatchConcesionario {
+  id?: number;
+  nombre: string;
+  direccion?: string;
+  telefono?: string;
+  whatsapp?: string;
+  email?: string;
+  horario?: string;
+}
+
+export interface AutomatchCatalogVehicle {
+  id: number | string;
+  nombre: string;
+  tipo: string;
+  uso: string;
+  precio: number;
+  ciudad: string;
+  condicion: string;
+  año?: number;
+  imagen_principal: string;
+  galeria: string[];
+  descripcion: string;
+  especificaciones_id: string;
+  noteId?: number;
+  catalogId?: number;
+  source: "catalog" | "note" | "merged";
+  concesionario: AutomatchConcesionario;
+}
+
+export interface AutomatchDbNoteFull extends AutomatchDbNote {
+  spec_segmento?: string | null;
+  spec_motorizacion?: string | null;
+  spec_precio_cop?: string | number | null;
+  spec_precio_estimado?: string | null;
+  spec_potencia_hp?: string | null;
+  spec_torque_nm?: string | null;
+  spec_autonomia_km?: string | null;
+  spec_bateria_autonomia?: string | null;
+  spec_equipamiento?: string | null;
+  spec_traccion?: string | null;
+}
+
+export interface DealerCatalogLink {
+  auto_id: string | null;
+  note_id: number | null;
+  dealer_id: number;
+  dealer_name: string;
+  dealer_phone?: string | null;
+  dealer_whatsapp?: string | null;
+  dealer_email?: string | null;
+  dealer_city?: string | null;
+}
+
+export type AutomatchSpecsMap = Record<
+  string,
+  {
+    motor?: string;
+    potencia?: string;
+    autonomia?: string;
+    autonomia_electrica?: string;
+    equipamiento?: string[];
+    [key: string]: unknown;
+  }
+>;
 
 export function normalizeAutomatchText(input = "") {
   return String(input)
@@ -159,6 +233,71 @@ function noteRecency(note: AutomatchDbNote) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+export interface AutomatchMetaCatalog {
+  tipo?: string;
+  uso?: string;
+  condicion?: string;
+  ciudad?: string;
+  precio_cop?: string | number;
+}
+
+export interface AutomatchNoteMeta {
+  texts?: Record<string, { line1?: string }>;
+  catalog?: AutomatchMetaCatalog;
+}
+
+export function parseAutomatchMeta(content = ""): AutomatchNoteMeta | null {
+  const match = String(content).match(/AUTOMATCH_META:([^>]*)-->/i);
+  if (!match?.[1]) return null;
+
+  try {
+    return JSON.parse(decodeURIComponent(match[1])) as AutomatchNoteMeta;
+  } catch {
+    return null;
+  }
+}
+
+function resolveCatalogFromNote(note: AutomatchDbNoteFull): AutomatchMetaCatalog {
+  const meta = parseAutomatchMeta(note.content || "");
+  const catalog = meta?.catalog || {};
+
+  return {
+    tipo:
+      catalog.tipo ||
+      inferTipoFromMotorizacion(note.spec_motorizacion || "") ||
+      undefined,
+    uso:
+      catalog.uso ||
+      inferUsoFromSegmento(note.spec_segmento || "") ||
+      undefined,
+    condicion: catalog.condicion || "nuevo",
+    ciudad: catalog.ciudad || undefined,
+    precio_cop:
+      catalog.precio_cop ||
+      note.spec_precio_cop ||
+      note.spec_precio_estimado ||
+      undefined,
+  };
+}
+
+function applyCatalogFields(
+  vehicle: AutomatchCatalogVehicle,
+  catalog: AutomatchMetaCatalog,
+): AutomatchCatalogVehicle {
+  const precio = parsePrecioCOP(catalog.precio_cop);
+
+  return {
+    ...vehicle,
+    tipo: catalog.tipo || vehicle.tipo,
+    uso: catalog.uso || vehicle.uso,
+    condicion: catalog.condicion || vehicle.condicion,
+    ciudad: catalog.ciudad
+      ? normalizeAutomatchText(catalog.ciudad)
+      : vehicle.ciudad,
+    precio: precio > 0 ? precio : vehicle.precio,
+  };
+}
+
 /**
  * Combina autos.json con notas BD category=automatch.
  * Por defecto omite image1 de la nota en el carrusel para no repetir la portada editorial.
@@ -234,4 +373,263 @@ export function buildAutomatchCarousel(
   }
 
   return items;
+}
+
+function parsePrecioCOP(value?: string | number | null): number {
+  if (typeof value === "number" && value > 0) return value;
+  if (!value) return 0;
+  const digits = String(value).replace(/[^\d]/g, "");
+  return digits ? Number.parseInt(digits, 10) : 0;
+}
+
+function parseListField(value?: string | null): string[] {
+  if (!value) return [];
+  return String(value)
+    .split(/[\n,;|]+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+export function inferTipoFromMotorizacion(motorizacion = ""): string {
+  const m = normalizeAutomatchText(motorizacion);
+  if (m.includes("electr")) return "eléctrico";
+  if (m.includes("hibrid") || m.includes("hybrid") || m.includes("enchuf"))
+    return "híbrido";
+  if (m.includes("gasolina") || m.includes("diesel") || m.includes("combust"))
+    return "gasolina";
+  return "";
+}
+
+export function inferUsoFromSegmento(segmento = ""): string {
+  const s = normalizeAutomatchText(segmento);
+  if (s.includes("deport")) return "deportivo";
+  if (
+    s.includes("suv") ||
+    s.includes("famil") ||
+    s.includes("van") ||
+    s.includes("7 pas")
+  )
+    return "familiar";
+  if (
+    s.includes("pickup") ||
+    s.includes("trabajo") ||
+    s.includes("comercial") ||
+    s.includes("4x4")
+  )
+    return "trabajo";
+  if (s.includes("urban") || s.includes("ciudad") || s.includes("compact"))
+    return "urbano";
+  return "urbano";
+}
+
+function buildSpecsFromNote(note: AutomatchDbNoteFull): AutomatchSpecsMap[string] {
+  const equipamiento = parseListField(note.spec_equipamiento);
+  const autonomiaKm = note.spec_autonomia_km
+    ? `${note.spec_autonomia_km} km`
+    : note.spec_bateria_autonomia || undefined;
+
+  return {
+    motor: note.spec_motorizacion || undefined,
+    potencia: note.spec_potencia_hp
+      ? `${note.spec_potencia_hp} hp`
+      : undefined,
+    autonomia: autonomiaKm,
+    traccion: note.spec_traccion || undefined,
+    equipamiento: equipamiento.length ? equipamiento : undefined,
+  };
+}
+
+function findDealerLink(
+  links: DealerCatalogLink[],
+  catalogId?: number,
+  noteId?: number,
+) {
+  const byAuto = links.find(
+    (link) =>
+      link.auto_id && catalogId && String(catalogId) === String(link.auto_id),
+  );
+  if (byAuto) return byAuto;
+
+  if (noteId) {
+    return links.find((link) => link.note_id === noteId) || null;
+  }
+
+  return null;
+}
+
+function applyDealerLink(
+  vehicle: AutomatchCatalogVehicle,
+  link: DealerCatalogLink | null,
+): AutomatchCatalogVehicle {
+  if (!link) return vehicle;
+
+  return {
+    ...vehicle,
+    ciudad: normalizeAutomatchText(link.dealer_city || vehicle.ciudad),
+    concesionario: {
+      id: link.dealer_id,
+      nombre: link.dealer_name,
+      telefono: link.dealer_phone || vehicle.concesionario.telefono,
+      whatsapp: link.dealer_whatsapp || vehicle.concesionario.whatsapp,
+      email: link.dealer_email || vehicle.concesionario.email,
+      direccion:
+        vehicle.concesionario.direccion ||
+        (link.dealer_city ? `${link.dealer_city}, Colombia` : undefined),
+      horario: vehicle.concesionario.horario || "Consultar con asesor",
+    },
+  };
+}
+
+function catalogAutoToVehicle(
+  auto: CatalogAuto,
+  matchedNote: AutomatchDbNoteFull | null | undefined,
+  dealerLinks: DealerCatalogLink[],
+): AutomatchCatalogVehicle {
+  const gallery = uniqueUrls(
+    auto.galeria?.length ? auto.galeria : [auto.imagen_principal],
+  );
+
+  let vehicle: AutomatchCatalogVehicle = {
+    id: auto.id,
+    catalogId: auto.id,
+    noteId: matchedNote ? Number(matchedNote.id) : undefined,
+    nombre: auto.nombre,
+    tipo: auto.tipo,
+    uso: auto.uso,
+    precio: auto.precio,
+    ciudad: normalizeAutomatchText(auto.ciudad),
+    condicion: auto.condicion || "nuevo",
+    año: auto.año,
+    imagen_principal: auto.imagen_principal,
+    galeria: gallery.length ? gallery : [auto.imagen_principal],
+    descripcion:
+      matchedNote?.subtitle?.trim() || auto.descripcion || auto.nombre,
+    especificaciones_id: auto.especificaciones_id,
+    source: matchedNote ? "merged" : "catalog",
+    concesionario: { ...auto.concesionario },
+  };
+
+  if (matchedNote?.image1) {
+    const noteImages = collectNoteGallery(matchedNote, { skipCover: false });
+    vehicle.galeria = uniqueUrls([...noteImages, ...vehicle.galeria]);
+    if (noteImages[0]) vehicle.imagen_principal = noteImages[0];
+  }
+
+  vehicle = applyDealerLink(
+    vehicle,
+    findDealerLink(dealerLinks, auto.id, vehicle.noteId),
+  );
+
+  if (matchedNote) {
+    const catalog = resolveCatalogFromNote(matchedNote);
+    vehicle = applyCatalogFields(vehicle, catalog);
+  }
+
+  return vehicle;
+}
+
+function noteToVehicle(
+  note: AutomatchDbNoteFull,
+  dealerLinks: DealerCatalogLink[],
+): AutomatchCatalogVehicle | null {
+  const catalog = resolveCatalogFromNote(note);
+  const tipo = catalog.tipo || "gasolina";
+  const uso = catalog.uso || "urbano";
+  const precio = parsePrecioCOP(catalog.precio_cop);
+
+  const imagenes = collectNoteGallery(note, { skipCover: false });
+  if (imagenes.length === 0 && !note.image1) return null;
+
+  const noteId = Number(note.id);
+  const dealerLink = findDealerLink(dealerLinks, undefined, noteId);
+
+  let vehicle: AutomatchCatalogVehicle = {
+    id: `note-${noteId}`,
+    noteId,
+    nombre: note.title,
+    tipo,
+    uso,
+    precio: precio || 0,
+    ciudad: normalizeAutomatchText(
+      catalog.ciudad || dealerLink?.dealer_city || "bogotá",
+    ),
+    condicion: catalog.condicion || "nuevo",
+    imagen_principal: imagenes[0] || normalizeImageUrl(note.image1) || "",
+    galeria: imagenes.length
+      ? imagenes
+      : [normalizeImageUrl(note.image1)].filter(Boolean) as string[],
+    descripcion:
+      note.subtitle?.trim() ||
+      stripHtml(note.content || "").slice(0, 220) ||
+      note.title,
+    especificaciones_id: `note-${noteId}`,
+    source: "note",
+    concesionario: {
+      nombre: dealerLink?.dealer_name || "Concesionario por confirmar",
+      telefono: dealerLink?.dealer_phone || undefined,
+      whatsapp: dealerLink?.dealer_whatsapp || undefined,
+      email: dealerLink?.dealer_email || undefined,
+      direccion: dealerLink?.dealer_city
+        ? `${dealerLink.dealer_city}, Colombia`
+        : undefined,
+      horario: "Consultar con asesor",
+    },
+  };
+
+  vehicle = applyDealerLink(vehicle, dealerLink);
+  return vehicle;
+}
+
+/**
+ * Catálogo unificado para home, find y leads.
+ * Combina autos.json + notas AutoMatch + vínculos de concesionarios.
+ */
+export function buildAutomatchCatalog(
+  dbNotes: AutomatchDbNoteFull[] = [],
+  dealerLinks: DealerCatalogLink[] = [],
+): { autos: AutomatchCatalogVehicle[]; specs: AutomatchSpecsMap } {
+  const catalog = catalogData as CatalogAuto[];
+  const specs: AutomatchSpecsMap = {
+    ...(specsData as AutomatchSpecsMap),
+  };
+  const usedNoteIds = new Set<string>();
+  const autos: AutomatchCatalogVehicle[] = [];
+
+  for (const auto of catalog) {
+    const matchedNote = findMatchingNote(
+      auto.nombre,
+      dbNotes,
+    ) as AutomatchDbNoteFull | undefined;
+
+    if (matchedNote) {
+      usedNoteIds.add(String(matchedNote.id));
+      const noteSpecs = buildSpecsFromNote(matchedNote);
+      if (Object.keys(noteSpecs).length > 0) {
+        specs[auto.especificaciones_id] = {
+          ...specs[auto.especificaciones_id],
+          ...noteSpecs,
+        };
+      }
+    }
+
+    autos.push(catalogAutoToVehicle(auto, matchedNote, dealerLinks));
+  }
+
+  const unmatchedNotes = dbNotes.filter(
+    (note) => !usedNoteIds.has(String(note.id)),
+  );
+
+  for (const note of unmatchedNotes) {
+    const vehicle = noteToVehicle(note, dealerLinks);
+    if (!vehicle) continue;
+
+    const noteSpecs = buildSpecsFromNote(note);
+    if (Object.keys(noteSpecs).length > 0) {
+      specs[vehicle.especificaciones_id] = noteSpecs;
+    }
+
+    autos.push(vehicle);
+  }
+
+  return { autos, specs };
 }

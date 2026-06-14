@@ -106,113 +106,293 @@ const autosWithTexts = autosToRender.map((auto: any) => {
 const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
 ---
 
-<section class="automatch-section">
-  <h2 class="titulo">
-    <i class="fas fa-car titulo-icon"></i>
-    {mode === "archive" ? "Mas contenido AutoMatch" : "AutoMatch"}
-  </h2>
-  <p class="subtitulo">
-    {
-      mode === "archive"
-        ? "Listado de fichas AutoMatch con el mismo formato de tarjetas y carrusel."
-        : "Explora modelos destacados y encuentra el auto ideal para ti."
-    }
-  </p>
-
-  <div class="cards">
-    {
-      autosWithTexts.map((auto: any) => (
-        <article class="auto-card" data-id={auto.id}>
-          <div class="auto-carousel-shell">
-            <div class="auto-carousel">
-              {(auto.imagenes as string[]).map((img, index) => (
-                <img
-                  src={img}
-                  alt={`${auto.nombre} — imagen ${index + 1}`}
-                  class={`auto-img ${index === 0 ? "visible" : "hidden"}`}
-                  loading="eager"
-                  decoding="async"
-                  fetchpriority={index === 0 ? "high" : "auto"}
-                />
-              ))}
-            </div>
-            <button type="button" class="carousel-nav prev" aria-label="Imagen anterior">
-              <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="carousel-nav next" aria-label="Imagen siguiente">
-              <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-            </button>
-            <div class="carousel-overlay-bar">
-              <div class="carousel-dots" aria-label="Navegacion de imagenes">
-                {(auto.imagenes as string[]).map((_, index) => (
-                  <button
-                    type="button"
-                    class={`carousel-dot ${index === 0 ? "active" : ""}`}
-                    data-index={String(index)}
-                    aria-label={`Ir a la imagen ${index + 1}`}
-                  />
-                ))}
-              </div>
-              <span class="carousel-counter">
-                1 / {(auto.imagenes as string[]).length}
-              </span>
-            </div>
-          </div>
-
-          <h3>{auto.nombre}</h3>
-          <div class="auto-info">
-            {auto.texts.map((text: any, index: number) => (
-              <p class={`auto-texto ${index === 0 ? "visible" : "hidden"}`}>
-                <span class="auto-texto-linea">{text.line1}</span>
-              </p>
-            ))}
-          </div>
-          <a href={auto.href} class="auto-card-cta">
-            <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-            {auto.ctaLabel}
-          </a>
-        </article>
-      ))
-    }
-  </div>
-
-  {
-    mode === "archive" && autosToRender.length === 0 && (
-      <p class="subtitulo">Aun no hay mas fichas para mostrar.</p>
-    )
-  }
-
-  {
-    mode === "home" && hasMoreAutos && (
-      <div class="ver-mas-automatch-container">
-        <a href="/automatch" class="btn-automatch btn-automatch--secondary">
-          <i class="fas fa-arrow-right" /> Ver mas AutoMatch
-        </a>
-      </div>
-    )
-  }
-</section>
-
 {
-  mode === "home" && (
-    <section class="automatch-section automatch-section--finder">
-      <h2>
-        <i class="fas fa-car-side" />
-        Encuentra tu AutoMatch
+  mode === "home" ? (
+    <div class="automatch-home">
+      <header class="automatch-hero">
+        <p class="automatch-hero__eyebrow">Herramienta inteligente · Colombia</p>
+        <h1 class="automatch-hero__title">
+          Encuentra tu auto ideal con <span>AutoMatch</span>
+        </h1>
+        <p class="automatch-hero__lead">
+          Cuéntanos cómo usas el carro, tu presupuesto y tu ciudad. Te mostramos
+          modelos reales en Colombia y te conectamos con un asesor para test drive.
+        </p>
+        <div class="automatch-hero__actions">
+          <a href="/automatch-find" class="btn-automatch btn-automatch--primary btn-automatch--hero">
+            <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+            Encontrar mi auto
+          </a>
+          <a href="#automatch-fichas" class="btn-automatch btn-automatch--ghost">
+            Ver fichas destacadas
+          </a>
+        </div>
+      </header>
+
+      <section class="automatch-section automatch-section--cards" id="automatch-fichas">
+        <h2 class="titulo titulo--cards">
+          <i class="fas fa-car titulo-icon" aria-hidden="true"></i>
+          Fichas destacadas
+        </h2>
+        <p class="subtitulo">
+          Explora modelos con galería, datos clave y enlace directo a la herramienta.
+        </p>
+
+        <div class="cards">
+          {
+            autosWithTexts.map((auto: any) => (
+              <article class="auto-card" data-id={auto.id}>
+                <div class="auto-carousel-shell">
+                  <div class="auto-carousel">
+                    {(auto.imagenes as string[]).map((img, index) => (
+                      <img
+                        src={img}
+                        alt={`${auto.nombre} — imagen ${index + 1}`}
+                        class={`auto-img ${index === 0 ? "visible" : "hidden"}`}
+                        loading="eager"
+                        decoding="async"
+                        fetchpriority={index === 0 ? "high" : "auto"}
+                      />
+                    ))}
+                  </div>
+                  <button type="button" class="carousel-nav prev" aria-label="Imagen anterior">
+                    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="carousel-nav next" aria-label="Imagen siguiente">
+                    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                  </button>
+                  <div class="carousel-overlay-bar">
+                    <div class="carousel-dots" aria-label="Navegacion de imagenes">
+                      {(auto.imagenes as string[]).map((_, index) => (
+                        <button
+                          type="button"
+                          class={`carousel-dot ${index === 0 ? "active" : ""}`}
+                          data-index={String(index)}
+                          aria-label={`Ir a la imagen ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                    <span class="carousel-counter">
+                      1 / {(auto.imagenes as string[]).length}
+                    </span>
+                  </div>
+                </div>
+
+                <h3>{auto.nombre}</h3>
+                <div class="auto-info">
+                  {auto.texts.map((text: any, index: number) => (
+                    <p class={`auto-texto ${index === 0 ? "visible" : "hidden"}`}>
+                      <span class="auto-texto-linea">{text.line1}</span>
+                    </p>
+                  ))}
+                </div>
+                <a href={auto.href} class="auto-card-cta">
+                  <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                  {auto.ctaLabel}
+                </a>
+              </article>
+            ))
+          }
+        </div>
+
+        {
+          hasMoreAutos && (
+            <div class="ver-mas-automatch-container">
+              <a href="/automatch" class="btn-automatch btn-automatch--secondary">
+                <i class="fas fa-arrow-right" aria-hidden="true"></i> Ver mas AutoMatch
+              </a>
+            </div>
+          )
+        }
+      </section>
+    </div>
+  ) : (
+    <section class="automatch-section">
+      <h2 class="titulo">
+        <i class="fas fa-car titulo-icon"></i>
+        Mas contenido AutoMatch
       </h2>
-      <p>
-        Usa nuestra herramienta inteligente para descubrir el auto perfecto para
-        ti.
+      <p class="subtitulo">
+        Listado de fichas AutoMatch con el mismo formato de tarjetas y carrusel.
       </p>
 
-      <a href="/automatch-find" class="btn-automatch btn-automatch--primary">
-        <i class="fas fa-sliders-h" /> Probar AutoMatch
-      </a>
+      <div class="cards">
+        {
+          autosWithTexts.map((auto: any) => (
+            <article class="auto-card" data-id={auto.id}>
+              <div class="auto-carousel-shell">
+                <div class="auto-carousel">
+                  {(auto.imagenes as string[]).map((img, index) => (
+                    <img
+                      src={img}
+                      alt={`${auto.nombre} — imagen ${index + 1}`}
+                      class={`auto-img ${index === 0 ? "visible" : "hidden"}`}
+                      loading="eager"
+                      decoding="async"
+                      fetchpriority={index === 0 ? "high" : "auto"}
+                    />
+                  ))}
+                </div>
+                <button type="button" class="carousel-nav prev" aria-label="Imagen anterior">
+                  <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="carousel-nav next" aria-label="Imagen siguiente">
+                  <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </button>
+                <div class="carousel-overlay-bar">
+                  <div class="carousel-dots" aria-label="Navegacion de imagenes">
+                    {(auto.imagenes as string[]).map((_, index) => (
+                      <button
+                        type="button"
+                        class={`carousel-dot ${index === 0 ? "active" : ""}`}
+                        data-index={String(index)}
+                        aria-label={`Ir a la imagen ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                  <span class="carousel-counter">
+                    1 / {(auto.imagenes as string[]).length}
+                  </span>
+                </div>
+              </div>
+
+              <h3>{auto.nombre}</h3>
+              <div class="auto-info">
+                {auto.texts.map((text: any, index: number) => (
+                  <p class={`auto-texto ${index === 0 ? "visible" : "hidden"}`}>
+                    <span class="auto-texto-linea">{text.line1}</span>
+                  </p>
+                ))}
+              </div>
+              <a href={auto.href} class="auto-card-cta">
+                <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                {auto.ctaLabel}
+              </a>
+            </article>
+          ))
+        }
+      </div>
+
+      {
+        autosToRender.length === 0 && (
+          <p class="subtitulo">Aun no hay mas fichas para mostrar.</p>
+        )
+      }
     </section>
   )
 }
 
 <style>
+  /* ========== HERO HOME ========== */
+  .automatch-home {
+    width: 100%;
+  }
+
+  .automatch-hero {
+    text-align: center;
+    padding: clamp(2.5rem, 5vw, 4rem) clamp(1rem, 4vw, 2rem)
+      clamp(2rem, 4vw, 3rem);
+    color: #fff;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(230, 180, 16, 0.18), transparent),
+      linear-gradient(165deg, #062818 0%, #08341f 45%, #0a4228 100%);
+    border-bottom: 1px solid rgba(230, 180, 16, 0.2);
+  }
+
+  .automatch-hero__eyebrow {
+    font-family: var(--font-body, "Source Sans 3", sans-serif);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #f0c14a;
+    margin: 0 0 0.85rem;
+  }
+
+  .automatch-hero__title {
+    font-family: var(--font-editorial, "Georgia", serif);
+    font-size: clamp(2rem, 4.5vw, 3.35rem);
+    font-weight: 700;
+    line-height: 1.12;
+    margin: 0 auto 1rem;
+    max-width: 18ch;
+    letter-spacing: 0.01em;
+    color: #ffffff !important;
+  }
+
+  .automatch-hero__title span {
+    color: #f0c14a !important;
+  }
+
+  .automatch-hero__lead {
+    font-family: var(--font-body, "Source Sans 3", sans-serif);
+    font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.88);
+    max-width: 42rem;
+    margin: 0 auto 1.75rem;
+  }
+
+  .automatch-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.85rem 1rem;
+  }
+
+  .btn-automatch--hero {
+    padding: 1rem 1.85rem;
+    font-size: 1.02rem;
+    background: #f0c14a;
+    color: #08341f;
+    border-color: #f0c14a;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  }
+
+  .btn-automatch--hero:hover {
+    background: #ffd966;
+    border-color: #ffd966;
+    color: #062818;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  }
+
+  .btn-automatch--ghost {
+    padding: 0.95rem 1.35rem;
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-weight: 600;
+    box-shadow: none;
+  }
+
+  .btn-automatch--ghost:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.85);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  #automatch-fichas {
+    scroll-margin-top: 6rem;
+  }
+
+  .automatch-section--cards {
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: #f4f5f7;
+    padding-top: clamp(2rem, 4vw, 2.75rem);
+    padding-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .titulo--cards {
+    font-size: clamp(1.65rem, 2.5vw, 2.1rem);
+  }
+
   /* ========== SECCIÓN AUTOMATCH PRINCIPAL ========== */
 
   .automatch-section {
@@ -721,6 +901,20 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
   }
 
   @media (max-width: 768px) {
+    .automatch-hero__title {
+      max-width: none;
+    }
+
+    .automatch-hero__actions {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .automatch-hero__actions .btn-automatch {
+      width: min(100%, 20rem);
+      justify-content: center;
+    }
+
     .automatch-section {
       padding: 2rem 1rem;
       margin: 2rem 0;

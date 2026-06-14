@@ -1,4 +1,5 @@
 import { submitTestDrive } from "./test-drive-submit.js";
+import { rankVehicles, buildMatchSummary } from "./automatch-match.js";
 
 console.log("AutoMatch v3 cargado.");
 
@@ -76,19 +77,37 @@ const smartAlgorithm = new SmartAlgorithm(userProfile);
 let autosData = []; // Se cargará desde JSON
 let specsData = {};  // Se cargará desde JSON
 
-// ========== CARGAR DATOS EXTERNOS ==========
+// ========== CARGAR CATÁLOGO UNIFICADO ==========
 async function loadData() {
+  try {
+    const response = await fetch("/api/automatch-catalog");
+    if (response.ok) {
+      const data = await response.json();
+      autosData = data.autos || [];
+      specsData = data.specs || {};
+      console.log(
+        "Catálogo unificado cargado:",
+        autosData.length,
+        "vehículos",
+        data.meta?.source || "",
+      );
+      return;
+    }
+  } catch (error) {
+    console.warn("API de catálogo no disponible, usando JSON local.", error);
+  }
+
   try {
     const [autosRes, specsRes] = await Promise.all([
       fetch("/data/automatch/autos.json"),
-      fetch("/data/automatch/specs.json")
+      fetch("/data/automatch/specs.json"),
     ]);
 
     autosData = await autosRes.json();
     specsData = await specsRes.json();
-    console.log("✅ Datos cargados:", autosData.length, "autos");
+    console.log("Catálogo local cargado:", autosData.length, "autos");
   } catch (error) {
-    console.error("❌ Error cargando datos:", error);
+    console.error("Error cargando datos:", error);
   }
 }
 
@@ -125,6 +144,7 @@ if (form) {
     e.preventDefault();
 
     // Mostrar indicador de carga
+    loading.hidden = false;
     loading.classList.add("active");
     resultado.innerHTML = "";
 
@@ -145,77 +165,62 @@ if (form) {
 
     const uso = document.getElementById("uso").value;
     const tipo = document.getElementById("tipo").value;
-    const ciudad = document.getElementById("ciudad").value.toLowerCase();
+    const condicion = document.getElementById("condicion").value;
+    const ciudad = document.getElementById("ciudad").value;
 
-    // Algoritmo de búsqueda
+    const prefs = { tipo, uso, ciudad, presupuesto, condicion };
     const userLikes = userProfile.getLikes();
-    let mejorAuto = null;
-    let mejorMatch = 0;
-    let alternativas = [];
 
-    autosData.forEach((auto) => {
-      let score = 0;
-
-      // Tipo: 40pts
-      if (auto.tipo === tipo) score += 40;
-
-      // Precio: 30pts
-      const diff = Math.abs(auto.precio - presupuesto);
-      const maxDiff = presupuesto * 0.15;
-      if (diff <= maxDiff) {
-        score += 30 * (1 - diff / maxDiff);
-      }
-
-      // Uso: 20pts
-      if (auto.uso === uso) score += 20;
-
-      // Ciudad: 10pts
-      if (auto.ciudad === ciudad) score += 10;
-
-      // Aplicar algoritmo inteligente
-      score = smartAlgorithm.calculateScore(auto, score, userLikes);
-
-      if (score > mejorMatch) {
-        if (mejorAuto) alternativas.push(mejorAuto);
-        mejorMatch = score;
-        mejorAuto = auto;
-      } else if (score > mejorMatch - 15) {
-        alternativas.push(auto);
-      }
+    const { best, alternativas, eligibleCount } = rankVehicles(autosData, prefs, {
+      applyLikesBonus: (auto, baseScore) =>
+        smartAlgorithm.calculateScore(auto, baseScore, userLikes),
     });
 
-    if (mejorAuto) {
-      // Guardar like en historial
-      userProfile.addLike(mejorAuto.id, mejorAuto);
-      const matchPercentage = Math.min(mejorMatch, 100);
+    if (best) {
+      const mejorAuto = best.vehicle;
+      const matchPercentage = best.match.score;
       const specs = specsData[mejorAuto.especificaciones_id] || {};
+      const matchSummary = buildMatchSummary(best.match.breakdown, prefs);
 
-      // Ocultar indicador de carga
       loading.classList.remove("active");
+      loading.hidden = true;
 
-      // Mostrar resultado principal
-      mostrarResultado(mejorAuto, specs, matchPercentage);
+      userProfile.addLike(mejorAuto.id, mejorAuto);
+      mostrarResultado(
+        mejorAuto,
+        specs,
+        matchPercentage,
+        best.match.breakdown,
+        matchSummary,
+      );
 
-      // Mostrar alternativas
       if (alternativas.length > 0) {
-        mostrarAlternativas(alternativas.slice(0, 3), specsData);
+        mostrarAlternativas(
+          alternativas.map((item) => item.vehicle),
+          specsData,
+        );
       }
 
-      // Mostrar botón de nueva búsqueda
-      btnNuevaBusqueda.style.display = "block";
+      btnNuevaBusqueda.hidden = false;
 
-      // Scroll automático a los resultados
       setTimeout(() => {
         resultado.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 300);
     } else {
-      // Ocultar indicador de carga
       loading.classList.remove("active");
+      loading.hidden = true;
+
+      const tipoCount = autosData.filter((auto) => auto.tipo === tipo).length;
+      const hint =
+        tipoCount === 0
+          ? `No hay vehículos ${tipo} en el catálogo todavía.`
+          : `Hay ${tipoCount} ${tipo}(s), pero ninguno cumple condición, presupuesto u otros filtros.`;
 
       resultado.innerHTML = `
-        <div class="auto-card">>
-          <p class="no-match">❌ No encontramos coincidencias exactas.</p>
-          <p>Prueba ajustando tus preferencias.</p>
+        <div class="auto-card auto-card--empty">
+          <p class="no-match">No encontramos coincidencias con tu búsqueda.</p>
+          <p>${hint} Prueba relajar condición o ajustar presupuesto y ciudad.</p>
+          <p class="match-meta">Vehículos evaluados: ${autosData.length} · Elegibles: ${eligibleCount}</p>
         </div>
       `;
     }
@@ -223,22 +228,42 @@ if (form) {
 }
 
 // ========== MOSTRAR RESULTADO PRINCIPAL ==========
-function mostrarResultado(auto, specs, matchPercentage) {
-  const condicionBadge = auto.condicion === "nuevo" ? "🆕 Nuevo (0 km)" :
-                         auto.condicion === "seminuevo" ? "⭐ Seminuevo" : "✅ Usado Certificado";
+function mostrarResultado(auto, specs, matchPercentage, breakdown = [], matchSummary = "") {
+  const condicionBadge = auto.condicion === "nuevo" ? "Nuevo (0 km)" :
+                         auto.condicion === "seminuevo" ? "Seminuevo" : "Usado certificado";
 
   const galeriaHTML = auto.galeria.map((img, idx) => `
     <img src="${img}" alt="${auto.nombre}" class="galeria-img ${idx === 0 ? 'visible' : 'hidden'}" loading="lazy">
   `).join("");
 
+  const breakdownHTML = breakdown.length
+    ? `
+    <ul class="match-breakdown" aria-label="Detalle de compatibilidad">
+      ${breakdown
+        .map(
+          (item) => `
+        <li class="match-breakdown__item ${item.ok ? "is-ok" : "is-miss"}">
+          <span class="match-breakdown__label">${item.label}</span>
+          <span class="match-breakdown__pts">${item.pts} pts</span>
+          ${item.detail ? `<span class="match-breakdown__detail">${item.detail}</span>` : ""}
+        </li>`,
+        )
+        .join("")}
+    </ul>
+  `
+    : "";
+
   const especsHTML = specs.equipamiento ? `
     <div class="specs-section">
-      <h4>⚙️ Equipamiento & Características</h4>
+      <h4>Equipamiento y características</h4>
       <ul class="specs-list">
-        ${specs.equipamiento.slice(0, 8).map(e => `<li>✓ ${e}</li>`).join("")}
+        ${specs.equipamiento.slice(0, 8).map(e => `<li>${e}</li>`).join("")}
       </ul>
     </div>
-  ` : "";
+  `     : "";
+
+  const summaryText =
+    matchSummary || "Tu mejor coincidencia según tu perfil";
 
   resultado.innerHTML = `
     <div class="auto-card principal" style="animation: fadeIn 0.6s ease;">
@@ -247,8 +272,8 @@ function mostrarResultado(auto, specs, matchPercentage) {
       <div class="auto-galeria">
         <div class="galeria-container">
           ${galeriaHTML}
-          <button class="galeria-prev">❮</button>
-          <button class="galeria-next">❯</button>
+          <button type="button" class="galeria-prev" aria-label="Imagen anterior"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+          <button type="button" class="galeria-next" aria-label="Imagen siguiente"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
           <div class="galeria-dots">
             ${auto.galeria.map((_, idx) => `<span class="dot ${idx === 0 ? 'active' : ''}" data-index="${idx}"></span>`).join("")}
           </div>
@@ -283,6 +308,8 @@ function mostrarResultado(auto, specs, matchPercentage) {
 
         ${especsHTML}
 
+        ${breakdownHTML}
+
         <!-- MATCH BAR -->
         <div class="match-bar">
           <div class="match-fill" style="width: 0%;"></div>
@@ -290,7 +317,7 @@ function mostrarResultado(auto, specs, matchPercentage) {
         <div class="match-percentage" style="opacity: 0;">
           ${Math.round(matchPercentage)}% compatibilidad
         </div>
-        <p class="match-text">¡Tu AutoMatch perfecto!</p>
+        <p class="match-text">${summaryText}</p>
 
         <!-- CONCESIONARIO -->
         <div class="concesionario-info">
@@ -316,7 +343,7 @@ function mostrarResultado(auto, specs, matchPercentage) {
 
         <div class="formulario-test-drive">
           <h4><i class="fa-solid fa-car-side" aria-hidden="true"></i> Solicitar test drive</h4>
-          <form class="form-test-drive" data-auto-id="${auto.id}" data-dealer-id="${auto.concesionario.id || ""}">
+          <form class="form-test-drive" data-auto-id="${auto.catalogId || auto.id}" data-note-id="${auto.noteId || ""}" data-dealer-id="${auto.concesionario.id || ""}">
             <input type="text" name="nombre" placeholder="Tu nombre" required>
             <select name="ciudad" required>
               <option value="">Ciudad</option>
@@ -437,6 +464,7 @@ function setupTestDrive(auto) {
 
       const payload = {
         autoId: form.dataset.autoId,
+        noteId: form.dataset.noteId ? Number(form.dataset.noteId) : undefined,
         dealerId: form.dataset.dealerId ? Number(form.dataset.dealerId) : undefined,
         nombre: form.querySelector("[name='nombre']")?.value?.trim(),
         email: form.querySelector("[name='email']")?.value?.trim(),
@@ -476,9 +504,10 @@ if (btnNuevaBusqueda) {
     // Limpiar resultados
     resultado.innerHTML = "";
     loading.classList.remove("active");
+    loading.hidden = true;
 
     // Ocultar botón de nueva búsqueda
-    btnNuevaBusqueda.style.display = "none";
+    btnNuevaBusqueda.hidden = true;
 
     // Scroll a formulario
     form.scrollIntoView({ behavior: "smooth", block: "start" });

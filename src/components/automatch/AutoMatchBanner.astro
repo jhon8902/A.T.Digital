@@ -4,19 +4,23 @@
 
 <div class="automatch-banner">
   <div class="banner-content">
-    <div class="banner-icon">🚀</div>
+    <div class="banner-icon" aria-hidden="true">
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
+    </div>
     <div class="banner-text">
-      <h3>AutoMatch - Fase Inicial</h3>
+      <h3>Versión en evolución</h3>
       <p>
-        Estamos mejorando nuestro algoritmo de recomendaciones con datos reales
-        de concesionarios. Prueba la herramienta y ayúdanos a perfeccionarla.
+        Estamos ampliando el catálogo con datos reales de concesionarios. Prueba
+        la herramienta y cuéntanos qué te gustaría ver aquí.
       </p>
     </div>
     <button
       class="banner-close"
+      type="button"
+      aria-label="Cerrar aviso"
       onclick="this.parentElement.parentElement.style.display='none'"
     >
-      ✕
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
     </button>
   </div>
 </div>
@@ -24,7 +28,7 @@
 <style>
   .automatch-banner {
     background: linear-gradient(135deg, #1b5e3f 0%, #08341f 100%);
-    border-left: 4px solid #25d366;
+    border-left: 4px solid #f0c14a;
     margin: 1.5rem 0;
     border-radius: 8px;
     padding: 1.5rem;
@@ -50,8 +54,9 @@
   }
 
   .banner-icon {
-    font-size: 2.5rem;
+    font-size: 1.75rem;
     flex-shrink: 0;
+    color: #f0c14a;
   }
 
   .banner-text {
@@ -59,7 +64,7 @@
   }
 
   .banner-text h3 {
-    color: #25d366;
+    color: #f0c14a;
     margin: 0 0 0.5rem 0;
     font-size: 1.2rem;
     font-weight: 700;
@@ -76,7 +81,7 @@
   .banner-close {
     background: none;
     border: none;
-    color: #25d366;
+    color: #f0c14a;
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0;
