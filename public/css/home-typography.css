@@ -4,8 +4,7 @@ body.home-page .electricos-eyebrow,
 body.home-page .hibridos-eyebrow,
 body.home-page .lanzamientos-eyebrow,
 body.home-page .deportes-eyebrow,
-body.home-page .pruebas-eyebrow,
-body.home-page .noticias-home-eyebrow {
+body.home-page .pruebas-eyebrow {
   font-size: var(--home-eyebrow);
 }
 

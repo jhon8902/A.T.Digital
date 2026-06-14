@@ -229,12 +229,11 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
   .slice(0, HOME_VISIBLE_COUNT);
 ---
 
-<section id="noticias" class="section-info w-full py-30">
+<section id="noticias" class="section-info w-full py-30" aria-labelledby="noticias-heading">
   <div class="info-header">
-    <p class="noticias-home-eyebrow">Actualidad del portal</p>
-    <h1 class="info-titulo anim-titulo">Noticias</h1>
+    <h1 id="noticias-heading" class="info-titulo anim-titulo">Actualidad del portal</h1>
     <p class="noticias-home-lead">
-      Lo más reciente que se publica a diario: noticias, lanzamientos, fichas y
+      Lo más reciente que publicamos a diario: lanzamientos, fichas técnicas y
       cobertura del sector en un solo lugar.
     </p>
   </div>
@@ -335,6 +334,7 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     padding: 0;
     position: relative;
     overflow: hidden;
+    scroll-margin-top: 5.5rem;
   }
 
   .section-info::before {
@@ -362,16 +362,6 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     margin: 0 auto;
   }
 
-  .noticias-home-eyebrow {
-    font-family: var(--font-body, "Source Sans 3", sans-serif);
-    font-size: var(--home-eyebrow, 0.82rem);
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #e6b410;
-    margin: 0;
-  }
-
   .noticias-home-lead {
     font-family: var(--font-body, "Source Sans 3", sans-serif);
     font-size: var(--home-section-lead, 1.1rem);
@@ -383,18 +373,19 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
   }
 
   .info-titulo {
-    color: #1a1a1a;
-    font-size: 32px;
-    letter-spacing: 3px;
-    font-family: "Georgia", serif;
-    text-transform: uppercase;
-    font-weight: 800;
+    color: var(--color-brand, #08341f);
+    font-size: var(--home-section-title, clamp(2.1rem, 3.2vw, 2.95rem));
+    letter-spacing: 0.02em;
+    font-family: var(--font-display, "Georgia", serif);
+    text-transform: none;
+    font-weight: 700;
+    line-height: 1.1;
     text-shadow: none;
     opacity: 1;
     transform: translateY(0);
     transition: none;
     background: none;
-    margin: 0;
+    margin: 0 0 0.65rem;
     position: relative;
     display: flex;
     align-items: center;
@@ -449,7 +440,7 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
       text-align: center;
       gap: 16px;
       font-size: clamp(2rem, 3.8vw, 2.5rem);
-      letter-spacing: 2px;
+      letter-spacing: 0.02em;
     }
 
     .info-titulo::before,
@@ -1048,7 +1039,7 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
 
     .info-titulo {
       font-size: 2.6rem;
-      letter-spacing: 3px;
+      letter-spacing: 0.02em;
       justify-content: center;
       gap: 25px;
       width: min(100%, 90%);
@@ -1314,8 +1305,8 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
       font-size: 2.1rem;
       text-align: start;
       padding-left: 0;
-      letter-spacing: 0;
-      font-weight: bolder;
+      letter-spacing: 0.02em;
+      font-weight: 700;
       justify-content: flex-start;
       gap: 12px;
     }

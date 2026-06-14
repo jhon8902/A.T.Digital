@@ -167,13 +167,13 @@
   font-family: "Georgia", serif;
   font-size: 58px;
   display: inline-block;
-  text-transform: uppercase;
+  text-transform: none;
   font-weight: 600;
   color: #111;
   text-align: center;
   margin: 30px auto 0;
   padding: 0 0 12px;
-  border-bottom: 2px solid currentColor;
+  border-bottom: 2px solid rgba(230, 180, 16, 0.5);
   opacity: 0;
   transform: translateY(20px);
   animation: fadein 2s forwards;
@@ -281,16 +281,17 @@
   object-fit: cover;
 }
 
-/* Unificado: línea clara dorada en todos los títulos de bloque */
+/* Subtítulos de bloque — sin línea */
 .articulo-container.noticias .noticia-titulo {
   font-family: "Georgia", serif;
   font-size: 1.6rem;
   font-weight: 600;
-  text-transform: uppercase;
+  text-transform: none;
+  text-decoration: none;
   color: #08341f;
   border-bottom: none;
-  padding: 0 0 8px;
-  margin: 0 0 15px;
+  padding: 0;
+  margin: 0 0 12px;
   text-align: start;
 }
 
@@ -390,7 +391,7 @@
     text-align: left;
     display: block;
     margin: 24px 0 0;
-    border-bottom: 2.5px solid #e6b410;
+    border-bottom: 2px solid rgba(230, 180, 16, 0.5);
     padding-bottom: 0;
     line-height: 1.08;
     letter-spacing: 0.012em;
