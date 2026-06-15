@@ -436,16 +436,18 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     }
 
     .info-titulo {
+      display: block;
       justify-content: center;
       text-align: center;
-      gap: 16px;
+      gap: 0;
       font-size: clamp(2rem, 3.8vw, 2.5rem);
       letter-spacing: 0.02em;
     }
 
     .info-titulo::before,
     .info-titulo::after {
-      max-width: 3.5rem;
+      display: none !important;
+      content: none !important;
     }
 
     .info-descripcion {
@@ -475,21 +477,12 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
       text-align: center;
       padding: 0;
       justify-content: center;
-      gap: 12px;
+      gap: 0;
       text-transform: none;
       letter-spacing: 0.02em;
     }
 
-    .info-titulo::before {
-      flex: 0 0 4px;
-      width: 4px;
-      min-width: 4px;
-      max-width: 4px;
-      height: 1.15em;
-      background: linear-gradient(180deg, #d4a742 0%, #1a1a1a 100%);
-      border-radius: 999px;
-    }
-
+    .info-titulo::before,
     .info-titulo::after {
       display: none;
     }
@@ -1302,26 +1295,17 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     }
 
     .info-titulo {
+      display: block;
       font-size: 2.1rem;
       text-align: start;
       padding-left: 0;
       letter-spacing: 0.02em;
       font-weight: 700;
       justify-content: flex-start;
-      gap: 12px;
+      gap: 0;
     }
 
-    .info-titulo::before {
-      display: block;
-      flex: 0 0 4px;
-      width: 4px;
-      min-width: 4px;
-      max-width: 4px;
-      height: 1.05em;
-      background: linear-gradient(180deg, #d4a742 0%, #2a2a2a 100%);
-      border-radius: 999px;
-    }
-
+    .info-titulo::before,
     .info-titulo::after {
       display: none;
     }
