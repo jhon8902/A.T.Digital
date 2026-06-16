@@ -230,13 +230,14 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
 ---
 
 <section id="noticias" class="section-info w-full py-30" aria-labelledby="noticias-heading">
-  <div class="info-header">
-    <h1 id="noticias-heading" class="info-titulo anim-titulo">Actualidad del portal</h1>
+  <header class="info-header">
+    <p class="noticias-eyebrow">Noticias</p>
+    <h2 id="noticias-heading" class="info-titulo anim-titulo">Noticias automotrices</h2>
     <p class="noticias-home-lead">
       Lo más reciente que publicamos a diario: lanzamientos, fichas técnicas y
       cobertura del sector en un solo lugar.
     </p>
-  </div>
+  </header>
 
   <div class="container mx-auto px-2">
     <div class="news-grid">
@@ -362,6 +363,16 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     margin: 0 auto;
   }
 
+  .noticias-eyebrow {
+    font-family: var(--font-body, "Source Sans 3", sans-serif);
+    font-size: var(--home-eyebrow, 0.8125rem);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent, #e6b410);
+    margin: 0 0 0.45rem;
+  }
+
   .noticias-home-lead {
     font-family: var(--font-body, "Source Sans 3", sans-serif);
     font-size: var(--home-section-lead, 1.1rem);
@@ -385,7 +396,7 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     transform: translateY(0);
     transition: none;
     background: none;
-    margin: 0 0 0.65rem;
+    margin: 0 0 0.35rem;
     position: relative;
     display: flex;
     align-items: center;
@@ -991,7 +1002,7 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     }
 
     .news-card--featured .news-title {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       color: #1a1a1a;
       text-shadow: none;
     }
