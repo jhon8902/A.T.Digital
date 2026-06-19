@@ -4,6 +4,11 @@ import TestDriveCTA from "../../components/leads/TestDriveCTA.astro";
 import AutoMatchCTA from "../../components/leads/AutoMatchCTA.astro";
 import RelatedNotes from "./RelatedNotes.astro";
 import { getDealerForNote, type NoteDealerInfo } from "../../lib/leads";
+import {
+  getNewsCardTitle,
+  getNewsTitleHook,
+  usesCompactNewsCardTitle,
+} from "../../lib/editorial";
 export const prerender = false;
 
 // ✅ Definimos la interfaz del tipo de nota
@@ -403,12 +408,26 @@ const normalizedTitle = (note?.title || "")
   .toLowerCase()
   .normalize("NFD")
   .replace(/[\u0300-\u036f]/g, "");
+const useCompactTitle = usesCompactNewsCardTitle(note?.category);
+const displayTitle = useCompactTitle
+  ? getNewsCardTitle(note?.title || "")
+  : note?.title || "";
+const displayLead =
+  note?.subtitle?.trim() ||
+  (useCompactTitle ? getNewsTitleHook(note?.title || "") : null) ||
+  "";
 const useSmartImageFrame =
   normalizedTitle.includes("smart #5") || normalizedTitle.includes("smart 5");
 ---
 
 <Layout
   title={note?.title || "Nota no encontrada"}
+  description={
+    note?.subtitle ||
+    getNewsTitleHook(note?.title || "") ||
+    undefined
+  }
+  ogImage={coverImage || undefined}
   bodyClass={`nota-page nota-${categoryClass} ${categoryClass}`}
 >
   {
@@ -427,7 +446,7 @@ const useSmartImageFrame =
             )
           }
 
-          <h1>{note.title}</h1>
+          <h1>{displayTitle}</h1>
           <div class="nota-meta-line">
             <span class="nota-meta-item">
               <i class="fa-regular fa-user" aria-hidden="true"></i>
@@ -451,7 +470,7 @@ const useSmartImageFrame =
             </span>
           </div>
 
-          {note.subtitle && <p class="noticia-descripcion">{note.subtitle}</p>}
+          {displayLead && <p class="noticia-descripcion">{displayLead}</p>}
 
           {
             uniqueContentBlocks.length > 0 ? (

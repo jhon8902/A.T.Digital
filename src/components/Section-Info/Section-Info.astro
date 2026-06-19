@@ -1,5 +1,6 @@
 ---
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import { getNewsCardTitle } from "../../lib/editorial";
 // --- CARGA Y FILTRO DE NOTAS RECIENTES PARA PORTADA ---
 
 let dynamicNotes: any[] = [];
@@ -272,7 +273,7 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
                       {sourceScopeLabel(nota.source_scope)}
                     </span>
                   </div>
-                  <h3 class="news-title">{nota.caption}</h3>
+                  <h3 class="news-title">{getNewsCardTitle(nota.caption)}</h3>
                   <p class="news-date">
                     <i class="fa-regular fa-user" aria-hidden="true" />
                     <span class="meta-author">
