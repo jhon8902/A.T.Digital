@@ -6,4 +6,4 @@ Disallow: /admin/
 Disallow: /api/
 Disallow: /.netlify/
 
-Sitemap: https://autotechdigital.netlify.app/sitemap-index.xml
+Sitemap: https://autotechdigital.com/sitemap-index.xml

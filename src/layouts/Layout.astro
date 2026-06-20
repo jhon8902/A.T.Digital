@@ -27,7 +27,7 @@ const {
   showChrome = true,
 } = Astro.props;
 
-const siteUrl = "https://autotechdigital.netlify.app";
+const siteUrl = Astro.site?.href ?? "https://autotechdigital.com";
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).href;
 const ogImageUrl = ogImage.startsWith("http")
   ? ogImage

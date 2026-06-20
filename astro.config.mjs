@@ -3,7 +3,7 @@ import netlify from "@astrojs/netlify";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://autotechdigital.netlify.app",
+  site: "https://autotechdigital.com",
   output: "server",
   adapter: netlify(),
   integrations: [
