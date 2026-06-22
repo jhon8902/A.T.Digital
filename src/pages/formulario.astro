@@ -9,14 +9,22 @@ const cloudinaryFolder =
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Crear Nota</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Crear Nota — A.T. Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <main class="form-page">
       <section class="form-card">
         <header class="form-header">
+          <p class="form-eyebrow">A.T. Digital · Panel editorial</p>
           <h1>Crear Nota</h1>
-          <p>
+          <p class="form-lead">
             Completa los campos para publicar una nueva nota y ubicarla en la
             categoría correcta.
           </p>
@@ -275,61 +283,84 @@ const cloudinaryFolder =
           data-cloudinary-upload-preset={cloudinaryUploadPreset}
           data-cloudinary-folder={cloudinaryFolder}
         >
-          <div class="grid-2">
-            <label>
-              Editor
-              <input
-                type="text"
-                name="editor"
-                placeholder="Nombre del editor"
-                value="Jhon Aparicio"
+          <div class="form-section">
+            <h2 class="form-section-title">
+              <span class="section-num">01</span>
+              Información principal
+            </h2>
+
+            <div class="grid-2">
+              <label>
+                Editor
+                <input
+                  type="text"
+                  name="editor"
+                  placeholder="Nombre del editor"
+                  value="Jhon Aparicio"
+                  required
+                />
+              </label>
+
+              <label>
+                Título
+                <input type="text" name="title" placeholder="Título" required />
+              </label>
+
+              <label class="grid-span-2">
+                Subtítulo
+                <input type="text" name="subtitle" placeholder="Subtítulo" />
+              </label>
+
+              <label>
+                Categoría
+                <select id="categoryField" name="category" required>
+                  <option value="electricos">Eléctricos</option>
+                  <option value="hibridos">Híbridos</option>
+                  <option value="deportes">Deportes</option>
+                  <option value="noticias">Noticias</option>
+                  <option value="pruebas">Pruebas</option>
+                  <option value="lanzamientos">Lanzamientos</option>
+                  <option value="automatch">AutoMatch</option>
+                </select>
+              </label>
+
+              <label>
+                Ámbito
+                <select class="scope-select" name="source_scope" required>
+                  <option value="nacional" selected>Nacional</option>
+                  <option value="internacional">Internacional</option>
+                </select>
+              </label>
+            </div>
+
+            <p id="automatchModeHint" class="storage-tip tip-highlight" hidden>
+              Modo AutoMatch: ficha para carrusel y buscador. Completa los datos
+              de catálogo (tipo, uso, precio) para que el modelo aparezca en
+              /automatch-find con match correcto.
+            </p>
+          </div>
+
+          <div class="form-section">
+            <h2 class="form-section-title">
+              <span class="section-num">02</span>
+              Contenido editorial
+            </h2>
+
+            <label id="contentFieldGroup">
+              Contenido
+              <textarea
+                name="content"
+                placeholder="Escribe el cuerpo de la nota. Separa cada sección con una línea en blanco."
                 required
-              />
-            </label>
-
-            <label>
-              Título
-              <input type="text" name="title" placeholder="Título" required />
-            </label>
-
-            <label>
-              Subtítulo
-              <input type="text" name="subtitle" placeholder="Subtítulo" />
+              ></textarea>
             </label>
           </div>
 
-          <label>
-            Categoría
-            <select id="categoryField" name="category" required>
-              <option value="electricos">Eléctricos</option>
-              <option value="hibridos">Híbridos</option>
-              <option value="deportes">Deportes</option>
-              <option value="noticias">Noticias</option>
-              <option value="pruebas">Pruebas</option>
-              <option value="lanzamientos">Lanzamientos</option>
-              <option value="automatch">AutoMatch</option>
-            </select>
-          </label>
-
-          <p id="automatchModeHint" class="storage-tip" hidden>
-            Modo AutoMatch: ficha para carrusel y buscador. Completa los datos
-            de catálogo (tipo, uso, precio) para que el modelo aparezca en
-            /automatch-find con match correcto.
-          </p>
-
-          <label>
-            Ámbito
-            <select class="scope-select" name="source_scope" required>
-              <option value="nacional" selected>Nacional</option>
-              <option value="internacional">Internacional</option>
-            </select>
-          </label>
-
-          <label id="contentFieldGroup">
-            Contenido
-            <textarea name="content" placeholder="Contenido de la nota" required
-            ></textarea>
-          </label>
+          <div class="form-section">
+            <h2 class="form-section-title">
+              <span class="section-num">03</span>
+              Medios e imágenes
+            </h2>
 
           <fieldset class="group-box">
             <legend>Imágenes (URLs)</legend>
@@ -346,8 +377,23 @@ const cloudinaryFolder =
               <input type="text" name="image6" placeholder="URL Imagen 6" />
             </div>
             <div class="cloudinary-uploader">
+              <label for="cloudinaryStartSlot">
+                Colocar fotos en orden desde
+                <select id="cloudinaryStartSlot">
+                  <option value="1" selected>Imagen 1 (portada)</option>
+                  <option value="2">Imagen 2</option>
+                  <option value="3">Imagen 3</option>
+                  <option value="4">Imagen 4</option>
+                  <option value="5">Imagen 5</option>
+                  <option value="6">Imagen 6</option>
+                </select>
+              </label>
+              <label class="cloudinary-checkbox">
+                <input type="checkbox" id="cloudinaryFillEmptyOnly" />
+                Solo rellenar campos vacíos (no sobrescribir URLs existentes)
+              </label>
               <label for="cloudinaryFiles"
-                >Subir imágenes desde tu computador</label
+                >Subir imágenes desde tu computador (hasta 6)</label
               >
               <input
                 type="file"
@@ -368,12 +414,12 @@ const cloudinaryFolder =
                 siguen funcionando y las nuevas se guardan por URL externa.
               </p>
               <p class="storage-tip cloudinary-tip">
-                Si el orden importa, acomoda la lista antes de subir. La
-                posición 1 llenará image1, la 2 llenará image2, y así
-                sucesivamente.
+                Selecciona hasta 6 fotos. La primera irá a la imagen elegida arriba,
+                la segunda a la siguiente, y así sucesivamente (1 → 2 → 3 → 4 → 5 → 6).
               </p>
             </div>
           </fieldset>
+          </div>
 
           <fieldset id="automatchCatalogGroup" class="group-box automatch-catalog-box" hidden>
             <legend>Datos para el buscador AutoMatch</legend>
@@ -699,55 +745,153 @@ const cloudinaryFolder =
             </div>
           </fieldset>
 
-          <button type="submit" id="submitNoteBtn" class="submit-editorial">
-            Guardar Nota
-          </button>
+          <div class="form-section">
+            <h2 class="form-section-title">
+              <span class="section-num">04</span>
+              Publicación
+            </h2>
+
+            <div class="grid-2">
+              <label>
+                Cuándo publicar
+                <select id="publishMode" name="publish_mode">
+                  <option value="now" selected>Publicar ahora</option>
+                  <option value="schedule">Programar para más tarde</option>
+                </select>
+              </label>
+
+              <label id="scheduledAtGroup" hidden>
+                Fecha y hora de publicación
+                <input
+                  type="datetime-local"
+                  id="scheduledAt"
+                  name="scheduled_at"
+                />
+              </label>
+            </div>
+
+            <p id="scheduleStatus" class="storage-tip schedule-status" hidden></p>
+            <p class="storage-tip">
+              Las notas programadas no aparecen en el sitio hasta la fecha
+              indicada. Puedes editarlas y cambiar la programación en cualquier
+              momento.
+            </p>
+          </div>
+
+          <div class="form-submit-bar">
+            <button type="submit" id="submitNoteBtn" class="submit-editorial">
+              Guardar Nota
+            </button>
+          </div>
         </form>
 
         <p id="msg" class="msg"></p>
       </section>
 
       <style>
+        :root {
+          --color-brand: #08341f;
+          --color-brand-hover: #0a4a2b;
+          --color-accent: #e6b410;
+          --color-surface: #faf5f0;
+          --color-border: #d8e5dc;
+          --font-body: "Source Sans 3", "Source Sans Pro", sans-serif;
+          --font-editorial: Georgia, "Times New Roman", serif;
+          --radius-card: 16px;
+          --shadow-card: 0 8px 32px rgba(8, 52, 31, 0.1);
+          /* Escala tipográfica — legibilidad cómoda */
+          --text-body: 1.125rem;
+          --text-label: 1.1rem;
+          --text-field: 1.125rem;
+          --text-secondary: 1.05rem;
+          --text-small: 1rem;
+          --text-section: 1.55rem;
+          --text-title: clamp(2.35rem, 5vw, 3.1rem);
+          --text-lead: 1.2rem;
+          --text-btn: 1.15rem;
+        }
+
         * {
           box-sizing: border-box;
         }
 
         body {
           margin: 0;
-          font-family: Georgia, "Times New Roman", serif;
-          background: #f7f5f1;
+          font-family: var(--font-body);
+          background:
+            radial-gradient(
+              circle at 100% 0%,
+              rgba(230, 180, 16, 0.14),
+              transparent 42%
+            ),
+            radial-gradient(
+              circle at 0% 100%,
+              rgba(8, 52, 31, 0.08),
+              transparent 38%
+            ),
+            var(--color-surface);
           color: #1f2937;
+          font-size: var(--text-body);
+          line-height: 1.65;
+          min-height: 100vh;
         }
 
         .form-page {
           width: 100%;
-          max-width: 1100px;
-          margin: 32px auto;
-          padding: 0 16px;
+          max-width: 960px;
+          margin: 40px auto 56px;
+          padding: 0 20px;
         }
 
         .form-card {
+          position: relative;
           background: #ffffff;
-          border-radius: 16px;
-          border: 1px solid #e3ddd4;
-          padding: 26px;
-          box-shadow:
-            0 14px 34px rgba(15, 23, 42, 0.08),
-            0 1px 0 rgba(255, 255, 255, 0.85) inset;
+          border-radius: var(--radius-card);
+          border: 1px solid var(--color-border);
+          padding: 32px 36px 36px;
+          box-shadow: var(--shadow-card);
+          overflow: hidden;
+        }
+
+        .form-card::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: linear-gradient(
+            90deg,
+            var(--color-brand) 0%,
+            var(--color-brand) 72%,
+            var(--color-accent) 72%,
+            var(--color-accent) 100%
+          );
+        }
+
+        .form-eyebrow {
+          margin: 0 0 8px;
+          font-size: var(--text-small);
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: var(--color-brand);
         }
 
         .form-header h1 {
           margin: 0;
-          font-size: 38px;
-          color: #0f172a;
-          letter-spacing: -0.5px;
+          font-family: var(--font-editorial);
+          font-size: var(--text-title);
+          color: var(--color-brand);
+          letter-spacing: -0.02em;
+          line-height: 1.15;
         }
 
-        .form-header p {
-          margin: 10px 0 20px;
-          color: #475569;
-          font-size: 15px;
-          max-width: 700px;
+        .form-lead {
+          margin: 12px 0 20px;
+          color: #5a6472;
+          font-size: var(--text-lead);
+          max-width: 640px;
         }
 
         .header-tags {
@@ -759,28 +903,71 @@ const cloudinaryFolder =
         .header-tags span {
           display: inline-flex;
           align-items: center;
-          height: 28px;
-          padding: 0 12px;
+          height: 36px;
+          padding: 0 16px;
           border-radius: 999px;
-          font-size: 12px;
+          font-size: var(--text-small);
           font-weight: 700;
-          color: #374151;
-          background: #f3f0ea;
-          border: 1px solid #e4ddd3;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          color: var(--color-brand);
+          background: rgba(8, 52, 31, 0.06);
+          border: 1px solid rgba(8, 52, 31, 0.14);
+        }
+
+        .form-section {
+          padding: 22px 0 8px;
+          border-top: 1px solid #e8efe9;
+        }
+
+        .form-section:first-of-type {
+          border-top: none;
+          padding-top: 8px;
+        }
+
+        .form-section-title {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin: 0 0 18px;
+          font-family: var(--font-editorial);
+          font-size: var(--text-section);
+          font-weight: 700;
+          color: var(--color-brand);
+        }
+
+        .section-num {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 38px;
+          height: 38px;
+          border-radius: 8px;
+          font-family: var(--font-body);
+          font-size: var(--text-small);
+          font-weight: 700;
+          color: #fff;
+          background: var(--color-brand);
+          flex-shrink: 0;
         }
 
         .note-form {
           display: flex;
           flex-direction: column;
-          gap: 16px;
+          gap: 4px;
+          margin-top: 24px;
         }
 
         .edit-toolbar {
-          margin: 0 0 16px;
-          padding: 14px;
-          border: 1px solid #cbd5e1;
-          border-radius: 10px;
-          background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+          margin: 24px 0 0;
+          padding: 18px;
+          border: 1px solid rgba(8, 52, 31, 0.18);
+          border-radius: 12px;
+          background: linear-gradient(
+            135deg,
+            rgba(8, 52, 31, 0.04) 0%,
+            rgba(250, 245, 240, 0.9) 100%
+          );
         }
 
         .edit-toolbar-grid {
@@ -797,23 +984,23 @@ const cloudinaryFolder =
         }
 
         .edit-mode-label {
-          margin: 10px 0 0;
-          font-size: 13px;
-          color: #1e3a8a;
+          margin: 12px 0 0;
+          font-size: var(--text-secondary);
+          color: var(--color-brand);
           font-weight: 700;
         }
 
         .grid-2 {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 16px;
+          gap: 16px 20px;
         }
 
         label {
           display: block;
-          font-weight: 700;
-          color: #0f172a;
-          font-size: 14px;
+          font-weight: 600;
+          color: #1a2e24;
+          font-size: var(--text-label);
         }
 
         input,
@@ -821,36 +1008,54 @@ const cloudinaryFolder =
         select {
           width: 100%;
           margin-top: 8px;
-          padding: 12px 14px;
-          border: 1px solid #d8d2c8;
-          border-radius: 8px;
-          font-size: 15px;
-          background: #ffffff;
+          padding: 14px 16px;
+          border: 1px solid #cfd8d2;
+          border-radius: 10px;
+          font-size: var(--text-field);
+          font-family: var(--font-body);
+          background: #fff;
+          color: #1f2937;
           transition:
             border-color 0.2s ease,
-            box-shadow 0.2s ease,
-            transform 0.1s ease;
+            box-shadow 0.2s ease;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+          color: #94a3a8;
         }
 
         textarea {
-          min-height: 190px;
+          min-height: 240px;
           resize: vertical;
+          line-height: 1.7;
+        }
+
+        input:hover,
+        textarea:hover,
+        select:hover {
+          border-color: #9cb3a6;
         }
 
         input:focus,
         textarea:focus,
         select:focus {
           outline: none;
-          border-color: #6b7280;
-          box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.12);
-          transform: translateY(-1px);
+          border-color: var(--color-brand);
+          box-shadow: 0 0 0 3px rgba(8, 52, 31, 0.12);
+        }
+
+        select {
+          appearance: none;
+          padding-right: 40px;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2308341f' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 14px center;
+          cursor: pointer;
         }
 
         .scope-select {
-          appearance: none;
-          background: #fbfaf7;
-          border-color: #d8d2c8;
-          color: #111827;
+          background-color: #f8fbf9;
         }
 
         .scope-select option {
@@ -859,122 +1064,166 @@ const cloudinaryFolder =
         }
 
         .group-box {
-          border: 1px solid #d7e3f5;
-          border-radius: 10px;
-          padding: 14px;
-          margin: 0;
+          border: 1px solid var(--color-border);
+          border-radius: 12px;
+          padding: 20px 20px 16px;
+          margin: 16px 0 0;
           background: linear-gradient(
             180deg,
-            rgba(255, 255, 255, 0.92) 0%,
-            rgba(248, 250, 252, 0.92) 100%
+            rgba(250, 245, 240, 0.5) 0%,
+            #ffffff 100%
           );
         }
 
         .group-box legend {
-          padding: 0 8px;
+          padding: 0 10px;
           font-weight: 700;
-          color: #1e3a8a;
-          font-size: 14px;
+          color: var(--color-brand);
+          font-size: var(--text-secondary);
+          font-family: var(--font-editorial);
         }
 
         .automatch-catalog-box {
-          border-color: rgba(8, 52, 31, 0.25);
+          border-color: rgba(8, 52, 31, 0.28);
           background: linear-gradient(
             180deg,
-            rgba(240, 253, 245, 0.95) 0%,
-            rgba(255, 255, 255, 0.95) 100%
+            rgba(232, 248, 238, 0.7) 0%,
+            #ffffff 100%
           );
+          box-shadow: inset 3px 0 0 var(--color-brand);
         }
 
         .automatch-catalog-box legend {
-          color: #08341f;
+          color: var(--color-brand);
         }
 
         .grid-span-2 {
           grid-column: 1 / -1;
         }
 
+        .form-section--compact {
+          padding-top: 12px;
+        }
+
+        .form-section--compact .group-box:first-of-type {
+          margin-top: 0;
+        }
+
+        .form-submit-bar {
+          margin-top: 28px;
+          padding-top: 24px;
+          border-top: 1px solid #e8efe9;
+        }
+
         button {
           width: 100%;
-          margin-top: 4px;
-          padding: 14px 18px;
-          border: 1px solid #1f2937;
-          border-radius: 8px;
-          background: #1f2937;
+          margin-top: 0;
+          padding: 16px 22px;
+          border: none;
+          border-radius: 999px;
+          background: var(--color-brand);
           color: #ffffff;
-          font-size: 16px;
+          font-size: var(--text-btn);
+          font-family: var(--font-body);
           font-weight: 700;
           cursor: pointer;
           transition:
+            background 0.2s ease,
             transform 0.15s ease,
-            box-shadow 0.2s ease,
-            filter 0.2s ease;
-          box-shadow: 0 8px 16px rgba(31, 41, 55, 0.18);
+            box-shadow 0.2s ease;
+          box-shadow: 0 6px 20px rgba(8, 52, 31, 0.22);
         }
 
         button:hover {
+          background: var(--color-brand-hover);
           transform: translateY(-1px);
-          filter: brightness(1.05);
-          box-shadow: 0 10px 20px rgba(31, 41, 55, 0.24);
+          box-shadow: 0 10px 24px rgba(8, 52, 31, 0.28);
+        }
+
+        button:active {
+          transform: translateY(0);
         }
 
         .submit-editorial {
-          letter-spacing: 0.3px;
-          text-transform: none;
+          letter-spacing: 0.02em;
         }
 
         .btn-secondary,
         .btn-light,
         .btn-danger {
+          width: auto;
           margin-top: 0;
-          padding: 12px 14px;
-          font-size: 14px;
+          padding: 13px 18px;
+          font-size: var(--text-secondary);
+          border-radius: 10px;
           box-shadow: none;
         }
 
         .btn-secondary {
-          background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+          background: var(--color-brand);
+        }
+
+        .btn-secondary:hover {
+          background: var(--color-brand-hover);
         }
 
         .btn-light {
-          background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
-          color: #0f172a;
+          background: #eef2ef;
+          color: var(--color-brand);
+          border: 1px solid var(--color-border);
+        }
+
+        .btn-light:hover {
+          background: #e4ebe6;
         }
 
         .btn-danger {
-          background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-          color: #fff;
+          background: #c53030;
+        }
+
+        .btn-danger:hover {
+          background: #9b2c2c;
         }
 
         .msg {
-          margin-top: 14px;
+          margin-top: 16px;
           min-height: 22px;
-          font-weight: 700;
-          background: rgba(255, 255, 255, 0.7);
-          border: 1px dashed #c7d2fe;
-          border-radius: 8px;
-          padding: 10px 12px;
+          font-weight: 600;
+          font-size: var(--text-secondary);
+          background: rgba(250, 245, 240, 0.8);
+          border: 1px solid var(--color-border);
+          border-radius: 10px;
+          padding: 14px 16px;
         }
 
         .help-panel {
-          margin-bottom: 20px;
-          border: 1px solid #c7d2fe;
-          border-radius: 10px;
-          background: linear-gradient(135deg, #f0f4ff 0%, #fdf4ff 100%);
+          margin: 24px 0 0;
+          border: 1px solid var(--color-border);
+          border-radius: 12px;
+          background: linear-gradient(
+            135deg,
+            rgba(8, 52, 31, 0.03) 0%,
+            rgba(230, 180, 16, 0.06) 100%
+          );
           overflow: hidden;
         }
 
         .help-toggle {
-          padding: 12px 16px;
+          padding: 16px 20px;
           font-weight: 700;
-          font-size: 14px;
-          color: #1e3a8a;
+          font-size: var(--text-secondary);
+          color: var(--color-brand);
           cursor: pointer;
           list-style: none;
           display: flex;
           align-items: center;
           gap: 8px;
           user-select: none;
+          transition: background 0.15s ease;
+        }
+
+        .help-toggle:hover {
+          background: rgba(8, 52, 31, 0.04);
         }
 
         .help-toggle::marker,
@@ -985,7 +1234,8 @@ const cloudinaryFolder =
         .help-toggle::after {
           content: "▼";
           margin-left: auto;
-          font-size: 11px;
+          font-size: 12px;
+          opacity: 0.6;
           transition: transform 0.2s;
         }
 
@@ -994,8 +1244,9 @@ const cloudinaryFolder =
         }
 
         .help-body {
-          padding: 16px;
-          border-top: 1px solid #c7d2fe;
+          padding: 18px;
+          border-top: 1px solid var(--color-border);
+          background: #fff;
         }
 
         .help-grid {
@@ -1005,35 +1256,35 @@ const cloudinaryFolder =
         }
 
         .help-block {
-          background: #ffffff;
-          border: 1px solid #e0e7ff;
-          border-radius: 8px;
-          padding: 12px 14px;
+          background: #fafcfb;
+          border: 1px solid var(--color-border);
+          border-radius: 10px;
+          padding: 14px 16px;
         }
 
         .help-block h3 {
           margin: 0 0 8px;
-          font-size: 13px;
+          font-size: var(--text-small);
           font-weight: 700;
-          color: #4338ca;
+          color: var(--color-brand);
           text-transform: uppercase;
-          letter-spacing: 0.5px;
+          letter-spacing: 0.08em;
         }
 
         .help-block p {
           margin: 4px 0;
-          font-size: 13px;
+          font-size: var(--text-secondary);
           color: #374151;
-          line-height: 1.5;
+          line-height: 1.6;
         }
 
         .help-block code {
           display: inline-block;
-          background: #ede9fe;
-          color: #5b21b6;
-          border-radius: 4px;
-          padding: 2px 7px;
-          font-size: 12px;
+          background: rgba(8, 52, 31, 0.08);
+          color: var(--color-brand);
+          border-radius: 5px;
+          padding: 3px 9px;
+          font-size: var(--text-small);
           font-family: "Courier New", monospace;
           margin-bottom: 6px;
         }
@@ -1043,28 +1294,28 @@ const cloudinaryFolder =
         }
 
         .help-example {
-          font-size: 12px !important;
+          font-size: var(--text-small) !important;
           color: #6b7280 !important;
         }
 
         .help-table {
           width: 100%;
           border-collapse: collapse;
-          font-size: 13px;
+          font-size: var(--text-secondary);
           margin-top: 6px;
         }
 
         .help-table th {
-          background: #e0e7ff;
-          color: #1e3a8a;
-          padding: 6px 10px;
+          background: rgba(8, 52, 31, 0.08);
+          color: var(--color-brand);
+          padding: 10px 14px;
           text-align: left;
           font-weight: 700;
         }
 
         .help-table td {
-          padding: 5px 10px;
-          border-bottom: 1px solid #e5e7eb;
+          padding: 9px 14px;
+          border-bottom: 1px solid #e8efe9;
           color: #374151;
           vertical-align: top;
         }
@@ -1075,18 +1326,18 @@ const cloudinaryFolder =
 
         .help-template {
           margin-top: 10px;
-          background: #f8fafc;
-          border-left: 3px solid #6366f1;
-          border-radius: 0 6px 6px 0;
-          padding: 12px 14px;
-          font-size: 12.5px;
+          background: #f8fbf9;
+          border-left: 3px solid var(--color-accent);
+          border-radius: 0 8px 8px 0;
+          padding: 14px 16px;
+          font-size: var(--text-secondary);
           color: #374151;
-          line-height: 1.6;
+          line-height: 1.7;
         }
 
         .help-template p {
           margin: 0 0 10px;
-          font-size: 12.5px !important;
+          font-size: var(--text-secondary) !important;
         }
 
         .help-template p:last-child {
@@ -1095,32 +1346,65 @@ const cloudinaryFolder =
 
         .help-tip {
           margin-top: 8px !important;
-          font-size: 12px !important;
+          font-size: var(--text-secondary) !important;
           color: #6b7280 !important;
         }
 
         .help-checklist ul {
           margin: 6px 0 0;
           padding-left: 20px;
-          font-size: 13px;
+          font-size: var(--text-secondary);
           color: #374151;
-          line-height: 1.8;
+          line-height: 1.9;
         }
 
         .storage-tip {
-          margin: -4px 0 4px;
-          font-size: 13px;
-          color: #475569;
+          margin: 0 0 12px;
+          font-size: var(--text-secondary);
+          color: #5a6472;
+          line-height: 1.6;
+        }
+
+        .tip-highlight {
+          margin-top: 14px;
+          padding: 12px 14px;
+          border-radius: 10px;
+          background: rgba(230, 180, 16, 0.12);
+          border: 1px solid rgba(230, 180, 16, 0.35);
+          color: #4a3f10;
+        }
+
+        .schedule-status {
+          margin-top: 10px;
+          padding: 12px 14px;
+          border-radius: 10px;
+          background: rgba(8, 52, 31, 0.06);
+          border: 1px solid rgba(8, 52, 31, 0.16);
+          color: var(--color-brand);
+          font-weight: 600;
+        }
+
+        .cloudinary-checkbox {
+          display: flex !important;
+          align-items: center;
+          gap: 10px;
+          font-weight: 500;
+          margin: 0;
+        }
+
+        .cloudinary-checkbox input {
+          width: auto;
+          margin: 0;
         }
 
         .cloudinary-uploader {
-          margin-top: 12px;
-          padding: 12px;
-          border: 1px dashed #94a3b8;
-          border-radius: 8px;
-          background: #f8fafc;
+          margin-top: 14px;
+          padding: 16px;
+          border: 2px dashed #b8cfc0;
+          border-radius: 12px;
+          background: #f8fbf9;
           display: grid;
-          gap: 10px;
+          gap: 12px;
         }
 
         .cloudinary-uploader label {
@@ -1147,27 +1431,27 @@ const cloudinaryFolder =
           gap: 10px;
           align-items: center;
           padding: 10px 12px;
-          border: 1px solid #cbd5e1;
-          border-radius: 8px;
+          border: 1px solid var(--color-border);
+          border-radius: 10px;
           background: #ffffff;
         }
 
         .cloudinary-queue-position {
-          width: 28px;
-          height: 28px;
+          width: 32px;
+          height: 32px;
           display: inline-flex;
           align-items: center;
           justify-content: center;
           border-radius: 999px;
-          background: #dbeafe;
-          color: #1d4ed8;
-          font-size: 12px;
+          background: rgba(8, 52, 31, 0.1);
+          color: var(--color-brand);
+          font-size: var(--text-small);
           font-weight: 700;
         }
 
         .cloudinary-queue-name {
           min-width: 0;
-          font-size: 13px;
+          font-size: var(--text-secondary);
           color: #334155;
           white-space: nowrap;
           overflow: hidden;
@@ -1181,12 +1465,12 @@ const cloudinaryFolder =
 
         .cloudinary-queue-btn {
           width: auto;
-          min-width: 34px;
-          padding: 8px 10px;
+          min-width: 38px;
+          padding: 10px 12px;
           margin-top: 0;
           border-radius: 8px;
           box-shadow: none;
-          font-size: 13px;
+          font-size: var(--text-small);
           line-height: 1;
         }
 
@@ -1208,15 +1492,16 @@ const cloudinaryFolder =
           }
 
           .form-page {
-            margin: 18px auto;
+            margin: 20px auto 40px;
+            padding: 0 14px;
           }
 
           .form-card {
-            padding: 16px;
+            padding: 22px 18px 24px;
           }
 
           .form-header h1 {
-            font-size: 30px;
+            font-size: 2.15rem;
           }
 
           .grid-2 {
@@ -1229,6 +1514,12 @@ const cloudinaryFolder =
 
           .edit-actions {
             flex-direction: column;
+          }
+
+          .btn-secondary,
+          .btn-light,
+          .btn-danger {
+            width: 100%;
           }
         }
       </style>

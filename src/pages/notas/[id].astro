@@ -21,6 +21,7 @@ interface Note {
   category?: string;
   content: string;
   created_at?: string;
+  scheduled_at?: string | null;
   image1?: string;
   image2?: string;
   image3?: string;
@@ -94,6 +95,14 @@ async function fetchNoteWithFallback(noteId: string | undefined): Promise<Note |
 
 try {
   note = await fetchNoteWithFallback(id);
+
+  if (
+    note &&
+    note.scheduled_at &&
+    new Date(note.scheduled_at).getTime() > Date.now()
+  ) {
+    note = null;
+  }
 } catch (err) {
   console.error("❌ Error al obtener nota:", err);
 }

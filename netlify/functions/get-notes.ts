@@ -1,6 +1,7 @@
 import pkg from "pg";
 import type { Handler } from "@netlify/functions";
 import "dotenv/config";
+import { isEventAuthorizedAdmin } from "./auth.js";
 
 const { Pool } = pkg;
 
@@ -79,6 +80,16 @@ function isMissingSourceScopeColumnError(error: any): boolean {
   );
 }
 
+function isNoteScheduledForFuture(scheduledAt: unknown): boolean {
+  if (!scheduledAt) return false;
+  const date = new Date(String(scheduledAt));
+  if (Number.isNaN(date.getTime())) return false;
+  return date.getTime() > Date.now();
+}
+
+const PUBLISHED_NOTES_SQL = `(scheduled_at IS NULL OR scheduled_at <= NOW())`;
+const NOTES_PUBLIC_ORDER_SQL = `COALESCE(scheduled_at, created_at) DESC`;
+
 function isMissingEditorColumnError(error: any): boolean {
   if (!error) return false;
   return (
@@ -127,7 +138,16 @@ export const handler: Handler = async (event) => {
       note.category = normalizeCategory(note.category);
       note.source_scope = normalizeSourceScope(note.source_scope);
       note.editor = normalizeEditor(note.editor);
-      console.log("🧠 Nota encontrada:", note);
+
+      if (isNoteScheduledForFuture(note.scheduled_at) && !isEventAuthorizedAdmin(event)) {
+        return {
+          statusCode: 404,
+          headers: { ...headers, "Content-Type": "application/json" },
+          body: JSON.stringify({ error: "Nota no encontrada" }),
+        };
+      }
+
+      console.log("🧠 Nota encontrada:", note.id);
 
       return {
         statusCode: 200,
@@ -137,6 +157,9 @@ export const handler: Handler = async (event) => {
     }
 
     // 🟢 Si no hay ID → devolver todas las notas
+    const isAdmin = isEventAuthorizedAdmin(event);
+    const visibilityFilter = isAdmin ? "" : `WHERE ${PUBLISHED_NOTES_SQL}`;
+
     let result;
     try {
       result = await getPool().query(`
@@ -151,9 +174,10 @@ export const handler: Handler = async (event) => {
           spec_aceleracion_0_100, spec_seguridad, spec_equipamiento,
           spec_pros, spec_contras, spec_competidores,
           spec_traccion, spec_precio_cop,
-          created_at
+          created_at, scheduled_at
         FROM notes
-        ORDER BY created_at DESC
+        ${visibilityFilter}
+        ORDER BY ${NOTES_PUBLIC_ORDER_SQL}
       `);
     } catch (error: any) {
       if (!isMissingSourceScopeColumnError(error) && !isMissingEditorColumnError(error)) throw error;

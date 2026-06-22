@@ -1,5 +1,8 @@
 import type { APIRoute } from "astro";
 import pkg from "pg";
+import {
+  normalizeScheduledAtInput,
+} from "../../lib/note-scheduling";
 
 const { Pool } = pkg;
 
@@ -197,6 +200,7 @@ const updatableColumns = [
   "spec_competidores",
   "spec_traccion",
   "spec_precio_cop",
+  "scheduled_at",
 ] as const;
 
 async function handleUpdate(request: Request) {
@@ -285,6 +289,26 @@ async function handleUpdate(request: Request) {
         updates[field] = optionalMedia((body as any)[field]);
       }
     });
+
+    if (hasOwn(body, "scheduled_at")) {
+      const rawScheduled = (body as any).scheduled_at;
+      if (rawScheduled === null || rawScheduled === "") {
+        updates.scheduled_at = null;
+      } else {
+        const normalized = normalizeScheduledAtInput(rawScheduled);
+        if (!normalized) {
+          return new Response(
+            JSON.stringify({ error: "Fecha de publicacion invalida" }),
+            { status: 400, headers }
+          );
+        }
+        updates.scheduled_at = normalized;
+      }
+    }
+
+    if (hasOwn(body, "publish_now") && body.publish_now === true) {
+      updates.scheduled_at = null;
+    }
 
     if (Object.keys(updates).length === 0) {
       return new Response(

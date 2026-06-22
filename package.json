@@ -13,6 +13,7 @@
     "astro": "astro",
     "dev:netlify": "netlify dev --port=8888",
     "db:schema": "node ./scripts/apply-db-schema.cjs",
+    "db:migrate-scheduled-at": "node ./scripts/migrate-scheduled-at.cjs",
     "db:seed-dealers": "node ./scripts/seed-dealers.cjs"
   },
   "dependencies": {

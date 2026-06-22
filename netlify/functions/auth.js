@@ -25,6 +25,16 @@ function isValidAuthorizationHeader(value) {
   }
 }
 
+export function isEventAuthorizedAdmin(event) {
+  return isValidAuthorizationHeader(
+    event?.headers?.authorization || event?.headers?.Authorization
+  );
+}
+
+export function isNodeAuthorizedAdmin(req) {
+  return isValidAuthorizationHeader(req?.headers?.authorization);
+}
+
 export function requireEventBasicAuth(event) {
   if (!isConfigured()) {
     return {

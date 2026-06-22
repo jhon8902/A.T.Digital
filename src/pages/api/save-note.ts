@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import pkg from "pg";
+import { normalizeScheduledAtInput } from "../../lib/note-scheduling";
 
 const { Pool } = pkg;
 
@@ -50,6 +51,7 @@ const KNOWN_NOTES_COLUMNS = new Set([
   "spec_precio_cop",
   "created_at",
   "updated_at",
+  "scheduled_at",
 ]);
 
 const DB_CONNECTION_TIMEOUT_MS = Number(
@@ -193,6 +195,16 @@ function isMissingImage6ColumnError(error: any): boolean {
   );
 }
 
+function isMissingScheduledAtColumnError(error: any): boolean {
+  if (!error) return false;
+  return (
+    error.code === "42703" &&
+    /scheduled_at|column\s+"?scheduled_at"?\s+does\s+not\s+exist/i.test(
+      String(error.message || "")
+    )
+  );
+}
+
 function isMissingVideoColumnsError(error: any): boolean {
   if (!error) return false;
   return (
@@ -265,12 +277,14 @@ async function insertNote(
   spec_competidores?: string;
   spec_traccion?: string;
   spec_precio_cop?: string;
+  scheduled_at?: string | null;
 },
   options: {
     includeImage6: boolean;
     includeVideos: boolean;
     includeEditor: boolean;
     includeSourceScope: boolean;
+    includeScheduledAt: boolean;
   }
 ) {
   const columns = [
@@ -374,6 +388,11 @@ async function insertNote(
     }
   });
 
+  if (options.includeScheduledAt) {
+    columns.push("scheduled_at");
+    values.push(payload.scheduled_at ?? null);
+  }
+
   const placeholders = values.map((_, index) => `$${index + 1}`).join(", ");
 
   return getPool().query(
@@ -441,6 +460,7 @@ export const POST: APIRoute = async ({ request }) => {
       spec_competidores,
       spec_traccion,
       spec_precio_cop,
+      scheduled_at,
     } = body;
 
     const normalizedTitle = normalizeTextField(title);
@@ -519,12 +539,14 @@ export const POST: APIRoute = async ({ request }) => {
       spec_competidores: normalizeTextField(spec_competidores),
       spec_traccion: normalizeTextField(spec_traccion),
       spec_precio_cop: normalizeTextField(spec_precio_cop),
+      scheduled_at: normalizeScheduledAtInput(scheduled_at),
     };
 
     const columns = await getNotesColumns();
     const supportsEditor = columns.has("editor");
     const supportsSourceScope = columns.has("source_scope");
     const supportsImage6 = columns.has("image6");
+    const supportsScheduledAt = columns.has("scheduled_at");
     const supportsVideos = [
       "video1",
       "video2",
@@ -541,6 +563,7 @@ export const POST: APIRoute = async ({ request }) => {
         includeVideos: supportsVideos,
         includeEditor: supportsEditor,
         includeSourceScope: supportsSourceScope,
+        includeScheduledAt: supportsScheduledAt,
       });
     } catch (insertError: any) {
       if (isCategoryConstraintError(insertError)) {
@@ -558,6 +581,7 @@ export const POST: APIRoute = async ({ request }) => {
           includeVideos: supportsVideos,
           includeEditor: false,
           includeSourceScope: supportsSourceScope,
+          includeScheduledAt: supportsScheduledAt,
         });
       } else if (isMissingSourceScopeColumnError(insertError)) {
         result = await insertNote(payload, {
@@ -565,6 +589,7 @@ export const POST: APIRoute = async ({ request }) => {
           includeVideos: supportsVideos,
           includeEditor: supportsEditor,
           includeSourceScope: false,
+          includeScheduledAt: supportsScheduledAt,
         });
       } else if (isMissingVideoColumnsError(insertError)) {
         result = await insertNote(payload, {
@@ -572,6 +597,7 @@ export const POST: APIRoute = async ({ request }) => {
           includeVideos: false,
           includeEditor: supportsEditor,
           includeSourceScope: supportsSourceScope,
+          includeScheduledAt: supportsScheduledAt,
         });
       } else if (isMissingImage6ColumnError(insertError)) {
         result = await insertNote(payload, {
@@ -579,7 +605,17 @@ export const POST: APIRoute = async ({ request }) => {
           includeVideos: supportsVideos,
           includeEditor: supportsEditor,
           includeSourceScope: supportsSourceScope,
+          includeScheduledAt: supportsScheduledAt,
         });
+      } else if (isMissingScheduledAtColumnError(insertError)) {
+        return new Response(
+          JSON.stringify({
+            error:
+              "Falta la columna scheduled_at en la base de datos. Ejecuta: npm run db:migrate-scheduled-at",
+            detail: formatDbError(insertError),
+          }),
+          { status: 409, headers }
+        );
       } else {
         throw insertError;
       }
@@ -589,9 +625,12 @@ export const POST: APIRoute = async ({ request }) => {
 
     return new Response(
       JSON.stringify({
-        message: "Nota guardada con éxito ✅",
+        message: payload.scheduled_at
+          ? "Nota programada con éxito ✅"
+          : "Nota guardada con éxito ✅",
         id: result.rows[0].id,
         category: result.rows[0].category,
+        scheduled_at: payload.scheduled_at ?? null,
       }),
       { status: 200, headers }
     );

@@ -89,6 +89,9 @@ ALTER TABLE notes ADD COLUMN IF NOT EXISTS spec_precio_cop TEXT;
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS block_titles TEXT;
+ALTER TABLE notes ADD COLUMN IF NOT EXISTS scheduled_at TIMESTAMP;
+
+CREATE INDEX IF NOT EXISTS idx_notes_scheduled_at ON notes(scheduled_at);
 
 UPDATE notes
 SET category = 'general'

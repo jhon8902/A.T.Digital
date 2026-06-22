@@ -1,5 +1,11 @@
 import type { APIRoute } from "astro";
 import pkg from "pg";
+import { isAuthorizedAdminRequest } from "../../lib/admin-auth";
+import {
+  isNoteScheduledForFuture,
+  NOTES_PUBLIC_ORDER_SQL,
+  PUBLISHED_NOTES_SQL,
+} from "../../lib/note-scheduling";
 
 const { Pool } = pkg;
 
@@ -40,6 +46,16 @@ function isMissingEditorColumnError(error: any): boolean {
   return (
     error.code === "42703" &&
     /editor|column\s+"?editor"?\s+does\s+not\s+exist/i.test(
+      String(error.message || "")
+    )
+  );
+}
+
+function isMissingScheduledAtColumnError(error: any): boolean {
+  if (!error) return false;
+  return (
+    error.code === "42703" &&
+    /scheduled_at|column\s+"?scheduled_at"?\s+does\s+not\s+exist/i.test(
       String(error.message || "")
     )
   );
@@ -96,8 +112,19 @@ export const GET: APIRoute = async ({ request }) => {
       note.category = normalizeCategory(note.category);
       note.editor = normalizeEditor(note.editor);
 
+      const isAdmin = isAuthorizedAdminRequest(request);
+      if (isNoteScheduledForFuture(note.scheduled_at) && !isAdmin) {
+        return new Response(JSON.stringify({ error: "Nota no encontrada" }), {
+          status: 404,
+          headers,
+        });
+      }
+
       return new Response(JSON.stringify(note), { status: 200, headers });
     }
+
+    const isAdmin = isAuthorizedAdminRequest(request);
+    const visibilityFilter = isAdmin ? "" : `WHERE ${PUBLISHED_NOTES_SQL}`;
 
     let result;
     try {
@@ -113,12 +140,32 @@ export const GET: APIRoute = async ({ request }) => {
           spec_aceleracion_0_100, spec_seguridad, spec_equipamiento,
           spec_pros, spec_contras, spec_competidores,
           spec_traccion, spec_precio_cop,
-          created_at
+          created_at, scheduled_at
         FROM notes
-        ORDER BY created_at DESC
+        ${visibilityFilter}
+        ORDER BY ${NOTES_PUBLIC_ORDER_SQL}
       `);
     } catch (error: any) {
-      if (!isMissingEditorColumnError(error)) throw error;
+      if (isMissingScheduledAtColumnError(error)) {
+        result = await getPool().query(`
+          SELECT
+            id, title, subtitle, editor, content, category,
+            image1, image2, image3, image4, image5, image6,
+            video1, video2, video3, video4, video5, video6, video7,
+            spec_segmento, spec_origen, spec_precio_estimado, spec_versiones,
+            spec_motorizacion, spec_potencia_hp, spec_torque_nm,
+            spec_bateria_autonomia, spec_bateria_kwh, spec_autonomia_km,
+            spec_carga, spec_carga_ac_kw, spec_carga_dc_kw,
+            spec_aceleracion_0_100, spec_seguridad, spec_equipamiento,
+            spec_pros, spec_contras, spec_competidores,
+            spec_traccion, spec_precio_cop,
+            created_at
+          FROM notes
+          ORDER BY created_at DESC
+        `);
+      } else if (!isMissingEditorColumnError(error)) {
+        throw error;
+      } else {
       result = await getPool().query(`
         SELECT
           id, title, subtitle, content, category,
@@ -133,8 +180,10 @@ export const GET: APIRoute = async ({ request }) => {
           spec_traccion, spec_precio_cop,
           created_at
         FROM notes
+        ${visibilityFilter}
         ORDER BY created_at DESC
       `);
+      }
     }
 
     const normalizedRows = result.rows.map((row) => ({

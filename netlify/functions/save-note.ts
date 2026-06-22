@@ -52,6 +52,7 @@ const KNOWN_NOTES_COLUMNS = new Set([
   "spec_precio_cop",
   "created_at",
   "updated_at",
+  "scheduled_at",
 ]);
 
 const DB_CONNECTION_TIMEOUT_MS = Number(
@@ -207,6 +208,16 @@ function isMissingImage6ColumnError(error: any): boolean {
   );
 }
 
+function isMissingScheduledAtColumnError(error: any): boolean {
+  if (!error) return false;
+  return (
+    error.code === "42703" &&
+    /scheduled_at|column\s+"?scheduled_at"?\s+does\s+not\s+exist/i.test(
+      String(error.message || "")
+    )
+  );
+}
+
 function isMissingVideoColumnsError(error: any): boolean {
   if (!error) return false;
   return (
@@ -279,8 +290,9 @@ async function insertNote(
   spec_competidores?: string;
   spec_traccion?: string;
   spec_precio_cop?: string;
+  scheduled_at?: string | null;
 },
-  options: { includeImage6: boolean; includeVideos: boolean; includeSourceScope: boolean; includeEditor: boolean }
+  options: { includeImage6: boolean; includeVideos: boolean; includeSourceScope: boolean; includeEditor: boolean; includeScheduledAt: boolean }
 ) {
   const columns = [
     "title",
@@ -382,6 +394,11 @@ async function insertNote(
       values.push(value);
     }
   });
+
+  if (options.includeScheduledAt) {
+    columns.push("scheduled_at");
+    values.push(payload.scheduled_at ?? null);
+  }
 
   const placeholders = values.map((_, index) => `$${index + 1}`).join(", ");
 
@@ -551,13 +568,19 @@ export const handler: Handler = async (event) => {
       spec_competidores: normalizeTextField(spec_competidores),
       spec_traccion: normalizeTextField(spec_traccion),
       spec_precio_cop: normalizeTextField(spec_precio_cop),
-      scheduled_at: scheduled_at ? new Date(scheduled_at) : null
+      scheduled_at: scheduled_at
+        ? (() => {
+            const date = new Date(String(scheduled_at));
+            return Number.isNaN(date.getTime()) ? null : date.toISOString();
+          })()
+        : null,
     };
 
     const columns = await getNotesColumns();
     const supportsEditor = columns.has("editor");
     const supportsSourceScope = columns.has("source_scope");
     const supportsImage6 = columns.has("image6");
+    const supportsScheduledAt = columns.has("scheduled_at");
     const supportsVideos = [
       "video1",
       "video2",
@@ -575,6 +598,7 @@ export const handler: Handler = async (event) => {
         includeVideos: supportsVideos,
         includeSourceScope: supportsSourceScope,
         includeEditor: supportsEditor,
+        includeScheduledAt: supportsScheduledAt,
       });
     } catch (insertError: any) {
       if (isCategoryConstraintError(insertError)) {
@@ -593,6 +617,7 @@ export const handler: Handler = async (event) => {
           includeVideos: supportsVideos,
           includeSourceScope: supportsSourceScope,
           includeEditor: false,
+          includeScheduledAt: supportsScheduledAt,
         });
       } else if (isMissingSourceScopeColumnError(insertError)) {
         result = await insertNote(payload, {
@@ -600,6 +625,7 @@ export const handler: Handler = async (event) => {
           includeVideos: supportsVideos,
           includeSourceScope: false,
           includeEditor: supportsEditor,
+          includeScheduledAt: supportsScheduledAt,
         });
       } else if (isMissingVideoColumnsError(insertError)) {
         result = await insertNote(payload, {
@@ -607,6 +633,7 @@ export const handler: Handler = async (event) => {
           includeVideos: false,
           includeSourceScope: supportsSourceScope,
           includeEditor: supportsEditor,
+          includeScheduledAt: supportsScheduledAt,
         });
       } else if (isMissingImage6ColumnError(insertError)) {
         result = await insertNote(payload, {
@@ -614,7 +641,18 @@ export const handler: Handler = async (event) => {
           includeVideos: supportsVideos,
           includeSourceScope: supportsSourceScope,
           includeEditor: supportsEditor,
+          includeScheduledAt: supportsScheduledAt,
         });
+      } else if (isMissingScheduledAtColumnError(insertError)) {
+        return {
+          statusCode: 409,
+          headers,
+          body: JSON.stringify({
+            error:
+              "Falta la columna scheduled_at en la base de datos. Ejecuta: npm run db:migrate-scheduled-at",
+            detail: formatDbError(insertError),
+          }),
+        };
       } else {
         throw insertError;
       }
@@ -626,9 +664,12 @@ export const handler: Handler = async (event) => {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        message: "Nota guardada con éxito ✅",
+        message: payload.scheduled_at
+          ? "Nota programada con éxito ✅"
+          : "Nota guardada con éxito ✅",
         id: result.rows[0].id,
         category: result.rows[0].category,
+        scheduled_at: payload.scheduled_at ?? null,
       }),
     };
   } catch (err) {

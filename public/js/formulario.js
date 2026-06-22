@@ -16,11 +16,19 @@
   const cloudinaryFilesInput = document.getElementById("cloudinaryFiles");
   const uploadCloudinaryBtn = document.getElementById("uploadCloudinaryBtn");
   const cloudinaryQueue = document.getElementById("cloudinaryQueue");
+  const cloudinaryStartSlot = document.getElementById("cloudinaryStartSlot");
+  const cloudinaryFillEmptyOnly = document.getElementById("cloudinaryFillEmptyOnly");
+  const publishMode = document.getElementById("publishMode");
+  const scheduledAtGroup = document.getElementById("scheduledAtGroup");
+  const scheduledAtInput = document.getElementById("scheduledAt");
+  const scheduleStatus = document.getElementById("scheduleStatus");
 
   if (!(form instanceof HTMLFormElement)) return;
 
   let editingNoteId = "";
   let selectedCloudinaryFiles = [];
+  let isPopulatingForm = false;
+  let loadedScheduledAt = "";
 
   const editableFields = [
     "editor",
@@ -133,7 +141,8 @@
     }
   }
 
-  function applyCategoryMode() {
+  function applyCategoryMode(options) {
+    const preserveContent = options && options.preserveContent;
     const categoryValue = getFieldValue("category");
     const contentField = byName("content");
     const subtitleField = byName("subtitle");
@@ -152,12 +161,16 @@
     if (contentField instanceof HTMLTextAreaElement) {
       contentField.required = !automatchMode;
       if (automatchMode) {
-        contentField.value = "";
+        if (!preserveContent && !isPopulatingForm) {
+          contentField.value = "";
+        }
         contentField.disabled = true;
-        contentField.placeholder = "Contenido de la nota";
+        contentField.placeholder =
+          "En AutoMatch el contenido se genera desde subtítulo y metadatos";
       } else {
         contentField.disabled = false;
-        contentField.placeholder = "Contenido de la nota";
+        contentField.placeholder =
+          "Escribe el cuerpo de la nota. Separa cada sección con una línea en blanco.";
       }
     }
 
@@ -299,6 +312,127 @@
     return null;
   }
 
+  function getUploadTargetForFile(fileIndex) {
+    const fields = getImageFields();
+    const startIndex =
+      cloudinaryStartSlot instanceof HTMLSelectElement
+        ? Number.parseInt(cloudinaryStartSlot.value, 10) - 1
+        : 0;
+    const fillEmptyOnly =
+      cloudinaryFillEmptyOnly instanceof HTMLInputElement &&
+      cloudinaryFillEmptyOnly.checked;
+
+    if (fillEmptyOnly) {
+      return findFirstEmptyImageField();
+    }
+
+    return fields[startIndex + fileIndex] || null;
+  }
+
+  function formatScheduledAtForInput(value) {
+    if (!value) return "";
+    const date = new Date(String(value));
+    if (Number.isNaN(date.getTime())) return "";
+
+    const pad = function (part) {
+      return String(part).padStart(2, "0");
+    };
+
+    return (
+      date.getFullYear() +
+      "-" +
+      pad(date.getMonth() + 1) +
+      "-" +
+      pad(date.getDate()) +
+      "T" +
+      pad(date.getHours()) +
+      ":" +
+      pad(date.getMinutes())
+    );
+  }
+
+  function isScheduledForFuture(value) {
+    if (!value) return false;
+    const date = new Date(String(value));
+    if (Number.isNaN(date.getTime())) return false;
+    return date.getTime() > Date.now();
+  }
+
+  function applyPublishMode() {
+    const scheduleMode =
+      publishMode instanceof HTMLSelectElement &&
+      publishMode.value === "schedule";
+
+    if (scheduledAtGroup instanceof HTMLElement) {
+      scheduledAtGroup.hidden = !scheduleMode;
+    }
+
+    if (scheduledAtInput instanceof HTMLInputElement) {
+      scheduledAtInput.required = scheduleMode;
+    }
+
+    updateScheduleStatus();
+  }
+
+  function updateScheduleStatus() {
+    if (!(scheduleStatus instanceof HTMLElement)) return;
+
+    const scheduleMode =
+      publishMode instanceof HTMLSelectElement &&
+      publishMode.value === "schedule";
+    const scheduledValue =
+      scheduledAtInput instanceof HTMLInputElement
+        ? scheduledAtInput.value
+        : loadedScheduledAt;
+
+    if (!editingNoteId || !scheduledValue) {
+      scheduleStatus.hidden = true;
+      scheduleStatus.textContent = "";
+      return;
+    }
+
+    if (isScheduledForFuture(scheduledValue)) {
+      scheduleStatus.hidden = false;
+      scheduleStatus.textContent =
+        "Esta nota está programada y aún no es visible al público.";
+      return;
+    }
+
+    if (scheduleMode && scheduledValue) {
+      scheduleStatus.hidden = false;
+      scheduleStatus.textContent =
+        "La nota se publicará automáticamente en la fecha indicada.";
+      return;
+    }
+
+    scheduleStatus.hidden = true;
+    scheduleStatus.textContent = "";
+  }
+
+  function htmlToPlainText(html) {
+    if (!html) return "";
+
+    let text = String(html);
+    text = text.replace(/<!--AUTOMATCH_META:[^>]*-->/gi, "");
+    text = text.replace(/<\/(p|div|h[1-6]|li|blockquote)\s*>/gi, "\n");
+    text = text.replace(/<br\s*\/?>/gi, "\n");
+    text = text.replace(/<li[^>]*>/gi, "• ");
+    text = text.replace(/<[^>]+>/g, "");
+
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = text;
+    text = textarea.value;
+
+    return text
+      .replace(/\r\n/g, "\n")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
+  }
+
+  function stripAutomatchMetaFromContent(content) {
+    return String(content || "").replace(/<!--AUTOMATCH_META:[^>]*-->/gi, "").trim();
+  }
+
   async function uploadFileToCloudinary(file, cloudName, uploadPreset, folder) {
     const endpoint =
       "https://api.cloudinary.com/v1_1/" +
@@ -357,7 +491,8 @@
 
     try {
       for (let i = 0; i < selectedCloudinaryFiles.length; i += 1) {
-        const targetField = findFirstEmptyImageField();
+        const targetField = getUploadTargetForFile(i);
+
         if (!targetField) break;
 
         const secureUrl = await uploadFileToCloudinary(
@@ -376,7 +511,7 @@
 
       if (uploadedCount === 0) {
         setMessage(
-          "Todos los campos image1..image6 ya tienen URL. Limpia uno para agregar nuevas fotos.",
+          "No hay slots disponibles para las imágenes seleccionadas. Cambia el modo de subida o limpia un campo.",
           "#b45309"
         );
         return;
@@ -438,14 +573,45 @@
   }
 
   function fillFormFromNote(note) {
+    isPopulatingForm = true;
+
     editableFields.forEach(function (name) {
       const raw =
         note && Object.prototype.hasOwnProperty.call(note, name)
           ? note[name]
           : "";
-      const value = typeof raw === "string" ? raw : String(raw || "");
+      let value = typeof raw === "string" ? raw : String(raw || "");
+
+      if (name === "content" && value) {
+        if (isAutomatchCategory(note && note.category ? note.category : "")) {
+          value = stripAutomatchMetaFromContent(value);
+          const subtitleMatch = value.match(/^<p>([\s\S]*?)<\/p>/i);
+          if (subtitleMatch && subtitleMatch[1] && !getFieldValue("subtitle")) {
+            setFieldValue("subtitle", htmlToPlainText(subtitleMatch[1]));
+          }
+          value = "";
+        } else if (/<[a-z][\s\S]*>/i.test(value)) {
+          value = htmlToPlainText(value);
+        }
+      }
+
       setFieldValue(name, value);
     });
+
+    loadedScheduledAt = note && note.scheduled_at ? String(note.scheduled_at) : "";
+
+    if (publishMode instanceof HTMLSelectElement) {
+      publishMode.value =
+        loadedScheduledAt && isScheduledForFuture(loadedScheduledAt)
+          ? "schedule"
+          : "now";
+    }
+
+    if (scheduledAtInput instanceof HTMLInputElement) {
+      scheduledAtInput.value = formatScheduledAtForInput(loadedScheduledAt);
+    }
+
+    applyPublishMode();
 
     if (isAutomatchCategory(note && note.category ? note.category : "")) {
       const content =
@@ -511,7 +677,8 @@
       }
     }
 
-    applyCategoryMode();
+    applyCategoryMode({ preserveContent: true });
+    isPopulatingForm = false;
   }
 
   function resetDefaults() {
@@ -522,6 +689,7 @@
       setFieldValue("source_scope", "nacional");
     }
     applyCategoryMode();
+    applyPublishMode();
   }
 
   async function loadNoteForEdit() {
@@ -537,7 +705,9 @@
     }
 
     try {
-      const response = await fetch("/api/get-notes?id=" + String(id));
+      const response = await fetch("/api/get-notes?id=" + String(id), {
+        credentials: "same-origin",
+      });
       const note = await response.json();
 
       if (!response.ok) {
@@ -562,6 +732,8 @@
     clearSelectedCloudinaryFiles();
     renderCloudinaryQueue();
     setMode(false, "");
+    loadedScheduledAt = "";
+    applyPublishMode();
     if (!keepMessage) {
       setMessage("Modo edicion cerrado", "#334155");
     }
@@ -616,6 +788,7 @@
           method: attempt.method,
           headers: attempt.headers,
           body: attempt.body,
+          credentials: "same-origin",
         });
         const raw = await response.text();
         let parsed = null;
@@ -676,7 +849,18 @@
   }
 
   if (categoryField instanceof HTMLSelectElement) {
-    categoryField.addEventListener("change", applyCategoryMode);
+    categoryField.addEventListener("change", function () {
+      applyCategoryMode();
+    });
+  }
+
+  if (publishMode instanceof HTMLSelectElement) {
+    publishMode.addEventListener("change", applyPublishMode);
+  }
+
+  if (scheduledAtInput instanceof HTMLInputElement) {
+    scheduledAtInput.addEventListener("change", updateScheduleStatus);
+    scheduledAtInput.addEventListener("input", updateScheduleStatus);
   }
 
   setMode(false, "");
@@ -794,6 +978,39 @@
       data.content = `<p>${autoSubtitle}</p><!--AUTOMATCH_META:${encodedMeta}-->`;
     }
 
+    const scheduleMode =
+      publishMode instanceof HTMLSelectElement &&
+      publishMode.value === "schedule";
+    const scheduledValue =
+      scheduledAtInput instanceof HTMLInputElement
+        ? scheduledAtInput.value.trim()
+        : "";
+
+    if (scheduleMode) {
+      if (!scheduledValue) {
+        setMessage("Indica fecha y hora para programar la nota", "red");
+        return;
+      }
+
+      const scheduledDate = new Date(scheduledValue);
+      if (Number.isNaN(scheduledDate.getTime())) {
+        setMessage("La fecha de publicación no es válida", "red");
+        return;
+      }
+
+      if (scheduledDate.getTime() <= Date.now()) {
+        setMessage("La fecha programada debe ser futura", "red");
+        return;
+      }
+
+      data.scheduled_at = scheduledDate.toISOString();
+    } else {
+      data.scheduled_at = null;
+      data.publish_now = true;
+    }
+
+    delete data.publish_mode;
+
     const effectiveEditId = editingNoteId;
     const isEditing = Boolean(effectiveEditId);
     const apiUrl = isEditing ? "/api/update-note" : "/api/save-note";
@@ -807,6 +1024,7 @@
         method: isEditing ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
+        credentials: "same-origin",
       });
 
       const raw = await response.text();
@@ -820,11 +1038,25 @@
 
       if (response.ok) {
         if (isEditing) {
-          setMessage("Nota actualizada con exito (ID: " + effectiveEditId + ")", "green");
+          loadedScheduledAt = result && result.scheduled_at ? String(result.scheduled_at) : "";
+          const scheduledMessage =
+            data.scheduled_at && isScheduledForFuture(data.scheduled_at)
+              ? "Nota actualizada y programada (ID: " + effectiveEditId + ")"
+              : "Nota actualizada con exito (ID: " + effectiveEditId + ")";
+          setMessage(scheduledMessage, "green");
+          updateScheduleStatus();
           return;
         }
 
         if (result && result.id) {
+          if (data.scheduled_at && isScheduledForFuture(data.scheduled_at)) {
+            setMessage(
+              "Nota programada con exito (ID: " + String(result.id) + "). Sera visible en la fecha indicada.",
+              "green"
+            );
+            return;
+          }
+
           window.location.href = "/notas/" + String(result.id);
           return;
         }
