@@ -1,5 +1,10 @@
 ---
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import {
+  formatNotePublishDate,
+  formatNotePublishedLabel,
+  getNotePublishTimestamp,
+} from "../../lib/note-scheduling";
 const { currentId, category } = Astro.props;
 
 let relatedNotes = [];
@@ -14,8 +19,7 @@ try {
           note.id !== currentId,
       )
       .sort(
-        (a, b) =>
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+        (a, b) => getNotePublishTimestamp(b) - getNotePublishTimestamp(a),
       )
       .slice(0, 4);
   }
@@ -38,8 +42,8 @@ try {
             />
             <div class="nota-relacionada-info">
               <span class="nota-relacionada-fecha">
-                {note.created_at && !isNaN(new Date(note.created_at).getTime())
-                  ? new Date(note.created_at).toLocaleDateString("es-CO")
+                {formatNotePublishDate(note)
+                  ? formatNotePublishDate(note)
                   : ""}
               </span>
               <span class="nota-relacionada-autor">

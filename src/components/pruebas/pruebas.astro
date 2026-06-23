@@ -1,5 +1,6 @@
 ---
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import { getNotePublishTimestamp } from "../../lib/note-scheduling";
 
 type PruebaItem = {
   title: string;
@@ -77,7 +78,7 @@ try {
         video: note.video1?.trim() || undefined,
         image: note.image1?.trim() || undefined,
         href: `/notas/${note.id}`,
-        sortDate: note.created_at ? new Date(note.created_at).getTime() : 0,
+        sortDate: getNotePublishTimestamp(note),
       }));
   }
 } catch (err) {

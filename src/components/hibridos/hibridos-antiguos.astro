@@ -1,6 +1,10 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import {
+  formatNotePublishDate,
+  getNotePublishTimestamp,
+} from "../../lib/note-scheduling";
 
 let hibridos: any[] = [];
 
@@ -11,8 +15,7 @@ try {
     hibridos = data
       .filter((note) => note.category?.toLowerCase() === "hibridos")
       .sort(
-        (a, b) =>
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+        (a, b) => getNotePublishTimestamp(b) - getNotePublishTimestamp(a),
       );
   }
 } catch (err) {
@@ -40,7 +43,7 @@ try {
                 <h2>{note.title}</h2>
                 <p>{note.subtitle}</p>
                 <span class="fecha">
-                  {new Date(note.created_at).toLocaleDateString("es-CO")}
+                  {formatNotePublishDate(note)}
                 </span>
               </div>
             </a>

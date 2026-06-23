@@ -39,3 +39,50 @@ export function normalizeScheduledAtInput(value: unknown): string | null {
 export const PUBLISHED_NOTES_SQL = `(scheduled_at IS NULL OR scheduled_at <= NOW())`;
 
 export const NOTES_PUBLIC_ORDER_SQL = `COALESCE(scheduled_at, created_at) DESC`;
+
+type NoteWithDates = {
+  scheduled_at?: unknown;
+  created_at?: unknown;
+};
+
+/** Fecha efectiva de publicación: programada si existe, si no la de creación. */
+export function getNotePublishDate(note: NoteWithDates): Date | null {
+  return (
+    parseScheduledAt(note.scheduled_at) ?? parseScheduledAt(note.created_at)
+  );
+}
+
+export function getNotePublishTimestamp(note: NoteWithDates): number {
+  const date = getNotePublishDate(note);
+  return date ? date.getTime() : 0;
+}
+
+export function formatNotePublishDate(
+  note: NoteWithDates,
+  locale = "es-CO"
+): string {
+  const date = getNotePublishDate(note);
+  if (!date) return "";
+  return date.toLocaleDateString(locale);
+}
+
+export function formatNotePublishedLabel(
+  note: NoteWithDates,
+  locale = "es-CO"
+): string {
+  const formatted = formatNotePublishDate(note, locale);
+  return formatted ? `Publicado: ${formatted}` : "";
+}
+
+export function formatNotePublishDateLong(
+  note: NoteWithDates,
+  locale = "es-CO"
+): string {
+  const date = getNotePublishDate(note);
+  if (!date) return "";
+  return date.toLocaleDateString(locale, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}

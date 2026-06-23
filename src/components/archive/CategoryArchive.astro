@@ -1,6 +1,10 @@
 ---
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
 import { getNewsCardTitle, usesCompactNewsCardTitle } from "../../lib/editorial";
+import {
+  formatNotePublishedLabel,
+  getNotePublishTimestamp,
+} from "../../lib/note-scheduling";
 
 interface NoteItem {
   href: string;
@@ -191,10 +195,8 @@ try {
         description: note.subtitle || "",
         editor: note.editor || "Jhon Aparicio",
         source_scope: note.source_scope || "nacional",
-        fecha: note.created_at
-          ? `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`
-          : "",
-        sortDate: note.created_at ? new Date(note.created_at).getTime() : 0,
+        fecha: formatNotePublishedLabel(note),
+        sortDate: getNotePublishTimestamp(note),
       }));
   }
 } catch (err) {

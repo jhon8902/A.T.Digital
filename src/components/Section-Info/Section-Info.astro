@@ -1,6 +1,10 @@
 ---
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
 import { getNewsCardTitle } from "../../lib/editorial";
+import {
+  formatNotePublishedLabel,
+  getNotePublishTimestamp,
+} from "../../lib/note-scheduling";
 // --- CARGA Y FILTRO DE NOTAS RECIENTES PARA PORTADA ---
 
 let dynamicNotes: any[] = [];
@@ -151,10 +155,10 @@ try {
       img: note.image1 || extractFirstImage(note.content) || "/img/default.jpg",
       alt: note.title,
       caption: note.title,
-      fecha: `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`,
+      fecha: formatNotePublishedLabel(note),
       editor: note.editor || "Jhon Aparicio",
       source_scope: normalizeSourceScope(note.source_scope),
-      sortDate: note.created_at ? new Date(note.created_at).getTime() : 0,
+      sortDate: getNotePublishTimestamp(note),
     }));
   }
 } catch (err) {

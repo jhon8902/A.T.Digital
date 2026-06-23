@@ -1,5 +1,9 @@
 ---
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import {
+  formatNotePublishedLabel,
+  getNotePublishTimestamp,
+} from "../../lib/note-scheduling";
 
 type DeporteItem = {
   href: string;
@@ -175,12 +179,10 @@ try {
         alt: note.title || "Deportes",
         title: note.title || "Sin título",
         description: note.subtitle || "",
-        fecha: note.created_at
-          ? `Publicado: ${new Date(note.created_at).toLocaleDateString("es-CO")}`
-          : "",
+        fecha: formatNotePublishedLabel(note),
         editor: note.editor || "Jhon Aparicio",
         source_scope: normalizeSourceScope(note.source_scope),
-        sortDate: note.created_at ? new Date(note.created_at).getTime() : 0,
+        sortDate: getNotePublishTimestamp(note),
       }));
   }
 } catch (err) {
