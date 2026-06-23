@@ -398,6 +398,18 @@
       return;
     }
 
+    if (scheduleMode && scheduledValue && editingNoteId) {
+      const pastDate = new Date(scheduledValue);
+      if (!Number.isNaN(pastDate.getTime()) && pastDate.getTime() <= Date.now()) {
+        scheduleStatus.hidden = false;
+        scheduleStatus.textContent =
+          "Fecha de publicación guardada: " +
+          pastDate.toLocaleString("es-CO") +
+          ". Se conserva al actualizar la nota.";
+        return;
+      }
+    }
+
     if (scheduleMode && scheduledValue) {
       scheduleStatus.hidden = false;
       scheduleStatus.textContent =
@@ -601,10 +613,7 @@
     loadedScheduledAt = note && note.scheduled_at ? String(note.scheduled_at) : "";
 
     if (publishMode instanceof HTMLSelectElement) {
-      publishMode.value =
-        loadedScheduledAt && isScheduledForFuture(loadedScheduledAt)
-          ? "schedule"
-          : "now";
+      publishMode.value = loadedScheduledAt ? "schedule" : "now";
     }
 
     if (scheduledAtInput instanceof HTMLInputElement) {
@@ -978,6 +987,9 @@
       data.content = `<p>${autoSubtitle}</p><!--AUTOMATCH_META:${encodedMeta}-->`;
     }
 
+    const effectiveEditId = editingNoteId;
+    const isEditing = Boolean(effectiveEditId);
+
     const scheduleMode =
       publishMode instanceof HTMLSelectElement &&
       publishMode.value === "schedule";
@@ -998,12 +1010,21 @@
         return;
       }
 
-      if (scheduledDate.getTime() <= Date.now()) {
+      if (!isEditing && scheduledDate.getTime() <= Date.now()) {
         setMessage("La fecha programada debe ser futura", "red");
         return;
       }
 
       data.scheduled_at = scheduledDate.toISOString();
+    } else if (
+      isEditing &&
+      loadedScheduledAt &&
+      !isScheduledForFuture(loadedScheduledAt)
+    ) {
+      const original = new Date(loadedScheduledAt);
+      if (!Number.isNaN(original.getTime())) {
+        data.scheduled_at = original.toISOString();
+      }
     } else {
       data.scheduled_at = null;
       data.publish_now = true;
@@ -1011,8 +1032,6 @@
 
     delete data.publish_mode;
 
-    const effectiveEditId = editingNoteId;
-    const isEditing = Boolean(effectiveEditId);
     const apiUrl = isEditing ? "/api/update-note" : "/api/save-note";
 
     if (isEditing) {
