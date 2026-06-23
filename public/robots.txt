@@ -1,9 +1,10 @@
 User-agent: *
 Allow: /
 
-# Bloquear rutas de admin y APIs
+# Bloquear rutas de admin, editorial y APIs
 Disallow: /admin/
+Disallow: /formulario
 Disallow: /api/
 Disallow: /.netlify/
 
-Sitemap: https://autotechdigital.com/sitemap-index.xml
+Sitemap: https://autotechdigital.com/sitemap.xml

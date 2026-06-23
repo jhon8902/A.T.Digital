@@ -9,7 +9,8 @@ import {
   getNewsTitleHook,
   usesCompactNewsCardTitle,
 } from "../../lib/editorial";
-import { formatNotePublishDateLong } from "../../lib/note-scheduling";
+import { formatNotePublishDateLong, getNotePublishDate } from "../../lib/note-scheduling";
+import { buildNewsArticleJsonLd } from "../../lib/note-seo";
 export const prerender = false;
 
 // ✅ Definimos la interfaz del tipo de nota
@@ -417,16 +418,42 @@ const displayLead =
   "";
 const useSmartImageFrame =
   normalizedTitle.includes("smart #5") || normalizedTitle.includes("smart 5");
+
+const siteUrl = Astro.site?.href ?? "https://autotechdigital.com";
+const noteDescription =
+  note?.subtitle?.trim() ||
+  getNewsTitleHook(note?.title || "") ||
+  note?.title ||
+  "";
+const publishDate = note ? getNotePublishDate(note) : null;
+const publishedIso = publishDate?.toISOString();
+const modifiedIso =
+  (note?.scheduled_at ? new Date(note.scheduled_at).toISOString() : undefined) ||
+  (note?.created_at ? new Date(note.created_at).toISOString() : undefined) ||
+  publishedIso;
+const articleJsonLd = note
+  ? buildNewsArticleJsonLd({
+      note,
+      siteUrl,
+      description: noteDescription,
+      coverImage,
+      headline: displayTitle || note.title,
+    })
+  : undefined;
+const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
 ---
 
 <Layout
   title={note?.title || "Nota no encontrada"}
-  description={
-    note?.subtitle ||
-    getNewsTitleHook(note?.title || "") ||
-    undefined
-  }
+  description={noteDescription || undefined}
   ogImage={coverImage || undefined}
+  ogType={note ? "article" : "website"}
+  canonical={noteCanonical}
+  articlePublishedTime={publishedIso}
+  articleModifiedTime={modifiedIso}
+  articleAuthor={note?.editor?.trim() || "Jhon Aparicio"}
+  articleSection={note?.category ? sectionLabel(note.category) : undefined}
+  jsonLd={articleJsonLd}
   bodyClass={`nota-page nota-${categoryClass} ${categoryClass}`}
 >
   {
@@ -542,8 +569,8 @@ const useSmartImageFrame =
               remainingImages.map((imgSrc, index) => (
                 <section class={`noticia-bloque${(uniqueContentBlocks.length + index) % 2 === 1 ? " imagen-izquierda" : ""}`}>
                   <div class="noticia-texto">
-                    <h2 class="noticia-titulo">Galería {index + 1}</h2>
-                    <p class="noticia-parrafo">Imagen complementaria de la nota.</p>
+                    <h2 class="noticia-titulo">Más imágenes de {displayTitle}</h2>
+                    <p class="noticia-parrafo">Galería visual complementaria de la nota.</p>
                   </div>
                   {useSmartImageFrame ? (
                     <div class="noticia-media-frame">
