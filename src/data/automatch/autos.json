@@ -4,7 +4,7 @@
     "nombre": "Renault Megane E-Tech",
     "tipo": "eléctrico",
     "uso": "urbano",
-    "precio": 48000000,
+    "precio": 164990000,
     "ciudad": "bogotá",
     "condicion": "nuevo",
     "año": 2024,
@@ -32,7 +32,7 @@
     "nombre": "BMW 330e",
     "tipo": "híbrido",
     "uso": "deportivo",
-    "precio": 65000000,
+    "precio": 289900000,
     "ciudad": "medellín",
     "condicion": "nuevo",
     "año": 2024,
@@ -60,7 +60,7 @@
     "nombre": "Mini Cooper SE Eléctrico",
     "tipo": "eléctrico",
     "uso": "urbano",
-    "precio": 45000000,
+    "precio": 185900000,
     "ciudad": "bogotá",
     "condicion": "nuevo",
     "año": 2024,
@@ -74,6 +74,7 @@
     "descripcion": "Icónico y eléctrico. Perfecto para ciudad con su tamaño compacto y autonomía de 280 km.",
     "especificaciones_id": "mini-cooper-se",
     "concesionario": {
+      "id": 3,
       "nombre": "Mini Bogotá Oficial",
       "direccion": "Av. 72 #11-45, Bogotá",
       "telefono": "+57 1 345 6789",
@@ -87,7 +88,7 @@
     "nombre": "Toyota Prado Híbrido 2.8L",
     "tipo": "híbrido",
     "uso": "familiar",
-    "precio": 65000000,
+    "precio": 299000000,
     "ciudad": "bogotá",
     "condicion": "nuevo",
     "año": 2024,
@@ -101,6 +102,7 @@
     "descripcion": "SUV de lujo y confiabilidad Toyota. Motor híbrido de 326 hp, perfecto para familia con gran capacidad.",
     "especificaciones_id": "toyota-prado",
     "concesionario": {
+      "id": 4,
       "nombre": "Toyota Bogotá Principal",
       "direccion": "Cra 15 #80-30, Bogotá",
       "telefono": "+57 1 456 7890",
@@ -114,7 +116,7 @@
     "nombre": "Volvo EX90 100% Eléctrico",
     "tipo": "eléctrico",
     "uso": "familiar",
-    "precio": 80000000,
+    "precio": 520000000,
     "ciudad": "bogotá",
     "condicion": "nuevo",
     "año": 2024,
@@ -128,6 +130,7 @@
     "descripcion": "Lujo y sostenibilidad. SUV eléctrico premium con 600 km de autonomía y tecnología escandinava.",
     "especificaciones_id": "volvo-ex90",
     "concesionario": {
+      "id": 5,
       "nombre": "Volvo Bogotá Autorizado",
       "direccion": "Av. Paseo de la República #2000, Bogotá",
       "telefono": "+57 1 567 8901",
@@ -141,7 +144,7 @@
     "nombre": "Nissan X-Trail Híbrida",
     "tipo": "híbrido",
     "uso": "familiar",
-    "precio": 52000000,
+    "precio": 173990000,
     "ciudad": "cali",
     "condicion": "nuevo",
     "año": 2024,
@@ -155,6 +158,7 @@
     "descripcion": "Versátil y eficiente. SUV compacto híbrido con espacio para 7 personas y tracción inteligente.",
     "especificaciones_id": "nissan-xtrail",
     "concesionario": {
+      "id": 6,
       "nombre": "Nissan Cali Centro",
       "direccion": "Av. Paseo Mayurasqui #2-15, Cali",
       "telefono": "+57 2 345 6789",
@@ -168,7 +172,7 @@
     "nombre": "Ford Bronco 4x4 Gasolina",
     "tipo": "gasolina",
     "uso": "deportivo",
-    "precio": 85000000,
+    "precio": 329990000,
     "ciudad": "medellín",
     "condicion": "nuevo",
     "año": 2024,
@@ -182,12 +186,461 @@
     "descripcion": "Legendario y aventurero. Motor 4.0L EcoBoost, tracción 4x4, diseño robusto y capaz.",
     "especificaciones_id": "ford-bronco",
     "concesionario": {
+      "id": 7,
       "nombre": "Ford Medellín Oficial",
       "direccion": "Cra 70 #33-15, Medellín",
       "telefono": "+57 4 678 9012",
       "whatsapp": "573198765432",
       "email": "ventas@fordmedellin.com",
       "horario": "Lunes-Viernes 9:00-18:30 | Sábados 10:00-15:00"
+    }
+  },
+  {
+    "id": 8,
+    "nombre": "Peugeot E-3008 Eléctrico",
+    "tipo": "eléctrico",
+    "uso": "familiar",
+    "precio": 220000000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2025,
+    "imagen_principal": "/img/peugeot-3008-electrica/portada-peugeot-3008.webp",
+    "galeria": [
+      "/img/peugeot-3008-electrica/portada-peugeot-3008.webp",
+      "/img/peugeot-3008-electrica/cola-peugeot.webp",
+      "/img/peugeot-3008-electrica/interior-peugeot.webp",
+      "/img/peugeot-3008-electrica/carga-peugeot.webp"
+    ],
+    "descripcion": "SUV fastback eléctrico con plataforma STLA Medium, hasta 700 km WLTP y i-Cockpit panorámico de 21 pulgadas.",
+    "especificaciones_id": "peugeot-e3008",
+    "concesionario": {
+      "id": 8,
+      "nombre": "Peugeot Bogotá Oficial",
+      "direccion": "Av. El Dorado #68C-61, Bogotá",
+      "telefono": "+57 1 381 2200",
+      "whatsapp": "573018002200",
+      "email": "ventas@peugeotbogota.com",
+      "horario": "Lunes-Viernes 9:00-18:00 | Sábados 10:00-14:00"
+    }
+  },
+  {
+    "id": 9,
+    "nombre": "BYD Sealion 7",
+    "tipo": "eléctrico",
+    "uso": "familiar",
+    "precio": 189990000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2025,
+    "imagen_principal": "/img/byd-sealion-7/byd-sealion7-principal.webp",
+    "galeria": [
+      "/img/byd-sealion-7/byd-sealion7-principal.webp",
+      "/img/byd-sealion-7/byd-sealion7-diseño.webp",
+      "/img/byd-sealion-7/byd-sealion7-interior.webp",
+      "/img/byd-sealion-7/byd-sealion7-bateria.webp"
+    ],
+    "descripcion": "SUV eléctrico con batería Blade, plataforma e⁴ y hasta 610 km de autonomía en ciclo CLTC.",
+    "especificaciones_id": "byd-sealion7",
+    "concesionario": {
+      "id": 9,
+      "nombre": "BYD Bogotá Centro",
+      "direccion": "Cra 7 #127-40, Bogotá",
+      "telefono": "+57 1 743 5500",
+      "whatsapp": "573017435500",
+      "email": "ventas@bydbogota.com",
+      "horario": "Lunes-Viernes 9:00-18:30 | Sábados 10:00-15:00"
+    }
+  },
+  {
+    "id": 10,
+    "nombre": "Hyundai Kona Híbrida",
+    "tipo": "híbrido",
+    "uso": "urbano",
+    "precio": 129990000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/kona-hibrida/kona-portada.webp",
+    "galeria": [
+      "/img/kona-hibrida/kona-portada.webp",
+      "/img/kona-hibrida/kona-subportada.webp",
+      "/img/kona-hibrida/kona-interior.webp",
+      "/img/kona-hibrida/kona-motor.webp"
+    ],
+    "descripcion": "SUV compacto híbrido con diseño urbano, buena eficiencia y conectividad Apple CarPlay y Android Auto.",
+    "especificaciones_id": "hyundai-kona-hibrida",
+    "concesionario": {
+      "id": 10,
+      "nombre": "Hyundai Bogotá Norte",
+      "direccion": "Autopista Norte #232-35, Bogotá",
+      "telefono": "+57 1 658 4400",
+      "whatsapp": "573016584400",
+      "email": "ventas@hyundaibogota.com",
+      "horario": "Lunes-Viernes 9:00-18:00 | Sábados 10:00-14:00"
+    }
+  },
+  {
+    "id": 11,
+    "nombre": "Kia EV9",
+    "tipo": "eléctrico",
+    "uso": "familiar",
+    "precio": 359990000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2025,
+    "imagen_principal": "/img/kia-ev9/kia-ev9-portada.webp",
+    "galeria": [
+      "/img/kia-ev9/kia-ev9-portada.webp",
+      "/img/kia-ev9/kia-ev9-diseño.webp",
+      "/img/kia-ev9/kia-ev9-interior.webp",
+      "/img/kia-ev9/kia-ev9-autonomia.webp"
+    ],
+    "descripcion": "SUV eléctrico de tres filas con plataforma E-GMP, tecnología premium y autonomía de largo alcance.",
+    "especificaciones_id": "kia-ev9",
+    "concesionario": {
+      "id": 11,
+      "nombre": "Kia Bogotá Premium",
+      "direccion": "Av. Calle 127 #15-60, Bogotá",
+      "telefono": "+57 1 625 8800",
+      "whatsapp": "573016258800",
+      "email": "ventas@kiabogota.com",
+      "horario": "Lunes-Viernes 9:00-19:00 | Sábados 10:00-16:00"
+    }
+  },
+  {
+    "id": 12,
+    "nombre": "Jeep Avenger Eléctrico",
+    "tipo": "eléctrico",
+    "uso": "urbano",
+    "precio": 162990000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/jeep-avenger/jeep-avenger-portada.webp",
+    "galeria": [
+      "/img/jeep-avenger/jeep-avenger-portada.webp",
+      "/img/jeep-avenger/jepp-avenger-diseño.webp",
+      "/img/jeep-avenger/jeep-avenger.interior.webp",
+      "/img/jeep-avenger/jepp-avenger-motor.webp"
+    ],
+    "descripcion": "Primer SUV 100% eléctrico de Jeep, compacto, con ADAS y carga rápida DC hasta 100 kW.",
+    "especificaciones_id": "jeep-avenger",
+    "concesionario": {
+      "id": 12,
+      "nombre": "Jeep Bogotá Autorizado",
+      "direccion": "Cra 19 #100-45, Bogotá",
+      "telefono": "+57 1 646 3300",
+      "whatsapp": "573016463300",
+      "email": "ventas@jeepbogota.com",
+      "horario": "Lunes-Viernes 9:00-18:00 | Sábados 10:00-14:00"
+    }
+  },
+  {
+    "id": 13,
+    "nombre": "Mazda EZ-6",
+    "tipo": "eléctrico",
+    "uso": "urbano",
+    "precio": 180000000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2025,
+    "imagen_principal": "/img/mazda-ez6/mazda-ez6-portada.webp",
+    "galeria": [
+      "/img/mazda-ez6/mazda-ez6-portada.webp",
+      "/img/mazda-ez6/mazda-ez6-lateral.webp",
+      "/img/mazda-ez6/mazda-ez6-interior.webp",
+      "/img/mazda-ez6/mazda-ez6-carga.webp"
+    ],
+    "descripcion": "Sedán eléctrico con diseño Kodo, hasta 600 km de autonomía y cabina de triple pantalla.",
+    "especificaciones_id": "mazda-ez6",
+    "concesionario": {
+      "id": 13,
+      "nombre": "Mazda Bogotá Oficial",
+      "direccion": "Av. Chile #16-38, Bogotá",
+      "telefono": "+57 1 334 7700",
+      "whatsapp": "573013347700",
+      "email": "ventas@mazdabogota.com",
+      "horario": "Lunes-Viernes 9:00-18:30 | Sábados 10:00-15:00"
+    }
+  },
+  {
+    "id": 14,
+    "nombre": "Audi Q7 Híbrida",
+    "tipo": "híbrido",
+    "uso": "familiar",
+    "precio": 372400000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/audi-q7-hibrida/audi-q7-portada.webp",
+    "galeria": [
+      "/img/audi-q7-hibrida/audi-q7-portada.webp",
+      "/img/audi-q7-hibrida/audi-q7-subportada.webp",
+      "/img/audi-q7-hibrida/audi-q7-interior.webp",
+      "/img/audi-q7-hibrida/audi-q7-motor.webp"
+    ],
+    "descripcion": "SUV premium híbrido de 7 plazas con quattro, tecnología MMI y alto nivel de confort.",
+    "especificaciones_id": "audi-q7-hibrida",
+    "concesionario": {
+      "id": 14,
+      "nombre": "Audi Bogotá Premium",
+      "direccion": "Av. Carrera 9 #115-30, Bogotá",
+      "telefono": "+57 1 646 1100",
+      "whatsapp": "573016461100",
+      "email": "ventas@audibogota.com",
+      "horario": "Lunes-Viernes 9:00-19:00 | Sábados 10:00-16:00"
+    }
+  },
+  {
+    "id": 15,
+    "nombre": "Subaru Forester Híbrida",
+    "tipo": "híbrido",
+    "uso": "familiar",
+    "precio": 175000000,
+    "ciudad": "medellín",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/subaru-forester-hibrida/subaru-forester-portada.webp",
+    "galeria": [
+      "/img/subaru-forester-hibrida/subaru-forester-portada.webp",
+      "/img/subaru-forester-hibrida/subaru-forester-subportada.webp",
+      "/img/subaru-forester-hibrida/subaru-forester-tecnologia.webp",
+      "/img/subaru-forester-hibrida/subaru-forester-hambiente.webp"
+    ],
+    "descripcion": "SUV híbrida con tracción Symmetrical AWD, seguridad EyeSight y versatilidad para familia.",
+    "especificaciones_id": "subaru-forester-hibrida",
+    "concesionario": {
+      "id": 15,
+      "nombre": "Subaru Medellín Centro",
+      "direccion": "Cra 48 #20-145, Medellín",
+      "telefono": "+57 4 444 8800",
+      "whatsapp": "573044448800",
+      "email": "ventas@subarumde.com",
+      "horario": "Lunes-Viernes 9:00-18:00 | Sábados 10:00-14:00"
+    }
+  },
+  {
+    "id": 16,
+    "nombre": "Volvo XC90 Híbrida",
+    "tipo": "híbrido",
+    "uso": "familiar",
+    "precio": 500000000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/volvo-cx90-hibrida/volvo-cx90-portada.webp",
+    "galeria": [
+      "/img/volvo-cx90-hibrida/volvo-cx90-portada.webp",
+      "/img/volvo-cx90-hibrida/volvo-cx90-subportada.webp",
+      "/img/volvo-cx90-hibrida/volvo-cx90-interior.webp",
+      "/img/volvo-cx90-hibrida/volvo-cx90-motor.webp"
+    ],
+    "descripcion": "SUV híbrida enchufable de lujo con 7 plazas, seguridad escandinava y acabados premium.",
+    "especificaciones_id": "volvo-xc90-hibrida",
+    "concesionario": {
+      "id": 16,
+      "nombre": "Volvo Bogotá Híbridos",
+      "direccion": "Av. Paseo de la República #2000, Bogotá",
+      "telefono": "+57 1 567 8902",
+      "whatsapp": "573145678902",
+      "email": "hibridos@volvobogota.com",
+      "horario": "Lunes-Viernes 9:00-19:00 | Sábados 10:00-16:00"
+    }
+  },
+  {
+    "id": 17,
+    "nombre": "Ford Escape Híbrida",
+    "tipo": "híbrido",
+    "uso": "familiar",
+    "precio": 154990000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/ford-scape-hibrida/ford-scape-portada.webp",
+    "galeria": [
+      "/img/ford-scape-hibrida/ford-scape-portada.webp",
+      "/img/ford-scape-hibrida/ford-scape-tecnologia.webp",
+      "/img/ford-scape-hibrida/ford-scape-interior.webp",
+      "/img/ford-scape-hibrida/ford-scape-motor.webp"
+    ],
+    "descripcion": "SUV híbrida eficiente con SYNC 4, asistencias a la conducción y buen espacio para familia.",
+    "especificaciones_id": "ford-escape-hibrida",
+    "concesionario": {
+      "id": 17,
+      "nombre": "Ford Bogotá Chapinero",
+      "direccion": "Cra 13 #93-40, Bogotá",
+      "telefono": "+57 1 618 5500",
+      "whatsapp": "573016185500",
+      "email": "ventas@fordbogota.com",
+      "horario": "Lunes-Viernes 9:00-18:30 | Sábados 10:00-15:00"
+    }
+  },
+  {
+    "id": 18,
+    "nombre": "DFSK Seres E5",
+    "tipo": "híbrido",
+    "uso": "familiar",
+    "precio": 149990000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/dfsk-e5/dfsk-ultima-portada.webp",
+    "galeria": [
+      "/img/dfsk-e5/dfsk-ultima-portada.webp",
+      "/img/dfsk-e5/dfsk-portada.webp",
+      "/img/dfsk-e5/interior-dfsk.webp",
+      "/img/dfsk-e5/motor-dfsk.webp"
+    ],
+    "descripcion": "SUV híbrido enchufable de 7 plazas con buena relación espacio-precio para familia en ciudad.",
+    "especificaciones_id": "dfsk-seres-e5",
+    "concesionario": {
+      "id": 18,
+      "nombre": "DFSK Bogotá Oficial",
+      "direccion": "Av. Américas #62-47, Bogotá",
+      "telefono": "+57 1 756 2200",
+      "whatsapp": "573017562200",
+      "email": "ventas@dfskbogota.com",
+      "horario": "Lunes-Viernes 9:00-18:00 | Sábados 10:00-14:00"
+    }
+  },
+  {
+    "id": 19,
+    "nombre": "Audi e-tron",
+    "tipo": "eléctrico",
+    "uso": "familiar",
+    "precio": 365000000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/audi-etron/audi-portada.webp",
+    "galeria": [
+      "/img/audi-etron/audi-portada.webp",
+      "/img/audi-etron/audi-diseño.webp",
+      "/img/audi-etron/audi-interior.webp",
+      "/img/audi-etron/audi-tecnologia.webp"
+    ],
+    "descripcion": "SUV eléctrico premium con quattro, disponible en versiones SUV y Sportback.",
+    "especificaciones_id": "audi-etron",
+    "concesionario": {
+      "id": 19,
+      "nombre": "Audi e-tron Bogotá",
+      "direccion": "Av. Carrera 9 #115-30, Bogotá",
+      "telefono": "+57 1 646 1101",
+      "whatsapp": "573016461101",
+      "email": "etron@audibogota.com",
+      "horario": "Lunes-Viernes 9:00-19:00 | Sábados 10:00-16:00"
+    }
+  },
+  {
+    "id": 20,
+    "nombre": "Smart #5 Eléctrico",
+    "tipo": "eléctrico",
+    "uso": "urbano",
+    "precio": 209900000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2025,
+    "imagen_principal": "/img/smart-5-electrico/smart-5-portada.webp",
+    "galeria": [
+      "/img/smart-5-electrico/smart-5-portada.webp",
+      "/img/smart-5-electrico/smart-5-diseño.webp",
+      "/img/smart-5-electrico/smart-5-interior.webp",
+      "/img/smart-5-electrico/smart-5-tecnologia.webp"
+    ],
+    "descripcion": "SUV eléctrico compacto-premium con diseño audaz y enfoque urbano conectado.",
+    "especificaciones_id": "smart-5-electrico",
+    "concesionario": {
+      "id": 20,
+      "nombre": "Smart Bogotá Oficial",
+      "direccion": "Av. 19 #120-10, Bogotá",
+      "telefono": "+57 1 742 6600",
+      "whatsapp": "573017426600",
+      "email": "ventas@smartbogota.com",
+      "horario": "Lunes-Viernes 9:00-18:00 | Sábados 10:00-14:00"
+    }
+  },
+  {
+    "id": 21,
+    "nombre": "Chery E5 Eléctrico",
+    "tipo": "eléctrico",
+    "uso": "familiar",
+    "precio": 79990000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2025,
+    "imagen_principal": "/img/chery-e5/chery-e5-portada.webp",
+    "galeria": [
+      "/img/chery-e5/chery-e5-portada.webp",
+      "/img/chery-e5/chery-e5-lateral.webp",
+      "/img/chery-e5/chery-e5-interior.webp",
+      "/img/chery-e5/chery-e5-frontal.webp"
+    ],
+    "descripcion": "SUV eléctrico accesible con buen equipamiento de serie y enfoque en eficiencia urbana.",
+    "especificaciones_id": "chery-e5",
+    "concesionario": {
+      "id": 21,
+      "nombre": "Chery Bogotá Centro",
+      "direccion": "Calle 26 #69D-91, Bogotá",
+      "telefono": "+57 1 413 8800",
+      "whatsapp": "573014138800",
+      "email": "ventas@cherybogota.com",
+      "horario": "Lunes-Viernes 9:00-18:00 | Sábados 10:00-14:00"
+    }
+  },
+  {
+    "id": 22,
+    "nombre": "Deepal S05 Eléctrico",
+    "tipo": "eléctrico",
+    "uso": "urbano",
+    "precio": 142990000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2025,
+    "imagen_principal": "/img/Deepal-S05/Deepal S05.webp",
+    "galeria": [
+      "/img/Deepal-S05/Deepal S05.webp",
+      "/img/Deepal-S05/Deepal S05 lateral.webp",
+      "/img/Deepal-S05/Deepal S05 interior.webp",
+      "/img/Deepal-S05/Deepal S05 tablero.webp"
+    ],
+    "descripcion": "SUV eléctrico moderno con enfoque en autonomía, tecnología de cabina y diseño contemporáneo.",
+    "especificaciones_id": "deepal-s05",
+    "concesionario": {
+      "id": 22,
+      "nombre": "Deepal Bogotá",
+      "direccion": "Av. Suba #114-55, Bogotá",
+      "telefono": "+57 1 539 4400",
+      "whatsapp": "573015394400",
+      "email": "ventas@deepalbogota.com",
+      "horario": "Lunes-Viernes 9:00-18:00 | Sábados 10:00-14:00"
+    }
+  },
+  {
+    "id": 23,
+    "nombre": "Ford F-150 Lobo",
+    "tipo": "gasolina",
+    "uso": "trabajo",
+    "precio": 280000000,
+    "ciudad": "medellín",
+    "condicion": "nuevo",
+    "año": 2024,
+    "imagen_principal": "/img/ford-f150/ford-f150-3.webp",
+    "galeria": [
+      "/img/ford-f150/ford-f150-3.webp",
+      "/img/ford-f150/ford-f150-4.webp",
+      "/img/ford-f150/ford-f150-2.webp",
+      "/img/ford-f150/interior-f150.webp"
+    ],
+    "descripcion": "Pickup full-size con motor turbo, capacidad de carga y tecnología SYNC para trabajo y aventura.",
+    "especificaciones_id": "ford-f150",
+    "concesionario": {
+      "id": 23,
+      "nombre": "Ford Medellín Camiones",
+      "direccion": "Cra 70 #33-15, Medellín",
+      "telefono": "+57 4 678 9013",
+      "whatsapp": "573198765433",
+      "email": "f150@fordmedellin.com",
+      "horario": "Lunes-Viernes 8:00-18:00 | Sábados 9:00-13:00"
     }
   }
 ]

@@ -132,7 +132,7 @@
       "Google integrado (Google Assistant, mapas)",
       "Conducción autónoma nivel 2 avanzada",
       "Cámara LiDAR",
-      "Climatizador personalizable",
+      "Climatizador personalizavel",
       "Cuero sostenible",
       "Sonido Harman Kardon",
       "12 airbags",
@@ -195,6 +195,211 @@
       "Control de estabilidad elección de terreno",
       "Tracción en la nieve, arena y montaña",
       "Suspensión de doble ballesta reforzada"
+    ]
+  },
+  "peugeot-e3008": {
+    "motor": "Eléctrico (RWD / AWD según versión)",
+    "potencia": "Hasta 320 hp",
+    "autonomia": "Hasta 700 km WLTP",
+    "bateria": "73 kWh / 98 kWh",
+    "traccion": "Trasera o AWD",
+    "equipamiento": [
+      "Pantalla Panoramic i-Cockpit 21\"",
+      "Carga rápida DC",
+      "ADAS Peugeot",
+      "Climatizador automático",
+      "Conectividad inalámbrica"
+    ]
+  },
+  "byd-sealion7": {
+    "motor": "Eléctrico",
+    "potencia": "Hasta 530 hp (AWD)",
+    "autonomia": "Hasta 610 km CLTC",
+    "bateria": "BYD Blade Battery",
+    "traccion": "RWD / AWD",
+    "equipamiento": [
+      "Pantalla giratoria 15.6\"",
+      "Plataforma e⁴",
+      "Carga rápida",
+      "ADAS",
+      "Iluminación ambiental"
+    ]
+  },
+  "hyundai-kona-hibrida": {
+    "motor": "Híbrido gasolina-eléctrico",
+    "potencia": "~139 hp combinados",
+    "autonomia": "Eficiencia urbana optimizada",
+    "traccion": "Delantera",
+    "equipamiento": [
+      "Apple CarPlay / Android Auto",
+      "Asistencias a la conducción",
+      "Pantalla táctil",
+      "Cámara de reversa",
+      "Control crucero"
+    ]
+  },
+  "kia-ev9": {
+    "motor": "Eléctrico",
+    "potencia": "Hasta 384 hp (AWD)",
+    "autonomia": "Largo alcance (E-GMP)",
+    "bateria": "Batería de 800 V",
+    "traccion": "RWD / AWD",
+    "equipamiento": [
+      "Tres filas de asientos",
+      "Carga ultrarrápida",
+      "Pantallas digitales",
+      "ADAS Highway Driving Pilot",
+      "Techo panorámico"
+    ]
+  },
+  "jeep-avenger": {
+    "motor": "Eléctrico",
+    "potencia": "~156 hp",
+    "autonomia": "Hasta 400 km WLTP",
+    "traccion": "Delantera",
+    "equipamiento": [
+      "Jeep Selec-Terrain",
+      "Carga DC 100 kW",
+      "Pantalla Uconnect",
+      "ADAS",
+      "Capacidad de vadeo"
+    ]
+  },
+  "mazda-ez6": {
+    "motor": "Eléctrico / extensor de rango (según versión)",
+    "potencia": "Hasta 258 hp",
+    "autonomia": "Hasta 600 km",
+    "traccion": "Trasera",
+    "equipamiento": [
+      "Diseño Kodo",
+      "Triple pantalla",
+      "Cd 0.21",
+      "Cabina silenciosa",
+      "Carga rápida"
+    ]
+  },
+  "audi-q7-hibrida": {
+    "motor": "Híbrido enchufable TFSI",
+    "potencia": "~462 hp combinados",
+    "traccion": "quattro",
+    "equipamiento": [
+      "Virtual Cockpit",
+      "MMI touch response",
+      "7 plazas",
+      "Suspensión neumática",
+      "Paquete S line (según versión)"
+    ]
+  },
+  "subaru-forester-hibrida": {
+    "motor": "Híbrido Boxer",
+    "potencia": "~194 hp combinados",
+    "traccion": "Symmetrical AWD",
+    "equipamiento": [
+      "EyeSight",
+      "X-Mode",
+      "Pantalla STARLINK",
+      "Asientos calefactables",
+      "Cámara trasera"
+    ]
+  },
+  "volvo-xc90-hibrida": {
+    "motor": "Híbrido enchufable T8",
+    "potencia": "~455 hp combinados",
+    "traccion": "AWD",
+    "equipamiento": [
+      "7 plazas",
+      "Pilot Assist",
+      "Bowers & Wilkins (opcional)",
+      "Google built-in",
+      "Acabados Nappa"
+    ]
+  },
+  "ford-escape-hibrida": {
+    "motor": "Híbrido FHEV",
+    "potencia": "~200 hp combinados",
+    "traccion": "AWD inteligente",
+    "equipamiento": [
+      "SYNC 4",
+      "Co-Pilot360",
+      "Portón eléctrico",
+      "Cámara 360 (opcional)",
+      "Cargador inalámbrico"
+    ]
+  },
+  "dfsk-seres-e5": {
+    "motor": "Híbrido enchufable",
+    "potencia": "~218 hp combinados",
+    "traccion": "Delantera",
+    "equipamiento": [
+      "7 plazas",
+      "Pantalla central",
+      "Cámara 360",
+      "Conectividad",
+      "Control de estabilidad"
+    ]
+  },
+  "audi-etron": {
+    "motor": "Dual motor eléctrico",
+    "potencia": "Hasta 408 hp",
+    "autonomia": "Hasta 436 km WLTP",
+    "traccion": "quattro",
+    "equipamiento": [
+      "Matrix LED",
+      "Virtual Cockpit",
+      "Carga rápida DC",
+      "Suspensión neumática",
+      "Sonido Bang & Olufsen (opcional)"
+    ]
+  },
+  "smart-5-electrico": {
+    "motor": "Eléctrico",
+    "potencia": "Hasta 340 hp (AWD)",
+    "autonomia": "Largo alcance urbano-SUV",
+    "traccion": "RWD / AWD",
+    "equipamiento": [
+      "Pantalla OLED",
+      "ADAS",
+      "Diseño compacto-premium",
+      "Carga rápida",
+      "Conectividad 5G"
+    ]
+  },
+  "chery-e5": {
+    "motor": "Eléctrico",
+    "potencia": "~204 hp",
+    "autonomia": "Autonomía urbana extendida",
+    "traccion": "Delantera",
+    "equipamiento": [
+      "Pantalla táctil",
+      "ADAS básico",
+      "Cámara trasera",
+      "Apple CarPlay",
+      "Carga AC/DC"
+    ]
+  },
+  "deepal-s05": {
+    "motor": "Eléctrico",
+    "potencia": "~258 hp",
+    "autonomia": "Competitiva en segmento SUV",
+    "traccion": "Trasera / AWD",
+    "equipamiento": [
+      "Cabina digital",
+      "Carga rápida",
+      "ADAS",
+      "Techo panorámico",
+      "Conectividad inteligente"
+    ]
+  },
+  "ford-f150": {
+    "motor": "V6 EcoBoost turbo",
+    "potencia": "~400 hp",
+    "traccion": "4x4",
+    "equipamiento": [
+      "SYNC 4",
+      "Pro Power Onboard",
+      "Asistencias Ford Co-Pilot360",
+      "Caja amplia",
+      "Modos de manejo"
     ]
   }
 }

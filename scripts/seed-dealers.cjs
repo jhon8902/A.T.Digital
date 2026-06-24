@@ -1,6 +1,11 @@
 require("dotenv").config();
 const { randomBytes, scryptSync } = require("node:crypto");
+const { readFileSync } = require("node:fs");
+const { join } = require("node:path");
 const { Pool } = require("pg");
+
+const DEFAULT_PASSWORD = process.env.SEED_DEALER_PASSWORD || "demo123";
+const COMMISSION_RATE = Number(process.env.SEED_DEALER_COMMISSION || "50000");
 
 function hashPassword(password) {
   const salt = randomBytes(16).toString("hex");
@@ -8,34 +13,75 @@ function hashPassword(password) {
   return `${salt}:${hash}`;
 }
 
-const DEALERS = [
-  {
-    name: "Renault Bogotá Centro",
-    email: "ventas@renaultbogota.com",
-    password: "demo123",
-    phone: "+57 1 234 5678",
-    whatsapp: "573001234567",
-    city: "Bogotá",
-    commission_rate: 50000,
-    vehicles: [{ auto_id: "1", brand: "Renault", model: "Megane E-Tech" }],
-  },
-  {
-    name: "BMW Medellín Premium",
-    email: "ventas@bmwmedellin.com",
-    password: "demo123",
-    phone: "+57 4 567 8901",
-    whatsapp: "573105678901",
-    city: "Medellín",
-    commission_rate: 50000,
-    vehicles: [{ auto_id: "2", brand: "BMW", model: "330e" }],
-  },
-];
+function loadCatalogAutos() {
+  const catalogPath = join(__dirname, "..", "src", "data", "automatch", "autos.json");
+  const raw = readFileSync(catalogPath, "utf8");
+  const autos = JSON.parse(raw);
+
+  if (!Array.isArray(autos) || autos.length === 0) {
+    throw new Error("autos.json no contiene vehículos para sembrar concesionarios.");
+  }
+
+  return autos;
+}
+
+function cityFromAuto(auto) {
+  const dealerCity = auto.concesionario?.direccion || "";
+  const ciudad = String(auto.ciudad || "")
+    .trim()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+
+  if (/bogot/i.test(dealerCity) || /bogot/i.test(ciudad)) return "Bogotá";
+  if (/medell/i.test(dealerCity) || /medell/i.test(ciudad)) return "Medellín";
+  if (/cali/i.test(dealerCity) || /cali/i.test(ciudad)) return "Cali";
+  if (/barranquilla/i.test(dealerCity) || /barranquilla/i.test(ciudad)) {
+    return "Barranquilla";
+  }
+
+  return ciudad || "Colombia";
+}
+
+function brandFromNombre(nombre = "") {
+  return String(nombre).trim().split(/\s+/)[0] || "Marca";
+}
+
+function buildDealersFromCatalog(autos) {
+  const dealers = [];
+
+  for (const auto of autos) {
+    const dealer = auto.concesionario;
+    if (!dealer?.email) {
+      throw new Error(
+        `El vehículo id=${auto.id} (${auto.nombre}) no tiene email de concesionario.`,
+      );
+    }
+
+    dealers.push({
+      catalogAutoId: String(auto.id),
+      name: dealer.nombre,
+      email: dealer.email,
+      password: DEFAULT_PASSWORD,
+      phone: dealer.telefono || null,
+      whatsapp: dealer.whatsapp || null,
+      city: cityFromAuto(auto),
+      commission_rate: COMMISSION_RATE,
+      brand: brandFromNombre(auto.nombre),
+      model: auto.nombre,
+    });
+  }
+
+  return dealers;
+}
 
 async function main() {
-  const connectionString = process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL;
+  const connectionString =
+    process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL;
   if (!connectionString) {
     throw new Error("DATABASE_URL no está definido.");
   }
+
+  const autos = loadCatalogAutos();
+  const dealers = buildDealersFromCatalog(autos);
 
   const pool = new Pool({
     connectionString,
@@ -45,7 +91,7 @@ async function main() {
   });
 
   try {
-    for (const dealer of DEALERS) {
+    for (const dealer of dealers) {
       const password_hash = hashPassword(dealer.password);
       const inserted = await pool.query(
         `INSERT INTO dealers (name, email, password_hash, phone, whatsapp, city, commission_rate)
@@ -72,22 +118,22 @@ async function main() {
 
       const dealerId = inserted.rows[0].id;
 
-      for (const vehicle of dealer.vehicles) {
-        await pool.query(
-          `INSERT INTO dealer_vehicles (dealer_id, auto_id, brand, model, active)
-           VALUES ($1, $2, $3, $4, true)
-           ON CONFLICT (dealer_id, auto_id) DO UPDATE SET
-             brand = EXCLUDED.brand,
-             model = EXCLUDED.model,
-             active = true`,
-          [dealerId, vehicle.auto_id, vehicle.brand, vehicle.model],
-        );
-      }
+      await pool.query(
+        `INSERT INTO dealer_vehicles (dealer_id, auto_id, brand, model, active)
+         VALUES ($1, $2, $3, $4, true)
+         ON CONFLICT (dealer_id, auto_id) DO UPDATE SET
+           brand = EXCLUDED.brand,
+           model = EXCLUDED.model,
+           active = true`,
+        [dealerId, dealer.catalogAutoId, dealer.brand, dealer.model],
+      );
 
-      console.log(`Dealer listo: ${dealer.email} (id ${dealerId})`);
+      console.log(
+        `Dealer listo: ${dealer.email} (id ${dealerId}) → auto_id ${dealer.catalogAutoId}`,
+      );
     }
 
-    console.log("SEED_DEALERS_OK");
+    console.log(`SEED_DEALERS_OK (${dealers.length} concesionarios)`);
   } finally {
     await pool.end();
   }

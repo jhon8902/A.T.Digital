@@ -424,8 +424,14 @@ const cloudinaryFolder =
           <fieldset id="automatchCatalogGroup" class="group-box automatch-catalog-box" hidden>
             <legend>Datos para el buscador AutoMatch</legend>
             <p class="storage-tip">
-              Estos campos alimentan <strong>/automatch-find</strong>. El tipo
-              de motor es obligatorio para aparecer en búsquedas filtradas.
+              Estos campos alimentan <strong>/automatch-find</strong>. Tipo, uso,
+              condición, ciudad y precio definen el match. Si el título coincide
+              con un modelo del catálogo base, estos valores tienen prioridad.
+            </p>
+            <p class="storage-tip">
+              Tras cambios en el catálogo base (JSON), ejecuta
+              <code>npm run catalog:seed-dealers</code> para sincronizar
+              concesionarios y leads en la base de datos.
             </p>
             <div class="grid-2">
               <label>

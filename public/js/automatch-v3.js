@@ -422,8 +422,10 @@ function setupGaleria() {
   let currentIndex = 0;
 
   const showImage = (index) => {
-    images.forEach(img => img.classList.add("hidden"));
-    images[index].classList.remove("hidden");
+    images.forEach((img, i) => {
+      img.classList.toggle("visible", i === index);
+      img.classList.toggle("hidden", i !== index);
+    });
     dots.forEach(dot => dot.classList.remove("active"));
     dots[index].classList.add("active");
     currentIndex = index;
