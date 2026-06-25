@@ -1,6 +1,6 @@
 ---
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
-import { getNewsCardTitle, usesCompactNewsCardTitle } from "../../lib/editorial";
+import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
 import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
@@ -192,7 +192,7 @@ try {
           "/img/default.jpg",
         alt: note.title || "nota",
         title: note.title || "Sin título",
-        description: note.subtitle || "",
+        description: getNewsCardDeck(note.title, note.subtitle),
         editor: note.editor || "Jhon Aparicio",
         source_scope: note.source_scope || "nacional",
         fecha: formatNotePublishedLabel(note),
@@ -240,7 +240,6 @@ const paginatedNotes = archiveNotes.slice(
 );
 
 const isNoticiasArchive = normalizeCategory(category) === "noticias";
-const useCompactCardTitle = usesCompactNewsCardTitle(category);
 
 function pageHref(page: number) {
   return page <= 1 ? "?" : `?page=${page}`;
@@ -272,11 +271,7 @@ function pageHref(page: number) {
               <span class={sourceScopeClass(note.source_scope)}>
                 {sourceScopeLabel(note.source_scope)}
               </span>
-              <h2>
-                {useCompactCardTitle
-                  ? getNewsCardTitle(note.title)
-                  : note.title}
-              </h2>
+              <h2>{getNewsCardTitle(note.title)}</h2>
               <p class="archivo-date">
                 <i class="fa-regular fa-user" aria-hidden="true" />
                 <span class="meta-author">

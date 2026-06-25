@@ -24,11 +24,19 @@ export function getNewsTitleHook(fullTitle: string): string | null {
   return hook.length > 0 ? hook : null;
 }
 
-export function usesCompactNewsCardTitle(category?: string): boolean {
-  const normalized = (category || "")
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+/**
+ * Entradilla para tarjetas: subtítulo del formulario o gancho del título.
+ */
+export function getNewsCardDeck(
+  fullTitle: string,
+  subtitle?: string | null,
+): string {
+  const fromSubtitle = (subtitle || "").trim();
+  if (fromSubtitle) return fromSubtitle;
+  return getNewsTitleHook(fullTitle) || "";
+}
 
-  return normalized === "noticias" || normalized === "lanzamientos";
+/** @deprecated Todas las tarjetas usan título corto; se mantiene por compatibilidad. */
+export function usesCompactNewsCardTitle(_category?: string): boolean {
+  return true;
 }

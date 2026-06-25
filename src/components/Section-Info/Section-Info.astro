@@ -1,6 +1,9 @@
 ---
 import { getApiUrl, fetchWithTimeout } from "../../lib/api";
-import { getNewsCardTitle } from "../../lib/editorial";
+import {
+  getNewsCardDeck,
+  getNewsCardTitle,
+} from "../../lib/editorial";
 import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
@@ -155,6 +158,7 @@ try {
       img: note.image1 || extractFirstImage(note.content) || "/img/default.jpg",
       alt: note.title,
       caption: note.title,
+      subtitle: note.subtitle || "",
       fecha: formatNotePublishedLabel(note),
       editor: note.editor || "Jhon Aparicio",
       source_scope: normalizeSourceScope(note.source_scope),
@@ -278,6 +282,13 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
                     </span>
                   </div>
                   <h3 class="news-title">{getNewsCardTitle(nota.caption)}</h3>
+                  {
+                    getNewsCardDeck(nota.caption, nota.subtitle) && (
+                      <p class="news-deck">
+                        {getNewsCardDeck(nota.caption, nota.subtitle)}
+                      </p>
+                    )
+                  }
                   <p class="news-date">
                     <i class="fa-regular fa-user" aria-hidden="true" />
                     <span class="meta-author">
@@ -718,6 +729,18 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     color: #ffffff;
   }
 
+  .news-card--featured .news-deck {
+    color: rgba(255, 255, 255, 0.94);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    font-weight: 500;
+    margin: 0.15rem 0 0.35rem;
+    text-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.45),
+      0 0 8px rgba(0, 0, 0, 0.25);
+    -webkit-line-clamp: 3;
+  }
+
   .news-card--featured .news-date {
     color: #d1d5db;
   }
@@ -830,6 +853,19 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     line-height: 1.4;
     margin: 0;
     font-family: "Georgia", serif;
+  }
+
+  .news-deck {
+    font-size: 1.02rem;
+    line-height: 1.52;
+    color: #333;
+    margin: 0.4rem 0 0.15rem;
+    font-family: "Source Sans 3", sans-serif;
+    font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .news-date {
@@ -1012,6 +1048,15 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
       text-shadow: none;
     }
 
+    .news-card--featured .news-deck {
+      color: #3a3a3a;
+      font-size: 1rem;
+      line-height: 1.5;
+      text-shadow: none;
+      margin: 0.35rem 0 0.5rem;
+      -webkit-line-clamp: 3;
+    }
+
     .news-card--featured .news-date {
       color: #555;
       text-shadow: none;
@@ -1034,6 +1079,10 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
 
     .news-title {
       font-size: 1.2rem;
+    }
+
+    .news-deck {
+      font-size: 0.98rem;
     }
   }
 
@@ -1155,9 +1204,9 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
       color: #ffffff;
       background: linear-gradient(
         90deg,
-        rgba(0, 0, 0, 0.34) 0%,
-        rgba(0, 0, 0, 0.18) 58%,
-        rgba(0, 0, 0, 0) 100%
+        rgba(0, 0, 0, 0.52) 0%,
+        rgba(0, 0, 0, 0.28) 55%,
+        rgba(0, 0, 0, 0.06) 100%
       );
       display: flex;
       flex-direction: column;
@@ -1177,12 +1226,25 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
       color: #ffffff;
       font-size: clamp(2.1rem, 3.15vw, 2.95rem);
       line-height: 1.15;
-      margin-bottom: 18px;
+      margin-bottom: 12px;
       text-shadow:
         0 1px 2px rgba(0, 0, 0, 0.22),
         0 0 4px rgba(0, 0, 0, 0.12);
       font-weight: 800;
       letter-spacing: 0.5px;
+    }
+
+    .news-card--featured .news-deck {
+      color: rgba(255, 255, 255, 0.96);
+      font-size: clamp(1.08rem, 1.45vw, 1.32rem);
+      line-height: 1.55;
+      font-weight: 500;
+      max-width: min(52ch, 92%);
+      margin: 0 0 16px;
+      text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.5),
+        0 0 10px rgba(0, 0, 0, 0.28);
+      -webkit-line-clamp: 3;
     }
 
     .news-card--featured .news-date {
@@ -1267,6 +1329,13 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     .news-card:not(.news-card--featured):not(.news-card--insight) .news-title {
       font-size: 1.6rem;
       line-height: 1.35;
+    }
+
+    .news-card:not(.news-card--featured):not(.news-card--insight) .news-deck {
+      font-size: 1.08rem;
+      line-height: 1.55;
+      color: #2f2f2f;
+      margin: 0.35rem 0 0.2rem;
     }
 
     .news-card--insight .news-title {
@@ -1374,6 +1443,14 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
       color: #111111;
       line-height: 1.2;
       text-shadow: none;
+    }
+
+    .news-card--featured .news-deck {
+      color: #333;
+      font-size: 1.02rem;
+      line-height: 1.5;
+      text-shadow: none;
+      margin: 0 0 10px;
     }
 
     .news-card--featured .news-date {

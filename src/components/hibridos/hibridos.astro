@@ -4,6 +4,7 @@ import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
 } from "../../lib/note-scheduling";
+import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
 
 type HibridoItem = {
   href: string;
@@ -151,7 +152,7 @@ try {
           img: normalizeImg(portada),
           alt: note.title,
           title: note.title,
-          description: note.subtitle || "",
+          description: getNewsCardDeck(note.title, note.subtitle),
           fecha: formatNotePublishedLabel(note),
           editor: note.editor || "Jhon Aparicio",
           source_scope: normalizeSourceScope(note.source_scope),
@@ -305,14 +306,18 @@ const allHibridos = [...dynamicHibridos, ...deduplicatedStaticHibridos]
                     )}
                   </div>
                   <h3>
-                    <a href={nota.href}>{nota.title}</a>
+                    <a href={nota.href}>{getNewsCardTitle(nota.title)}</a>
                   </h3>
                   <div class="hibrido-chips">
                     {chips.map((chip) => (
                       <span class="hibrido-chip">{chip}</span>
                     ))}
                   </div>
-                  <p class="hibrido-desc">{nota.description}</p>
+                  {
+                    nota.description && (
+                      <p class="hibrido-desc">{nota.description}</p>
+                    )
+                  }
                   <div class="hibrido-card__actions">
                     <a href={nota.href} class="hibrido-card__cta">
                       Ver ficha

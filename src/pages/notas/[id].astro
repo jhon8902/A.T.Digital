@@ -7,7 +7,6 @@ import { getDealerForNote, type NoteDealerInfo } from "../../lib/leads";
 import {
   getNewsCardTitle,
   getNewsTitleHook,
-  usesCompactNewsCardTitle,
 } from "../../lib/editorial";
 import { formatNotePublishDateLong, getNotePublishDate } from "../../lib/note-scheduling";
 import { buildNewsArticleJsonLd } from "../../lib/note-seo";
@@ -408,14 +407,8 @@ const normalizedTitle = (note?.title || "")
   .toLowerCase()
   .normalize("NFD")
   .replace(/[\u0300-\u036f]/g, "");
-const useCompactTitle = usesCompactNewsCardTitle(note?.category);
-const displayTitle = useCompactTitle
-  ? getNewsCardTitle(note?.title || "")
-  : note?.title || "";
-const displayLead =
-  note?.subtitle?.trim() ||
-  (useCompactTitle ? getNewsTitleHook(note?.title || "") : null) ||
-  "";
+const displayTitle = note?.title?.trim() || "";
+const displayLead = note?.subtitle?.trim() || "";
 const useSmartImageFrame =
   normalizedTitle.includes("smart #5") || normalizedTitle.includes("smart 5");
 
@@ -437,7 +430,7 @@ const articleJsonLd = note
       siteUrl,
       description: noteDescription,
       coverImage,
-      headline: displayTitle || note.title,
+      headline: note.title,
     })
   : undefined;
 const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
@@ -548,7 +541,7 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
           {
             technicalSpecCards.length > 0 && (
               <section class="ficha-tecnica-profesional">
-                <h2>Ficha Técnica Completa - {note.title}</h2>
+                <h2>Ficha Técnica Completa — {getNewsCardTitle(note.title)}</h2>
                 <div class="ficha-grid">
                   {technicalSpecCards.map((item) => (
                     <div class={`ficha-item ${item.className || ""}`.trim()}>

@@ -4,6 +4,7 @@ import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
 } from "../../lib/note-scheduling";
+import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
 
 type LanzamientoItem = {
   href: string;
@@ -130,7 +131,7 @@ try {
         img: normalizeImg(note.image1 || "/img/default.jpg"),
         alt: note.title,
         title: note.title,
-        description: note.subtitle || "",
+        description: getNewsCardDeck(note.title, note.subtitle),
         fecha: formatNotePublishedLabel(note),
         editor: note.editor || "Jhon Aparicio",
         source_scope: normalizeSourceScope(note.source_scope),
@@ -280,9 +281,13 @@ const homeLanzamientos = [
                     )}
                   </div>
                   <h3>
-                    <a href={nota.href}>{nota.title}</a>
+                    <a href={nota.href}>{getNewsCardTitle(nota.title)}</a>
                   </h3>
-                  <p class="lanzamiento-desc">{nota.description}</p>
+                  {
+                    nota.description && (
+                      <p class="lanzamiento-desc">{nota.description}</p>
+                    )
+                  }
                   <div class="lanzamiento-item__actions">
                     <a href={nota.href} class="lanzamiento-item__cta">
                       Ver lanzamiento →
