@@ -766,6 +766,17 @@ input::placeholder {
   box-shadow: 0 6px 16px rgba(27, 94, 63, 0.4);
 }
 
+.btn-contact.btn-ficha {
+  background: linear-gradient(135deg, #f4c430, #d4a017);
+  color: #1a1a2e;
+  box-shadow: 0 4px 12px rgba(244, 196, 48, 0.35);
+}
+
+.btn-contact.btn-ficha:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(244, 196, 48, 0.45);
+}
+
 /* ========== FORMULARIO TEST DRIVE ========== */
 .formulario-test-drive {
   margin-top: 2rem;
@@ -904,50 +915,72 @@ input::placeholder {
   width: 100%;
   height: 280px;
   object-fit: cover;
+  display: block;
+}
+
+.auto-alternativa__media {
+  display: block;
+  text-decoration: none;
+}
+
+.auto-alternativa__body {
+  padding: 1rem;
 }
 
 .auto-alternativa h4 {
-  padding: 1rem 1rem 0 1rem;
+  padding: 0;
   color: #1a1a2e;
   font-size: 1.05rem;
   margin: 0;
 }
 
 .auto-alternativa .tipo-uso {
-  padding: 0 1rem;
+  padding: 0;
   color: #666;
   font-size: 0.85rem;
   margin: 0.3rem 0;
 }
 
 .auto-alternativa .precio {
-  padding: 0 1rem;
+  padding: 0;
   color: #08341f;
   font-weight: 700;
   margin: 0.5rem 0;
 }
 
-.auto-alternativa details {
-  padding: 1rem;
-}
-
-.auto-alternativa summary {
-  cursor: pointer;
-  color: #08341f;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: color 0.3s ease;
-}
-
-.auto-alternativa summary:hover {
-  color: #0a4228;
-}
-
-.auto-alternativa details p {
-  margin: 0.8rem 0;
+.auto-alternativa__desc {
+  margin: 0.75rem 0 1rem;
   color: #666;
   font-size: 0.9rem;
   line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.auto-alternativa__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.btn-ficha-small {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  background: linear-gradient(135deg, #f4c430, #d4a017);
+  color: #1a1a2e !important;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.btn-ficha-small:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(244, 196, 48, 0.35);
 }
 
 .btn-contact-small {

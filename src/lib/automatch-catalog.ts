@@ -1,5 +1,6 @@
 import catalogData from "../data/automatch/autos.json";
 import specsData from "../data/automatch/specs.json";
+import { resolveAutomatchFichaHref } from "./automatch-fichas";
 
 export interface AutomatchDbNote {
   id: number | string;
@@ -70,6 +71,7 @@ export interface AutomatchCatalogVehicle {
   noteId?: number;
   catalogId?: number;
   source: "catalog" | "note" | "merged";
+  fichaHref?: string | null;
   concesionario: AutomatchConcesionario;
 }
 
@@ -486,7 +488,9 @@ function catalogAutoToVehicle(
   dealerLinks: DealerCatalogLink[],
 ): AutomatchCatalogVehicle {
   const gallery = uniqueUrls(
-    auto.galeria?.length ? auto.galeria : [auto.imagen_principal],
+    [auto.imagen_principal, ...(auto.galeria?.length ? auto.galeria : [])].filter(
+      Boolean,
+    ) as string[],
   );
 
   let vehicle: AutomatchCatalogVehicle = {
@@ -524,6 +528,8 @@ function catalogAutoToVehicle(
     const catalog = resolveCatalogFromNote(matchedNote);
     vehicle = applyCatalogFields(vehicle, catalog);
   }
+
+  vehicle.fichaHref = resolveAutomatchFichaHref(vehicle);
 
   return vehicle;
 }
@@ -577,6 +583,7 @@ function noteToVehicle(
   };
 
   vehicle = applyDealerLink(vehicle, dealerLink);
+  vehicle.fichaHref = resolveAutomatchFichaHref(vehicle);
   return vehicle;
 }
 

@@ -3,6 +3,65 @@ import { rankVehicles, buildMatchSummary } from "./automatch-match.js";
 
 console.log("AutoMatch v3 cargado.");
 
+const FICHA_HREFS = {
+  "renault-megane": "/notas-electricos/nota-renault-megane",
+  "bmw-330e": "/noticias-carrusel/noticia-bmw",
+  "mini-cooper-se": "/notas-electricos/nota-mini-cooper",
+  "toyota-prado": "/noticias-nacionales/noticia-toyota-prado",
+  "volvo-ex90": "/notas-electricos/nota-volvo-ex90",
+  "nissan-xtrail": "/notas-hibridos/nota-nissan",
+  "ford-bronco": "/noticias-carrusel/noticia-ford",
+  "peugeot-e3008": "/notas-electricos/nota-peugeot-e3008",
+  "byd-sealion7": "/notas-electricos/nota-byd-sealion7",
+  "hyundai-kona-hibrida": "/notas-hibridos/nota-kona",
+  "kia-ev9": "/noticias-nacionales/noticia-kia-ev9",
+  "jeep-avenger": "/noticias-nacionales/noticia-jeep-avenger",
+  "mazda-ez6": "/noticias-nacionales/noticia-mazda-ez6",
+  "audi-q7-hibrida": "/notas-hibridos/nota-audi-q7",
+  "subaru-forester-hibrida": "/notas-hibridos/nota-subaru",
+  "volvo-xc90-hibrida": "/notas-hibridos/nota-volvo-cx90",
+  "ford-escape-hibrida": "/notas-hibridos/nota-scape",
+  "dfsk-seres-e5": "/noticias-carrusel/noticia-dfsk",
+  "audi-etron": "/noticias-carrusel/noticia-audi",
+  "ford-f150": "/noticias-nacionales/noticia-ford-f150",
+};
+
+function resolveFichaHref(auto) {
+  if (auto?.fichaHref) return auto.fichaHref;
+  const staticHref = auto?.especificaciones_id
+    ? FICHA_HREFS[auto.especificaciones_id]
+    : null;
+  if (staticHref) return staticHref;
+  if (auto?.noteId) return `/notas/${auto.noteId}`;
+  return null;
+}
+
+function encodeImgSrc(src = "") {
+  if (!src || !src.includes(" ")) return src;
+  return src
+    .split("/")
+    .map((segment) => {
+      if (!segment || segment.includes(":")) return segment;
+      try {
+        return encodeURIComponent(decodeURIComponent(segment));
+      } catch {
+        return encodeURIComponent(segment);
+      }
+    })
+    .join("/");
+}
+
+function buildGalleryImages(auto) {
+  const images = [
+    auto?.imagen_principal,
+    ...(Array.isArray(auto?.galeria) ? auto.galeria : []),
+  ]
+    .filter(Boolean)
+    .map(encodeImgSrc);
+
+  return [...new Set(images)];
+}
+
 // ========== GESTOR DE PERFIL ==========
 class UserProfile {
   constructor() {
@@ -231,9 +290,11 @@ if (form) {
 function mostrarResultado(auto, specs, matchPercentage, breakdown = [], matchSummary = "") {
   const condicionBadge = auto.condicion === "nuevo" ? "Nuevo (0 km)" :
                          auto.condicion === "seminuevo" ? "Seminuevo" : "Usado certificado";
+  const galleryImages = buildGalleryImages(auto);
+  const fichaHref = resolveFichaHref(auto);
 
-  const galeriaHTML = auto.galeria.map((img, idx) => `
-    <img src="${img}" alt="${auto.nombre}" class="galeria-img ${idx === 0 ? 'visible' : 'hidden'}" loading="lazy">
+  const galeriaHTML = galleryImages.map((img, idx) => `
+    <img src="${img}" alt="${auto.nombre}" class="galeria-img ${idx === 0 ? 'visible' : 'hidden'}" loading="eager" decoding="async">
   `).join("");
 
   const breakdownHTML = breakdown.length
@@ -275,7 +336,7 @@ function mostrarResultado(auto, specs, matchPercentage, breakdown = [], matchSum
           <button type="button" class="galeria-prev" aria-label="Imagen anterior"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
           <button type="button" class="galeria-next" aria-label="Imagen siguiente"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
           <div class="galeria-dots">
-            ${auto.galeria.map((_, idx) => `<span class="dot ${idx === 0 ? 'active' : ''}" data-index="${idx}"></span>`).join("")}
+            ${galleryImages.map((_, idx) => `<span class="dot ${idx === 0 ? 'active' : ''}" data-index="${idx}"></span>`).join("")}
           </div>
         </div>
       </div>
@@ -327,6 +388,10 @@ function mostrarResultado(auto, specs, matchPercentage, breakdown = [], matchSum
           <p><i class="fa-regular fa-clock" aria-hidden="true"></i> ${auto.concesionario.horario}</p>
           
           <div class="botones-contacto">
+            ${fichaHref ? `
+            <a href="${fichaHref}" class="btn-contact btn-ficha">
+              <i class="fa-solid fa-file-lines" aria-hidden="true"></i> Ver ficha completa
+            </a>` : ""}
             <a href="https://wa.me/${auto.concesionario.whatsapp}?text=Hola,%20me%20interesa%20el%20${encodeURIComponent(auto.nombre)}" 
                class="btn-contact whatsapp" target="_blank">
               <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp
@@ -393,22 +458,29 @@ function mostrarAlternativas(alternativas, specs) {
   contenedor.innerHTML = `
     <h3><i class="fa-solid fa-car-rear" aria-hidden="true"></i> Otras opciones que también te pueden interesar</h3>
     <div class="alternativas-grid">
-      ${alternativas.map(auto => `
+      ${alternativas.map(auto => {
+        const fichaHref = resolveFichaHref(auto);
+        const imagen = encodeImgSrc(auto.imagen_principal);
+        return `
         <div class="auto-alternativa">
-          <img src="${auto.imagen_principal}" alt="${auto.nombre}" loading="lazy">
-          <h4>${auto.nombre}</h4>
-          <p class="tipo-uso">${auto.tipo} | ${auto.uso}</p>
-          <p class="precio">$${auto.precio.toLocaleString()} COP</p>
-          <details>
-            <summary>Ver detalles</summary>
-            <p>${auto.descripcion}</p>
-            <a href="https://wa.me/${auto.concesionario.whatsapp}?text=Hola,%20me%20interesa%20el%20${encodeURIComponent(auto.nombre)}" 
-               class="btn-contact-small whatsapp" target="_blank">
-              Contactar
-            </a>
-          </details>
-        </div>
-      `).join("")}
+          ${fichaHref ? `<a href="${fichaHref}" class="auto-alternativa__media">` : '<div class="auto-alternativa__media">'}
+            <img src="${imagen}" alt="${auto.nombre}" loading="lazy">
+          ${fichaHref ? "</a>" : "</div>"}
+          <div class="auto-alternativa__body">
+            <h4>${auto.nombre}</h4>
+            <p class="tipo-uso">${auto.tipo} | ${auto.uso}</p>
+            <p class="precio">$${auto.precio.toLocaleString()} COP</p>
+            <p class="auto-alternativa__desc">${auto.descripcion}</p>
+            <div class="auto-alternativa__actions">
+              ${fichaHref ? `<a href="${fichaHref}" class="btn-ficha-small">Ver ficha completa</a>` : ""}
+              <a href="https://wa.me/${auto.concesionario.whatsapp}?text=Hola,%20me%20interesa%20el%20${encodeURIComponent(auto.nombre)}" 
+                 class="btn-contact-small whatsapp" target="_blank" rel="noopener">
+                Contactar
+              </a>
+            </div>
+          </div>
+        </div>`;
+      }).join("")}
     </div>
   `;
   resultado.appendChild(contenedor);
