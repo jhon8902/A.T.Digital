@@ -21,6 +21,7 @@ export const STATIC_SITEMAP_PATHS = [
   "/buscar",
   "/tendencias-del-sector",
   "/automatch",
+  "/automatch/archivo",
   "/automatch-find",
   "/notas-electricos/nota-byd-sealion7",
   "/notas-electricos/nota-mini-cooper",

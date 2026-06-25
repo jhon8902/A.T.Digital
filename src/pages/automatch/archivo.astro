@@ -1,11 +1,11 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import AutoMatch from "../components/automatch/automatch.astro";
-import { getApiUrl, fetchWithTimeout } from "../lib/api";
+import Layout from "../../layouts/Layout.astro";
+import AutoMatch from "../../components/automatch/automatch.astro";
+import { getApiUrl, fetchWithTimeout } from "../../lib/api";
 import {
   buildAutomatchCarousel,
   type AutomatchDbNote,
-} from "../lib/automatch-catalog";
+} from "../../lib/automatch-catalog";
 
 let autos: ReturnType<typeof buildAutomatchCarousel> = [];
 
@@ -39,17 +39,43 @@ try {
 ---
 
 <Layout
-  title="AutoMatch | Encuentra tu auto ideal en Colombia"
-  description="Compara modelos eléctricos, híbridos y más con AutoMatch. Fichas destacadas y buscador inteligente en Colombia."
+  title="AutoMatch | Archivo de Fichas"
+  description="Archivo de fichas AutoMatch con tarjetas y carruseles para seguir explorando modelos."
 >
-  <section class="automatch-landing">
-    <AutoMatch autos={autos} mode="home" />
+  <section class="automatch-archivo">
+    <p class="automatch-archivo__back">
+      <a href="/automatch">
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        Volver a AutoMatch
+      </a>
+    </p>
+    <AutoMatch autos={autos} mode="archive" />
   </section>
 </Layout>
 
 <style>
-  .automatch-landing {
+  .automatch-archivo {
     background: white;
-    padding: 0;
+    padding: 0.5rem 0 1.5rem;
+  }
+
+  .automatch-archivo__back {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.25rem 0;
+  }
+
+  .automatch-archivo__back a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: #08341f;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .automatch-archivo__back a:hover {
+    color: #0a4228;
+    text-decoration: underline;
   }
 </style>
