@@ -20,6 +20,9 @@ export const AUTOMATCH_FICHA_HREFS: Record<string, string> = {
   "dfsk-seres-e5": "/noticias-carrusel/noticia-dfsk",
   "audi-etron": "/noticias-carrusel/noticia-audi",
   "ford-f150": "/noticias-nacionales/noticia-ford-f150",
+  "smart-5-electrico": "/notas-electricos/nota-smart-5",
+  "chery-e5": "/notas-electricos/nota-chery-e5",
+  "deepal-s05": "/notas-electricos/nota-deepal-s05",
 };
 
 export function resolveAutomatchFichaHref(vehicle: {

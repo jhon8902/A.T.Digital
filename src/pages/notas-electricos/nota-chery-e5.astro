@@ -1,0 +1,103 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import RelatedNotes from "../notas/RelatedNotes.astro";
+---
+
+<Layout
+  title="Chery E5 Eléctrico | Ficha AutoMatch"
+  description="SUV eléctrico Chery E5: opción accesible con buen equipamiento y autonomía competitiva en Colombia."
+  bodyClass="otras-page"
+>
+  <section class="ficha-electrica">
+    <header class="ficha-electrica__header">
+      <h1>Chery E5 Eléctrico</h1>
+      <p>
+        SUV eléctrico accesible con buen equipamiento de serie, autonomía de
+        hasta 422 km (NEDC) y enfoque en eficiencia urbana.
+      </p>
+    </header>
+
+    <img
+      class="ficha-electrica__hero"
+      src="/img/chery-e5/chery-e5-portada.webp"
+      alt="Chery E5 Eléctrico"
+      loading="eager"
+    />
+
+    <div class="ficha-electrica__grid">
+      <article>
+        <h2>Motorización</h2>
+        <p>100% eléctrico. Aproximadamente 204 hp.</p>
+      </article>
+      <article>
+        <h2>Autonomía</h2>
+        <p>Hasta 422 km por carga (ciclo NEDC).</p>
+      </article>
+      <article>
+        <h2>Equipamiento</h2>
+        <ul>
+          <li>Pantalla táctil</li>
+          <li>ADAS básico</li>
+          <li>Apple CarPlay</li>
+          <li>Carga AC/DC</li>
+        </ul>
+      </article>
+      <article>
+        <h2>Precio referencia CO</h2>
+        <p>Desde $79.990.000 COP (versión Comfort).</p>
+      </article>
+    </div>
+  </section>
+
+  <RelatedNotes currentId={"chery-e5"} category={"electricos"} />
+</Layout>
+
+<style>
+  .ficha-electrica {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3rem;
+  }
+
+  .ficha-electrica__header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .ficha-electrica__header h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .ficha-electrica__hero {
+    width: 100%;
+    max-height: 520px;
+    object-fit: cover;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .ficha-electrica__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .ficha-electrica__grid article {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 0.75rem;
+    padding: 1rem 1.1rem;
+  }
+
+  .ficha-electrica__grid h2 {
+    font-size: 1rem;
+    color: #08341f;
+    margin-bottom: 0.5rem;
+  }
+
+  .ficha-electrica__grid ul {
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+</style>
