@@ -1,6 +1,12 @@
 ---
-import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import { resolveSiteNotes, type SiteNote } from "../../lib/api";
 import { getNotePublishTimestamp } from "../../lib/note-scheduling";
+
+interface Props {
+  notes?: SiteNote[];
+}
+
+const { notes: prefetchedNotes } = Astro.props;
 
 type PruebaItem = {
   title: string;
@@ -66,10 +72,9 @@ const staticPruebas: PruebaItem[] = [
 let dynamicPruebas: PruebaItem[] = [];
 
 try {
-  const apiUrl = getApiUrl("get-notes");
-  const data = await fetchWithTimeout(apiUrl);
+  const data = await resolveSiteNotes(prefetchedNotes);
 
-  if (data && Array.isArray(data)) {
+  if (data.length > 0) {
     dynamicPruebas = data
       .filter((note: any) => note.category?.toLowerCase() === "pruebas")
       .map((note: any) => ({

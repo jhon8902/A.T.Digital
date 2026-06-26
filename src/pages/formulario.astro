@@ -843,10 +843,10 @@ const cloudinaryFolder =
         }
 
         .form-page {
-          width: 100%;
-          max-width: 960px;
+          width: min(90%, 1500px);
+          max-width: none;
           margin: 40px auto 56px;
-          padding: 0 20px;
+          padding: 0 12px;
         }
 
         .form-card {
@@ -854,7 +854,7 @@ const cloudinaryFolder =
           background: #ffffff;
           border-radius: var(--radius-card);
           border: 1px solid var(--color-border);
-          padding: 32px 36px 36px;
+          padding: 36px 48px 40px;
           box-shadow: var(--shadow-card);
           overflow: hidden;
         }
@@ -897,7 +897,7 @@ const cloudinaryFolder =
           margin: 12px 0 20px;
           color: #5a6472;
           font-size: var(--text-lead);
-          max-width: 640px;
+          max-width: 70ch;
         }
 
         .header-tags {
@@ -999,7 +999,17 @@ const cloudinaryFolder =
         .grid-2 {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 16px 20px;
+          gap: 18px 28px;
+        }
+
+        @media (min-width: 1200px) {
+          .grid-2 {
+            gap: 20px 32px;
+          }
+
+          .form-card {
+            padding: 40px 56px 44px;
+          }
         }
 
         label {
@@ -1498,8 +1508,9 @@ const cloudinaryFolder =
           }
 
           .form-page {
+            width: 94%;
             margin: 20px auto 40px;
-            padding: 0 14px;
+            padding: 0 8px;
           }
 
           .form-card {

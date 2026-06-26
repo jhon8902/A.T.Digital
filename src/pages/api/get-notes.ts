@@ -1,11 +1,15 @@
 import type { APIRoute } from "astro";
-import pkg from "pg";
 import { isAuthorizedAdminRequest } from "../../lib/admin-auth";
 import {
   isNoteScheduledForFuture,
   NOTES_PUBLIC_ORDER_SQL,
-  PUBLISHED_NOTES_SQL,
 } from "../../lib/note-scheduling";
+import {
+  normalizeNoteCategory,
+  normalizeNoteEditor,
+  queryPublishedNotes,
+} from "../../lib/notes-query";
+import pkg from "pg";
 
 const { Pool } = pkg;
 
@@ -61,21 +65,6 @@ function isMissingScheduledAtColumnError(error: any): boolean {
   );
 }
 
-function normalizeCategory(category: string) {
-  return category
-    ?.toString()
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
-
-function normalizeEditor(editor: unknown) {
-  if (typeof editor !== "string") return "Jhon Aparicio";
-  const normalized = editor.trim();
-  return normalized || "Jhon Aparicio";
-}
-
 export const GET: APIRoute = async ({ request }) => {
   const headers = {
     "Content-Type": "application/json",
@@ -109,8 +98,8 @@ export const GET: APIRoute = async ({ request }) => {
       }
 
       const note = result.rows[0];
-      note.category = normalizeCategory(note.category);
-      note.editor = normalizeEditor(note.editor);
+      note.category = normalizeNoteCategory(note.category);
+      note.editor = normalizeNoteEditor(note.editor);
 
       const isAdmin = isAuthorizedAdminRequest(request);
       if (isNoteScheduledForFuture(note.scheduled_at) && !isAdmin) {
@@ -124,29 +113,11 @@ export const GET: APIRoute = async ({ request }) => {
     }
 
     const isAdmin = isAuthorizedAdminRequest(request);
-    const visibilityFilter = isAdmin ? "" : `WHERE ${PUBLISHED_NOTES_SQL}`;
 
-    let result;
-    try {
-      result = await getPool().query(`
-        SELECT
-          id, title, subtitle, editor, content, category,
-          image1, image2, image3, image4, image5, image6,
-          video1, video2, video3, video4, video5, video6, video7,
-          spec_segmento, spec_origen, spec_precio_estimado, spec_versiones,
-          spec_motorizacion, spec_potencia_hp, spec_torque_nm,
-          spec_bateria_autonomia, spec_bateria_kwh, spec_autonomia_km,
-          spec_carga, spec_carga_ac_kw, spec_carga_dc_kw,
-          spec_aceleracion_0_100, spec_seguridad, spec_equipamiento,
-          spec_pros, spec_contras, spec_competidores,
-          spec_traccion, spec_precio_cop,
-          created_at, scheduled_at
-        FROM notes
-        ${visibilityFilter}
-        ORDER BY ${NOTES_PUBLIC_ORDER_SQL}
-      `);
-    } catch (error: any) {
-      if (isMissingScheduledAtColumnError(error)) {
+    if (isAdmin) {
+      const visibilityFilter = "";
+      let result;
+      try {
         result = await getPool().query(`
           SELECT
             id, title, subtitle, editor, content, category,
@@ -159,39 +130,62 @@ export const GET: APIRoute = async ({ request }) => {
             spec_aceleracion_0_100, spec_seguridad, spec_equipamiento,
             spec_pros, spec_contras, spec_competidores,
             spec_traccion, spec_precio_cop,
-            created_at
+            created_at, scheduled_at
           FROM notes
-          ORDER BY created_at DESC
+          ${visibilityFilter}
+          ORDER BY ${NOTES_PUBLIC_ORDER_SQL}
         `);
-      } else if (!isMissingEditorColumnError(error)) {
-        throw error;
-      } else {
-      result = await getPool().query(`
-        SELECT
-          id, title, subtitle, content, category,
-          image1, image2, image3, image4, image5, image6,
-          video1, video2, video3, video4, video5, video6, video7,
-          spec_segmento, spec_origen, spec_precio_estimado, spec_versiones,
-          spec_motorizacion, spec_potencia_hp, spec_torque_nm,
-          spec_bateria_autonomia, spec_bateria_kwh, spec_autonomia_km,
-          spec_carga, spec_carga_ac_kw, spec_carga_dc_kw,
-          spec_aceleracion_0_100, spec_seguridad, spec_equipamiento,
-          spec_pros, spec_contras, spec_competidores,
-          spec_traccion, spec_precio_cop,
-          created_at
-        FROM notes
-        ${visibilityFilter}
-        ORDER BY created_at DESC
-      `);
+      } catch (error: any) {
+        if (isMissingScheduledAtColumnError(error)) {
+          result = await getPool().query(`
+            SELECT
+              id, title, subtitle, editor, content, category,
+              image1, image2, image3, image4, image5, image6,
+              video1, video2, video3, video4, video5, video6, video7,
+              spec_segmento, spec_origen, spec_precio_estimado, spec_versiones,
+              spec_motorizacion, spec_potencia_hp, spec_torque_nm,
+              spec_bateria_autonomia, spec_bateria_kwh, spec_autonomia_km,
+              spec_carga, spec_carga_ac_kw, spec_carga_dc_kw,
+              spec_aceleracion_0_100, spec_seguridad, spec_equipamiento,
+              spec_pros, spec_contras, spec_competidores,
+              spec_traccion, spec_precio_cop,
+              created_at
+            FROM notes
+            ORDER BY created_at DESC
+          `);
+        } else if (!isMissingEditorColumnError(error)) {
+          throw error;
+        } else {
+          result = await getPool().query(`
+            SELECT
+              id, title, subtitle, content, category,
+              image1, image2, image3, image4, image5, image6,
+              video1, video2, video3, video4, video5, video6, video7,
+              spec_segmento, spec_origen, spec_precio_estimado, spec_versiones,
+              spec_motorizacion, spec_potencia_hp, spec_torque_nm,
+              spec_bateria_autonomia, spec_bateria_kwh, spec_autonomia_km,
+              spec_carga, spec_carga_ac_kw, spec_carga_dc_kw,
+              spec_aceleracion_0_100, spec_seguridad, spec_equipamiento,
+              spec_pros, spec_contras, spec_competidores,
+              spec_traccion, spec_precio_cop,
+              created_at
+            FROM notes
+            ${visibilityFilter}
+            ORDER BY created_at DESC
+          `);
+        }
       }
+
+      const normalizedRows = result.rows.map((row) => ({
+        ...row,
+        category: normalizeNoteCategory(row.category),
+        editor: normalizeNoteEditor(row.editor),
+      }));
+
+      return new Response(JSON.stringify(normalizedRows), { status: 200, headers });
     }
 
-    const normalizedRows = result.rows.map((row) => ({
-      ...row,
-      category: normalizeCategory(row.category),
-      editor: normalizeEditor(row.editor),
-    }));
-
+    const normalizedRows = await queryPublishedNotes();
     return new Response(JSON.stringify(normalizedRows), { status: 200, headers });
   } catch (error: any) {
     return new Response(

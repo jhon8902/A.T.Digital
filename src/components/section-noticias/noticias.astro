@@ -1,10 +1,16 @@
 ---
-import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import { resolveSiteNotes, type SiteNote } from "../../lib/api";
 import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
 } from "../../lib/note-scheduling";
 import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
+
+interface Props {
+  notes?: SiteNote[];
+}
+
+const { notes: prefetchedNotes } = Astro.props;
 
 type LanzamientoItem = {
   href: string;
@@ -120,10 +126,9 @@ function normalizeHref(href: string) {
 }
 
 try {
-  const apiUrl = getApiUrl("get-notes");
-  const data = await fetchWithTimeout(apiUrl);
+  const data = await resolveSiteNotes(prefetchedNotes);
 
-  if (data && Array.isArray(data)) {
+  if (data.length > 0) {
     dynamicLanzamientos = data
       .filter((note: any) => note.category?.toLowerCase() === "lanzamientos")
       .map((note: any) => ({

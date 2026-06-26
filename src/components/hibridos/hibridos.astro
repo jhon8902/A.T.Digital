@@ -1,10 +1,16 @@
 ---
-import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import { resolveSiteNotes, type SiteNote } from "../../lib/api";
 import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
 } from "../../lib/note-scheduling";
 import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
+
+interface Props {
+  notes?: SiteNote[];
+}
+
+const { notes: prefetchedNotes } = Astro.props;
 
 type HibridoItem = {
   href: string;
@@ -135,10 +141,9 @@ function buildChips(item: { description?: string; title?: string; chips?: string
 }
 
 try {
-  const apiUrl = getApiUrl("get-notes");
-  const data = await fetchWithTimeout(apiUrl);
+  const data = await resolveSiteNotes(prefetchedNotes);
 
-  if (data && Array.isArray(data)) {
+  if (data.length > 0) {
     dynamicHibridos = data
       .filter((note) => normalizeString(note.category) === "hibridos")
       .map((note) => {

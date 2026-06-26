@@ -1,4 +1,5 @@
 ---
+import { resolveSiteNotes } from "../lib/api";
 import Layout from "../layouts/Layout.astro";
 import SectionInfo from "../components/Section-Info/Section-Info.astro";
 import Hibridos from "../components/hibridos/hibridos.astro";
@@ -6,44 +7,9 @@ import Noticias from "../components/section-noticias/noticias.astro";
 import Electricos from "../components/electricos/Electricos.astro";
 import Deportes from "../components/deportes/deportes.astro";
 import Pruebas from "../components/pruebas/pruebas.astro";
-// AutoMatch — oculto hasta tener la herramienta lista
-// import AutoMatch from "../components/automatch/automatch.astro";
-// import AutoMatchPromo from "../components/automatch/AutoMatchPromo.astro";
 import AdBanner from "../components/advertising/AdBanner.astro";
-// import { getApiUrl, fetchWithTimeout } from "../lib/api";
 
-// let autos: any[] = [];
-//
-// try {
-//   const apiUrl = getApiUrl("get-notes");
-//   const data = await fetchWithTimeout(apiUrl);
-//
-//   if (data && Array.isArray(data)) {
-//     autos = data
-//       .filter((note: any) => note.category?.toLowerCase() === "automatch")
-//       .sort((a: any, b: any) => {
-//         const aDate = a?.created_at ? new Date(a.created_at).getTime() : 0;
-//         const bDate = b?.created_at ? new Date(b.created_at).getTime() : 0;
-//         return bDate - aDate;
-//       })
-//       .map((note: any) => ({
-//         id: String(note.id),
-//         nombre: note.title,
-//         descripcion: note.subtitle || note.content.substring(0, 100),
-//         content: note.content || "",
-//         imagenes: [
-//           note.image1,
-//           note.image2,
-//           note.image3,
-//           note.image4,
-//           note.image5,
-//           note.image6,
-//         ].filter(Boolean),
-//       }));
-//   }
-// } catch (err) {
-//   console.error("Error cargando autos:", err);
-// }
+let homeNotes = await resolveSiteNotes();
 ---
 
 <Layout
@@ -52,7 +18,7 @@ import AdBanner from "../components/advertising/AdBanner.astro";
   class="home-page"
 >
   <div class="extra-sections" id="extra-sections">
-    <SectionInfo />
+    <SectionInfo notes={homeNotes} />
 
     <!-- AutoMatch — oculto hasta tener la herramienta lista
     <section id="automatch" class="automatch-destacado">
@@ -60,17 +26,17 @@ import AdBanner from "../components/advertising/AdBanner.astro";
     </section>
     -->
 
-    <Electricos />
+    <Electricos notes={homeNotes} />
     <!--
     <AutoMatchPromo
       title="Compara eléctricos con AutoMatch"
       description="Filtra por autonomía, precio y uso. Encuentra el modelo ideal para ti."
     />
     -->
-    <Hibridos />
-    <Noticias />
+    <Hibridos notes={homeNotes} />
+    <Noticias notes={homeNotes} />
 
-    <Pruebas />
+    <Pruebas notes={homeNotes} />
     <!--
     <AutoMatchPromo
       variant="compact"
@@ -83,7 +49,7 @@ import AdBanner from "../components/advertising/AdBanner.astro";
       class="home-secondary-content"
       aria-label="Más contenido editorial"
     >
-      <Deportes compact />
+      <Deportes compact notes={homeNotes} />
     </section>
 
     <AdBanner />

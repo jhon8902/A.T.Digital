@@ -1,5 +1,5 @@
 ---
-import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import { resolveSiteNotes, type SiteNote } from "../../lib/api";
 import {
   getNewsCardDeck,
   getNewsCardTitle,
@@ -8,6 +8,12 @@ import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
 } from "../../lib/note-scheduling";
+
+interface Props {
+  notes?: SiteNote[];
+}
+
+const { notes: prefetchedNotes } = Astro.props;
 // --- CARGA Y FILTRO DE NOTAS RECIENTES PARA PORTADA ---
 
 let dynamicNotes: any[] = [];
@@ -144,9 +150,9 @@ function parseDateValue(value?: string) {
 }
 
 try {
-  const data = await fetchWithTimeout(getApiUrl("get-notes"));
+  const data = await resolveSiteNotes(prefetchedNotes);
 
-  if (data && Array.isArray(data)) {
+  if (data.length > 0) {
     // 2️⃣ Mostramos en portada lo más reciente de categorías editoriales
     const filtered = data.filter((note: any) =>
       HOME_NEWS_CATEGORIES.has(normalizeCategory(note.category)),
