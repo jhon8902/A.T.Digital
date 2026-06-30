@@ -3,6 +3,8 @@ import { isAuthorizedAdminRequest } from "../../lib/admin-auth";
 import {
   isNoteScheduledForFuture,
   NOTES_PUBLIC_ORDER_SQL,
+  PUBLISHED_NOTES_SQL,
+  serializeScheduledAt,
 } from "../../lib/note-scheduling";
 import {
   normalizeNoteCategory,
@@ -86,9 +88,15 @@ export const GET: APIRoute = async ({ request }) => {
         });
       }
 
-      const result = await getPool().query("SELECT * FROM notes WHERE id = $1", [
-        parsedId,
-      ]);
+      const isAdmin = isAuthorizedAdminRequest(request);
+      const visibilitySql = isAdmin
+        ? ""
+        : ` AND ${PUBLISHED_NOTES_SQL}`;
+
+      const result = await getPool().query(
+        `SELECT * FROM notes WHERE id = $1${visibilitySql}`,
+        [parsedId],
+      );
 
       if (result.rows.length === 0) {
         return new Response(JSON.stringify({ error: "Nota no encontrada" }), {
@@ -100,8 +108,8 @@ export const GET: APIRoute = async ({ request }) => {
       const note = result.rows[0];
       note.category = normalizeNoteCategory(note.category);
       note.editor = normalizeNoteEditor(note.editor);
+      note.scheduled_at = serializeScheduledAt(note.scheduled_at);
 
-      const isAdmin = isAuthorizedAdminRequest(request);
       if (isNoteScheduledForFuture(note.scheduled_at) && !isAdmin) {
         return new Response(JSON.stringify({ error: "Nota no encontrada" }), {
           status: 404,

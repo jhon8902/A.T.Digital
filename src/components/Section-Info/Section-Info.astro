@@ -9,6 +9,8 @@ import {
   getNotePublishTimestamp,
 } from "../../lib/note-scheduling";
 
+import { inferSourceScope } from "../../lib/notes-query";
+
 interface Props {
   notes?: SiteNote[];
 }
@@ -40,6 +42,13 @@ function normalizeSourceScope(scope?: string) {
   return scope?.toLowerCase() === "internacional"
     ? "internacional"
     : "nacional";
+}
+
+function resolveNoteScope(note: {
+  source_scope?: string;
+  spec_origen?: string;
+}) {
+  return inferSourceScope(note);
 }
 
 function sourceScopeLabel(scope?: string) {
@@ -167,7 +176,7 @@ try {
       subtitle: note.subtitle || "",
       fecha: formatNotePublishedLabel(note),
       editor: note.editor || "Jhon Aparicio",
-      source_scope: normalizeSourceScope(note.source_scope),
+      source_scope: resolveNoteScope(note),
       sortDate: getNotePublishTimestamp(note),
     }));
   }
@@ -242,9 +251,18 @@ const deduplicatedStaticNotes = staticNotesWithDate.filter(
 const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
   .sort((a, b) => b.sortDate - a.sortDate)
   .slice(0, HOME_VISIBLE_COUNT);
+
+const featuredNote = allNotes[0] ?? null;
+const carouselNotes = allNotes.slice(1);
 ---
 
-<section id="noticias" class="section-info w-full py-30" aria-labelledby="noticias-heading">
+<link rel="stylesheet" href="/css/news-interactive.css" />
+
+<section
+  id="noticias"
+  class="section-info section-info--interactive w-full py-30"
+  aria-labelledby="noticias-heading"
+>
   <header class="info-header">
     <p class="noticias-eyebrow">Noticias</p>
     <h2 id="noticias-heading" class="info-titulo anim-titulo">Sector automotor</h2>
@@ -255,66 +273,184 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
   </header>
 
   <div class="container mx-auto px-2">
-    <div class="news-grid">
+    <div class="news-showcase">
+      <div
+        class="news-filters"
+        role="tablist"
+        aria-label="Filtrar noticias por alcance"
+      >
+        <button
+          type="button"
+          class="news-filter-btn is-active"
+          data-filter="all"
+          role="tab"
+          aria-selected="true"
+        >
+          Todas
+        </button>
+        <button
+          type="button"
+          class="news-filter-btn"
+          data-filter="nacional"
+          role="tab"
+          aria-selected="false"
+        >
+          Nacional
+        </button>
+        <button
+          type="button"
+          class="news-filter-btn"
+          data-filter="internacional"
+          role="tab"
+          aria-selected="false"
+        >
+          Internacional
+        </button>
+      </div>
+
       {
-        allNotes.map((nota, index) => (
-          <>
-            <article
-              class={"news-card" + (index === 0 ? " news-card--featured" : "")}
-            >
-              <a href={nota.href} class="news-card-link">
-                <div class="news-card-image">
-                  <img
-                    src={nota.img}
-                    alt={nota.alt}
-                    class="w-full h-full object-cover"
-                    loading={index === 0 ? "eager" : "lazy"}
-                    fetchpriority={index === 0 ? "high" : "auto"}
-                    decoding="async"
-                  />
+        featuredNote && (
+          <article
+            class="news-hero"
+            data-scope={featuredNote.source_scope || "nacional"}
+          >
+            <a href={featuredNote.href} class="news-hero__link">
+              <div class="news-hero__media">
+                <img
+                  src={featuredNote.img}
+                  alt={featuredNote.alt}
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                />
+              </div>
+              <div class="news-hero__body">
+                <div class="news-meta-tags">
+                  <span class="news-tag">Destacada</span>
+                  <span
+                    class={
+                      "scope-tag" +
+                      (featuredNote.source_scope === "internacional"
+                        ? " scope-tag--international"
+                        : " scope-tag--national")
+                    }
+                  >
+                    {sourceScopeLabel(featuredNote.source_scope)}
+                  </span>
                 </div>
-                <div class="news-card-content">
-                  <div class="news-meta-tags">
-                    <span class="news-tag">Noticias</span>
-                    <span
-                      class={
-                        "scope-tag" +
-                        (nota.source_scope === "internacional"
-                          ? " scope-tag--international"
-                          : " scope-tag--national")
-                      }
-                    >
-                      {sourceScopeLabel(nota.source_scope)}
-                    </span>
-                  </div>
-                  <h3 class="news-title">{getNewsCardTitle(nota.caption)}</h3>
-                  {
-                    getNewsCardDeck(nota.caption, nota.subtitle) && (
-                      <p class="news-deck">
-                        {getNewsCardDeck(nota.caption, nota.subtitle)}
-                      </p>
-                    )
-                  }
-                  <p class="news-date">
-                    <i class="fa-regular fa-user" aria-hidden="true" />
-                    <span class="meta-author">
-                      {nota.editor || "Jhon Aparicio"}
-                    </span>
-                    <span class="meta-sep">•</span>
-                    <i class="fa-regular fa-calendar" aria-hidden="true" />
-                    <span class="meta-date">
-                      {cleanPublishedDate(nota.fecha)}
-                    </span>
-                  </p>
-                </div>
-              </a>
-            </article>
-          </>
-        ))
+                <h3 class="news-hero__title">
+                  {getNewsCardTitle(featuredNote.caption)}
+                </h3>
+                {
+                  getNewsCardDeck(
+                    featuredNote.caption,
+                    featuredNote.subtitle,
+                  ) && (
+                    <p class="news-hero__deck">
+                      {getNewsCardDeck(
+                        featuredNote.caption,
+                        featuredNote.subtitle,
+                      )}
+                    </p>
+                  )
+                }
+                <p class="news-date">
+                  <i class="fa-regular fa-user" aria-hidden="true" />
+                  <span>{featuredNote.editor || "Jhon Aparicio"}</span>
+                  <span class="meta-sep">•</span>
+                  <i class="fa-regular fa-calendar" aria-hidden="true" />
+                  <span>{cleanPublishedDate(featuredNote.fecha)}</span>
+                </p>
+                <span class="news-hero__cta">Leer nota →</span>
+              </div>
+            </a>
+          </article>
+        )
       }
-      <article class="news-card news-card--insight">
+
+      {
+        carouselNotes.length > 0 && (
+          <div class="news-carousel-wrap">
+            <div class="news-carousel-header">
+              <h3 class="news-carousel-heading">Más en el sector</h3>
+              <div class="news-carousel-nav">
+                <button
+                  type="button"
+                  class="news-carousel-btn news-carousel-btn--prev"
+                  aria-label="Noticia anterior"
+                >
+                  <i class="fa-solid fa-chevron-left" aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  class="news-carousel-btn news-carousel-btn--next"
+                  aria-label="Noticia siguiente"
+                >
+                  <i class="fa-solid fa-chevron-right" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+            <div class="news-carousel">
+              {
+                carouselNotes.map((nota) => (
+                  <article
+                    class="news-carousel-card"
+                    data-scope={nota.source_scope || "nacional"}
+                  >
+                    <a href={nota.href} class="news-carousel-card__link">
+                      <div class="news-carousel-card__image">
+                        <img
+                          src={nota.img}
+                          alt={nota.alt}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                      <div class="news-carousel-card__body">
+                        <div class="news-meta-tags">
+                          <span class="news-tag">Noticias</span>
+                          <span
+                            class={
+                              "scope-tag" +
+                              (nota.source_scope === "internacional"
+                                ? " scope-tag--international"
+                                : " scope-tag--national")
+                            }
+                          >
+                            {sourceScopeLabel(nota.source_scope)}
+                          </span>
+                        </div>
+                        <h4 class="news-carousel-card__title">
+                          {getNewsCardTitle(nota.caption)}
+                        </h4>
+                        {
+                          getNewsCardDeck(nota.caption, nota.subtitle) && (
+                            <p class="news-carousel-card__deck">
+                              {getNewsCardDeck(nota.caption, nota.subtitle)}
+                            </p>
+                          )
+                        }
+                        <p class="news-date">
+                          <i class="fa-regular fa-calendar" aria-hidden="true" />
+                          <span>{cleanPublishedDate(nota.fecha)}</span>
+                        </p>
+                      </div>
+                    </a>
+                  </article>
+                ))
+              }
+            </div>
+          </div>
+        )
+      }
+
+      <p class="news-filter-empty" hidden>
+        No hay noticias en este alcance por ahora.
+      </p>
+
+      <article class="news-insight">
         <div class="news-card-content">
-          <span class="news-tag news-tag--insight">Radar del sector</span>
+          <span class="news-tag">Radar del sector</span>
           <h3 class="news-title">
             Tendencias clave que estamos siguiendo esta semana
           </h3>
@@ -1540,3 +1676,5 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     observerNoticias.observe(tituloNoticias);
   });
 </script>
+
+<script src="/js/news-interactive.js" defer></script>

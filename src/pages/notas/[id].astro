@@ -8,8 +8,13 @@ import {
   getNewsCardTitle,
   getNewsTitleHook,
 } from "../../lib/editorial";
-import { formatNotePublishDateLong, getNotePublishDate } from "../../lib/note-scheduling";
+import {
+  formatNotePublishDateLong,
+  getNotePublishDate,
+  isNoteScheduledForFuture,
+} from "../../lib/note-scheduling";
 import { buildNewsArticleJsonLd } from "../../lib/note-seo";
+import { queryNoteById } from "../../lib/notes-query";
 export const prerender = false;
 
 // ✅ Definimos la interfaz del tipo de nota
@@ -95,13 +100,18 @@ async function fetchNoteWithFallback(noteId: string | undefined): Promise<Note |
 }
 
 try {
-  note = await fetchNoteWithFallback(id);
+  if (id) {
+    const parsedId = Number(id);
+    if (Number.isInteger(parsedId)) {
+      note = (await queryNoteById(parsedId)) as Note | null;
+    }
+  }
 
-  if (
-    note &&
-    note.scheduled_at &&
-    new Date(note.scheduled_at).getTime() > Date.now()
-  ) {
+  if (!note) {
+    note = await fetchNoteWithFallback(id);
+  }
+
+  if (note && isNoteScheduledForFuture(note.scheduled_at)) {
     note = null;
   }
 } catch (err) {

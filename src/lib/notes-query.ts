@@ -2,6 +2,7 @@ import pkg from "pg";
 import {
   NOTES_PUBLIC_ORDER_SQL,
   PUBLISHED_NOTES_SQL,
+  serializeScheduledAt,
 } from "./note-scheduling";
 
 const { Pool } = pkg;
@@ -74,6 +75,34 @@ export function normalizeNoteEditor(editor: unknown) {
   return normalized || "Jhon Aparicio";
 }
 
+export function normalizeSourceScope(scope: unknown): "nacional" | "internacional" {
+  const value = String(scope || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+  return value === "internacional" ? "internacional" : "nacional";
+}
+
+/** Usa source_scope de BD; si falta o contradice el origen, infiere por spec_origen. */
+export function inferSourceScope(note: {
+  source_scope?: unknown;
+  spec_origen?: unknown;
+}): "nacional" | "internacional" {
+  const origen = String(note.spec_origen || "").toLowerCase();
+  if (
+    /australia|europa|europe|china|japon|alemania|germany|uk|reino unido|estados unidos|internacional|global|mundial|francia|italia|corea|india|canad[aá]/i.test(
+      origen,
+    )
+  ) {
+    return "internacional";
+  }
+
+  const explicit = String(note.source_scope || "").trim().toLowerCase();
+  if (explicit === "internacional") return "internacional";
+  return "nacional";
+}
+
 export type SiteNote = Record<string, unknown> & {
   id: number;
   title: string;
@@ -90,7 +119,7 @@ export type SiteNote = Record<string, unknown> & {
 
 const PUBLISHED_NOTES_SELECT = `
   SELECT
-    id, title, subtitle, editor, content, category,
+    id, title, subtitle, editor, content, category, source_scope,
     image1, image2, image3, image4, image5, image6,
     video1, video2, video3, video4, video5, video6, video7,
     spec_segmento, spec_origen, spec_precio_estimado, spec_versiones,
@@ -109,7 +138,32 @@ function normalizeNoteRows(rows: SiteNote[]): SiteNote[] {
     ...row,
     category: normalizeNoteCategory(row.category),
     editor: normalizeNoteEditor(row.editor),
+    source_scope: inferSourceScope(row),
+    scheduled_at: serializeScheduledAt(row.scheduled_at),
   }));
+}
+
+export async function queryNoteById(
+  noteId: number,
+): Promise<SiteNote | null> {
+  if (!Number.isInteger(noteId) || noteId <= 0) return null;
+
+  const result = await getPool().query(
+    `SELECT * FROM notes WHERE id = $1 AND ${PUBLISHED_NOTES_SQL}`,
+    [noteId],
+  );
+
+  if (result.rows.length === 0) return null;
+
+  const row = result.rows[0] as SiteNote;
+
+  return {
+    ...row,
+    category: normalizeNoteCategory(row.category),
+    editor: normalizeNoteEditor(row.editor),
+    source_scope: inferSourceScope(row),
+    scheduled_at: serializeScheduledAt(row.scheduled_at),
+  };
 }
 
 export async function queryPublishedNotes(): Promise<SiteNote[]> {
