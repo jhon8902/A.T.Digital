@@ -143,6 +143,8 @@ switch (categoria) {
     categoriaCSS = "/css/lanzamientos.css";
     break;
   case "deportes":
+    categoriaCSS = "/css/deportes.css";
+    break;
   case "pruebas":
     categoriaCSS = "/css/lanzamientos.css";
     break;
@@ -175,6 +177,7 @@ const structuredData =
         ...buildOrganizationJsonLd(siteUrl),
       };
 const structuredDataJson = JSON.stringify(structuredData);
+const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID?.trim() || "";
 ---
 
 <!doctype html>
@@ -191,6 +194,25 @@ const structuredDataJson = JSON.stringify(structuredData);
     <meta name="robots" content="index, follow" />
     <meta name="author" content="Auto-Tech-Digital" />
     <meta name="theme-color" content="#08341f" />
+
+    {
+      gaMeasurementId && (
+        <>
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+          />
+          <script is:inline define:vars={{ gaMeasurementId }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", gaMeasurementId);
+          </script>
+        </>
+      )
+    }
 
     <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
     <meta property="og:type" content={ogType} />
