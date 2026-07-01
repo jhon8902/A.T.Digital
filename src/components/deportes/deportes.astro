@@ -1,5 +1,6 @@
 ---
 import { resolveSiteNotes, type SiteNote } from "../../lib/api";
+import { normalizeNoteCategory } from "../../lib/notes-query";
 import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
@@ -169,7 +170,7 @@ try {
 
   if (data.length > 0) {
     dynamicDeportes = data
-      .filter((note: any) => note.category?.toLowerCase() === "deportes")
+      .filter((note: any) => normalizeNoteCategory(note.category) === "deportes")
       .map((note: any) => ({
         href: `/notas/${note.id}`,
         img:

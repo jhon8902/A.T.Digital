@@ -1,5 +1,6 @@
 ---
 import { resolveSiteNotes, type SiteNote } from "../../lib/api";
+import { normalizeNoteCategory } from "../../lib/notes-query";
 import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
@@ -137,7 +138,7 @@ try {
 
   if (data.length > 0) {
     dynamicElectricos = data
-      .filter((note) => note.category?.toLowerCase() === "electricos")
+      .filter((note) => normalizeNoteCategory(note.category) === "electricos")
       .map((note) => {
         const portada =
           note.image1?.trim() ||

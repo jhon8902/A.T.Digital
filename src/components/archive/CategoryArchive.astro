@@ -1,5 +1,6 @@
 ---
-import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import { resolveSiteNotes } from "../../lib/api";
+import { normalizeNoteCategory } from "../../lib/notes-query";
 import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
 import {
   formatNotePublishedLabel,
@@ -36,15 +37,6 @@ const {
   itemsPerPage = 12,
   skipFirst = 0,
 } = Astro.props as Props;
-
-function normalizeCategory(value: string) {
-  return value
-    ?.toString()
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
 
 function extractFirstImage(html: string | undefined) {
   if (!html) return null;
@@ -170,19 +162,19 @@ function cleanPublishedDate(value?: string) {
 let dynamicNotes: Array<NoteItem & { sortDate: number }> = [];
 
 try {
-  const apiUrl = getApiUrl("get-notes");
-  const data = await fetchWithTimeout(apiUrl);
+  const data = await resolveSiteNotes();
 
-  if (data && Array.isArray(data)) {
+  if (data.length > 0) {
     const categorySet = categories
-      ? new Set(categories.map((c) => normalizeCategory(c)))
+      ? new Set(categories.map((c) => normalizeNoteCategory(c)))
       : null;
 
     dynamicNotes = data
       .filter((note: any) =>
         categorySet
-          ? categorySet.has(normalizeCategory(note.category))
-          : normalizeCategory(note.category) === normalizeCategory(category),
+          ? categorySet.has(normalizeNoteCategory(note.category))
+          : normalizeNoteCategory(note.category) ===
+            normalizeNoteCategory(category),
       )
       .map((note: any) => ({
         href: `/notas/${note.id}`,
@@ -225,7 +217,17 @@ const allNotes = [...dynamicNotes, ...deduplicatedStatic].sort(
 );
 
 // Omitir las primeras N notas que ya están visibles en la página principal
-const archiveNotes = skipFirst > 0 ? allNotes.slice(skipFirst) : allNotes;
+let archiveNotes = skipFirst > 0 ? allNotes.slice(skipFirst) : allNotes;
+
+// Si no cargaron dinámicas, no ocultar todo el archivo con skipFirst
+if (
+  archiveNotes.length === 0 &&
+  allNotes.length > 0 &&
+  dynamicNotes.length === 0 &&
+  skipFirst > 0
+) {
+  archiveNotes = allNotes;
+}
 
 const totalPages = Math.max(1, Math.ceil(archiveNotes.length / itemsPerPage));
 const requestedPage = Number(Astro.url.searchParams.get("page") || "1");
@@ -239,7 +241,7 @@ const paginatedNotes = archiveNotes.slice(
   startIndex + itemsPerPage,
 );
 
-const isNoticiasArchive = normalizeCategory(category) === "noticias";
+const isNoticiasArchive = normalizeNoteCategory(category) === "noticias";
 
 function pageHref(page: number) {
   return page <= 1 ? "?" : `?page=${page}`;

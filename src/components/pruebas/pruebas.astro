@@ -1,5 +1,6 @@
 ---
 import { resolveSiteNotes, type SiteNote } from "../../lib/api";
+import { normalizeNoteCategory } from "../../lib/notes-query";
 import { getNotePublishTimestamp } from "../../lib/note-scheduling";
 
 interface Props {
@@ -76,7 +77,7 @@ try {
 
   if (data.length > 0) {
     dynamicPruebas = data
-      .filter((note: any) => note.category?.toLowerCase() === "pruebas")
+      .filter((note: any) => normalizeNoteCategory(note.category) === "pruebas")
       .map((note: any) => ({
         title: note.title || "Sin título",
         subtitle: note.subtitle || "",

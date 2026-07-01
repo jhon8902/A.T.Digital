@@ -61,6 +61,17 @@ function isMissingScheduledAtColumnError(error: unknown): boolean {
   );
 }
 
+function isMissingSourceScopeColumnError(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const err = error as { code?: string; message?: string };
+  return (
+    err.code === "42703" &&
+    /source_scope|column\s+"?source_scope"?\s+does\s+not\s+exist/i.test(
+      String(err.message || "")
+    )
+  );
+}
+
 export function normalizeNoteCategory(category: unknown) {
   return String(category || "")
     .trim()
@@ -133,6 +144,22 @@ const PUBLISHED_NOTES_SELECT = `
   FROM notes
 `;
 
+const PUBLISHED_NOTES_SELECT_WITHOUT_SCOPE = `
+  SELECT
+    id, title, subtitle, editor, content, category,
+    image1, image2, image3, image4, image5, image6,
+    video1, video2, video3, video4, video5, video6, video7,
+    spec_segmento, spec_origen, spec_precio_estimado, spec_versiones,
+    spec_motorizacion, spec_potencia_hp, spec_torque_nm,
+    spec_bateria_autonomia, spec_bateria_kwh, spec_autonomia_km,
+    spec_carga, spec_carga_ac_kw, spec_carga_dc_kw,
+    spec_aceleracion_0_100, spec_seguridad, spec_equipamiento,
+    spec_pros, spec_contras, spec_competidores,
+    spec_traccion, spec_precio_cop,
+    created_at, scheduled_at
+  FROM notes
+`;
+
 function normalizeNoteRows(rows: SiteNote[]): SiteNote[] {
   return rows.map((row) => ({
     ...row,
@@ -177,9 +204,19 @@ export async function queryPublishedNotes(): Promise<SiteNote[]> {
     `);
     return normalizeNoteRows(result.rows as SiteNote[]);
   } catch (error: unknown) {
+    if (isMissingSourceScopeColumnError(error)) {
+      const result = await getPool().query(`
+        ${PUBLISHED_NOTES_SELECT_WITHOUT_SCOPE}
+        ${visibilityFilter}
+        ORDER BY ${NOTES_PUBLIC_ORDER_SQL}
+      `);
+      return normalizeNoteRows(result.rows as SiteNote[]);
+    }
+
     if (isMissingScheduledAtColumnError(error)) {
       const result = await getPool().query(`
-        ${PUBLISHED_NOTES_SELECT.replace(", scheduled_at", "")}
+        ${PUBLISHED_NOTES_SELECT_WITHOUT_SCOPE.replace(", scheduled_at", "")}
+        ${visibilityFilter}
         ORDER BY created_at DESC
       `);
       return normalizeNoteRows(result.rows as SiteNote[]);
