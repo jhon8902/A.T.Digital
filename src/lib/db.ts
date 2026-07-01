@@ -1,4 +1,5 @@
 import pkg from "pg";
+import { resolveDatabaseUrl } from "./database-url";
 
 const { Pool } = pkg;
 
@@ -11,14 +12,7 @@ const DB_QUERY_TIMEOUT_MS = Number(process.env.DB_QUERY_TIMEOUT_MS || "8000");
 
 export function getPool() {
   if (!_pool) {
-    const connStr =
-      import.meta.env.DATABASE_URL ??
-      process.env.DATABASE_URL ??
-      process.env.NETLIFY_DATABASE_URL;
-
-    if (!connStr) {
-      throw new Error("DATABASE_URL no está configurada");
-    }
+    const connStr = resolveDatabaseUrl();
 
     _pool = new Pool({
       connectionString: connStr,

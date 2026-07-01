@@ -1,7 +1,6 @@
 import type { APIRoute } from "astro";
 import { isAuthorizedAdminRequest } from "../../lib/admin-auth";
 import {
-  isNoteScheduledForFuture,
   NOTES_PUBLIC_ORDER_SQL,
   PUBLISHED_NOTES_SQL,
   serializeScheduledAt,
@@ -11,6 +10,7 @@ import {
   normalizeNoteEditor,
   queryPublishedNotes,
 } from "../../lib/notes-query";
+import { resolveDatabaseUrl } from "../../lib/database-url";
 import pkg from "pg";
 
 const { Pool } = pkg;
@@ -24,14 +24,7 @@ const DB_QUERY_TIMEOUT_MS = Number(process.env.DB_QUERY_TIMEOUT_MS || "8000");
 
 function getPool() {
   if (!_pool) {
-    const connStr =
-      import.meta.env.DATABASE_URL ??
-      process.env.DATABASE_URL ??
-      process.env.NETLIFY_DATABASE_URL;
-
-    if (!connStr) {
-      throw new Error("DATABASE_URL no está configurada");
-    }
+    const connStr = resolveDatabaseUrl();
 
     _pool = new Pool({
       connectionString: connStr,
@@ -109,13 +102,6 @@ export const GET: APIRoute = async ({ request }) => {
       note.category = normalizeNoteCategory(note.category);
       note.editor = normalizeNoteEditor(note.editor);
       note.scheduled_at = serializeScheduledAt(note.scheduled_at);
-
-      if (isNoteScheduledForFuture(note.scheduled_at) && !isAdmin) {
-        return new Response(JSON.stringify({ error: "Nota no encontrada" }), {
-          status: 404,
-          headers,
-        });
-      }
 
       return new Response(JSON.stringify(note), { status: 200, headers });
     }

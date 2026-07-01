@@ -4,6 +4,7 @@ import {
   PUBLISHED_NOTES_SQL,
   serializeScheduledAt,
 } from "./note-scheduling";
+import { resolveDatabaseUrl } from "./database-url";
 
 const { Pool } = pkg;
 
@@ -16,14 +17,7 @@ const DB_QUERY_TIMEOUT_MS = Number(process.env.DB_QUERY_TIMEOUT_MS || "8000");
 
 function getPool() {
   if (!_pool) {
-    const connStr =
-      import.meta.env.DATABASE_URL ??
-      process.env.DATABASE_URL ??
-      process.env.NETLIFY_DATABASE_URL;
-
-    if (!connStr) {
-      throw new Error("DATABASE_URL no está configurada");
-    }
+    const connStr = resolveDatabaseUrl();
 
     _pool = new Pool({
       connectionString: connStr,
@@ -175,22 +169,27 @@ export async function queryNoteById(
 ): Promise<SiteNote | null> {
   if (!Number.isInteger(noteId) || noteId <= 0) return null;
 
-  const result = await getPool().query(
-    `SELECT * FROM notes WHERE id = $1 AND ${PUBLISHED_NOTES_SQL}`,
-    [noteId],
-  );
+  try {
+    const result = await getPool().query(
+      `SELECT * FROM notes WHERE id = $1 AND ${PUBLISHED_NOTES_SQL}`,
+      [noteId],
+    );
 
-  if (result.rows.length === 0) return null;
+    if (result.rows.length === 0) return null;
 
-  const row = result.rows[0] as SiteNote;
+    const row = result.rows[0] as SiteNote;
 
-  return {
-    ...row,
-    category: normalizeNoteCategory(row.category),
-    editor: normalizeNoteEditor(row.editor),
-    source_scope: inferSourceScope(row),
-    scheduled_at: serializeScheduledAt(row.scheduled_at),
-  };
+    return {
+      ...row,
+      category: normalizeNoteCategory(row.category),
+      editor: normalizeNoteEditor(row.editor),
+      source_scope: inferSourceScope(row),
+      scheduled_at: serializeScheduledAt(row.scheduled_at),
+    };
+  } catch (error) {
+    console.error(`queryNoteById(${noteId}) falló:`, error);
+    return null;
+  }
 }
 
 export async function queryPublishedNotes(): Promise<SiteNote[]> {
