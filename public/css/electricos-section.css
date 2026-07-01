@@ -16,7 +16,7 @@
 }
 
 .electricos-inner {
-  width: min(1280px, 100%);
+  width: min(96%, 1760px);
   margin: 0 auto;
 }
 
@@ -280,4 +280,20 @@
   .electrico-card:hover {
     transform: none;
   }
+}
+
+.electricos-carousel {
+  margin-bottom: 1.25rem;
+}
+
+.electrico-chips--carousel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.electrico-chips--carousel .electrico-chip {
+  font-size: 0.72rem;
+  padding: 4px 8px;
 }

@@ -16,7 +16,7 @@
 }
 
 .hibridos-inner {
-  width: min(1280px, 100%);
+  width: min(96%, 1760px);
   margin: 0 auto;
 }
 
@@ -280,4 +280,20 @@
   .hibrido-card:hover {
     transform: none;
   }
+}
+
+.hibridos-carousel {
+  margin-bottom: 1.25rem;
+}
+
+.hibrido-chips--carousel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.hibrido-chips--carousel .hibrido-chip {
+  font-size: 0.72rem;
+  padding: 4px 8px;
 }

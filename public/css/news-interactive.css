@@ -4,10 +4,10 @@
    ============================================================ */
 
 .section-info--interactive .news-showcase {
-  width: min(92%, 1700px);
-  max-width: 1700px;
+  width: min(96%, 1760px);
+  max-width: 1760px;
   margin: 0 auto;
-  padding: 0 12px 8px;
+  padding: 0 8px 8px;
 }
 
 /* —— Filtros —— */
@@ -233,8 +233,10 @@
 }
 
 .news-carousel {
+  --carousel-gap: 20px;
+  --carousel-visible: 4;
   display: flex;
-  gap: 20px;
+  gap: var(--carousel-gap, 20px);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
@@ -271,6 +273,46 @@
   display: none;
 }
 
+.news-carousel-card--hero-dup {
+  /* legacy: ya no se usa */
+}
+
+.news-showcase--carousel-only .news-hero {
+  display: none;
+}
+
+.news-showcase--carousel-only .news-carousel-wrap {
+  margin-top: 0;
+}
+
+.ver-mas-noticias-section--above-radar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 8px 4px 20px;
+  padding: 0 4px;
+}
+
+.ver-mas-noticias-section--above-radar .ver-mas-noticias-btn {
+  font-family: "Georgia", serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #08341f;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s ease, gap 0.2s ease;
+}
+
+.ver-mas-noticias-section--above-radar .ver-mas-noticias-btn:hover {
+  color: #e6b410;
+  gap: 12px;
+}
+
+.ver-mas-noticias-section--above-radar .ver-mas-noticias-btn::after {
+  content: "→";
+}
+
 .news-carousel-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.14);
@@ -285,14 +327,18 @@
 }
 
 .news-carousel-card__image {
-  height: 200px;
+  aspect-ratio: 16 / 10;
+  height: auto;
+  min-height: 180px;
   overflow: hidden;
+  background: #f3f4f6;
 }
 
 .news-carousel-card__image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center center;
   transition: transform 0.4s ease;
 }
 
@@ -435,6 +481,50 @@
   margin-top: 8px;
 }
 
+/* —— Tablet: 2 tarjetas visibles —— */
+@media (min-width: 640px) {
+  .news-carousel-card {
+    flex: 0 0 calc((100% - var(--carousel-gap, 20px)) / 2);
+    max-width: none;
+  }
+}
+
+/* —— Desktop: tarjetas más anchas y visibles —— */
+@media (min-width: 900px) {
+  .news-carousel-card {
+    flex: 0 0
+      calc(
+        (100% - (var(--carousel-gap, 20px) * (var(--carousel-visible, 4) - 1))) /
+          var(--carousel-visible, 4)
+      );
+    max-width: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .news-carousel {
+    --carousel-gap: 24px;
+    --carousel-visible: 3;
+  }
+
+  .news-carousel-card__image {
+    aspect-ratio: 4 / 3;
+    min-height: 220px;
+  }
+
+  .news-carousel-card__body {
+    padding: 22px 20px 24px;
+  }
+
+  .news-carousel-card__title {
+    font-size: 1.28rem;
+  }
+
+  .news-carousel-card__deck {
+    font-size: 1rem;
+  }
+}
+
 /* —— Desktop: layout revista horizontal —— */
 @media (min-width: 1024px) {
   .news-hero__link {
@@ -463,10 +553,6 @@
     max-width: 20ch;
   }
 
-  .news-carousel-card {
-    flex-basis: min(32%, 360px);
-  }
-
   .news-carousel-heading {
     font-size: 1.55rem;
   }
@@ -479,19 +565,25 @@
   }
 
   .news-filters {
-    justify-content: flex-start;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    padding: 0 12px 4px;
-    scrollbar-width: none;
-  }
-
-  .news-filters::-webkit-scrollbar {
-    display: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto 24px;
+    padding: 0 16px;
+    overflow: visible;
+    -webkit-overflow-scrolling: touch;
   }
 
   .news-filter-btn {
-    flex-shrink: 0;
+    flex: 0 1 auto;
+    font-size: 0.78rem;
+    padding: 9px 14px;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
   }
 
   .news-hero {
@@ -516,5 +608,17 @@
 
   .news-showcase .news-insight {
     margin: 0 12px 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .news-filters {
+    gap: 6px;
+    padding: 0 12px;
+  }
+
+  .news-filter-btn {
+    font-size: 0.72rem;
+    padding: 8px 12px;
   }
 }

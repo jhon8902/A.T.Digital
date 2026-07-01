@@ -10,6 +10,11 @@ import {
 } from "../../lib/note-scheduling";
 
 import { inferSourceScope } from "../../lib/notes-query";
+import {
+  HOME_NEWS_CAROUSEL_LIMIT,
+  HOME_NEWS_HERO_COUNT,
+  HOME_NEWS_POOL_SIZE,
+} from "../../lib/home-news-config";
 
 interface Props {
   notes?: SiteNote[];
@@ -19,7 +24,6 @@ const { notes: prefetchedNotes } = Astro.props;
 // --- CARGA Y FILTRO DE NOTAS RECIENTES PARA PORTADA ---
 
 let dynamicNotes: any[] = [];
-const HOME_VISIBLE_COUNT = 5;
 const HOME_NEWS_CATEGORIES = new Set([
   "noticias",
   "lanzamientos",
@@ -177,6 +181,7 @@ try {
       fecha: formatNotePublishedLabel(note),
       editor: note.editor || "Jhon Aparicio",
       source_scope: resolveNoteScope(note),
+      category: normalizeCategory(note.category),
       sortDate: getNotePublishTimestamp(note),
     }));
   }
@@ -193,6 +198,7 @@ const staticNotes = [
     caption: "Ford Bronco: la última apuesta todoterreno.",
     fecha: "Publicado: 01/07/2025",
     source_scope: "nacional",
+    category: "noticias",
   },
   {
     href: "/noticias-carrusel/noticia-audi",
@@ -201,6 +207,7 @@ const staticNotes = [
     caption: "Audi E-TRON: el SUV eléctrico más elegante de la marca.",
     fecha: "Publicado: 28/06/2025",
     source_scope: "nacional",
+    category: "noticias",
   },
   {
     href: "/noticias-carrusel/noticia-bmw-concept",
@@ -209,6 +216,7 @@ const staticNotes = [
     caption: "BMW Concept XM: El Futuro del Lujo y la Potencia Híbrida",
     fecha: "Publicado: 25/06/2025",
     source_scope: "nacional",
+    category: "noticias",
   },
   {
     href: "/noticias-carrusel/noticia-bmw",
@@ -217,6 +225,7 @@ const staticNotes = [
     caption: "BMW Serie 5: poderoso y ahora electrificado.",
     fecha: "Publicado: 20/06/2025",
     source_scope: "nacional",
+    category: "noticias",
   },
   {
     href: "/noticias-carrusel/noticia-dfsk",
@@ -225,6 +234,7 @@ const staticNotes = [
     caption: "DFSK seres e5: la híbrida para 7 pasajeros en Colombia.",
     fecha: "Publicado: 15/06/2025",
     source_scope: "nacional",
+    category: "noticias",
   },
 ];
 
@@ -250,10 +260,10 @@ const deduplicatedStaticNotes = staticNotesWithDate.filter(
 );
 const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
   .sort((a, b) => b.sortDate - a.sortDate)
-  .slice(0, HOME_VISIBLE_COUNT);
+  .slice(0, HOME_NEWS_POOL_SIZE);
 
 const featuredNote = allNotes[0] ?? null;
-const carouselNotes = allNotes.slice(1);
+const carouselNotes = allNotes.slice(HOME_NEWS_HERO_COUNT);
 ---
 
 <link rel="stylesheet" href="/css/news-interactive.css" />
@@ -262,6 +272,7 @@ const carouselNotes = allNotes.slice(1);
   id="noticias"
   class="section-info section-info--interactive w-full py-30"
   aria-labelledby="noticias-heading"
+  data-carousel-limit={HOME_NEWS_CAROUSEL_LIMIT}
 >
   <header class="info-header">
     <p class="noticias-eyebrow">Noticias</p>
@@ -370,7 +381,7 @@ const carouselNotes = allNotes.slice(1);
 
       {
         carouselNotes.length > 0 && (
-          <div class="news-carousel-wrap">
+          <div class="news-carousel-wrap" data-carousel-root>
             <div class="news-carousel-header">
               <h3 class="news-carousel-heading">Más en el sector</h3>
               <div class="news-carousel-nav">
@@ -392,10 +403,12 @@ const carouselNotes = allNotes.slice(1);
             </div>
             <div class="news-carousel">
               {
-                carouselNotes.map((nota) => (
+                carouselNotes.map((nota, index) => (
                   <article
                     class="news-carousel-card"
                     data-scope={nota.source_scope || "nacional"}
+                    data-category={nota.category || "noticias"}
+                    data-carousel-index={index}
                   >
                     <a href={nota.href} class="news-carousel-card__link">
                       <div class="news-carousel-card__image">
@@ -448,6 +461,10 @@ const carouselNotes = allNotes.slice(1);
         No hay noticias en este alcance por ahora.
       </p>
 
+      <div class="ver-mas-noticias-section ver-mas-noticias-section--above-radar">
+        <a href="/noticias" class="ver-mas-noticias-btn">Ver más noticias</a>
+      </div>
+
       <article class="news-insight">
         <div class="news-card-content">
           <span class="news-tag">Radar del sector</span>
@@ -463,11 +480,6 @@ const carouselNotes = allNotes.slice(1);
         </div>
       </article>
     </div>
-
-    <!-- Botón Ver más noticias -->
-    <div class="ver-mas-noticias-section">
-      <a href="/noticias" class="ver-mas-noticias-btn">Ver más noticias</a>
-    </div>
   </div>
 </section>
 
@@ -479,10 +491,10 @@ const carouselNotes = allNotes.slice(1);
   }
 
   .container {
-    width: min(90%, 1700px);
-    max-width: 1700px;
+    width: min(96%, 1760px);
+    max-width: 1760px;
     margin: 0 auto; /* Centra el contenido */
-    padding: 40px; /* Elimina padding innecesario */
+    padding: 32px 20px;
     font-family: "Georgia", serif;
     background: #fbf7f2;
   }
