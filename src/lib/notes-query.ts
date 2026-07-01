@@ -1,37 +1,9 @@
-import pkg from "pg";
 import {
   NOTES_PUBLIC_ORDER_SQL,
   PUBLISHED_NOTES_SQL,
   serializeScheduledAt,
 } from "./note-scheduling";
-import { resolveDatabaseUrl } from "./database-url";
-
-const { Pool } = pkg;
-
-let _pool: InstanceType<typeof Pool> | null = null;
-
-const DB_CONNECTION_TIMEOUT_MS = Number(
-  process.env.DB_CONNECTION_TIMEOUT_MS || "5000"
-);
-const DB_QUERY_TIMEOUT_MS = Number(process.env.DB_QUERY_TIMEOUT_MS || "8000");
-
-function getPool() {
-  if (!_pool) {
-    const connStr = resolveDatabaseUrl();
-
-    _pool = new Pool({
-      connectionString: connStr,
-      ssl: connStr.includes("localhost") ? false : { rejectUnauthorized: false },
-      connectionTimeoutMillis: DB_CONNECTION_TIMEOUT_MS,
-      query_timeout: DB_QUERY_TIMEOUT_MS,
-      statement_timeout: DB_QUERY_TIMEOUT_MS,
-      idleTimeoutMillis: 10000,
-      max: 5,
-    });
-  }
-
-  return _pool;
-}
+import { getPool } from "./db";
 
 function isMissingEditorColumnError(error: unknown): boolean {
   if (!error || typeof error !== "object") return false;
@@ -166,12 +138,17 @@ function normalizeNoteRows(rows: SiteNote[]): SiteNote[] {
 
 export async function queryNoteById(
   noteId: number,
+  options?: { includeUnpublished?: boolean },
 ): Promise<SiteNote | null> {
   if (!Number.isInteger(noteId) || noteId <= 0) return null;
 
+  const visibilitySql = options?.includeUnpublished
+    ? ""
+    : ` AND ${PUBLISHED_NOTES_SQL}`;
+
   try {
     const result = await getPool().query(
-      `SELECT * FROM notes WHERE id = $1 AND ${PUBLISHED_NOTES_SQL}`,
+      `SELECT * FROM notes WHERE id = $1${visibilitySql}`,
       [noteId],
     );
 

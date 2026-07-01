@@ -2,43 +2,14 @@ import type { APIRoute } from "astro";
 import { isAuthorizedAdminRequest } from "../../lib/admin-auth";
 import {
   NOTES_PUBLIC_ORDER_SQL,
-  PUBLISHED_NOTES_SQL,
-  serializeScheduledAt,
 } from "../../lib/note-scheduling";
 import {
   normalizeNoteCategory,
   normalizeNoteEditor,
+  queryNoteById,
   queryPublishedNotes,
 } from "../../lib/notes-query";
-import { resolveDatabaseUrl } from "../../lib/database-url";
-import pkg from "pg";
-
-const { Pool } = pkg;
-
-let _pool: InstanceType<typeof Pool> | null = null;
-
-const DB_CONNECTION_TIMEOUT_MS = Number(
-  process.env.DB_CONNECTION_TIMEOUT_MS || "5000"
-);
-const DB_QUERY_TIMEOUT_MS = Number(process.env.DB_QUERY_TIMEOUT_MS || "8000");
-
-function getPool() {
-  if (!_pool) {
-    const connStr = resolveDatabaseUrl();
-
-    _pool = new Pool({
-      connectionString: connStr,
-      ssl: connStr.includes("localhost") ? false : { rejectUnauthorized: false },
-      connectionTimeoutMillis: DB_CONNECTION_TIMEOUT_MS,
-      query_timeout: DB_QUERY_TIMEOUT_MS,
-      statement_timeout: DB_QUERY_TIMEOUT_MS,
-      idleTimeoutMillis: 10000,
-      max: 5,
-    });
-  }
-
-  return _pool;
-}
+import { getPool } from "../../lib/db";
 
 function isMissingEditorColumnError(error: any): boolean {
   if (!error) return false;
@@ -82,26 +53,16 @@ export const GET: APIRoute = async ({ request }) => {
       }
 
       const isAdmin = isAuthorizedAdminRequest(request);
-      const visibilitySql = isAdmin
-        ? ""
-        : ` AND ${PUBLISHED_NOTES_SQL}`;
+      const note = await queryNoteById(parsedId, {
+        includeUnpublished: isAdmin,
+      });
 
-      const result = await getPool().query(
-        `SELECT * FROM notes WHERE id = $1${visibilitySql}`,
-        [parsedId],
-      );
-
-      if (result.rows.length === 0) {
+      if (!note) {
         return new Response(JSON.stringify({ error: "Nota no encontrada" }), {
           status: 404,
           headers,
         });
       }
-
-      const note = result.rows[0];
-      note.category = normalizeNoteCategory(note.category);
-      note.editor = normalizeNoteEditor(note.editor);
-      note.scheduled_at = serializeScheduledAt(note.scheduled_at);
 
       return new Response(JSON.stringify(note), { status: 200, headers });
     }

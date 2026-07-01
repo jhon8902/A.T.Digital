@@ -17,7 +17,8 @@
     "db:seed-dealers": "node ./scripts/seed-dealers.cjs",
     "catalog:validate": "node ./scripts/validate-automatch-catalog.cjs",
     "catalog:sync": "node ./scripts/sync-automatch-catalog.cjs",
-    "catalog:seed-dealers": "node ./scripts/seed-dealers.cjs"
+    "catalog:seed-dealers": "node ./scripts/seed-dealers.cjs",
+    "check:notes": "node ./scripts/check-note-access.mjs"
   },
   "dependencies": {
     "@astrojs/netlify": "^6.5.10",

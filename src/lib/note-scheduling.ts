@@ -56,6 +56,7 @@ export function serializeScheduledAt(value: unknown): string | null {
 }
 
 export function isNoteScheduledForFuture(scheduledAt: unknown): boolean {
+  // Solo para UI de admin (formulario). En páginas públicas y APIs usar PUBLISHED_NOTES_SQL.
   const date = parseScheduledAt(scheduledAt);
   if (!date) return false;
   return date.getTime() > Date.now();

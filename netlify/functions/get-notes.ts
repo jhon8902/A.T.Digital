@@ -14,13 +14,13 @@ const DB_QUERY_TIMEOUT_MS = Number(process.env.DB_QUERY_TIMEOUT_MS || "8000");
 
 function resolveConnectionString(): string {
   const raw =
-    process.env.NETLIFY_DATABASE_URL ||
-    process.env.NETLIFY_DATABASE_URL_UNPOOLED ||
-    process.env.DATABASE_URL ||
+    process.env.NETLIFY_DATABASE_URL ??
+    process.env.NETLIFY_DATABASE_URL_UNPOOLED ??
+    process.env.DATABASE_URL ??
     "";
 
-  // Netlify UI values can accidentally be saved wrapped in quotes.
-  const connStr = raw.trim().replace(/^['\"]|['\"]$/g, "");
+  // Mantener en sync con src/lib/database-url.ts
+  const connStr = raw.trim().replace(/^['"]|['"]$/g, "");
   if (!connStr) {
     throw new Error("DATABASE_URL no está configurada");
   }
@@ -78,48 +78,6 @@ function isMissingSourceScopeColumnError(error: any): boolean {
       String(error.message || "")
     )
   );
-}
-
-function isNoteScheduledForFuture(scheduledAt: unknown): boolean {
-  if (!scheduledAt) return false;
-
-  let date: Date;
-  if (scheduledAt instanceof Date) {
-    date = new Date(
-      Date.UTC(
-        scheduledAt.getFullYear(),
-        scheduledAt.getMonth(),
-        scheduledAt.getDate(),
-        scheduledAt.getHours(),
-        scheduledAt.getMinutes(),
-        scheduledAt.getSeconds(),
-        scheduledAt.getMilliseconds()
-      )
-    );
-  } else {
-    const raw = String(scheduledAt).trim();
-    const naive = raw.match(
-      /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?$/
-    );
-    if (naive) {
-      const [, year, month, day, hour, minute, second = "0"] = naive;
-      date = new Date(
-        Date.UTC(
-          Number(year),
-          Number(month) - 1,
-          Number(day),
-          Number(hour),
-          Number(minute),
-          Number(second)
-        )
-      );
-    } else {
-      date = new Date(raw);
-    }
-  }
-
-  if (Number.isNaN(date.getTime())) return false;
-  return date.getTime() > Date.now();
 }
 
 function serializeScheduledAt(value: unknown): string | null {
@@ -222,14 +180,6 @@ export const handler: Handler = async (event) => {
       note.editor = normalizeEditor(note.editor);
       note.scheduled_at =
         serializeScheduledAt(note.scheduled_at) ?? note.scheduled_at;
-
-      if (isNoteScheduledForFuture(note.scheduled_at) && !isAdmin) {
-        return {
-          statusCode: 404,
-          headers: { ...headers, "Content-Type": "application/json" },
-          body: JSON.stringify({ error: "Nota no encontrada" }),
-        };
-      }
 
       console.log("🧠 Nota encontrada:", note.id);
 

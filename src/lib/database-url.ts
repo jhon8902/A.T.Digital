@@ -1,3 +1,7 @@
+/**
+ * Resolución de URL de PostgreSQL para Astro SSR y funciones Netlify.
+ * Mantener el mismo orden en netlify/functions/get-notes.ts (resolveConnectionString).
+ */
 export function resolveDatabaseUrl(): string {
   const raw =
     process.env.NETLIFY_DATABASE_URL ??
