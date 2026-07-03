@@ -61,22 +61,38 @@ export function normalizeSourceScope(scope: unknown): "nacional" | "internaciona
   return value === "internacional" ? "internacional" : "nacional";
 }
 
-/** Usa source_scope de BD; si falta o contradice el origen, infiere por spec_origen. */
+/** Respeta source_scope del formulario; solo infiere por spec_origen si falta en BD. */
 export function inferSourceScope(note: {
   source_scope?: unknown;
   spec_origen?: unknown;
 }): "nacional" | "internacional" {
-  const origen = String(note.spec_origen || "").toLowerCase();
+  const explicit = String(note.source_scope ?? "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+  if (explicit === "internacional" || explicit === "nacional") {
+    return explicit;
+  }
+
+  const origen = String(note.spec_origen || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+  if (/colombia/.test(origen)) {
+    return "nacional";
+  }
+
   if (
-    /australia|europa|europe|china|japon|alemania|germany|uk|reino unido|estados unidos|internacional|global|mundial|francia|italia|corea|india|canad[aá]/i.test(
+    /australia|europa|europe|china|japon|alemania|germany|uk|reino unido|estados unidos|internacional|global|mundial|francia|italia|corea|india|canada/.test(
       origen,
     )
   ) {
     return "internacional";
   }
 
-  const explicit = String(note.source_scope || "").trim().toLowerCase();
-  if (explicit === "internacional") return "internacional";
   return "nacional";
 }
 

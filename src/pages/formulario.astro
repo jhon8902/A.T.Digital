@@ -330,6 +330,11 @@ const cloudinaryFolder =
                   <option value="nacional" selected>Nacional</option>
                   <option value="internacional">Internacional</option>
                 </select>
+                <span class="field-hint">
+                  Cobertura editorial: Nacional = mercado Colombia; Internacional
+                  = lanzamiento o nota global. No depende del país en «Origen»
+                  de la ficha técnica.
+                </span>
               </label>
             </div>
 
@@ -1379,6 +1384,15 @@ const cloudinaryFolder =
           font-size: var(--text-secondary);
           color: #5a6472;
           line-height: 1.6;
+        }
+
+        .field-hint {
+          display: block;
+          margin-top: 6px;
+          font-size: 0.82rem;
+          color: #6b7280;
+          line-height: 1.45;
+          font-weight: 400;
         }
 
         .tip-highlight {

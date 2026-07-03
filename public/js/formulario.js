@@ -445,31 +445,51 @@
     return String(content || "").replace(/<!--AUTOMATCH_META:[^>]*-->/gi, "").trim();
   }
 
+  function readFileAsDataUrl(file) {
+    return new Promise(function (resolve, reject) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        resolve(reader.result);
+      };
+      reader.onerror = function () {
+        reject(new Error("No se pudo leer la imagen seleccionada"));
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   async function uploadFileToCloudinary(file, cloudName, uploadPreset, folder) {
-    const endpoint =
-      "https://api.cloudinary.com/v1_1/" +
-      encodeURIComponent(cloudName) +
-      "/image/upload";
-
-    const cloudinaryData = new FormData();
-    cloudinaryData.append("file", file);
-    cloudinaryData.append("upload_preset", uploadPreset);
-
-    if (folder) {
-      cloudinaryData.append("folder", folder);
+    if (!cloudName || !uploadPreset) {
+      throw new Error(
+        "Falta configurar PUBLIC_CLOUDINARY_CLOUD_NAME y PUBLIC_CLOUDINARY_UPLOAD_PRESET",
+      );
     }
 
-    const response = await fetch(endpoint, {
+    const dataUrl = await readFileAsDataUrl(file);
+    const response = await fetch("/api/upload-cloudinary", {
       method: "POST",
-      body: cloudinaryData,
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({
+        file: dataUrl,
+        filename: file.name || "nota.jpg",
+        folder: folder || undefined,
+      }),
     });
 
-    const payload = await response.json();
-    if (!response.ok || !payload || !payload.secure_url) {
+    let payload = {};
+    try {
+      payload = await response.json();
+    } catch (_parseError) {
+      payload = {};
+    }
+
+    if (!response.ok || !payload.secure_url) {
       const detail =
-        payload && payload.error && payload.error.message
-          ? payload.error.message
-          : "Cloudinary no devolvio secure_url";
+        (payload && payload.error) ||
+        (response.status === 401
+          ? "Sesión de administrador expirada. Recarga /formulario e inicia sesión de nuevo."
+          : "No se pudo subir la imagen al servidor");
       throw new Error(detail);
     }
 
