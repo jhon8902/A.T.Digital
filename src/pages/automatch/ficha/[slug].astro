@@ -1,0 +1,193 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import AutomatchFichaFooter from "../../../components/automatch/AutomatchFichaFooter.astro";import catalogData from "../../../data/automatch/autos.json";
+import specsData from "../../../data/automatch/specs.json";
+import { AUTOMATCH_FICHA_HREFS } from "../../../lib/automatch-fichas";
+
+export const prerender = false;
+
+interface CatalogAuto {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  tipo: string;
+  uso: string;
+  precio: number;
+  ciudad: string;
+  condicion: string;
+  año?: number;
+  imagen_principal: string;
+  galeria: string[];
+  especificaciones_id: string;
+  concesionario: {
+    nombre: string;
+    direccion?: string;
+    telefono?: string;
+    whatsapp?: string;
+    email?: string;
+    horario?: string;
+  };
+}
+
+const { slug } = Astro.params;
+const catalog = catalogData as CatalogAuto[];
+const auto = catalog.find((item) => item.especificaciones_id === slug);
+
+if (!auto) {
+  return Astro.redirect("/automatch");
+}
+
+const editorialHref = slug ? AUTOMATCH_FICHA_HREFS[slug] : undefined;
+if (editorialHref) {
+  return Astro.redirect(editorialHref);
+}
+
+const specs = (specsData as Record<string, Record<string, unknown>>)[slug || ""] || {};
+const gallery = [auto.imagen_principal, ...(auto.galeria || [])].filter(Boolean);
+
+function formatCop(value: number) {
+  return new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+const specEntries = Object.entries(specs).filter(([key, value]) => {
+  if (key === "equipamiento") return false;
+  if (value == null || value === "") return false;
+  if (Array.isArray(value) && value.length === 0) return false;
+  return true;
+});
+
+const equipamiento = Array.isArray(specs.equipamiento)
+  ? (specs.equipamiento as string[])
+  : [];
+
+const specLabels: Record<string, string> = {
+  motor: "Motor",
+  potencia: "Potencia",
+  torque: "Torque",
+  bateria: "Batería",
+  autonomia: "Autonomía",
+  autonomia_electrica: "Autonomía eléctrica",
+  tiempo_carga: "Tiempo de carga",
+  combustible: "Combustible",
+  transmision: "Transmisión",
+  traccion: "Tracción",
+  velocidad_maxima: "Velocidad máxima",
+  aceleracion: "Aceleración",
+  consumo: "Consumo",
+  consumo_hibrido: "Consumo híbrido",
+  consumo_electrico: "Consumo eléctrico",
+  dimensiones: "Dimensiones",
+  maletero: "Maletero",
+  combustible_estimado_km: "Estimado por $1",
+};
+
+const pageDescription = auto.descripcion || `Ficha AutoMatch del ${auto.nombre} en Colombia.`;
+const canonical = `${Astro.site?.href ?? "https://autotechdigital.com"}/automatch/ficha/${slug}`;
+---
+
+<Layout
+  title={`${auto.nombre} | Ficha AutoMatch`}
+  description={pageDescription}
+  ogImage={auto.imagen_principal}
+  canonical={canonical}
+  bodyClass="nota-page automatch ficha-automatch"
+>
+  <section class="articulo-container automatch">
+    <article class="noticia-detalle">
+      <img
+        class="noticia-portada noticia-portada--main"
+        src={auto.imagen_principal}
+        alt={auto.nombre}
+        loading="eager"
+        decoding="async"
+      />
+
+      <h1>{auto.nombre}</h1>
+      <div class="nota-meta-line">
+        <span class="nota-meta-item">
+          <i class="fa-solid fa-car-side" aria-hidden="true"></i>
+          <span>{auto.tipo}</span>
+        </span>
+        <span class="nota-meta-item">
+          <i class="fa-solid fa-road" aria-hidden="true"></i>
+          <span>Uso {auto.uso}</span>
+        </span>
+        <span class="nota-meta-item">
+          <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+          <span>{auto.ciudad}</span>
+        </span>
+        <span class="nota-meta-item">
+          <i class="fa-solid fa-tag" aria-hidden="true"></i>
+          <span>{formatCop(auto.precio)}</span>
+        </span>
+      </div>
+
+      <p class="noticia-descripcion">{auto.descripcion}</p>
+
+      {
+        gallery.slice(1).map((imageSrc, index) => (
+          <section class={`noticia-bloque${index % 2 === 0 ? " imagen-izquierda" : ""}`}>
+            <div class="noticia-texto">
+              <h2 class="noticia-titulo">Galería del modelo</h2>
+              <p class="noticia-parrafo">
+                Vista adicional del {auto.nombre} para conocer diseño, interior y
+                detalles clave antes de usar el buscador AutoMatch.
+              </p>
+            </div>
+            <img
+              src={imageSrc}
+              alt={`${auto.nombre} — imagen ${index + 2}`}
+              loading="lazy"
+              decoding="async"
+            />
+          </section>
+        ))
+      }
+
+      {
+        specEntries.length > 0 && (
+          <section class="ficha-tecnica-profesional">
+            <h2>Ficha técnica — {auto.nombre}</h2>
+            <div class="ficha-grid">
+              {specEntries.map(([key, value]) => (
+                <div class="ficha-item">
+                  <strong>
+                    <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+                    <span>{specLabels[key] || key}</span>
+                  </strong>
+                  <p>{String(value)}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      {
+        equipamiento.length > 0 && (
+          <section class="noticia-bloque">
+            <div class="noticia-texto">
+              <h2 class="noticia-titulo">Equipamiento destacado</h2>
+              <ul class="noticia-parrafo">
+                {equipamiento.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )
+      }
+
+      }
+    </article>
+
+    <AutomatchFichaFooter
+      especificacionesId={auto.especificaciones_id}
+      autoNombre={auto.nombre}
+    />
+  </section>
+</Layout>

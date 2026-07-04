@@ -13,6 +13,7 @@
   const contentFieldGroup = document.getElementById("contentFieldGroup");
   const automatchTextGroup = document.getElementById("automatchTextGroup");
   const automatchCatalogGroup = document.getElementById("automatchCatalogGroup");
+  const contentFieldLabel = document.getElementById("contentFieldLabel");
   const cloudinaryFilesInput = document.getElementById("cloudinaryFiles");
   const uploadCloudinaryBtn = document.getElementById("uploadCloudinaryBtn");
   const cloudinaryQueue = document.getElementById("cloudinaryQueue");
@@ -154,24 +155,26 @@
     }
 
     if (contentFieldGroup instanceof HTMLElement) {
-      contentFieldGroup.hidden = automatchMode;
-      contentFieldGroup.style.display = automatchMode ? "none" : "block";
+      contentFieldGroup.hidden = false;
+      contentFieldGroup.style.display = "block";
     }
 
     if (contentField instanceof HTMLTextAreaElement) {
-      contentField.required = !automatchMode;
+      contentField.required = true;
+      contentField.disabled = false;
       if (automatchMode) {
-        if (!preserveContent && !isPopulatingForm) {
-          contentField.value = "";
-        }
-        contentField.disabled = true;
         contentField.placeholder =
-          "En AutoMatch el contenido se genera desde subtítulo y metadatos";
+          "Párrafos cortos de la ficha. Usa: Titulo: Encabezado | Texto del bloque. Separa bloques con línea en blanco.";
       } else {
-        contentField.disabled = false;
         contentField.placeholder =
           "Escribe el cuerpo de la nota. Separa cada sección con una línea en blanco.";
       }
+    }
+
+    if (contentFieldLabel instanceof HTMLElement) {
+      contentFieldLabel.textContent = automatchMode
+        ? "Párrafos de la ficha"
+        : "Contenido";
     }
 
     if (subtitleField instanceof HTMLInputElement) {
@@ -597,11 +600,9 @@
       if (name === "content" && value) {
         if (isAutomatchCategory(note && note.category ? note.category : "")) {
           value = stripAutomatchMetaFromContent(value);
-          const subtitleMatch = value.match(/^<p>([\s\S]*?)<\/p>/i);
-          if (subtitleMatch && subtitleMatch[1] && !getFieldValue("subtitle")) {
-            setFieldValue("subtitle", htmlToPlainText(subtitleMatch[1]));
+          if (/<[a-z][\s\S]*>/i.test(value)) {
+            value = htmlToPlainText(value);
           }
-          value = "";
         } else if (/<[a-z][\s\S]*>/i.test(value)) {
           value = htmlToPlainText(value);
         }
@@ -962,8 +963,12 @@
       }
 
       data.spec_precio_cop = catalogPrecio;
-      data.spec_motorizacion = catalogTipo;
-      data.spec_segmento = catalogUso;
+      if (!String(data.spec_motorizacion || "").trim()) {
+        data.spec_motorizacion = catalogTipo;
+      }
+      if (!String(data.spec_segmento || "").trim()) {
+        data.spec_segmento = catalogUso;
+      }
 
       const texts = {};
       for (let i = 2; i <= 6; i += 1) {
@@ -984,7 +989,11 @@
       const encodedMeta = encodeURIComponent(
         JSON.stringify({ texts, catalog })
       );
-      data.content = `<p>${autoSubtitle}</p><!--AUTOMATCH_META:${encodedMeta}-->`;
+      const editorialRaw = stripAutomatchMetaFromContent(data.content || "");
+      const editorialHtml = editorialRaw
+        ? procesarContenidoAHtml(editorialRaw)
+        : `<p>${autoSubtitle}</p>`;
+      data.content = `${editorialHtml}<!--AUTOMATCH_META:${encodedMeta}-->`;
     }
 
     const effectiveEditId = editingNoteId;

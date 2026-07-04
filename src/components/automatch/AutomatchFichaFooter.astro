@@ -1,0 +1,230 @@
+---
+import TestDriveCTA from "../leads/TestDriveCTA.astro";
+import {
+  getCatalogVehicleBySpecId,
+  portalHrefForTipo,
+  type CatalogConcesionario,
+} from "../../lib/automatch-fichas";
+
+interface Props {
+  especificacionesId: string;
+  autoNombre?: string;
+  noteId?: number;
+  dealerId?: number;
+  dealerNombre?: string;
+  concesionario?: CatalogConcesionario | null;
+  showTestDrive?: boolean;
+}
+
+const {
+  especificacionesId,
+  autoNombre,
+  noteId,
+  dealerId,
+  dealerNombre,
+  concesionario: concesionarioProp,
+  showTestDrive = true,
+} = Astro.props;
+
+const vehicle = getCatalogVehicleBySpecId(especificacionesId);
+const nombre = autoNombre || vehicle?.nombre || "este modelo";
+const dealer = concesionarioProp || vehicle?.concesionario || null;
+const catalogId = vehicle?.id;
+const portalHref = portalHrefForTipo(vehicle?.tipo || "");
+const portalLabel =
+  portalHref === "/hibridos"
+    ? "Ver más híbridos en el portal"
+    : portalHref === "/electricos"
+      ? "Ver más eléctricos en el portal"
+      : "Ver noticias del portal";
+
+const resolvedDealerId = dealerId ?? dealer?.id;
+const resolvedDealerNombre = dealerNombre || dealer?.nombre;
+const whatsappHref = dealer?.whatsapp
+  ? `https://wa.me/${String(dealer.whatsapp).replace(/\D/g, "")}`
+  : null;
+---
+
+<section class="automatch-ficha-footer" aria-label="Acciones AutoMatch">
+  {
+    dealer && (
+      <div class="automatch-dealer-card">
+        <h2 class="automatch-dealer-card__title">
+          <i class="fa-solid fa-store" aria-hidden="true"></i>
+          Concesionario
+        </h2>
+        <p class="automatch-dealer-card__name">{dealer.nombre}</p>
+        {dealer.direccion && (
+          <p class="automatch-dealer-card__line">
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            {dealer.direccion}
+          </p>
+        )}
+        {dealer.horario && (
+          <p class="automatch-dealer-card__line">
+            <i class="fa-regular fa-clock" aria-hidden="true"></i>
+            {dealer.horario}
+          </p>
+        )}
+        <div class="automatch-dealer-card__actions">
+          {
+            dealer.telefono && (
+              <a href={`tel:${dealer.telefono.replace(/\s/g, "")}`} class="dealer-link">
+                <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                Llamar
+              </a>
+            )
+          }
+          {
+            whatsappHref && (
+              <a
+                href={whatsappHref}
+                class="dealer-link dealer-link--whatsapp"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                WhatsApp
+              </a>
+            )
+          }
+          {
+            dealer.email && (
+              <a href={`mailto:${dealer.email}`} class="dealer-link">
+                <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+                Email
+              </a>
+            )
+          }
+        </div>
+      </div>
+    )
+  }
+
+  {
+    showTestDrive && (
+      <TestDriveCTA
+        autoNombre={nombre}
+        autoId={catalogId}
+        noteId={noteId}
+        dealerId={resolvedDealerId}
+        dealerNombre={resolvedDealerNombre}
+      />
+    )
+  }
+
+  <nav class="automatch-portal-nav" aria-label="Enlaces del portal">
+    <a href="/automatch-find" class="portal-nav-btn portal-nav-btn--primary">
+      <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+      Usar AutoMatch
+    </a>
+    <a href="/automatch" class="portal-nav-btn">
+      <i class="fa-solid fa-car-side" aria-hidden="true"></i>
+      Volver a fichas destacadas
+    </a>
+    <a href={portalHref} class="portal-nav-btn portal-nav-btn--ghost">
+      <i class="fa-solid fa-newspaper" aria-hidden="true"></i>
+      {portalLabel}
+    </a>
+  </nav>
+</section>
+
+<style>
+  .automatch-ficha-footer {
+    max-width: 1100px;
+    margin: 2.5rem auto 3rem;
+    padding: 0 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .automatch-dealer-card {
+    background: linear-gradient(135deg, #f8faf9 0%, #eef6f1 100%);
+    border: 1px solid #d7e8de;
+    border-radius: 1rem;
+    padding: 1.25rem 1.35rem;
+  }
+
+  .automatch-dealer-card__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.65rem;
+    font-size: 1.1rem;
+    color: #08341f;
+  }
+
+  .automatch-dealer-card__name {
+    margin: 0 0 0.5rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0a2d1c;
+  }
+
+  .automatch-dealer-card__line {
+    margin: 0.25rem 0;
+    color: #334155;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+  }
+
+  .automatch-dealer-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 0.85rem;
+  }
+
+  .dealer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    background: #08341f;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+
+  .dealer-link--whatsapp {
+    background: #128c47;
+  }
+
+  .automatch-portal-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    justify-content: center;
+    padding-top: 0.25rem;
+  }
+
+  .portal-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.7rem 1.1rem;
+    border-radius: 999px;
+    border: 1.5px solid #08341f;
+    color: #08341f;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+    background: #fff;
+  }
+
+  .portal-nav-btn--primary {
+    background: #08341f;
+    color: #fff;
+    border-color: #08341f;
+  }
+
+  .portal-nav-btn--ghost {
+    border-color: #cbd5e1;
+    color: #475569;
+  }
+</style>

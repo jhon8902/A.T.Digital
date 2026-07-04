@@ -3,6 +3,8 @@ import Layout from "../../layouts/Layout.astro";
 import TestDriveCTA from "../../components/leads/TestDriveCTA.astro";
 import AutoMatchCTA from "../../components/leads/AutoMatchCTA.astro";
 import RelatedNotes from "./RelatedNotes.astro";
+import AutomatchFichaFooter from "../../components/automatch/AutomatchFichaFooter.astro";
+import { findCatalogVehicleByTitle } from "../../lib/automatch-catalog";
 import { getDealerForNote, type NoteDealerInfo } from "../../lib/leads";
 import {
   getNewsCardTitle,
@@ -115,12 +117,24 @@ type AutoMatchCtaReason = "internacional" | "sin-dealer" | "deportes";
 let noteCta: NoteCtaKind = "automatch";
 let automatchReason: AutoMatchCtaReason = "sin-dealer";
 let dealerInfo: NoteDealerInfo | null = null;
+let matchedCatalogVehicle: ReturnType<typeof findCatalogVehicleByTitle> = null;
+const isAutomatchNote =
+  (note?.category || "").toLowerCase() === "automatch";
 
 if (note) {
   const category = (note.category || "").toLowerCase();
   const scope = (note.source_scope || "nacional").toLowerCase();
 
-  if (category === "deportes") {
+  if (category === "automatch") {
+    matchedCatalogVehicle = findCatalogVehicleByTitle(note.title);
+    dealerInfo = await getDealerForNote(note.id);
+    if (dealerInfo) {
+      noteCta = "test-drive";
+    } else {
+      noteCta = "automatch";
+      automatchReason = "sin-dealer";
+    }
+  } else if (category === "deportes") {
     noteCta = "automatch";
     automatchReason = "deportes";
   } else if (scope === "internacional") {
@@ -156,7 +170,9 @@ const coverImage =
   normalizeMediaUrl(note?.image1) ||
   normalizeMediaUrl(extractFirstImage(note?.content) || undefined) ||
   null;
-const contentText = (note?.content || "").trim();
+const contentText = (note?.content || "")
+  .replace(/<!--AUTOMATCH_META:[^>]*-->/gi, "")
+  .trim();
 
 // Mejorar el parseo: dividir cada bloque que comience con 'Titulo:' (sin depender de saltos de línea dobles)
 const contentParagraphs = contentText
@@ -565,32 +581,48 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
           }
 
           {
-            remainingImages.length > 0 &&
-              remainingImages.map((imgSrc, index) => (
-                <section class={`noticia-bloque${(uniqueContentBlocks.length + index) % 2 === 1 ? " imagen-izquierda" : ""}`}>
-                  <div class="noticia-texto">
-                    <h2 class="noticia-titulo">Más imágenes de {displayTitle}</h2>
-                    <p class="noticia-parrafo">Galería visual complementaria de la nota.</p>
-                  </div>
-                  {useSmartImageFrame ? (
-                    <div class="noticia-media-frame">
-                      <img
-                        src={imgSrc}
-                        alt={`${note.title} imagen adicional ${index + 1}`}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </div>
-                  ) : (
-                    <img
-                      src={imgSrc}
-                      alt={`${note.title} imagen adicional ${index + 1}`}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  )}
-                </section>
-              ))
+            remainingImages.length > 0 && (
+              <section
+                class="noticia-galeria-complementaria"
+                aria-label={`Galería de ${displayTitle}`}
+              >
+                <header class="noticia-galeria-complementaria__header">
+                  <p class="noticia-galeria-complementaria__eyebrow">Galería</p>
+                  <h2 class="noticia-galeria-complementaria__title">
+                    Más imágenes de {displayTitle}
+                  </h2>
+                  <p class="noticia-galeria-complementaria__lead">
+                    Vistas adicionales del modelo para complementar la ficha.
+                  </p>
+                </header>
+
+                <div class="noticia-galeria-complementaria__grid">
+                  {remainingImages.map((imgSrc, index) => (
+                    <figure
+                      class={`noticia-galeria-complementaria__item${index === 0 ? " is-featured" : ""}`}
+                    >
+                      {useSmartImageFrame ? (
+                        <div class="noticia-galeria-complementaria__frame">
+                          <img
+                            src={imgSrc}
+                            alt={`${note.title} — imagen ${index + 1} de la galería`}
+                            loading={index === 0 ? "eager" : "lazy"}
+                            decoding="async"
+                          />
+                        </div>
+                      ) : (
+                        <img
+                          src={imgSrc}
+                          alt={`${note.title} — imagen ${index + 1} de la galería`}
+                          loading={index === 0 ? "eager" : "lazy"}
+                          decoding="async"
+                        />
+                      )}
+                    </figure>
+                  ))}
+                </div>
+              </section>
+            )
           }
 
           {
@@ -627,7 +659,21 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
         </article>
 
         {
-          noteCta === "test-drive" ? (
+          isAutomatchNote ? (
+            <AutomatchFichaFooter
+              especificacionesId={
+                matchedCatalogVehicle?.especificaciones_id || `note-${note.id}`
+              }
+              autoNombre={note.title}
+              noteId={note.id}
+              dealerId={dealerInfo?.dealerId}
+              dealerNombre={dealerInfo?.dealerNombre}
+              concesionario={matchedCatalogVehicle?.concesionario}
+              showTestDrive={Boolean(
+                dealerInfo || matchedCatalogVehicle?.concesionario,
+              )}
+            />
+          ) : noteCta === "test-drive" ? (
             <TestDriveCTA
               autoNombre={note.title}
               noteId={note.id}
@@ -643,8 +689,8 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
           )
         }
 
-        <!-- Notas relacionadas -->
-        {note?.category && (
+        <!-- Notas relacionadas (no en fichas AutoMatch) -->
+        {note?.category && !isAutomatchNote && (
           <RelatedNotes currentId={note.id} category={note.category} />
         )}
 <!--
@@ -698,6 +744,115 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
       margin-bottom: 0.7rem;
       font-size: 0.9rem;
       gap: 0.5rem 0.85rem;
+    }
+  }
+
+  .noticia-galeria-complementaria {
+    width: min(100%, 1080px);
+    margin: 2.5rem auto 2.75rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background: linear-gradient(165deg, #f7faf8 0%, #eef5f0 55%, #f9fbf9 100%);
+    border: 1px solid #d9e8de;
+    border-radius: 1.15rem;
+    box-shadow: 0 14px 40px rgba(8, 52, 31, 0.07);
+  }
+
+  .noticia-galeria-complementaria__header {
+    text-align: center;
+    max-width: 42rem;
+    margin: 0 auto 1.5rem;
+  }
+
+  .noticia-galeria-complementaria__eyebrow {
+    margin: 0 0 0.4rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #b8860b;
+  }
+
+  .noticia-galeria-complementaria__title {
+    margin: 0 0 0.55rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.45rem, 2.6vw, 1.95rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #08341f;
+  }
+
+  .noticia-galeria-complementaria__lead {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: #4b5563;
+  }
+
+  .noticia-galeria-complementaria__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.75rem, 2vw, 1.1rem);
+  }
+
+  .noticia-galeria-complementaria__item {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 0.9rem;
+    background: #0a2d1c;
+    box-shadow: 0 8px 22px rgba(8, 52, 31, 0.12);
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+  }
+
+  .noticia-galeria-complementaria__item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 34px rgba(8, 52, 31, 0.18);
+  }
+
+  .noticia-galeria-complementaria__item.is-featured {
+    grid-column: 1 / -1;
+  }
+
+  .noticia-galeria-complementaria__item img,
+  .noticia-galeria-complementaria__frame {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  .noticia-galeria-complementaria__frame {
+    overflow: hidden;
+  }
+
+  .noticia-galeria-complementaria__frame img {
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .noticia-galeria-complementaria__item.is-featured img,
+  .noticia-galeria-complementaria__item.is-featured
+    .noticia-galeria-complementaria__frame {
+    aspect-ratio: 21 / 9;
+    max-height: 420px;
+  }
+
+  @media (max-width: 720px) {
+    .noticia-galeria-complementaria {
+      width: calc(100% - 1.5rem);
+      margin-inline: auto;
+      padding: 1rem;
+    }
+
+    .noticia-galeria-complementaria__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .noticia-galeria-complementaria__item.is-featured img,
+    .noticia-galeria-complementaria__item.is-featured
+      .noticia-galeria-complementaria__frame {
+      aspect-ratio: 16 / 10;
+      max-height: none;
     }
   }
 </style>

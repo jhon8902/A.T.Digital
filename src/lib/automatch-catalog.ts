@@ -24,9 +24,25 @@ export interface AutomatchCarouselItem {
   imagenes: string[];
   catalogId?: number;
   noteId?: number;
+  especificacionesId?: string;
   href: string;
+  toolHref: string;
   ctaLabel: string;
+  toolCtaLabel: string;
   source: "catalog" | "note" | "merged";
+}
+
+function resolveCarouselFichaHref(
+  especificacionesId: string,
+  noteId?: number,
+): string {
+  const editorialHref = resolveAutomatchFichaHref({
+    especificaciones_id: especificacionesId,
+    noteId,
+  });
+  if (editorialHref) return editorialHref;
+  if (noteId) return `/notas/${noteId}`;
+  return `/automatch/ficha/${especificacionesId}`;
 }
 
 interface CatalogAuto {
@@ -182,6 +198,11 @@ function findMatchingNote(catalogNombre: string, notes: AutomatchDbNote[]) {
   return notes.find((note) => titlesMatch(catalogNombre, note.title));
 }
 
+export function findCatalogVehicleByTitle(title = "") {
+  const catalog = catalogData as CatalogAuto[];
+  return catalog.find((auto) => titlesMatch(auto.nombre, title)) || null;
+}
+
 export const CAROUSEL_IMAGE_COUNT = 4;
 
 function padCarouselImages(
@@ -325,6 +346,8 @@ export function buildAutomatchCarousel(
       skipCover,
     );
 
+    const noteId = matchedNote ? Number(matchedNote.id) : undefined;
+
     items.push({
       id: matchedNote ? String(matchedNote.id) : `catalog-${auto.id}`,
       nombre: auto.nombre,
@@ -335,9 +358,12 @@ export function buildAutomatchCarousel(
       content: matchedNote?.content,
       imagenes,
       catalogId: auto.id,
-      noteId: matchedNote ? Number(matchedNote.id) : undefined,
-      href: matchedNote ? `/notas/${matchedNote.id}` : "/automatch-find",
-      ctaLabel: matchedNote ? "Ver ficha completa" : "Ver en AutoMatch",
+      noteId,
+      especificacionesId: auto.especificaciones_id,
+      href: resolveCarouselFichaHref(auto.especificaciones_id, noteId),
+      toolHref: "/automatch-find",
+      ctaLabel: "Ver ficha",
+      toolCtaLabel: "Usar AutoMatch",
       source: matchedNote ? "merged" : "catalog",
     });
   }
@@ -369,7 +395,9 @@ export function buildAutomatchCarousel(
       imagenes,
       noteId: Number(note.id),
       href: `/notas/${note.id}`,
-      ctaLabel: "Ver ficha completa",
+      toolHref: "/automatch-find",
+      ctaLabel: "Ver ficha",
+      toolCtaLabel: "Usar AutoMatch",
       source: "note",
     });
   }

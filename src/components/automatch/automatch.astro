@@ -59,7 +59,9 @@ const normalizedIncoming = Array.isArray(incomingAutos)
           metaTexts: parseAutomatchMeta(auto?.content || ""),
           imagenes: images.length > 0 ? images : ["/img/default.jpg"],
           href: String(auto?.href || "/automatch-find"),
-          ctaLabel: String(auto?.ctaLabel || "Ver en AutoMatch"),
+          toolHref: String(auto?.toolHref || "/automatch-find"),
+          ctaLabel: String(auto?.ctaLabel || "Ver ficha"),
+          toolCtaLabel: String(auto?.toolCtaLabel || "Usar AutoMatch"),
           catalogId: auto?.catalogId,
           noteId: auto?.noteId,
         };
@@ -186,10 +188,16 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
                     </p>
                   ))}
                 </div>
-                <a href={auto.href} class="auto-card-cta">
-                  <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-                  {auto.ctaLabel}
-                </a>
+                <div class="auto-card-actions">
+                  <a href={auto.href} class="auto-card-cta auto-card-cta--primary">
+                    <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
+                    {auto.ctaLabel}
+                  </a>
+                  <a href={auto.toolHref} class="auto-card-cta auto-card-cta--secondary">
+                    <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+                    {auto.toolCtaLabel}
+                  </a>
+                </div>
               </article>
             ))
           }
@@ -264,10 +272,16 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
                   </p>
                 ))}
               </div>
-              <a href={auto.href} class="auto-card-cta">
-                <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-                {auto.ctaLabel}
-              </a>
+              <div class="auto-card-actions">
+                <a href={auto.href} class="auto-card-cta auto-card-cta--primary">
+                  <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
+                  {auto.ctaLabel}
+                </a>
+                <a href={auto.toolHref} class="auto-card-cta auto-card-cta--secondary">
+                  <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+                  {auto.toolCtaLabel}
+                </a>
+              </div>
             </article>
           ))
         }
@@ -513,24 +527,44 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     margin-bottom: 0.35rem;
   }
 
+  .auto-card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-top: 0.65rem;
+  }
+
   .auto-card-cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.45rem;
-    margin-top: 0.65rem;
     padding: 0.62rem 1rem;
     border-radius: 999px;
-    background: #08341f;
-    color: #fff;
     font-size: 0.92rem;
     font-weight: 600;
     text-decoration: none;
-    transition: transform 0.15s ease, background 0.15s ease;
+    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
   }
 
-  .auto-card-cta:hover {
+  .auto-card-cta--primary {
+    background: #08341f;
+    color: #fff;
+  }
+
+  .auto-card-cta--primary:hover {
     background: #0a4228;
+    transform: translateY(-1px);
+  }
+
+  .auto-card-cta--secondary {
+    background: transparent;
+    color: #08341f;
+    border: 1.5px solid #08341f;
+  }
+
+  .auto-card-cta--secondary:hover {
+    background: rgba(8, 52, 31, 0.06);
     transform: translateY(-1px);
   }
 

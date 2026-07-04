@@ -334,9 +334,9 @@ const cloudinaryFolder =
             </div>
 
             <p id="automatchModeHint" class="storage-tip tip-highlight" hidden>
-              Modo AutoMatch: ficha para carrusel y buscador. Completa los datos
-              de catálogo (tipo, uso, precio) para que el modelo aparezca en
-              /automatch-find con match correcto.
+              Modo AutoMatch: ficha para carrusel y buscador. Completa párrafos
+              cortos, ficha técnica y datos de catálogo (tipo, uso, precio) para
+              que el modelo aparezca en /automatch-find con match correcto.
             </p>
           </div>
 
@@ -347,7 +347,7 @@ const cloudinaryFolder =
             </h2>
 
             <label id="contentFieldGroup">
-              Contenido
+              <span id="contentFieldLabel">Contenido</span>
               <textarea
                 name="content"
                 placeholder="Escribe el cuerpo de la nota. Separa cada sección con una línea en blanco."
@@ -585,7 +585,7 @@ const cloudinaryFolder =
             </div>
           </fieldset>
 
-          <fieldset class="group-box full-note-only">
+          <fieldset id="noteSpecGroup" class="group-box note-spec-box">
             <legend>Ficha técnica (opcional pero recomendada)</legend>
             <div class="grid-2">
               <label>
