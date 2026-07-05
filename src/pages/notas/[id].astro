@@ -304,8 +304,6 @@ uniqueContentBlocks.forEach((block, index) => {
   usedTitles.add(block.title);
 });
 
-const remainingImages = galleryImages.slice(uniqueContentBlocks.length);
-
 function combineText(...values: Array<string | undefined>) {
   return values
     .map((value) => value?.trim())
@@ -372,6 +370,56 @@ const technicalSpecCards = [
     className: "competidores",
   },
 ].filter((item) => Boolean(item.value && item.value.trim()));
+
+const hasTestDriveOffer =
+  noteCta === "test-drive" ||
+  (isAutomatchNote &&
+    Boolean(dealerInfo || matchedCatalogVehicle?.concesionario));
+
+function formatHeroCop(value?: string | null) {
+  if (!value) return null;
+  const digits = String(value).replace(/[^\d]/g, "");
+  if (!digits) return String(value).trim();
+  return new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    maximumFractionDigits: 0,
+  }).format(Number.parseInt(digits, 10));
+}
+
+const heroHighlights = [
+  {
+    label: "Precio en Colombia",
+    icon: "fa-solid fa-tags",
+    value:
+      formatHeroCop(note?.spec_precio_cop) ||
+      (priceSpec ? String(priceSpec) : null),
+  },
+  {
+    label: "Potencia",
+    icon: "fa-solid fa-gauge-high",
+    value: note?.spec_potencia_hp
+      ? `${String(note.spec_potencia_hp).replace(/\s*hp$/i, "")} hp`
+      : null,
+  },
+  {
+    label: "Autonomía",
+    icon: "fa-solid fa-road",
+    value: note?.spec_autonomia_km
+      ? `Hasta ${note.spec_autonomia_km} km`
+      : null,
+  },
+  {
+    label: "0–100 km/h",
+    icon: "fa-regular fa-clock",
+    value: note?.spec_aceleracion_0_100 || null,
+  },
+].filter((item) => Boolean(item.value && String(item.value).trim()));
+
+const remainingImages = galleryImages.slice(uniqueContentBlocks.length);
+const galleryGridImages = remainingImages.slice(1);
+const showGalleryTestDriveCta =
+  hasTestDriveOffer && galleryGridImages.length > 0 && galleryGridImages.length % 2 === 1;
 
 function sourceScopeLabel(scope?: string) {
   return scope?.toLowerCase() === "internacional" ? "Internacional" : "Nacional";
@@ -475,47 +523,138 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
   {
     note?.title ? (
       <section class={`articulo-container ${categoryClass}`}>
-        <article class={`noticia-detalle${useSmartImageFrame ? " smart-note-frame" : ""}`}>
+        <article
+          class={`noticia-detalle${useSmartImageFrame ? " smart-note-frame" : ""}${isAutomatchNote ? " noticia-detalle--automatch-ficha" : ""}`}
+        >
           {
-            coverImage && (
-              <img
-                class="noticia-portada noticia-portada--main"
-                src={coverImage}
-                alt={note.title}
-                loading="lazy"
-                decoding="async"
-              />
+            isAutomatchNote ? (
+              <header class="automatch-ficha-hero">
+                {
+                  coverImage && (
+                    <div class="automatch-ficha-hero__media">
+                      <img
+                        class="noticia-portada noticia-portada--main"
+                        src={coverImage}
+                        alt={note.title}
+                        loading="eager"
+                        decoding="async"
+                      />
+                    </div>
+                  )
+                }
+
+                <div class="automatch-ficha-hero__panel">
+                  <div class="automatch-ficha-hero__intro">
+                  <p class="automatch-ficha-hero__badge">
+                    <i class="fa-solid fa-car-side" aria-hidden="true"></i>
+                    Ficha AutoMatch
+                  </p>
+
+                  <h1>{displayTitle}</h1>
+
+                  {
+                    matchedCatalogVehicle && (
+                      <div class="automatch-ficha-hero__tags">
+                        <span>{matchedCatalogVehicle.tipo}</span>
+                        <span>Uso {matchedCatalogVehicle.uso}</span>
+                        {matchedCatalogVehicle.ciudad && (
+                          <span>{matchedCatalogVehicle.ciudad}</span>
+                        )}
+                      </div>
+                    )
+                  }
+
+                  <div class="nota-meta-line automatch-ficha-hero__meta">
+                    <span class="nota-meta-item">
+                      <i class="fa-regular fa-user" aria-hidden="true"></i>
+                      <span>{note.editor?.trim() || "Jhon Aparicio"}</span>
+                    </span>
+                    {
+                      formatNotePublishDateLong(note) && (
+                        <span class="nota-meta-item">
+                          <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                          <span>{formatNotePublishDateLong(note)}</span>
+                        </span>
+                      )
+                    }
+                  </div>
+
+                  {displayLead && (
+                    <p class="noticia-descripcion automatch-ficha-hero__lead">
+                      {displayLead}
+                    </p>
+                  )}
+                </div>
+
+                {
+                  heroHighlights.length > 0 && (
+                    <div class="automatch-ficha-hero__highlight-card">
+                      <p class="automatch-ficha-hero__highlight-title">
+                        Datos clave para decidir
+                      </p>
+                      <dl class="automatch-ficha-hero__specs">
+                        {heroHighlights.map((item) => (
+                          <div class="automatch-ficha-hero__spec">
+                            <dt>
+                              {item.icon && (
+                                <i class={item.icon} aria-hidden="true"></i>
+                              )}
+                              {item.label}
+                            </dt>
+                            <dd>{item.value}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </div>
+                  )
+                }
+              </div>
+            </header>
+            ) : (
+              <>
+                {
+                  coverImage && (
+                    <img
+                      class="noticia-portada noticia-portada--main"
+                      src={coverImage}
+                      alt={note.title}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )
+                }
+
+                <h1>{displayTitle}</h1>
+                <div class="nota-meta-line">
+                  <span class="nota-meta-item">
+                    <i class="fa-regular fa-user" aria-hidden="true"></i>
+                    <span>{note.editor?.trim() || "Jhon Aparicio"}</span>
+                  </span>
+                  {
+                    formatNotePublishDateLong(note) && (
+                      <span class="nota-meta-item">
+                        <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                        <span>{formatNotePublishDateLong(note)}</span>
+                      </span>
+                    )
+                  }
+                  <span class="nota-meta-item">
+                    <i class="fa-regular fa-bookmark" aria-hidden="true"></i>
+                    <span>{sectionLabel(note.category)}</span>
+                  </span>
+                  <span class="nota-meta-item">
+                    <i class="fa-regular fa-compass" aria-hidden="true"></i>
+                    <span>{sourceScopeLabel(note.source_scope)}</span>
+                  </span>
+                </div>
+
+                {displayLead && <p class="noticia-descripcion">{displayLead}</p>}
+              </>
             )
           }
 
-          <h1>{displayTitle}</h1>
-          <div class="nota-meta-line">
-            <span class="nota-meta-item">
-              <i class="fa-regular fa-user" aria-hidden="true"></i>
-              <span>{note.editor?.trim() || "Jhon Aparicio"}</span>
-            </span>
-            {
-              formatNotePublishDateLong(note) && (
-                <span class="nota-meta-item">
-                  <i class="fa-regular fa-calendar" aria-hidden="true"></i>
-                  <span>{formatNotePublishDateLong(note)}</span>
-                </span>
-              )
-            }
-            <span class="nota-meta-item">
-              <i class="fa-regular fa-bookmark" aria-hidden="true"></i>
-              <span>{sectionLabel(note.category)}</span>
-            </span>
-            <span class="nota-meta-item">
-              <i class="fa-regular fa-compass" aria-hidden="true"></i>
-              <span>{sourceScopeLabel(note.source_scope)}</span>
-            </span>
-          </div>
-
-          {displayLead && <p class="noticia-descripcion">{displayLead}</p>}
-
           {
-            uniqueContentBlocks.length > 0 ? (
+            uniqueContentBlocks.length > 0 &&
               uniqueContentBlocks.map((block, index) => {
                 const blockImage = galleryImages[index];
                 return (
@@ -552,7 +691,10 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
                   </section>
                 );
               })
-            ) : (
+          }
+
+          {
+            !isAutomatchNote && uniqueContentBlocks.length === 0 && (
               <section class="noticia-bloque">
                 <div class="noticia-texto">
                   <p class="noticia-parrafo">Sin contenido disponible.</p>
@@ -597,29 +739,71 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
                 </header>
 
                 <div class="noticia-galeria-complementaria__grid">
-                  {remainingImages.map((imgSrc, index) => (
-                    <figure
-                      class={`noticia-galeria-complementaria__item${index === 0 ? " is-featured" : ""}`}
-                    >
+                  {
+                    remainingImages[0] && (
+                      <figure class="noticia-galeria-complementaria__item is-featured">
+                        {useSmartImageFrame ? (
+                          <div class="noticia-galeria-complementaria__frame">
+                            <img
+                              src={remainingImages[0]}
+                              alt={`${note.title} — imagen 1 de la galería`}
+                              loading="eager"
+                              decoding="async"
+                            />
+                          </div>
+                        ) : (
+                          <img
+                            src={remainingImages[0]}
+                            alt={`${note.title} — imagen 1 de la galería`}
+                            loading="eager"
+                            decoding="async"
+                          />
+                        )}
+                      </figure>
+                    )
+                  }
+
+                  {galleryGridImages.map((imgSrc, index) => (
+                    <figure class="noticia-galeria-complementaria__item">
                       {useSmartImageFrame ? (
                         <div class="noticia-galeria-complementaria__frame">
                           <img
                             src={imgSrc}
-                            alt={`${note.title} — imagen ${index + 1} de la galería`}
-                            loading={index === 0 ? "eager" : "lazy"}
+                            alt={`${note.title} — imagen ${index + 2} de la galería`}
+                            loading="lazy"
                             decoding="async"
                           />
                         </div>
                       ) : (
                         <img
                           src={imgSrc}
-                          alt={`${note.title} — imagen ${index + 1} de la galería`}
-                          loading={index === 0 ? "eager" : "lazy"}
+                          alt={`${note.title} — imagen ${index + 2} de la galería`}
+                          loading="lazy"
                           decoding="async"
                         />
                       )}
                     </figure>
                   ))}
+
+                  {
+                    showGalleryTestDriveCta && (
+                      <a
+                        href="#solicitar-test-drive"
+                        class="noticia-galeria-complementaria__cta"
+                      >
+                        <span class="noticia-galeria-complementaria__cta-eyebrow">
+                          ¿Te gustó?
+                        </span>
+                        <span class="noticia-galeria-complementaria__cta-title">
+                          Solicita el test drive
+                        </span>
+                        <span class="noticia-galeria-complementaria__cta-action">
+                          <i class="fa-solid fa-steering-wheel" aria-hidden="true"></i>
+                          Ir al formulario
+                        </span>
+                      </a>
+                    )
+                  }
                 </div>
               </section>
             )
@@ -835,6 +1019,56 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
     .noticia-galeria-complementaria__frame {
     aspect-ratio: 21 / 9;
     max-height: 420px;
+  }
+
+  .noticia-galeria-complementaria__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 1.25rem;
+    aspect-ratio: 16 / 10;
+    border-radius: 0.9rem;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background: linear-gradient(145deg, #08341f 0%, #0f5c36 55%, #08341f 100%);
+    border: 1px solid rgba(230, 180, 16, 0.35);
+    box-shadow: 0 10px 26px rgba(8, 52, 31, 0.2);
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+  }
+
+  .noticia-galeria-complementaria__cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 34px rgba(8, 52, 31, 0.28);
+  }
+
+  .noticia-galeria-complementaria__cta-eyebrow {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #f0c14a;
+  }
+
+  .noticia-galeria-complementaria__cta-title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
+    font-weight: 700;
+    line-height: 1.25;
+    max-width: 14ch;
+  }
+
+  .noticia-galeria-complementaria__cta-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.15rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    font-size: 0.82rem;
+    font-weight: 600;
   }
 
   @media (max-width: 720px) {

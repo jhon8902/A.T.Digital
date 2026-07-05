@@ -254,6 +254,9 @@ const structuredDataJson = JSON.stringify(structuredData);
 
     <!-- Estilos específicos según la categoría (solo para notas) -->
     {categoriaCSS && <link rel="stylesheet" href={categoriaCSS} />}
+    {categoria === "automatch" && (
+      <link rel="stylesheet" href="/css/automatch-ficha-nota.css" />
+    )}
 
     <!-- Estilos del footer -->
     <link rel="stylesheet" href="/css/footer.css" />

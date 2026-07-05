@@ -160,11 +160,11 @@
     }
 
     if (contentField instanceof HTMLTextAreaElement) {
-      contentField.required = true;
+      contentField.required = !automatchMode;
       contentField.disabled = false;
       if (automatchMode) {
         contentField.placeholder =
-          "Párrafos cortos de la ficha. Usa: Titulo: Encabezado | Texto del bloque. Separa bloques con línea en blanco.";
+          "Opcional. Si lo dejas vacío, la ficha muestra hero + ficha técnica + galería. Para bloques con imagen: Titulo: Encabezado | Texto. Separa bloques con línea en blanco.";
       } else {
         contentField.placeholder =
           "Escribe el cuerpo de la nota. Separa cada sección con una línea en blanco.";
@@ -173,7 +173,7 @@
 
     if (contentFieldLabel instanceof HTMLElement) {
       contentFieldLabel.textContent = automatchMode
-        ? "Párrafos de la ficha"
+        ? "Párrafos de la ficha (opcional)"
         : "Contenido";
     }
 
@@ -989,11 +989,13 @@
       const encodedMeta = encodeURIComponent(
         JSON.stringify({ texts, catalog })
       );
-      const editorialRaw = stripAutomatchMetaFromContent(data.content || "");
+      const editorialRaw = stripAutomatchMetaFromContent(data.content || "").trim();
       const editorialHtml = editorialRaw
         ? procesarContenidoAHtml(editorialRaw)
-        : `<p>${autoSubtitle}</p>`;
-      data.content = `${editorialHtml}<!--AUTOMATCH_META:${encodedMeta}-->`;
+        : "";
+      data.content = editorialHtml
+        ? `${editorialHtml}<!--AUTOMATCH_META:${encodedMeta}-->`
+        : `<!--AUTOMATCH_META:${encodedMeta}-->`;
     }
 
     const effectiveEditId = editingNoteId;

@@ -6,17 +6,9 @@ Categoría: AutoMatch
 Título: Mini Cooper SE Eléctrico
 Subtítulo: Icónico y eléctrico. Perfecto para ciudad con tamaño compacto y autonomía de 280 km.
 
---- Párrafos de la ficha (pegar en Contenido) ---
-
-Titulo: Diseño urbano icónico | El Mini Cooper SE mantiene la silueta reconocible de la marca con detalles eléctricos sutiles: parrilla cerrada, llantas aerodinámicas de 17 pulgadas y franjas LED que lo hacen legible en ciudad.
-
-Titulo: Interior y conectividad | Cabina compacta pero bien resuelta con pantalla circular de 8.8 pulgadas, Apple CarPlay inalámbrico y acabados personalizables. La posición de conducción baja refuerza el carácter deportivo urbano.
-
-Titulo: Autonomía y carga | Batería de 42 kWh con hasta 280 km WLTP en ciclo mixto. Carga AC en pared y opción de carga rápida DC para recuperar el 80% en cerca de 30 minutos según infraestructura disponible.
-
-Titulo: Dinámica y seguridad | 181 hp y 270 Nm entregan respuesta inmediata en arranques urbanos. Incluye 6 airbags, ABS, control de tracción y asistencias básicas para uso diario en Bogotá.
-
-Titulo: Posición en Colombia | Referencia desde $185.900.000 COP en versiones nuevas. Ideal para quien busca un eléctrico premium compacto con fuerte identidad de marca y costos de operación bajos en trayectos cortos.
+--- Párrafos de la ficha (OPCIONAL — puedes dejar vacío) ---
+Si no escribes nada aquí, la página queda: hero → ficha técnica → galería → pie.
+Solo usa este campo si quieres bloques texto+imagen entre el hero y la ficha técnica.
 
 --- Imágenes ---
 1: /img/mini-cooper-electrico/mini-cooper-portada.webp
@@ -25,14 +17,17 @@ Titulo: Posición en Colombia | Referencia desde $185.900.000 COP en versiones n
 4: /img/mini-cooper-electrico/mini-cooper-interior.webp
 5: /img/mini-cooper-electrico/mini-cooper-autonomia.webp
 
---- Datos buscador ---
+--- Ficha técnica (recomendado — aquí va casi todo) ---
+Potencia: 184 hp | Autonomía: 233 km | 0–100: 7.3 s | Motorización: 100% eléctrico
+Batería, carga, seguridad, equipamiento, pros/contras según tengas datos.
+
+--- Datos buscador (obligatorio) ---
 Tipo: eléctrico | Uso: urbano | Condición: nuevo | Ciudad: Bogotá | Precio: 185900000
 
---- Textos por imagen (slides 2-6) ---
+--- Textos por imagen (opcional, slides galería 2–6) ---
 2: Perfil compacto con presencia en avenida
 3: Detalles de diseño y acabados premium
 4: Cabina digital y confort urbano
 5: Autonomía pensada para el día a día
-6: Seguridad y asistencias para ciudad
 
 Insertar en BD: npm run automatch:seed-ejemplo
