@@ -1,7 +1,10 @@
 ---
 import { resolveSiteNotes, type SiteNote } from "../../lib/api";
-import { normalizeNoteCategory } from "../../lib/notes-query";
 import { getNotePublishTimestamp } from "../../lib/note-scheduling";
+import {
+  buildPruebaVideosFromNotes,
+  slugPruebaTitle,
+} from "../../lib/pruebas-videos";
 
 interface Props {
   notes?: SiteNote[];
@@ -10,6 +13,7 @@ interface Props {
 const { notes: prefetchedNotes } = Astro.props;
 
 type PruebaItem = {
+  noteId?: number;
   title: string;
   subtitle: string;
   video?: string;
@@ -76,16 +80,7 @@ try {
   const data = await resolveSiteNotes(prefetchedNotes);
 
   if (data.length > 0) {
-    dynamicPruebas = data
-      .filter((note: any) => normalizeNoteCategory(note.category) === "pruebas")
-      .map((note: any) => ({
-        title: note.title || "Sin título",
-        subtitle: note.subtitle || "",
-        video: note.video1?.trim() || undefined,
-        image: note.image1?.trim() || undefined,
-        href: `/notas/${note.id}`,
-        sortDate: getNotePublishTimestamp(note),
-      }));
+    dynamicPruebas = buildPruebaVideosFromNotes(data);
   }
 } catch (err) {
   console.error("Error cargando pruebas dinámicas:", err);
@@ -94,12 +89,7 @@ try {
 const HOME_VISIBLE_COUNT = staticPruebas.length;
 
 function slugTitle(t?: string) {
-  return (t || "")
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]/g, "");
+  return slugPruebaTitle(t);
 }
 
 const dynamicPruebasTitles = new Set(
