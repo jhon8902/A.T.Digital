@@ -66,6 +66,9 @@ interface Note {
 
 // ✅ Parámetro recibido desde la URL
 const { id } = Astro.params;
+const parsedId = Number(id);
+const hasValidNoteId =
+  Number.isInteger(parsedId) && parsedId > 0 && String(parsedId) === String(id).trim();
 
 // ✅ Definimos note con tipo explícito
 let note: Note | null = null;
@@ -73,13 +76,18 @@ let note: Note | null = null;
 const siteOrigin =
   Astro.site?.href?.replace(/\/$/, "") || Astro.url.origin;
 
-try {
-  const parsedId = Number(id);
-  if (Number.isInteger(parsedId)) {
+if (hasValidNoteId) {
+  try {
     note = (await resolvePublishedNoteById(parsedId, siteOrigin)) as Note | null;
+  } catch (err) {
+    console.error("❌ Error al obtener nota:", err);
   }
-} catch (err) {
-  console.error("❌ Error al obtener nota:", err);
+}
+
+const isNoteMissing = !note;
+if (isNoteMissing) {
+  Astro.response.status = 404;
+  Astro.response.headers.set("Cache-Control", "no-store");
 }
 
 type NoteCtaKind = "test-drive" | "automatch";
@@ -411,8 +419,12 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
 ---
 
 <Layout
-  title={note?.title || "Nota no encontrada"}
-  description={noteDescription || undefined}
+  title={note?.title || "Página no encontrada | Auto-Tech-Digital"}
+  description={
+    isNoteMissing
+      ? "La nota que buscas no existe o ya no está disponible."
+      : noteDescription || undefined
+  }
   ogImage={coverImage || undefined}
   ogType={note ? "article" : "website"}
   canonical={noteCanonical}
@@ -421,6 +433,8 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
   articleAuthor={note?.editor?.trim() || "Jhon Aparicio"}
   articleSection={note?.category ? sectionLabel(note.category) : undefined}
   jsonLd={articleJsonLd}
+  robots={isNoteMissing ? "noindex, nofollow" : "index, follow"}
+  trackAnalytics={!isNoteMissing}
   bodyClass={`nota-page nota-${categoryClass} ${categoryClass}`}
 >
   {
@@ -630,12 +644,92 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
         -->
       </section>
     ) : (
-      <p><i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i> Nota no encontrada</p>
+      <section class="nota-not-found" aria-labelledby="nota-not-found-title">
+        <p class="nota-not-found__eyebrow">Error 404</p>
+        <h1 id="nota-not-found-title">Esta nota no está disponible</h1>
+        <p class="nota-not-found__lead">
+          El enlace puede estar desactualizado, la nota fue retirada o el número de
+          identificación no existe. Tus demás notas publicadas siguen en orden.
+        </p>
+        <div class="nota-not-found__actions">
+          <a class="nota-not-found__btn nota-not-found__btn--primary" href="/noticias">
+            Ver noticias
+          </a>
+          <a class="nota-not-found__btn" href="/">
+            Ir al inicio
+          </a>
+        </div>
+      </section>
     )
   }
 </Layout>
 
 <style>
+  .nota-not-found {
+    width: min(100%, 720px);
+    margin: 3rem auto 4rem;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border-radius: 1rem;
+    background: #fff;
+    border: 1px solid #e2ece6;
+    box-shadow: 0 12px 32px rgba(8, 52, 31, 0.08);
+  }
+
+  .nota-not-found__eyebrow {
+    margin: 0 0 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #e6b410;
+  }
+
+  .nota-not-found h1 {
+    margin: 0 0 0.85rem;
+    color: #08341f;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+  }
+
+  .nota-not-found__lead {
+    margin: 0 auto 1.5rem;
+    max-width: 52ch;
+    color: #5a5a5a;
+    line-height: 1.6;
+  }
+
+  .nota-not-found__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .nota-not-found__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 10rem;
+    padding: 0.7rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid #08341f;
+    color: #08341f;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .nota-not-found__btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(8, 52, 31, 0.12);
+  }
+
+  .nota-not-found__btn--primary {
+    background: #08341f;
+    color: #fff;
+    border-color: #08341f;
+  }
+
   .nota-meta-line {
     display: flex;
     flex-wrap: wrap;

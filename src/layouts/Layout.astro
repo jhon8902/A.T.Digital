@@ -16,6 +16,8 @@ interface Props {
   articleAuthor?: string;
   articleSection?: string;
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+  robots?: string;
+  trackAnalytics?: boolean;
 }
 
 const {
@@ -35,6 +37,8 @@ const {
   articleAuthor,
   articleSection,
   jsonLd,
+  robots = "index, follow",
+  trackAnalytics = true,
 } = Astro.props;
 
 const siteUrl = Astro.site?.href ?? "https://autotechdigital.com";
@@ -191,12 +195,12 @@ const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID?.trim() || "";
     <!-- SEO Básico -->
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={robots} />
     <meta name="author" content="Auto-Tech-Digital" />
     <meta name="theme-color" content="#08341f" />
 
     {
-      gaMeasurementId && (
+      trackAnalytics && gaMeasurementId && (
         <>
           <script
             async
