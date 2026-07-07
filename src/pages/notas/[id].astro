@@ -14,6 +14,7 @@ import {
 } from "../../lib/note-scheduling";
 import { buildNewsArticleJsonLd } from "../../lib/note-seo";
 import { resolvePublishedNoteById } from "../../lib/load-published-note";
+import { isPruebasSoloVideo, stripPruebasSoloMeta } from "../../lib/pruebas-solo";
 export const prerender = false;
 
 // ✅ Definimos la interfaz del tipo de nota
@@ -84,6 +85,10 @@ if (hasValidNoteId) {
   }
 }
 
+if (note && isPruebasSoloVideo(note)) {
+  return Astro.redirect("/pruebas#pruebas", 302);
+}
+
 const isNoteMissing = !note;
 if (isNoteMissing) {
   Astro.response.status = 404;
@@ -137,7 +142,9 @@ const coverImage =
   normalizeMediaUrl(note?.image1) ||
   normalizeMediaUrl(extractFirstImage(note?.content) || undefined) ||
   null;
-const contentText = (note?.content || "").trim();
+const contentText = stripPruebasSoloMeta(
+  (note?.content || "").replace(/<!--AUTOMATCH_META:[^>]*-->/gi, "").trim(),
+);
 
 // Mejorar el parseo: dividir cada bloque que comience con 'Titulo:' (sin depender de saltos de línea dobles)
 const contentParagraphs = contentText

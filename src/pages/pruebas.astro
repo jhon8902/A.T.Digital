@@ -11,12 +11,14 @@ import {
 } from "../lib/pruebas-videos";
 
 type PruebaItem = {
+  noteId?: number;
   title: string;
   subtitle: string;
   editor?: string;
   video?: string;
   image?: string;
   href?: string;
+  showNoteLink?: boolean;
   fecha?: string;
   source_scope?: string;
   sortDate: number;
@@ -273,7 +275,7 @@ function pageHref(page: number) {
                       <p class="prueba-rail-desc">{item.subtitle}</p>
                     )}
                     <div class="prueba-rail-actions">
-                      {item.href && (
+                      {item.showNoteLink && item.href && (
                         <a href={item.href} class="archivo-link">
                           Ver nota
                         </a>

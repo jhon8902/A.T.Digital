@@ -1,6 +1,8 @@
 import { getNotePublishTimestamp } from "./note-scheduling";
 import type { SiteNote } from "./notes-query";
 
+import { isPruebasSoloVideo } from "./pruebas-solo";
+
 export type PruebaVideoItem = {
   noteId: number;
   title: string;
@@ -8,7 +10,8 @@ export type PruebaVideoItem = {
   editor?: string;
   video: string;
   image?: string;
-  href: string;
+  href?: string;
+  showNoteLink: boolean;
   fecha?: string;
   source_scope?: string;
   sortDate: number;
@@ -31,6 +34,8 @@ export function mapNoteToPruebaVideo(
   const noteId = Number(note.id);
   if (!Number.isInteger(noteId) || noteId <= 0) return null;
 
+  const soloVideo = isPruebasSoloVideo(note);
+
   return {
     noteId,
     title: String(note.title || "Sin título").trim(),
@@ -38,7 +43,8 @@ export function mapNoteToPruebaVideo(
     editor: note.editor ? String(note.editor).trim() : undefined,
     video,
     image: note.image1 ? String(note.image1).trim() : undefined,
-    href: `/notas/${noteId}`,
+    href: soloVideo ? undefined : `/notas/${noteId}`,
+    showNoteLink: !soloVideo,
     fecha: options?.fecha,
     source_scope: options?.source_scope,
     sortDate: getNotePublishTimestamp(note),

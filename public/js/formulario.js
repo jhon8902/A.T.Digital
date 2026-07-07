@@ -22,6 +22,8 @@
   const scheduledAtGroup = document.getElementById("scheduledAtGroup");
   const scheduledAtInput = document.getElementById("scheduledAt");
   const scheduleStatus = document.getElementById("scheduleStatus");
+  const pruebasSoloVideoField = document.getElementById("pruebasSoloVideoField");
+  const PRUEBAS_SOLO_META = /<!--PRUEBAS_SOLO:1-->/i;
 
   if (!(form instanceof HTMLFormElement)) return;
 
@@ -120,6 +122,71 @@
     return String(value || "").trim().toLowerCase() === "automatch";
   }
 
+  function isPruebasSoloVideoMode() {
+    return (
+      pruebasSoloVideoField instanceof HTMLInputElement &&
+      pruebasSoloVideoField.checked
+    );
+  }
+
+  function stripPruebasSoloMetaFromContent(content) {
+    return String(content || "")
+      .replace(PRUEBAS_SOLO_META, "")
+      .trim();
+  }
+
+  function applyPruebasSoloMode() {
+    const soloMode = isPruebasSoloVideoMode();
+    const automatchMode = isAutomatchCategory(getFieldValue("category"));
+    const contentField = byName("content");
+    const categoryEl = byName("category");
+    const video1Field = byName("video1");
+    const soloLabel =
+      pruebasSoloVideoField instanceof HTMLInputElement
+        ? pruebasSoloVideoField.closest(".pruebas-solo-checkbox")
+        : null;
+
+    if (pruebasSoloVideoField instanceof HTMLInputElement) {
+      pruebasSoloVideoField.disabled = automatchMode;
+    }
+
+    if (soloLabel instanceof HTMLElement) {
+      soloLabel.hidden = automatchMode;
+    }
+
+    if (automatchMode) {
+      if (pruebasSoloVideoField instanceof HTMLInputElement) {
+        pruebasSoloVideoField.checked = false;
+      }
+      return;
+    }
+
+    if (soloMode) {
+      if (categoryEl instanceof HTMLSelectElement && !isPopulatingForm) {
+        categoryEl.value = "pruebas";
+      }
+
+      if (contentFieldGroup instanceof HTMLElement) {
+        contentFieldGroup.hidden = true;
+        contentFieldGroup.style.display = "none";
+      }
+
+      if (contentField instanceof HTMLTextAreaElement) {
+        contentField.required = false;
+        contentField.disabled = false;
+      }
+
+      if (video1Field instanceof HTMLInputElement) {
+        video1Field.required = true;
+      }
+      return;
+    }
+
+    if (video1Field instanceof HTMLInputElement) {
+      video1Field.required = false;
+    }
+  }
+
   function setBlockEnabled(block, enabled) {
     const fields = block.querySelectorAll("input, textarea, select, button");
     fields.forEach(function (field) {
@@ -203,6 +270,8 @@
         setBlockEnabled(block, !automatchMode);
       }
     });
+
+    applyPruebasSoloMode();
   }
 
   function clearSelectedCloudinaryFiles() {
@@ -607,6 +676,14 @@
   function fillFormFromNote(note) {
     isPopulatingForm = true;
 
+    const rawContent =
+      note && typeof note.content === "string" ? note.content : "";
+    const isPruebasSolo = PRUEBAS_SOLO_META.test(rawContent);
+
+    if (pruebasSoloVideoField instanceof HTMLInputElement) {
+      pruebasSoloVideoField.checked = isPruebasSolo;
+    }
+
     editableFields.forEach(function (name) {
       const raw =
         note && Object.prototype.hasOwnProperty.call(note, name)
@@ -615,6 +692,8 @@
       let value = typeof raw === "string" ? raw : String(raw || "");
 
       if (name === "content" && value) {
+        value = stripPruebasSoloMetaFromContent(value);
+
         if (isAutomatchCategory(note && note.category ? note.category : "")) {
           value = stripAutomatchMetaFromContent(value);
           const subtitleMatch = value.match(/^<p>([\s\S]*?)<\/p>/i);
@@ -754,6 +833,9 @@
 
   function exitEditMode(keepMessage) {
     form.reset();
+    if (pruebasSoloVideoField instanceof HTMLInputElement) {
+      pruebasSoloVideoField.checked = false;
+    }
     resetDefaults();
     if (cloudinaryFilesInput instanceof HTMLInputElement) {
       cloudinaryFilesInput.value = "";
@@ -883,6 +965,12 @@
     });
   }
 
+  if (pruebasSoloVideoField instanceof HTMLInputElement) {
+    pruebasSoloVideoField.addEventListener("change", function () {
+      applyCategoryMode();
+    });
+  }
+
   if (publishMode instanceof HTMLSelectElement) {
     publishMode.addEventListener("change", applyPublishMode);
   }
@@ -957,7 +1045,28 @@
       data.image1 = firstImg;
     }
 
-    if (isAutomatchCategory(data.category)) {
+    const pruebasSolo = isPruebasSoloVideoMode();
+    data.pruebas_solo_video = pruebasSolo;
+
+    if (pruebasSolo) {
+      const soloTitle = String(data.title || "").trim();
+      const soloVideo = String(data.video1 || "").trim();
+
+      if (!soloTitle) {
+        setMessage("Para solo video en Pruebas agrega un titulo", "red");
+        return;
+      }
+
+      if (!soloVideo) {
+        setMessage(
+          "Agrega la ruta del video principal (.mp4) en Video 1",
+          "red"
+        );
+        return;
+      }
+
+      data.category = "pruebas";
+    } else if (isAutomatchCategory(data.category)) {
       const autoSubtitle = String(data.subtitle || "").trim();
       if (!autoSubtitle) {
         setMessage("Para AutoMatch agrega un subtitulo corto para la tarjeta", "red");
@@ -1093,6 +1202,11 @@
               "Nota programada con exito (ID: " + String(result.id) + "). Sera visible en la fecha indicada.",
               "green"
             );
+            return;
+          }
+
+          if (pruebasSolo) {
+            window.location.href = "/pruebas#pruebas";
             return;
           }
 

@@ -1672,7 +1672,12 @@ const headerSearchData = encodeURIComponent(
               return [];
             }
 
-            dynamicSearchEntries = notes.map((note) => ({
+            dynamicSearchEntries = notes
+              .filter((note) => {
+                const content = String(note.content || "");
+                return !/<!--PRUEBAS_SOLO:1-->/i.test(content);
+              })
+              .map((note) => ({
               title: note.title?.trim() || "Nota sin titulo",
               description:
                 note.subtitle?.trim() ||

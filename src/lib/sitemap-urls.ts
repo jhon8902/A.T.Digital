@@ -1,6 +1,7 @@
 import { getPool } from "./db";
 import { PUBLISHED_NOTES_SQL } from "./note-scheduling";
 import { SITE_URL } from "./note-seo";
+import { isPublicEditorialNote } from "./pruebas-solo";
 
 export type SitemapEntry = {
   loc: string;
@@ -101,7 +102,9 @@ export async function getPublishedNoteSitemapEntries(): Promise<SitemapEntry[]> 
       `);
     }
 
-    return result.rows.map((row) => ({
+    return result.rows
+      .filter((row) => isPublicEditorialNote(row))
+      .map((row) => ({
       loc: `${SITE_URL}/notas/${row.id}`,
       lastmod: toLastmod(row.scheduled_at ?? row.created_at),
     }));

@@ -3,6 +3,15 @@ import type { Handler } from "@netlify/functions";
 import "dotenv/config";
 import { requireEventBasicAuth } from "./auth.js";
 
+function appendPruebasSoloMeta(content?: string | null) {
+  const stripped = String(content || "")
+    .replace(/<!--PRUEBAS_SOLO:1-->/gi, "")
+    .trim();
+  const base =
+    stripped || "<p>Video de prueba publicado en AutoTech Digital.</p>";
+  return `${base}<!--PRUEBAS_SOLO:1-->`;
+}
+
 const { Pool } = pkg;
 
 let _pool: InstanceType<typeof Pool> | null = null;
@@ -487,12 +496,36 @@ export const handler: Handler = async (event) => {
       scheduled_at
     } = body;
 
+    const pruebasSoloVideo =
+      body.pruebas_solo_video === true ||
+      body.pruebas_solo_video === 1 ||
+      body.pruebas_solo_video === "1" ||
+      body.pruebas_solo_video === "true";
+
     const normalizedTitle = normalizeTextField(title);
     const normalizedSubtitle = normalizeTextField(subtitle);
     const normalizedEditor = normalizeTextField(editor) || "Jhon Aparicio";
     const normalizedContent = normalizeTextField(content);
 
-    if (!normalizedTitle || !normalizedContent) {
+    if (pruebasSoloVideo) {
+      if (!normalizedTitle) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({ error: "El título es obligatorio para el video" }),
+        };
+      }
+
+      if (!normalizeMediaUrl(video1)) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({
+            error: "Agrega la ruta del video principal (.mp4) para publicar en Pruebas",
+          }),
+        };
+      }
+    } else if (!normalizedTitle || !normalizedContent) {
       return {
         statusCode: 400,
         headers,
@@ -501,7 +534,7 @@ export const handler: Handler = async (event) => {
     }
 
     // ⚙️ Normalizamos la categoría antes de guardar
-    category = resolveCategory(category);
+    category = pruebasSoloVideo ? "pruebas" : resolveCategory(category);
 
     if (!ALLOWED_CATEGORIES.has(category)) {
       return {
@@ -532,7 +565,9 @@ export const handler: Handler = async (event) => {
       subtitle: normalizedSubtitle,
       editor: normalizedEditor,
       source_scope: normalizedSourceScope,
-      content: normalizedContent,
+      content: pruebasSoloVideo
+        ? appendPruebasSoloMeta(normalizedContent)
+        : normalizedContent,
       category,
       image1: normalizeMediaUrl(image1),
       image2: normalizeMediaUrl(image2),

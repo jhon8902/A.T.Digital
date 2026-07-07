@@ -10,6 +10,7 @@ import {
 } from "../../lib/note-scheduling";
 
 import { inferSourceScope } from "../../lib/notes-query";
+import { isPublicEditorialNote } from "../../lib/pruebas-solo";
 import {
   HOME_NEWS_CAROUSEL_LIMIT,
   HOME_NEWS_HERO_COUNT,
@@ -168,7 +169,8 @@ try {
   if (data.length > 0) {
     // 2️⃣ Mostramos en portada lo más reciente de categorías editoriales
     const filtered = data.filter((note: any) =>
-      HOME_NEWS_CATEGORIES.has(normalizeCategory(note.category)),
+      HOME_NEWS_CATEGORIES.has(normalizeCategory(note.category)) &&
+      isPublicEditorialNote(note),
     );
 
     // 3️⃣ Normalizamos formato para el carrusel

@@ -153,6 +153,20 @@ function hasOwn(obj: unknown, key: string): boolean {
   return !!obj && Object.prototype.hasOwnProperty.call(obj, key);
 }
 
+function stripPruebasSoloMeta(content?: string | null): string {
+  return String(content || "")
+    .replace(/<!--PRUEBAS_SOLO:1-->/gi, "")
+    .trim();
+}
+
+function appendPruebasSoloMeta(content?: string | null): string {
+  const stripped = stripPruebasSoloMeta(content);
+  const base =
+    stripped ||
+    "<p>Video de prueba publicado en AutoTech Digital.</p>";
+  return `${base}<!--PRUEBAS_SOLO:1-->`;
+}
+
 export const handler: Handler = async (event) => {
   const headers = {
     "Content-Type": "application/json",
@@ -189,6 +203,11 @@ export const handler: Handler = async (event) => {
     }
 
     const updates: Record<string, string | null> = {};
+    const pruebasSoloVideo =
+      body.pruebas_solo_video === true ||
+      body.pruebas_solo_video === 1 ||
+      body.pruebas_solo_video === "1" ||
+      body.pruebas_solo_video === "true";
 
     if (hasOwn(body, "title")) {
       const title = normalizeTextField(body.title);
@@ -203,18 +222,26 @@ export const handler: Handler = async (event) => {
     }
 
     if (hasOwn(body, "content")) {
-      const content = normalizeTextField(body.content);
-      if (!content) {
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify({ error: "Contenido inválido" }),
-        };
+      let content = normalizeTextField(body.content) || "";
+      if (pruebasSoloVideo) {
+        updates.content = appendPruebasSoloMeta(content);
+        updates.category = "pruebas";
+      } else {
+        content = stripPruebasSoloMeta(content);
+        if (!content) {
+          return {
+            statusCode: 400,
+            headers,
+            body: JSON.stringify({ error: "Contenido inválido" }),
+          };
+        }
+        updates.content = content;
       }
-      updates.content = content;
+    } else if (pruebasSoloVideo) {
+      updates.category = "pruebas";
     }
 
-    if (hasOwn(body, "category")) {
+    if (hasOwn(body, "category") && !pruebasSoloVideo) {
       const category = resolveCategory(String(body.category || ""));
       if (!ALLOWED_CATEGORIES.has(category)) {
         return {

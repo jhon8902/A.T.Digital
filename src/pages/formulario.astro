@@ -560,8 +560,23 @@ const cloudinaryFolder =
               <p class="storage-tip grid-span-2">
                 Si la nota ya existe en otra sección (híbridos, eléctricos, etc.),
                 edítala y solo agrega aquí la ruta del <code>.mp4</code>. Aparecerá en
-                Pruebas de manejo sin crear una nota nueva ni cambiar la categoría.
+                Pruebas de manejo con botón <strong>Ver nota</strong>.
               </p>
+
+              <label class="grid-span-2 pruebas-solo-checkbox">
+                <input
+                  type="checkbox"
+                  id="pruebasSoloVideoField"
+                  name="pruebas_solo_video"
+                  value="1"
+                />
+                <span>
+                  <strong>Solo video en Pruebas</strong> — sin ficha pública ni botón
+                  Ver nota. Ideal para clips editados o futuras pruebas de marca. Usa
+                  categoría Pruebas automáticamente; solo necesitas título, subtítulo
+                  y la ruta del video.
+                </span>
+              </label>
 
               <label for="video2">
                 Video 2
@@ -1430,6 +1445,25 @@ const cloudinaryFolder =
         .cloudinary-checkbox input {
           width: auto;
           margin: 0;
+        }
+
+        .pruebas-solo-checkbox {
+          display: flex !important;
+          align-items: flex-start;
+          gap: 10px;
+          margin: 8px 0 0;
+          padding: 12px 14px;
+          border-radius: 10px;
+          background: rgba(8, 52, 31, 0.05);
+          border: 1px solid rgba(8, 52, 31, 0.14);
+          font-weight: 400;
+          line-height: 1.55;
+        }
+
+        .pruebas-solo-checkbox input {
+          width: auto;
+          margin: 3px 0 0;
+          flex-shrink: 0;
         }
 
         .cloudinary-uploader {

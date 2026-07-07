@@ -19,6 +19,7 @@ type PruebaItem = {
   video?: string;
   image?: string;
   href?: string;
+  showNoteLink?: boolean;
   sortDate: number;
 };
 
@@ -185,7 +186,7 @@ const homePruebas = allPruebas.slice(0, HOME_VISIBLE_COUNT);
                   <h4>{prueba.title}</h4>
                   <p class="prueba-rail-desc">{prueba.subtitle}</p>
                   <div class="prueba-rail-actions">
-                    {prueba.href && (
+                    {prueba.showNoteLink && prueba.href && (
                       <a href={prueba.href} class="archivo-link">
                         Ver nota
                       </a>

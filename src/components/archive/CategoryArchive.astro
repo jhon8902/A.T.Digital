@@ -1,6 +1,7 @@
 ---
 import { resolveSiteNotes } from "../../lib/api";
 import { normalizeNoteCategory } from "../../lib/notes-query";
+import { isPublicEditorialNote } from "../../lib/pruebas-solo";
 import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
 import {
   formatNotePublishedLabel,
@@ -171,10 +172,11 @@ try {
 
     dynamicNotes = data
       .filter((note: any) =>
-        categorySet
+        isPublicEditorialNote(note) &&
+        (categorySet
           ? categorySet.has(normalizeNoteCategory(note.category))
           : normalizeNoteCategory(note.category) ===
-            normalizeNoteCategory(category),
+            normalizeNoteCategory(category)),
       )
       .map((note: any) => ({
         href: `/notas/${note.id}`,
