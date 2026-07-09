@@ -15,6 +15,7 @@ import {
   HOME_NEWS_CAROUSEL_LIMIT,
   HOME_NEWS_HERO_COUNT,
   HOME_NEWS_POOL_SIZE,
+  HOME_NEWS_SCOPE_POOL_SIZE,
 } from "../../lib/home-news-config";
 
 interface Props {
@@ -61,6 +62,22 @@ function sourceScopeLabel(scope?: string) {
     ? "Internacional"
     : "Nacional";
 }
+
+function categoryLabel(category?: string) {
+  const normalized = normalizeCategory(category);
+  const labels: Record<string, string> = {
+    lanzamientos: "Lanzamiento",
+    electricos: "Eléctricos",
+    hibridos: "Híbridos",
+    deportes: "Deportes",
+    pruebas: "Pruebas",
+    noticias: "Noticias",
+  };
+  return labels[normalized] || "Noticias";
+}
+
+const HOME_NEWS_HERO_SLIDE_LIMIT =
+  HOME_NEWS_HERO_COUNT + HOME_NEWS_CAROUSEL_LIMIT;
 
 function cleanPublishedDate(value?: string) {
   return (value || "").replace(/^Publicado:\s*/i, "").trim();
@@ -260,12 +277,39 @@ const dynamicNotesTitles = new Set(
 const deduplicatedStaticNotes = staticNotesWithDate.filter(
   (n) => !dynamicNotesTitles.has(slugTitle(n.caption)),
 );
-const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
-  .sort((a, b) => b.sortDate - a.sortDate)
-  .slice(0, HOME_NEWS_POOL_SIZE);
+const allCandidates = [...dynamicNotes, ...deduplicatedStaticNotes].sort(
+  (a, b) => b.sortDate - a.sortDate,
+);
+const allNotes = allCandidates.slice(0, HOME_NEWS_POOL_SIZE);
+const heroCarouselNotes = allNotes;
 
-const featuredNote = allNotes[0] ?? null;
-const carouselNotes = allNotes.slice(HOME_NEWS_HERO_COUNT);
+function buildScopeCarouselNotes(
+  candidates: typeof allCandidates,
+  limitPerScope = 24,
+) {
+  const nacionalNotes = candidates.filter(
+    (note) => normalizeSourceScope(note.source_scope) === "nacional",
+  );
+  const internacionalNotes = candidates.filter(
+    (note) => normalizeSourceScope(note.source_scope) === "internacional",
+  );
+  const merged = [
+    ...internacionalNotes.slice(0, limitPerScope),
+    ...nacionalNotes.slice(0, limitPerScope),
+  ];
+  const seen = new Set<string>();
+
+  return merged.filter((note) => {
+    if (seen.has(note.href)) return false;
+    seen.add(note.href);
+    return true;
+  });
+}
+
+const scopeCarouselNotes = buildScopeCarouselNotes(
+  allCandidates,
+  HOME_NEWS_SCOPE_POOL_SIZE / 2,
+);
 ---
 
 <link rel="stylesheet" href="/css/news-interactive.css" />
@@ -274,6 +318,7 @@ const carouselNotes = allNotes.slice(HOME_NEWS_HERO_COUNT);
   id="noticias"
   class="section-info section-info--interactive w-full py-30"
   aria-labelledby="noticias-heading"
+  data-hero-slide-limit={HOME_NEWS_HERO_SLIDE_LIMIT}
   data-carousel-limit={HOME_NEWS_CAROUSEL_LIMIT}
 >
   <header class="info-header">
@@ -322,70 +367,123 @@ const carouselNotes = allNotes.slice(HOME_NEWS_HERO_COUNT);
       </div>
 
       {
-        featuredNote && (
-          <article
-            class="news-hero"
-            data-scope={featuredNote.source_scope || "nacional"}
+        heroCarouselNotes.length > 0 && (
+          <div
+            class="news-hero-carousel"
+            data-hero-carousel-root
+            aria-roledescription="carrusel"
+            aria-label="Noticias destacadas del sector automotor"
           >
-            <a href={featuredNote.href} class="news-hero__link">
-              <div class="news-hero__media">
-                <img
-                  src={featuredNote.img}
-                  alt={featuredNote.alt}
-                  loading="eager"
-                  fetchpriority="high"
-                  decoding="async"
-                />
+            <div class="news-hero-carousel-toolbar">
+              <p class="news-hero-carousel-status" aria-live="polite">
+                <span class="news-hero-carousel-counter">1 / 1</span>
+                <span class="news-hero-carousel-hint">
+                  Desliza o usa las flechas para explorar
+                </span>
+              </p>
+              <div class="news-carousel-nav">
+                <button
+                  type="button"
+                  class="news-carousel-btn news-hero-carousel-btn--prev"
+                  aria-label="Noticia anterior"
+                >
+                  <i class="fa-solid fa-chevron-left" aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  class="news-carousel-btn news-hero-carousel-btn--next"
+                  aria-label="Noticia siguiente"
+                >
+                  <i class="fa-solid fa-chevron-right" aria-hidden="true" />
+                </button>
               </div>
-              <div class="news-hero__body">
-                <div class="news-meta-tags">
-                  <span class="news-tag">Destacada</span>
-                  <span
-                    class={
-                      "scope-tag" +
-                      (featuredNote.source_scope === "internacional"
-                        ? " scope-tag--international"
-                        : " scope-tag--national")
-                    }
-                  >
-                    {sourceScopeLabel(featuredNote.source_scope)}
-                  </span>
-                </div>
-                <h3 class="news-hero__title">
-                  {getNewsCardTitle(featuredNote.caption)}
-                </h3>
+            </div>
+
+            <div class="news-hero-carousel-viewport">
+              <div class="news-hero-carousel-track news-hero-carousel-track--fade">
                 {
-                  getNewsCardDeck(
-                    featuredNote.caption,
-                    featuredNote.subtitle,
-                  ) && (
-                    <p class="news-hero__deck">
-                      {getNewsCardDeck(
-                        featuredNote.caption,
-                        featuredNote.subtitle,
-                      )}
-                    </p>
-                  )
+                  heroCarouselNotes.map((nota, index) => (
+                    <article
+                      class:list={[
+                        "news-hero",
+                        "news-hero-carousel-slide",
+                        { "is-active": index === 0 },
+                      ]}
+                      data-scope={normalizeSourceScope(nota.source_scope)}
+                      data-category={nota.category || "noticias"}
+                      data-carousel-index={index}
+                      aria-roledescription="slide"
+                    >
+                      <a href={nota.href} class="news-hero__link">
+                        <div class="news-hero__media">
+                          <img
+                            src={nota.img}
+                            alt={nota.alt}
+                            loading={index === 0 ? "eager" : "lazy"}
+                            fetchpriority={index === 0 ? "high" : "auto"}
+                            decoding="async"
+                          />
+                        </div>
+                        <div class="news-hero__body">
+                          <div class="news-meta-tags">
+                            <span class="news-tag">
+                              {index === 0 ? "Destacada" : categoryLabel(nota.category)}
+                            </span>
+                            <span
+                              class={
+                                "scope-tag" +
+                                (nota.source_scope === "internacional"
+                                  ? " scope-tag--international"
+                                  : " scope-tag--national")
+                              }
+                            >
+                              {sourceScopeLabel(nota.source_scope)}
+                            </span>
+                          </div>
+                          <h3 class="news-hero__title">
+                            {getNewsCardTitle(nota.caption)}
+                          </h3>
+                          {
+                            getNewsCardDeck(nota.caption, nota.subtitle) && (
+                              <p class="news-hero__deck">
+                                {getNewsCardDeck(nota.caption, nota.subtitle)}
+                              </p>
+                            )
+                          }
+                          <p class="news-date">
+                            <i class="fa-regular fa-user" aria-hidden="true" />
+                            <span>{nota.editor || "Jhon Aparicio"}</span>
+                            <span class="meta-sep">•</span>
+                            <i class="fa-regular fa-calendar" aria-hidden="true" />
+                            <span>{cleanPublishedDate(nota.fecha)}</span>
+                          </p>
+                          <span class="news-hero__cta">Leer nota →</span>
+                        </div>
+                      </a>
+                    </article>
+                  ))
                 }
-                <p class="news-date">
-                  <i class="fa-regular fa-user" aria-hidden="true" />
-                  <span>{featuredNote.editor || "Jhon Aparicio"}</span>
-                  <span class="meta-sep">•</span>
-                  <i class="fa-regular fa-calendar" aria-hidden="true" />
-                  <span>{cleanPublishedDate(featuredNote.fecha)}</span>
-                </p>
-                <span class="news-hero__cta">Leer nota →</span>
               </div>
-            </a>
-          </article>
+            </div>
+
+            <div
+              class="news-hero-carousel-dots"
+              role="tablist"
+              aria-label="Ir a una noticia"
+            />
+          </div>
         )
       }
 
       {
-        carouselNotes.length > 0 && (
-          <div class="news-carousel-wrap" data-carousel-root>
+        scopeCarouselNotes.length > 0 && (
+          <div
+            class="news-carousel-wrap news-scope-carousel"
+            data-scope-carousel-root
+            hidden
+          >
             <div class="news-carousel-header">
-              <h3 class="news-carousel-heading">Más en el sector</h3>
+              <h3 class="news-carousel-heading">Noticias del sector</h3>
               <div class="news-carousel-nav">
                 <button
                   type="button"
@@ -405,12 +503,11 @@ const carouselNotes = allNotes.slice(HOME_NEWS_HERO_COUNT);
             </div>
             <div class="news-carousel">
               {
-                carouselNotes.map((nota, index) => (
+                scopeCarouselNotes.map((nota, index) => (
                   <article
                     class="news-carousel-card"
-                    data-scope={nota.source_scope || "nacional"}
+                    data-scope={normalizeSourceScope(nota.source_scope)}
                     data-category={nota.category || "noticias"}
-                    data-carousel-index={index}
                   >
                     <a href={nota.href} class="news-carousel-card__link">
                       <div class="news-carousel-card__image">
@@ -423,7 +520,9 @@ const carouselNotes = allNotes.slice(HOME_NEWS_HERO_COUNT);
                       </div>
                       <div class="news-carousel-card__body">
                         <div class="news-meta-tags">
-                          <span class="news-tag">Noticias</span>
+                          <span class="news-tag">
+                            {categoryLabel(nota.category)}
+                          </span>
                           <span
                             class={
                               "scope-tag" +
@@ -640,7 +739,7 @@ const carouselNotes = allNotes.slice(HOME_NEWS_HERO_COUNT);
 
   @media (max-width: 600px) {
     .info-header {
-      padding: 20px 0;
+      padding: 20px 0 1.5rem;
       background: transparent;
       border-bottom: none;
       align-items: center;
@@ -941,13 +1040,14 @@ const carouselNotes = allNotes.slice(HOME_NEWS_HERO_COUNT);
 
   .news-tag {
     display: inline-block;
-    background: #f8ca26;
-    color: #1a1a1a;
+    background: rgba(230, 180, 16, 0.14);
+    color: #6b5310;
+    border: none;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding: 6px 14px;
+    padding: 6px 12px;
     border-radius: 20px;
     width: fit-content;
   }
@@ -961,7 +1061,6 @@ const carouselNotes = allNotes.slice(HOME_NEWS_HERO_COUNT);
 
   .scope-tag {
     display: inline-block;
-    color: #ffffff;
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
@@ -969,14 +1068,17 @@ const carouselNotes = allNotes.slice(HOME_NEWS_HERO_COUNT);
     padding: 6px 12px;
     border-radius: 20px;
     width: fit-content;
+    border: none;
   }
 
   .scope-tag--national {
-    background: #1f6f43;
+    background: rgba(8, 52, 31, 0.12);
+    color: #08341f;
   }
 
   .scope-tag--international {
-    background: #1d4ed8;
+    background: rgba(29, 78, 216, 0.12);
+    color: #1a56c4;
   }
 
   .scope-tag--featured {
