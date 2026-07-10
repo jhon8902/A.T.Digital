@@ -9,41 +9,6 @@ function stripHtml(input = "") {
     .trim();
 }
 
-function toSingleLine(text = "", max = 96) {
-  const clean = stripHtml(text) || "Informacion destacada del modelo.";
-  if (clean.length <= max) {
-    return clean;
-  }
-
-  const cutAt = clean.lastIndexOf(" ", max);
-  const safeCut = cutAt > 20 ? cutAt : max;
-  return `${clean.slice(0, safeCut).trim()}...`;
-}
-
-function parseAutomatchMeta(content = "") {
-  const match = String(content).match(/AUTOMATCH_META:([^>]*)-->/i);
-  if (!match || !match[1]) return {};
-
-  try {
-    const decoded = decodeURIComponent(match[1].trim());
-    const parsed = JSON.parse(decoded);
-    return parsed?.texts && typeof parsed.texts === "object"
-      ? parsed.texts
-      : {};
-  } catch (_error) {
-    return {};
-  }
-}
-
-const slideTopics = [
-  "Vista exterior principal",
-  "Perfil y presencia lateral",
-  "Detalles de diseno",
-  "Interior y cabina",
-  "Espacio y practicidad",
-  "Tecnologia y conectividad",
-];
-
 const normalizedIncoming = Array.isArray(incomingAutos)
   ? incomingAutos
       .map((auto, index) => {
@@ -54,9 +19,8 @@ const normalizedIncoming = Array.isArray(incomingAutos)
           id: String(auto?.id ?? `auto-${index + 1}`),
           nombre: String(auto?.nombre || "AutoMatch"),
           descripcion: String(
-            auto?.descripcion || stripHtml(auto?.content || "Sin descripcion"),
+            auto?.descripcion || stripHtml(auto?.content || ""),
           ),
-          metaTexts: parseAutomatchMeta(auto?.content || ""),
           imagenes: images.length > 0 ? images : ["/img/default.jpg"],
           href: String(auto?.href || "/automatch-find"),
           toolHref: String(auto?.toolHref || "/automatch-find"),
@@ -75,35 +39,6 @@ const autosToRender =
   mode === "archive"
     ? mergedAutos.slice(HOME_VISIBLE_COUNT)
     : mergedAutos.slice(0, HOME_VISIBLE_COUNT);
-
-const autosWithTexts = autosToRender.map((auto: any) => {
-  const firstSlideText = toSingleLine(auto.descripcion, 98);
-
-  const texts = (auto.imagenes as string[]).map((_, index) => {
-    if (index === 0) {
-      return {
-        line1: firstSlideText,
-      };
-    }
-
-    const key = `img${index + 1}`;
-    const custom = auto?.metaTexts?.[key] || {};
-    const customLine1 = stripHtml(custom?.line1 || "");
-    const customLine2 = stripHtml(custom?.line2 || "");
-
-    return {
-      line1:
-        customLine1 ||
-        slideTopics[index % slideTopics.length] ||
-        "Detalle destacado del modelo",
-    };
-  });
-
-  return {
-    ...auto,
-    texts,
-  };
-});
 
 const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
 ---
@@ -142,7 +77,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
 
         <div class="cards">
           {
-            autosWithTexts.map((auto: any) => (
+            autosToRender.map((auto: any) => (
               <article class="auto-card" data-id={auto.id}>
                 <div class="auto-carousel-shell">
                   <div class="auto-carousel">
@@ -157,37 +92,34 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
                       />
                     ))}
                   </div>
+                </div>
+
+                <div class="auto-card-titlebar">
                   <button type="button" class="carousel-nav prev" aria-label="Imagen anterior">
                     <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
                   </button>
+                  <h3>{auto.nombre}</h3>
                   <button type="button" class="carousel-nav next" aria-label="Imagen siguiente">
                     <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
                   </button>
-                  <div class="carousel-overlay-bar">
-                    <div class="carousel-dots" aria-label="Navegacion de imagenes">
-                      {(auto.imagenes as string[]).map((_, index) => (
-                        <button
-                          type="button"
-                          class={`carousel-dot ${index === 0 ? "active" : ""}`}
-                          data-index={String(index)}
-                          aria-label={`Ir a la imagen ${index + 1}`}
-                        />
-                      ))}
-                    </div>
-                    <span class="carousel-counter">
-                      1 / {(auto.imagenes as string[]).length}
-                    </span>
-                  </div>
                 </div>
 
-                <h3>{auto.nombre}</h3>
-                <div class="auto-info">
-                  {auto.texts.map((text: any, index: number) => (
-                    <p class={`auto-texto ${index === 0 ? "visible" : "hidden"}`}>
-                      <span class="auto-texto-linea">{text.line1}</span>
-                    </p>
-                  ))}
+                <div class="carousel-meta-bar">
+                  <div class="carousel-dots" aria-label="Navegacion de imagenes">
+                    {(auto.imagenes as string[]).map((_, index) => (
+                      <button
+                        type="button"
+                        class={`carousel-dot ${index === 0 ? "active" : ""}`}
+                        data-index={String(index)}
+                        aria-label={`Ir a la imagen ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                  <span class="carousel-counter">
+                    1 / {(auto.imagenes as string[]).length}
+                  </span>
                 </div>
+
                 <div class="auto-card-actions">
                   <a href={auto.href} class="auto-card-cta auto-card-cta--primary">
                     <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
@@ -226,7 +158,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
 
       <div class="cards">
         {
-          autosWithTexts.map((auto: any) => (
+          autosToRender.map((auto: any) => (
             <article class="auto-card" data-id={auto.id}>
               <div class="auto-carousel-shell">
                 <div class="auto-carousel">
@@ -241,37 +173,34 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
                     />
                   ))}
                 </div>
+              </div>
+
+              <div class="auto-card-titlebar">
                 <button type="button" class="carousel-nav prev" aria-label="Imagen anterior">
                   <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
                 </button>
+                <h3>{auto.nombre}</h3>
                 <button type="button" class="carousel-nav next" aria-label="Imagen siguiente">
                   <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
                 </button>
-                <div class="carousel-overlay-bar">
-                  <div class="carousel-dots" aria-label="Navegacion de imagenes">
-                    {(auto.imagenes as string[]).map((_, index) => (
-                      <button
-                        type="button"
-                        class={`carousel-dot ${index === 0 ? "active" : ""}`}
-                        data-index={String(index)}
-                        aria-label={`Ir a la imagen ${index + 1}`}
-                      />
-                    ))}
-                  </div>
-                  <span class="carousel-counter">
-                    1 / {(auto.imagenes as string[]).length}
-                  </span>
-                </div>
               </div>
 
-              <h3>{auto.nombre}</h3>
-              <div class="auto-info">
-                {auto.texts.map((text: any, index: number) => (
-                  <p class={`auto-texto ${index === 0 ? "visible" : "hidden"}`}>
-                    <span class="auto-texto-linea">{text.line1}</span>
-                  </p>
-                ))}
+              <div class="carousel-meta-bar">
+                <div class="carousel-dots" aria-label="Navegacion de imagenes">
+                  {(auto.imagenes as string[]).map((_, index) => (
+                    <button
+                      type="button"
+                      class={`carousel-dot ${index === 0 ? "active" : ""}`}
+                      data-index={String(index)}
+                      aria-label={`Ir a la imagen ${index + 1}`}
+                    />
+                  ))}
+                </div>
+                <span class="carousel-counter">
+                  1 / {(auto.imagenes as string[]).length}
+                </span>
               </div>
+
               <div class="auto-card-actions">
                 <a href={auto.href} class="auto-card-cta auto-card-cta--primary">
                   <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
@@ -508,30 +437,44 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     content: none;
   }
 
-  .auto-card h3 {
-    margin: 0.9rem 0 0.5rem;
-    color: black;
+  .auto-card-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    margin: 0.15rem 0 0.45rem;
+    padding: 0 0.35rem;
+  }
+
+  .auto-card-titlebar h3 {
+    margin: 0;
+    color: #111;
     text-transform: uppercase;
     font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.2;
+    text-align: center;
+    letter-spacing: 0.02em;
+    flex: 0 1 auto;
+    max-width: calc(100% - 5.75rem);
   }
 
-  .auto-card p {
-    margin: 0;
-    line-height: 1.5;
-    min-height: 3em;
-    color: #000;
-  }
+  @media (min-width: 900px) {
+    .auto-card-titlebar {
+      gap: 0.8rem;
+    }
 
-  .auto-info {
-    min-height: 2.2em;
-    margin-bottom: 0.35rem;
+    .auto-card-titlebar h3 {
+      font-size: 1.02rem;
+      max-width: none;
+    }
   }
 
   .auto-card-actions {
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
-    margin-top: 0.65rem;
+    margin-top: 0;
   }
 
   .auto-card-cta {
@@ -568,44 +511,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     transform: translateY(-1px);
   }
 
-  .auto-texto {
-    margin: 0;
-    color: #000;
-  }
-
-  .auto-texto.hidden {
-    display: none;
-  }
-
-  .auto-texto.visible {
-    display: block;
-  }
-
-  .auto-texto-linea {
-    display: block;
-    line-height: 1.35;
-  }
-
-  .auto-texto.entering {
-    animation: autoTextIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  @keyframes autoTextIn {
-    0% {
-      opacity: 0;
-      transform: translateY(14px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .auto-texto.entering {
-      animation: none;
-    }
-
     .auto-img.entering {
       animation: none;
     }
@@ -623,7 +529,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     border-radius: 12px;
     overflow: hidden;
     background: #0f1f17;
-    margin-bottom: 0.85rem;
+    margin-bottom: 0.75rem;
   }
 
   .auto-carousel {
@@ -692,80 +598,51 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
   }
 
   .carousel-nav {
-    position: absolute;
-    top: 50%;
-    z-index: 4;
-    width: 44px;
-    height: 44px;
+    position: static;
+    flex: 0 0 auto;
+    width: 38px;
+    height: 38px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    border: 1.5px solid rgba(8, 52, 31, 0.16);
     border-radius: 50%;
     padding: 0;
     cursor: pointer;
-    color: #fff;
-    background: rgba(8, 52, 31, 0.78);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
-    transform: translateY(-50%);
+    color: #08341f;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(8, 52, 31, 0.08);
+    transform: none;
     transition:
       transform 0.2s ease,
       background-color 0.2s ease,
-      box-shadow 0.2s ease,
-      opacity 0.2s ease;
-    opacity: 0.94;
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
   }
 
   .carousel-nav i {
-    font-size: 0.95rem;
-  }
-
-  .carousel-nav.prev {
-    left: 12px;
-  }
-
-  .carousel-nav.next {
-    right: 12px;
-  }
-
-  .auto-carousel-shell:hover .carousel-nav,
-  .auto-carousel-shell:focus-within .carousel-nav {
-    opacity: 1;
+    font-size: 0.85rem;
   }
 
   .carousel-nav:hover {
-    background: rgba(8, 52, 31, 0.95);
-    transform: translateY(-50%) scale(1.06);
-    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.32);
+    background: #08341f;
+    color: #fff;
+    border-color: #08341f;
+    transform: scale(1.04);
+    box-shadow: 0 4px 14px rgba(8, 52, 31, 0.18);
   }
 
   .carousel-nav:active {
-    transform: translateY(-50%) scale(0.96);
+    transform: scale(0.96);
   }
 
-  .carousel-overlay-bar {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 3;
+  .carousel-meta-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
-    padding: 1.6rem 0.85rem 0.7rem;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.55) 100%
-    );
-    pointer-events: none;
-  }
-
-  .carousel-overlay-bar > * {
-    pointer-events: auto;
+    margin-bottom: 0.55rem;
+    padding: 0 0.1rem;
   }
 
   .carousel-dots {
@@ -779,7 +656,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     height: 8px;
     border-radius: 999px;
     border: none;
-    background: rgba(255, 255, 255, 0.45);
+    background: rgba(8, 52, 31, 0.22);
     cursor: pointer;
     transition:
       width 0.2s ease,
@@ -790,12 +667,12 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
   }
 
   .carousel-dot:hover {
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(8, 52, 31, 0.45);
   }
 
   .carousel-dot.active {
     width: 22px;
-    background: #f0c14a;
+    background: #e6b410;
     opacity: 1;
   }
 
@@ -804,11 +681,12 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.04em;
-    color: rgba(255, 255, 255, 0.92);
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #4b5563;
+    background: rgba(8, 52, 31, 0.06);
+    border: 1px solid rgba(8, 52, 31, 0.1);
     border-radius: 999px;
     padding: 0.28rem 0.62rem;
+    white-space: nowrap;
   }
 
   /* ========== BOTÓN AUTOMATCH ========== */
@@ -988,21 +866,15 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
       padding: 0;
     }
 
-    .auto-card h3 {
-      margin: 0.8rem 0 0.45rem;
+    .auto-card-titlebar h3 {
+      margin: 0;
       font-size: 1.08rem;
       letter-spacing: 0.2px;
     }
 
-    .auto-info {
-      min-height: 2.45em;
-      margin-bottom: 0.45rem;
-    }
-
-    .auto-texto-linea {
-      font-size: 1.03rem;
-      line-height: 1.5;
-      letter-spacing: 0.1px;
+    .carousel-nav {
+      width: 36px;
+      height: 36px;
     }
 
     .form-comentario {
@@ -1065,26 +937,13 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
       aspect-ratio: 16 / 10;
     }
 
-    .auto-card h3 {
-      font-size: 1rem;
-    }
-
-    .auto-texto-linea {
-      font-size: 0.98rem;
-      line-height: 1.48;
+    .auto-card-titlebar h3 {
+      font-size: 0.92rem;
     }
 
     .carousel-nav {
-      width: 38px;
-      height: 38px;
-    }
-
-    .carousel-nav.prev {
-      left: 8px;
-    }
-
-    .carousel-nav.next {
-      right: 8px;
+      width: 34px;
+      height: 34px;
     }
 
     .carousel-counter {
@@ -1131,13 +990,6 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const autoCards = Array.from(document.querySelectorAll(".auto-card"));
-    const autoplayTimers = new Map<HTMLElement, number>();
-    const AUTOPLAY_MS = 5000;
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    );
-
     document.querySelectorAll(".auto-img").forEach((img) => {
       const htmlImg = img as HTMLImageElement;
       if (htmlImg.complete && htmlImg.naturalWidth > 0) {
@@ -1147,13 +999,6 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
         htmlImg.closest(".auto-carousel")?.classList.add("loaded");
       });
     });
-
-    function animateTextEntry(textEl: HTMLElement | undefined) {
-      if (!textEl) return;
-      textEl.classList.remove("entering");
-      void textEl.offsetWidth;
-      textEl.classList.add("entering");
-    }
 
     function animateImageEntry(imageEl: HTMLElement | undefined) {
       if (!imageEl) return;
@@ -1175,7 +1020,6 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
 
       carousel.classList.add("loaded");
       const images = Array.from(carousel.querySelectorAll(".auto-img"));
-      const texts = Array.from(card.querySelectorAll(".auto-texto"));
       const dots = Array.from(card.querySelectorAll(".carousel-dot"));
       if (images.length === 0) return;
 
@@ -1191,21 +1035,6 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
       images[normalizedNext]?.classList.add("visible");
       animateImageEntry(images[normalizedNext] as HTMLElement | undefined);
 
-      if (texts.length > 0) {
-        const currentText = texts[current] as HTMLElement | undefined;
-        const nextText = texts[normalizedNext] as HTMLElement | undefined;
-        if (currentText) {
-          currentText.classList.remove("visible");
-          currentText.classList.add("hidden");
-          currentText.classList.remove("entering");
-        }
-        if (nextText) {
-          nextText.classList.remove("hidden");
-          nextText.classList.add("visible");
-          animateTextEntry(nextText);
-        }
-      }
-
       dots.forEach((dot, index) => {
         dot.classList.toggle("active", index === normalizedNext);
       });
@@ -1215,58 +1044,6 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
         counter.textContent = `${normalizedNext + 1} / ${images.length}`;
       }
     }
-
-    function moveCarouselBy(card: HTMLElement, step: number) {
-      const images = Array.from(
-        card.querySelectorAll(".auto-carousel .auto-img"),
-      );
-      if (images.length === 0) return;
-      const current = getCurrentImageIndex(images);
-      updateCarousel(card, current + step);
-    }
-
-    function stopAutoplay(card: HTMLElement) {
-      const timer = autoplayTimers.get(card);
-      if (timer) {
-        window.clearInterval(timer);
-        autoplayTimers.delete(card);
-      }
-    }
-
-    function startAutoplay(card: HTMLElement) {
-      if (prefersReducedMotion.matches) return;
-      stopAutoplay(card);
-      const timer = window.setInterval(() => {
-        moveCarouselBy(card, 1);
-      }, AUTOPLAY_MS);
-      autoplayTimers.set(card, timer);
-    }
-
-    autoCards.forEach((cardNode) => {
-      if (!(cardNode instanceof HTMLElement)) return;
-      const card = cardNode;
-      startAutoplay(card);
-      card.addEventListener("mouseenter", () => stopAutoplay(card));
-      card.addEventListener("mouseleave", () => startAutoplay(card));
-      card.addEventListener("focusin", () => stopAutoplay(card));
-      card.addEventListener("focusout", (event) => {
-        const nextFocus = event.relatedTarget as Node | null;
-        if (!nextFocus || !card.contains(nextFocus)) {
-          startAutoplay(card);
-        }
-      });
-    });
-
-    prefersReducedMotion.addEventListener("change", () => {
-      autoCards.forEach((cardNode) => {
-        if (!(cardNode instanceof HTMLElement)) return;
-        if (prefersReducedMotion.matches) {
-          stopAutoplay(cardNode);
-        } else {
-          startAutoplay(cardNode);
-        }
-      });
-    });
 
     document.addEventListener("click", (e) => {
       const target = e.target;
@@ -1307,7 +1084,6 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
         }
 
         updateCarousel(card, nextIndex);
-        startAutoplay(card);
       }
     });
   });
