@@ -17,6 +17,7 @@ import {
   HOME_NEWS_POOL_SIZE,
   HOME_NEWS_SCOPE_POOL_SIZE,
 } from "../../lib/home-news-config";
+import { sectorRadarPreview } from "../../lib/sector-radar";
 
 interface Props {
   notes?: SiteNote[];
@@ -323,7 +324,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 >
   <header class="info-header">
     <p class="noticias-eyebrow">Noticias</p>
-    <h2 id="noticias-heading" class="info-titulo anim-titulo">Sector automotor</h2>
+    <h2 id="noticias-heading" class="info-titulo">Sector automotor</h2>
     <p class="noticias-home-lead">
       Lo más reciente que publicamos a diario: lanzamientos, fichas técnicas y
       cobertura del sector en un solo lugar.
@@ -570,10 +571,10 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
         <div class="news-card-content">
           <span class="news-tag">Radar del sector</span>
           <h3 class="news-title">
-            Tendencias clave que estamos siguiendo esta semana
+            {sectorRadarPreview.title}
           </h3>
           <p class="news-date">
-            Electromovilidad, ADAS y lanzamientos locales con foco en Colombia.
+            {sectorRadarPreview.summary}
           </p>
           <a class="news-read-more" href="/tendencias-del-sector">
             Explorar tendencias →
@@ -679,10 +680,6 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     padding: 0;
   }
 
-  .info-titulo.animate-title {
-    animation: fadeInUp 1s ease-out;
-  }
-
   .info-titulo::before {
     content: "";
     flex: 1;
@@ -690,6 +687,11 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     background: linear-gradient(90deg, #000, #d4a742);
     min-width: 0;
     max-width: 650px;
+    opacity: 0;
+    transform: scaleX(0.88);
+    transform-origin: right center;
+    animation: infoTituloLineIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 1.15s;
   }
 
   .info-titulo::after {
@@ -699,6 +701,31 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     background: linear-gradient(90deg, #d4a742, #000);
     min-width: 0;
     max-width: 650px;
+    opacity: 0;
+    transform: scaleX(0.88);
+    transform-origin: left center;
+    animation: infoTituloLineIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 1.28s;
+  }
+
+  @keyframes infoTituloLineIn {
+    0% {
+      opacity: 0;
+      transform: scaleX(0.88);
+    }
+    100% {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .info-titulo::before,
+    .info-titulo::after {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
   }
 
   .info-descripcion {
@@ -1192,28 +1219,6 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
   }
   .ver-mas-noticias-btn:hover::after {
     transform: translateX(6px);
-  }
-
-  /* animacion titulo pricipal h1 - MISMO PATRÓN QUE HÍBRIDOS */
-  .anim-titulo {
-    opacity: 0;
-    transform: translateY(0);
-    transition: none;
-  }
-
-  .anim-titulo.animate-title {
-    animation: fadeInUp 1s ease-out;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(0);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
   }
 
   @keyframes zoomInFade {
@@ -1765,32 +1770,5 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     }
   }
 </style>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const tituloNoticias = document.querySelector(
-      "#noticias .info-titulo",
-    ) as HTMLElement;
-
-    if (!tituloNoticias) return;
-
-    const observerNoticias = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            tituloNoticias.classList.add("animate-title");
-            tituloNoticias.style.opacity = "1";
-          } else {
-            tituloNoticias.classList.remove("animate-title");
-            tituloNoticias.style.opacity = "0";
-          }
-        });
-      },
-      { threshold: 0.5 },
-    );
-
-    observerNoticias.observe(tituloNoticias);
-  });
-</script>
 
 <script src="/js/news-interactive.js" defer></script>

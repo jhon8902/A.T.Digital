@@ -92,6 +92,13 @@ let homeNotes = await resolveSiteNotes();
     opacity: 0;
   }
 
+  /* Noticias al tope: sin slide-up para evitar salto brusco del título */
+  .extra-sections > #noticias {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
   .extra-sections > *:nth-child(1) {
     animation-delay: 0.15s;
   }
