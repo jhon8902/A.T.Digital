@@ -2,18 +2,30 @@
 interface Props {
   position?: string;
   inGrid?: boolean;
-  variant?: "byd" | "toyota" | "mazda";
+  variant?: "autotech" | "byd" | "toyota" | "mazda";
   href?: string;
 }
 
 const {
   position = "section",
   inGrid = false,
-  variant = "byd",
+  variant = "autotech",
   href,
 } = Astro.props;
 
 const ads = {
+  autotech: {
+    brand: "AUTO-TECH-DIGITAL",
+    title: "Tecnología, emoción y futuro del automóvil",
+    subtitle:
+      "Noticias, fichas técnicas y AutoMatch para encontrar tu próximo auto en Colombia.",
+    cta: "Encontrar mi auto",
+    bg: "#062818",
+    image: "/img/autlogo2.png",
+    textColor: "#ffffff",
+    href: "/automatch-find",
+    external: false,
+  },
   byd: {
     brand: undefined as string | undefined,
     title: "BYD Sealion7 Electrico",
@@ -23,6 +35,7 @@ const ads = {
     image: "/img/byd-sealion-7/byd-sealion7-principal.webp",
     textColor: "#ffffff",
     href: "/dashboard-concesionario",
+    external: true,
   },
   toyota: {
     brand: "TOYOTA",
@@ -33,6 +46,7 @@ const ads = {
     image: "/img/toyota-prado/toyota-prado-copia1.webp",
     textColor: "#ffffff",
     href: "/dashboard-concesionario",
+    external: true,
   },
   mazda: {
     brand: undefined as string | undefined,
@@ -43,44 +57,86 @@ const ads = {
     image: "/img/mazda-ez6/mazda-ez6-diseño-portada.webp",
     textColor: "#ffffff",
     href: "/dashboard-concesionario",
+    external: true,
   },
 };
 
 const currentAd = ads[variant];
 const adHref = href ?? currentAd.href;
+const isBrandBanner = variant === "autotech";
+const isExternal =
+  href?.startsWith("http") ?? ("external" in currentAd && currentAd.external);
 ---
 
 <div
   class={`ad-container ad-${variant} ${inGrid ? "ad-in-grid" : "ad-section"}`}
+  data-position={position}
 >
-  {/* <div class="ad-label">Publicidad</div> */}
-  <div
-    class="ad-content"
-    style={`background-color: ${currentAd.bg}; color: ${currentAd.textColor};`}
-  >
-    <img
-      class="ad-car"
-      src={currentAd.image}
-      alt={currentAd.title}
-      loading="lazy"
-      decoding="async"
-    />
-    <div class="ad-banner">
-      <div class="ad-text">
-        {currentAd.brand && <span class="ad-brand">{currentAd.brand}</span>}
-        {currentAd.subtitle && <p class="ad-subtitle">{currentAd.subtitle}</p>}
+  {
+    isBrandBanner ? (
+      <div class="ad-brand-banner">
+        <div class="ad-brand-panel" aria-hidden="true">
+          <img
+            class="ad-logo"
+            src={currentAd.image}
+            alt="Auto-Tech-Digital"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <div class="ad-copy-panel">
+          <div class="ad-copy-inner">
+            {currentAd.brand && (
+              <span class="ad-brand">{currentAd.brand}</span>
+            )}
+            <h3 class="ad-title">
+              Tecnología, emoción y{" "}
+              <span class="ad-title-accent">futuro del automóvil</span>
+            </h3>
+            {currentAd.subtitle && (
+              <p class="ad-subtitle">{currentAd.subtitle}</p>
+            )}
+            <a class="ad-cta ad-cta--brand" href={adHref}>
+              {currentAd.cta} →
+            </a>
+          </div>
+        </div>
       </div>
-      <div class="ad-cta-block">
-        <h3 class="ad-title">{currentAd.title}</h3>
-        <a
-          class="ad-cta"
-          href={adHref}
-          target="_blank"
-          rel="noopener noreferrer">{currentAd.cta} →</a
-        >
+    ) : (
+      <div
+        class="ad-content"
+        style={`background-color: ${currentAd.bg}; color: ${currentAd.textColor};`}
+      >
+        <img
+          class="ad-car"
+          src={currentAd.image}
+          alt={currentAd.title}
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="ad-banner">
+          <div class="ad-text">
+            {currentAd.brand && <span class="ad-brand">{currentAd.brand}</span>}
+            {currentAd.subtitle && (
+              <p class="ad-subtitle">{currentAd.subtitle}</p>
+            )}
+          </div>
+          <div class="ad-cta-block">
+            <h3 class="ad-title">{currentAd.title}</h3>
+            <a
+              class="ad-cta"
+              href={adHref}
+              {...(isExternal
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >
+              {currentAd.cta} →
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    )
+  }
 </div>
 
 <style>
@@ -106,18 +162,130 @@ const adHref = href ?? currentAd.href;
     border-radius: 12px;
   }
 
-  .ad-label {
-    font-size: 20px;
-    color: #5b5b5b;
-    text-transform: uppercase;
-    letter-spacing: 2.4px;
-    font-weight: 600;
-    background: #f0f0f0;
-    padding: 4px 10px;
-    border-radius: 999px;
-    border: 1px solid #e2e2e2;
+  .ad-container.ad-autotech.ad-section {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: 0;
+    background: transparent;
+    border: none;
+    align-items: stretch;
   }
 
+  /* —— Brand banner (Auto-Tech-Digital) —— */
+  .ad-brand-banner {
+    display: grid;
+    grid-template-columns: minmax(280px, 42%) 1fr;
+    width: 100%;
+    min-height: 300px;
+    overflow: hidden;
+    border-top: 1px solid rgba(240, 193, 74, 0.2);
+  }
+
+  .ad-brand-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 32px;
+    background: linear-gradient(165deg, #062818 0%, #08341f 52%, #0a4228 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ad-brand-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at 30% 40%,
+      rgba(240, 193, 74, 0.12) 0%,
+      transparent 55%
+    );
+    pointer-events: none;
+  }
+
+  .ad-logo {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 340px);
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.35));
+  }
+
+  .ad-copy-panel {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #041a10 0%, #062818 100%);
+    color: #fff;
+    padding: 40px clamp(28px, 4vw, 56px);
+  }
+
+  .ad-copy-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 560px;
+  }
+
+  .ad-container.ad-autotech .ad-brand {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #f0c14a;
+    font-family: "Oswald", "Arial Narrow", sans-serif;
+  }
+
+  .ad-container.ad-autotech .ad-title {
+    font-size: clamp(1.35rem, 2.4vw, 2rem);
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.25;
+    color: #fff;
+    font-family: "Playfair Display", "Times New Roman", serif;
+    text-transform: none;
+  }
+
+  .ad-title-accent {
+    color: #f0c14a;
+  }
+
+  .ad-container.ad-autotech .ad-subtitle {
+    font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+    margin: 0;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.82);
+    font-weight: 400;
+    text-shadow: none;
+  }
+
+  .ad-cta--brand {
+    align-self: flex-start;
+    margin-top: 6px;
+    background: #f0c14a;
+    color: #08341f;
+    border: 2px solid #f0c14a;
+    padding: 12px 28px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .ad-cta--brand:hover {
+    background: #f8d066;
+    border-color: #f8d066;
+    color: #062818;
+    transform: translateY(-1px);
+  }
+
+  /* —— Legacy car banners —— */
   .ad-content {
     position: relative;
     width: 100%;
@@ -159,17 +327,14 @@ const adHref = href ?? currentAd.href;
     animation: slideInCar 0.8s ease-out forwards;
   }
 
-  /* Animación por defecto (derecha a izquierda - Mazda) */
   .ad-container.ad-mazda .ad-car {
     animation: slideInFromRight 0.8s ease-out forwards;
   }
 
-  /* Animación para BYD (izquierda a derecha) */
   .ad-container.ad-byd .ad-car {
     animation: slideInFromLeft 0.8s ease-out forwards;
   }
 
-  /* Animación para Toyota */
   .ad-container.ad-toyota .ad-car {
     animation: slideInFromRight 0.8s ease-out forwards;
   }
@@ -305,9 +470,43 @@ const adHref = href ?? currentAd.href;
     transform: translateY(-1px);
   }
 
+  @media (max-width: 900px) {
+    .ad-brand-banner {
+      grid-template-columns: 1fr;
+      min-height: auto;
+      border-top: none;
+    }
+
+    .ad-brand-panel {
+      padding: 32px 24px;
+      min-height: 160px;
+    }
+
+    .ad-logo {
+      width: min(100%, 260px);
+    }
+
+    .ad-copy-panel {
+      padding: 28px 24px 32px;
+    }
+
+    .ad-copy-inner {
+      align-items: center;
+      text-align: center;
+    }
+
+    .ad-cta--brand {
+      align-self: center;
+    }
+  }
+
   @media (max-width: 768px) {
     .ad-section {
       padding: 28px 16px;
+    }
+
+    .ad-container.ad-autotech.ad-section {
+      padding: 0;
     }
 
     .ad-content {
@@ -374,7 +573,7 @@ const adHref = href ?? currentAd.href;
       order: 3;
     }
 
-    .ad-title {
+    .ad-banner .ad-title {
       font-size: 20px;
       order: 0;
       position: absolute;
@@ -385,22 +584,13 @@ const adHref = href ?? currentAd.href;
       margin: 0;
     }
 
-    .ad-title h3 {
-      padding: 0;
-    }
-
-    .ad-subtitle {
+    .ad-banner .ad-subtitle {
       font-size: 13px;
     }
 
     .ad-cta {
       width: 100%;
       padding: 10px 10px;
-    }
-
-    .ad-text {
-      align-items: center;
-      text-align: center;
     }
   }
 </style>
