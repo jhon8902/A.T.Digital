@@ -1,6 +1,5 @@
 /* ========== PRUEBAS / TEST DRIVE VIDEOS ========== */
 
-.pruebas-section,
 .pruebas-archivo-page {
   --prueba-brand: var(--color-brand, #08341f);
   --prueba-accent: var(--color-accent, #e6b410);
@@ -12,10 +11,43 @@
 }
 
 .pruebas-section {
+  --prueba-brand: #eef3ef;
+  --prueba-accent: var(--color-accent, #e6b410);
+  --prueba-muted: #a8b5ad;
+  --prueba-surface: #1a2a22;
+  --prueba-bg: #0d1612;
+  --prueba-border: rgba(255, 255, 255, 0.11);
+  --prueba-rail-card-width: clamp(19rem, 78vw, 38rem);
+}
+
+.pruebas-section {
   width: 100%;
-  background: var(--prueba-bg);
+  background: linear-gradient(
+    165deg,
+    #0b1310 0%,
+    #101f18 45%,
+    #0d1612 100%
+  );
   padding: clamp(2.75rem, 5vw, 4.25rem) clamp(1rem, 3vw, 2rem);
   scroll-margin-top: 5.5rem;
+  position: relative;
+  isolation: isolate;
+}
+
+.pruebas-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 45% at 12% 0%, rgba(8, 52, 31, 0.38), transparent 72%),
+    radial-gradient(ellipse 42% 36% at 88% 12%, rgba(230, 180, 16, 0.09), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pruebas-section .pruebas-inner {
+  position: relative;
+  z-index: 1;
 }
 
 .pruebas-inner {
@@ -387,6 +419,64 @@
   background: #f9fafb;
   border-color: #cbd2dc;
   transform: translateY(-1px);
+}
+
+/* Home — bloque oscuro tipo cine */
+.pruebas-section .pruebas-rail-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #f4f7f5;
+  box-shadow: none;
+}
+
+.pruebas-section .pruebas-rail-btn:hover:not(:disabled) {
+  background: var(--prueba-accent);
+  border-color: var(--prueba-accent);
+  color: #08341f;
+  box-shadow: 0 6px 18px rgba(230, 180, 16, 0.28);
+}
+
+.pruebas-section .prueba-rail-card.is-centered {
+  border-color: rgba(230, 180, 16, 0.32);
+  box-shadow:
+    0 22px 50px rgba(0, 0, 0, 0.48),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.pruebas-section .prueba-rail-card.is-centered:hover {
+  border-color: rgba(230, 180, 16, 0.48);
+}
+
+.pruebas-section .prueba-rail-ep {
+  color: #8fa59a;
+}
+
+.pruebas-section .prueba-rail-actions {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.pruebas-section .archivo-link {
+  color: #dce8e0;
+}
+
+.pruebas-section .archivo-link:hover {
+  color: #fff;
+}
+
+.pruebas-section .prueba-rail-automatch {
+  color: var(--prueba-accent);
+}
+
+.pruebas-section .pruebas-more {
+  background: transparent;
+  color: #f4f7f5;
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.pruebas-section .pruebas-more:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(230, 180, 16, 0.42);
+  color: #fff;
 }
 
 /* Archivo */

@@ -115,3 +115,63 @@ body.home-page .automatch-promo h2 {
 body.home-page .automatch-promo__copy p:last-child {
   font-size: var(--home-card-body);
 }
+
+/* Carrusel hero — etiquetas legibles en negro (carga al final) */
+body.home-page
+  .section-info
+  .news-showcase
+  .news-hero-carousel
+  .news-hero__body
+  .news-tag,
+body.home-page
+  .section-info
+  .news-showcase
+  .news-hero-carousel
+  .news-hero__body
+  .scope-tag,
+body.home-page
+  .section-info
+  .news-showcase
+  .news-hero-carousel
+  .news-hero__body
+  .scope-tag--national,
+body.home-page
+  .section-info
+  .news-showcase
+  .news-hero-carousel
+  .news-hero__body
+  .scope-tag--international {
+  color: #111 !important;
+  background: transparent !important;
+  border-color: rgba(17, 17, 17, 0.22) !important;
+}
+
+/* Noticias — acentos de marca en dorado (carga al final) */
+body.home-page .section-info.section-info--interactive .noticias-eyebrow {
+  color: #e6b410 !important;
+}
+
+body.home-page .section-info.section-info--interactive .info-titulo::before {
+  background: linear-gradient(90deg, transparent, #d4a742) !important;
+}
+
+body.home-page .section-info.section-info--interactive .info-titulo::after {
+  background: linear-gradient(90deg, #d4a742, transparent) !important;
+}
+
+/* Noticias — layout azul arriba / blanco abajo */
+body.home-page .section-info.section-info--interactive .info-header {
+  background: transparent !important;
+}
+
+body.home-page .section-info.section-info--interactive > .container {
+  background: #fff !important;
+}
+
+body.home-page .section-info.section-info--interactive .info-header .info-titulo {
+  color: #f4f7fa !important;
+}
+
+body.home-page .section-info.section-info--interactive .info-header .noticias-home-lead {
+  color: #b0bab2 !important;
+}

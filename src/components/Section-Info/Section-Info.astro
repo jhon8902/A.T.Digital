@@ -313,7 +313,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 );
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=26" />
 
 <section
   id="noticias"
@@ -428,7 +428,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
                         <div class="news-hero__body">
                           <div class="news-meta-tags">
                             <span class="news-tag">
-                              {index === 0 ? "Destacada" : categoryLabel(nota.category)}
+                              {categoryLabel(nota.category)}
                             </span>
                             <span
                               class={
@@ -598,7 +598,31 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     margin: 0 auto; /* Centra el contenido */
     padding: 32px 20px;
     font-family: "Georgia", serif;
-    background: #fbf7f2;
+    background: #fff;
+  }
+
+  .section-info--interactive .container {
+    background: #fff !important;
+  }
+
+  .section-info--interactive .info-header {
+    background: transparent !important;
+  }
+
+  .section-info--interactive .info-header .info-titulo {
+    color: #f4f7fa !important;
+  }
+
+  .section-info--interactive .info-header .noticias-home-lead {
+    color: #b0bab2 !important;
+  }
+
+  .section-info--interactive .info-header .info-titulo::before {
+    background: linear-gradient(90deg, transparent, #d4a742);
+  }
+
+  .section-info--interactive .info-header .info-titulo::after {
+    background: linear-gradient(90deg, #d4a742, transparent);
   }
 
   .section-info {
@@ -1108,6 +1132,15 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     color: #1a56c4;
   }
 
+  .news-showcase .news-hero-carousel .news-hero__body .news-tag,
+  .news-showcase .news-hero-carousel .news-hero__body .scope-tag,
+  .news-showcase .news-hero-carousel .news-hero__body .scope-tag--national,
+  .news-showcase .news-hero-carousel .news-hero__body .scope-tag--international {
+    background: transparent !important;
+    border: 1px solid rgba(17, 17, 17, 0.22) !important;
+    color: #111 !important;
+  }
+
   .scope-tag--featured {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
@@ -1245,8 +1278,12 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
       padding: 0;
     }
 
-    .section-info {
+    .section-info:not(.section-info--interactive) {
       background: white;
+      padding: 20px 0;
+    }
+
+    .section-info.section-info--interactive {
       padding: 20px 0;
     }
 
@@ -1771,4 +1808,4 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
   }
 </style>
 
-<script src="/js/news-interactive.js" defer></script>
+<script src="/js/news-interactive.js?v=8" defer></script>
