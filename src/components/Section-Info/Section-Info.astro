@@ -313,7 +313,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 );
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css?v=32" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=34" />
 
 <section
   id="noticias"
@@ -424,9 +424,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
                             fetchpriority={index === 0 ? "high" : "auto"}
                             decoding="async"
                           />
-                        </div>
-                        <div class="news-hero__body">
-                          <div class="news-meta-tags">
+                          <div class="news-meta-tags news-meta-tags--overlay">
                             <span class="news-tag">
                               {categoryLabel(nota.category)}
                             </span>
@@ -441,6 +439,8 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
                               {sourceScopeLabel(nota.source_scope)}
                             </span>
                           </div>
+                        </div>
+                        <div class="news-hero__body">
                           <h3 class="news-hero__title">
                             {getNewsCardTitle(nota.caption)}
                           </h3>
@@ -1142,13 +1142,15 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     color: #1a56c4;
   }
 
-  .news-showcase .news-hero-carousel .news-hero__body .news-tag,
-  .news-showcase .news-hero-carousel .news-hero__body .scope-tag,
-  .news-showcase .news-hero-carousel .news-hero__body .scope-tag--national,
-  .news-showcase .news-hero-carousel .news-hero__body .scope-tag--international {
-    background: transparent !important;
-    border: 1px solid rgba(17, 17, 17, 0.22) !important;
-    color: #111 !important;
+  .news-showcase .news-hero-carousel .news-meta-tags--overlay .news-tag,
+  .news-showcase .news-hero-carousel .news-meta-tags--overlay .scope-tag,
+  .news-showcase .news-hero-carousel .news-meta-tags--overlay .scope-tag--national,
+  .news-showcase .news-hero-carousel .news-meta-tags--overlay .scope-tag--international {
+    background: rgba(0, 0, 0, 0.42) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.94) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
 
   .scope-tag--featured {

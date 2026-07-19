@@ -116,34 +116,34 @@ body.home-page .automatch-promo__copy p:last-child {
   font-size: var(--home-card-body);
 }
 
-/* Carrusel hero — etiquetas legibles en negro (carga al final) */
+/* Carrusel hero — etiquetas sutiles sobre imagen */
 body.home-page
   .section-info
   .news-showcase
   .news-hero-carousel
-  .news-hero__body
+  .news-meta-tags--overlay
   .news-tag,
 body.home-page
   .section-info
   .news-showcase
   .news-hero-carousel
-  .news-hero__body
+  .news-meta-tags--overlay
   .scope-tag,
 body.home-page
   .section-info
   .news-showcase
   .news-hero-carousel
-  .news-hero__body
+  .news-meta-tags--overlay
   .scope-tag--national,
 body.home-page
   .section-info
   .news-showcase
   .news-hero-carousel
-  .news-hero__body
+  .news-meta-tags--overlay
   .scope-tag--international {
-  color: #111 !important;
-  background: transparent !important;
-  border-color: rgba(17, 17, 17, 0.22) !important;
+  color: rgba(255, 255, 255, 0.94) !important;
+  background: rgba(0, 0, 0, 0.44) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
 }
 
 /* Noticias — acentos de marca en dorado (carga al final) */
