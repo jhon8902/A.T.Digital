@@ -147,19 +147,30 @@ body.home-page
 }
 
 /* Noticias — acentos de marca en dorado (carga al final) */
+body.home-page .section-info.section-info--interactive {
+  background: #f0f3f0 !important;
+}
+
 body.home-page .section-info.section-info--interactive .noticias-eyebrow {
   color: #e6b410 !important;
 }
 
-body.home-page .section-info.section-info--interactive .info-titulo::before {
-  background: linear-gradient(90deg, transparent, #d4a742) !important;
+body.home-page .section-info.section-info--interactive .info-header .info-titulo {
+  color: #08341f !important;
 }
 
-body.home-page .section-info.section-info--interactive .info-titulo::after {
-  background: linear-gradient(90deg, #d4a742, transparent) !important;
+body.home-page .section-info.section-info--interactive .info-header .info-titulo::before {
+  background: linear-gradient(90deg, #000, #d4a742) !important;
 }
 
-/* Noticias — layout azul arriba / blanco abajo */
+body.home-page .section-info.section-info--interactive .info-header .info-titulo::after {
+  background: linear-gradient(90deg, #d4a742, #000) !important;
+}
+
+body.home-page .section-info.section-info--interactive .info-header .noticias-home-lead {
+  color: #5a6470 !important;
+}
+
 body.home-page .section-info.section-info--interactive .info-header {
   background: transparent !important;
 }
@@ -168,10 +179,16 @@ body.home-page .section-info.section-info--interactive > .container {
   background: #fff !important;
 }
 
-body.home-page .section-info.section-info--interactive .info-header .info-titulo {
-  color: #f4f7fa !important;
-}
+@media (max-width: 768px) {
+  body.home-page .section-info.section-info--interactive {
+    background: #f0f3f0 !important;
+  }
 
-body.home-page .section-info.section-info--interactive .info-header .noticias-home-lead {
-  color: #b0bab2 !important;
+  body.home-page .section-info.section-info--interactive .info-header {
+    background: transparent !important;
+  }
+
+  body.home-page .section-info.section-info--interactive > .container {
+    background: #fff !important;
+  }
 }

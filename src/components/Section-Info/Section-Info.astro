@@ -313,7 +313,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 );
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css?v=26" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=32" />
 
 <section
   id="noticias"
@@ -601,6 +601,10 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     background: #fff;
   }
 
+  .section-info.section-info--interactive {
+    background: #f0f3f0 !important;
+  }
+
   .section-info--interactive .container {
     background: #fff !important;
   }
@@ -610,19 +614,19 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
   }
 
   .section-info--interactive .info-header .info-titulo {
-    color: #f4f7fa !important;
+    color: #08341f !important;
   }
 
   .section-info--interactive .info-header .noticias-home-lead {
-    color: #b0bab2 !important;
+    color: #5a6470 !important;
   }
 
   .section-info--interactive .info-header .info-titulo::before {
-    background: linear-gradient(90deg, transparent, #d4a742);
+    background: linear-gradient(90deg, #000, #d4a742);
   }
 
   .section-info--interactive .info-header .info-titulo::after {
-    background: linear-gradient(90deg, #d4a742, transparent);
+    background: linear-gradient(90deg, #d4a742, #000);
   }
 
   .section-info {
@@ -795,6 +799,12 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
       border-bottom: none;
       align-items: center;
       text-align: center;
+    }
+
+    .section-info--interactive .info-header {
+      padding: clamp(2rem, 5vw, 3rem) 20px 1.5rem !important;
+      align-items: center !important;
+      text-align: center !important;
     }
 
     .noticias-home-lead {
@@ -1284,7 +1294,19 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     }
 
     .section-info.section-info--interactive {
-      padding: 20px 0;
+      padding: 0 !important;
+      background: #f0f3f0 !important;
+    }
+
+    .section-info--interactive .info-header {
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: clamp(2rem, 5vw, 3rem) 20px 1.75rem !important;
+      align-items: center !important;
+      text-align: center !important;
+      background: transparent !important;
+      box-sizing: border-box;
     }
 
     #noticias {
@@ -1677,6 +1699,18 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
       flex-direction: column;
       gap: 6px;
       align-items: flex-start;
+    }
+
+    .section-info--interactive .info-header {
+      align-items: center !important;
+      text-align: center !important;
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+
+    .section-info--interactive .info-header .info-titulo {
+      text-align: center !important;
+      width: 100%;
     }
 
     .info-titulo {
