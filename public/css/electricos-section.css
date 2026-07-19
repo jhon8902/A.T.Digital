@@ -5,12 +5,15 @@
   --ev-accent: var(--color-accent, #e6b410);
   --ev-muted: #5a6470;
   --ev-surface: #ffffff;
-  --ev-bg: #f4f5f7;
+  --ev-bg: var(--home-section-bg, #f0f3f0);
   --ev-border: #e2e5ea;
   --ev-chip: rgba(8, 52, 31, 0.08);
 
   width: 100%;
-  background: var(--ev-bg);
+  background-color: var(--ev-bg);
+  background-image: var(--home-relief-image);
+  background-size: var(--home-relief-size);
+  background-repeat: repeat;
   padding: clamp(2.75rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem);
   scroll-margin-top: 5.5rem;
 }

@@ -63,6 +63,12 @@
   --home-section-cta: 1rem;
   --home-news-featured: clamp(2rem, 2.5vw, 2.65rem);
   --home-rail-title: clamp(1.2rem, 1.35vw, 1.6rem);
+
+  /* Home — relieve editorial compartido */
+  --home-section-bg: #f0f3f0;
+  --home-relief-image: url("/img/patterns/news-sector-relief.svg?v=3");
+  --home-relief-image-dark: url("/img/patterns/news-sector-relief-dark.svg?v=3");
+  --home-relief-size: 400px 400px;
 }
 
 @media (min-width: 1024px) {

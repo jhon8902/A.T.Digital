@@ -313,7 +313,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 );
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css?v=34" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=42" />
 
 <section
   id="noticias"
@@ -602,7 +602,10 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
   }
 
   .section-info.section-info--interactive {
-    background: #f0f3f0 !important;
+    background-color: #f0f3f0 !important;
+    background-image: var(--home-relief-image);
+    background-size: var(--home-relief-size);
+    background-repeat: repeat;
   }
 
   .section-info--interactive .container {
@@ -1297,7 +1300,10 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 
     .section-info.section-info--interactive {
       padding: 0 !important;
-      background: #f0f3f0 !important;
+      background-color: #f0f3f0 !important;
+      background-image: var(--home-relief-image);
+      background-size: var(--home-relief-size);
+      background-repeat: repeat;
     }
 
     .section-info--interactive .info-header {
@@ -1844,4 +1850,4 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
   }
 </style>
 
-<script src="/js/news-interactive.js?v=8" defer></script>
+<script src="/js/news-interactive.js?v=9" defer></script>

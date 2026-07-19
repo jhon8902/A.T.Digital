@@ -5,12 +5,15 @@
   --hyb-accent: #0d6e8c;
   --hyb-muted: #5a6470;
   --hyb-surface: #ffffff;
-  --hyb-bg: #f4f5f7;
+  --hyb-bg: var(--home-section-bg, #f0f3f0);
   --hyb-border: #e2e5ea;
   --hyb-chip: rgba(13, 110, 140, 0.1);
 
   width: 100%;
-  background: var(--hyb-bg);
+  background-color: var(--hyb-bg);
+  background-image: var(--home-relief-image);
+  background-size: var(--home-relief-size);
+  background-repeat: repeat;
   padding: clamp(2.75rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem);
   scroll-margin-top: 5.5rem;
 }

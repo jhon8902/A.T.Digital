@@ -5,12 +5,15 @@
   --dep-accent: #b45309;
   --dep-muted: #5a6470;
   --dep-surface: #ffffff;
-  --dep-bg: #f4f5f7;
+  --dep-bg: var(--home-section-bg, #f0f3f0);
   --dep-border: #e2e5ea;
   --dep-chip: rgba(180, 83, 9, 0.1);
 
   width: 100%;
-  background: var(--dep-bg);
+  background-color: var(--dep-bg);
+  background-image: var(--home-relief-image);
+  background-size: var(--home-relief-size);
+  background-repeat: repeat;
   padding: clamp(2.25rem, 4vw, 3.25rem) clamp(1rem, 3vw, 2rem);
   scroll-margin-top: 5.5rem;
 }

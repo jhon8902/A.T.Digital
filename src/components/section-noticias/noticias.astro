@@ -235,7 +235,7 @@ const homeLanzamientos = [
   .slice(0, HOME_VISIBLE_COUNT);
 ---
 
-<link rel="stylesheet" href="/css/lanzamientos-section.css" />
+<link rel="stylesheet" href="/css/lanzamientos-section.css?v=2" />
 
 <section
   id="lanzamientos"
@@ -270,18 +270,21 @@ const homeLanzamientos = [
                   <img
                     src={nota.img}
                     alt={nota.alt}
-                    loading="lazy"
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchpriority={index === 0 ? "high" : "auto"}
                     decoding="async"
                   />
+                  <span
+                    class={`lanzamiento-scope lanzamiento-scope--overlay lanzamiento-scope--${scope}`}
+                  >
+                    {sourceScopeLabel(nota.source_scope)}
+                  </span>
                 </a>
                 <div class="lanzamiento-item__body">
                   {index === 0 && (
                     <span class="lanzamiento-badge-new">Recién llegado</span>
                   )}
                   <div class="lanzamiento-item__meta">
-                    <span class={`lanzamiento-scope lanzamiento-scope--${scope}`}>
-                      {sourceScopeLabel(nota.source_scope)}
-                    </span>
                     {fecha && (
                       <span class="lanzamiento-item__date">{fecha}</span>
                     )}
@@ -298,12 +301,16 @@ const homeLanzamientos = [
                     <a href={nota.href} class="lanzamiento-item__cta">
                       Ver lanzamiento →
                     </a>
-                    <a
-                      href="/automatch-find"
-                      class="lanzamiento-item__automatch"
-                    >
-                      Comparar en AutoMatch
-                    </a>
+                    {
+                      index === 0 && (
+                        <a
+                          href="/automatch-find"
+                          class="lanzamiento-item__automatch"
+                        >
+                          Comparar en AutoMatch
+                        </a>
+                      )
+                    }
                   </div>
                 </div>
               </article>

@@ -34,6 +34,17 @@
   isolation: isolate;
 }
 
+.pruebas-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--home-relief-image-dark);
+  background-size: var(--home-relief-size);
+  background-repeat: repeat;
+}
+
 .pruebas-section::after {
   content: "";
   position: absolute;
