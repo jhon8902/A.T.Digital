@@ -199,14 +199,6 @@ body.home-page .automatch-promo__copy p:last-child {
   font-size: var(--home-card-body);
 }
 
-/* AutoMatch en home — fichas con relieve editorial (preview) */
-body.home-page #automatch .automatch-section--cards {
-  background-color: var(--home-section-bg) !important;
-  background-image: var(--home-relief-image) !important;
-  background-size: var(--home-relief-size) !important;
-  background-repeat: repeat !important;
-}
-
 /* Carrusel hero — etiquetas sutiles sobre imagen */
 body.home-page
   .section-info

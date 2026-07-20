@@ -1,5 +1,5 @@
 ---
-import { resolveSiteNotes, getApiUrl, fetchWithTimeout } from "../lib/api";
+import { resolveSiteNotes } from "../lib/api";
 import Layout from "../layouts/Layout.astro";
 import SectionInfo from "../components/Section-Info/Section-Info.astro";
 import Hibridos from "../components/hibridos/hibridos.astro";
@@ -7,45 +7,9 @@ import Noticias from "../components/section-noticias/noticias.astro";
 import Electricos from "../components/electricos/Electricos.astro";
 import Deportes from "../components/deportes/deportes.astro";
 import Pruebas from "../components/pruebas/pruebas.astro";
-import AutoMatch from "../components/automatch/automatch.astro";
-import AutoMatchPromo from "../components/automatch/AutoMatchPromo.astro";
-import {
-  buildAutomatchCarousel,
-  type AutomatchDbNote,
-} from "../lib/automatch-catalog";
 // import AdBanner from "../components/advertising/AdBanner.astro";
 
 let homeNotes = await resolveSiteNotes();
-
-let autos: ReturnType<typeof buildAutomatchCarousel> = [];
-
-try {
-  const apiUrl = getApiUrl("get-notes");
-  const data = await fetchWithTimeout(apiUrl);
-
-  if (data && Array.isArray(data)) {
-    const automatchNotes: AutomatchDbNote[] = data
-      .filter((note: any) => note.category?.toLowerCase() === "automatch")
-      .map((note: any) => ({
-        id: note.id,
-        title: note.title,
-        subtitle: note.subtitle,
-        content: note.content || "",
-        created_at: note.created_at,
-        image1: note.image1,
-        image2: note.image2,
-        image3: note.image3,
-        image4: note.image4,
-        image5: note.image5,
-        image6: note.image6,
-      }));
-
-    autos = buildAutomatchCarousel(automatchNotes, { skipEditorialCover: true });
-  }
-} catch (err) {
-  console.error("Error cargando AutoMatch para home:", err);
-  autos = buildAutomatchCarousel([], { skipEditorialCover: true });
-}
 ---
 
 <Layout
@@ -54,20 +18,21 @@ try {
   class="home-page"
 >
   <div class="extra-sections" id="extra-sections">
-    <!-- Preview temporal — volver a ocultar cuando termine la revisión -->
+    <!-- AutoMatch — oculto hasta tener la herramienta lista
     <section id="automatch" class="automatch-destacado">
-      <AutoMatch autos={autos} mode="home" />
+      <AutoMatch autos={autos} />
     </section>
+    -->
 
     <SectionInfo notes={homeNotes} />
 
     <Electricos notes={homeNotes} />
-
+    <!--
     <AutoMatchPromo
       title="Compara eléctricos con AutoMatch"
       description="Filtra por autonomía, precio y uso. Encuentra el modelo ideal para ti."
     />
-
+    -->
     <Hibridos notes={homeNotes} />
     <Noticias notes={homeNotes} />
 
@@ -76,12 +41,13 @@ try {
     -->
 
     <Pruebas notes={homeNotes} />
-
+    <!--
     <AutoMatchPromo
       variant="compact"
       title="¿Listo para encontrar tu próximo auto?"
       description="Usa AutoMatch para comparar modelos y ver fichas destacadas."
     />
+    -->
 
     <section
       class="home-secondary-content"
@@ -91,7 +57,7 @@ try {
     </section>
   </div>
 
-  <link rel="stylesheet" href="/css/home-typography.css?v=9" />
+  <link rel="stylesheet" href="/css/home-typography.css?v=8" />
 </Layout>
 
 <style>
@@ -106,9 +72,10 @@ try {
     }
   }
 
-  .automatch-destacado {
-    scroll-margin-top: 5.5rem;
-  }
+  /* .automatch-destacado {
+    margin-bottom: 1rem;
+    animation: fadeInUp 0.7s ease-out;
+  } */
 
   .home-secondary-content {
     opacity: 0.98;
@@ -127,8 +94,7 @@ try {
     opacity: 0;
   }
 
-  /* Hero al tope: sin slide-up para carga estable */
-  .extra-sections > #automatch,
+  /* Noticias al tope: sin slide-up para evitar salto brusco del título */
   .extra-sections > #noticias {
     animation: none;
     opacity: 1;
@@ -173,13 +139,5 @@ try {
 
   .extra-sections > *:nth-child(10) {
     animation-delay: 1.5s;
-  }
-
-  .extra-sections > *:nth-child(11) {
-    animation-delay: 1.65s;
-  }
-
-  .extra-sections > *:nth-child(12) {
-    animation-delay: 1.8s;
   }
 </style>
