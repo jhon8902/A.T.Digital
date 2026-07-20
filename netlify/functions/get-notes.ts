@@ -14,13 +14,13 @@ const DB_QUERY_TIMEOUT_MS = Number(process.env.DB_QUERY_TIMEOUT_MS || "8000");
 
 function resolveConnectionString(): string {
   const raw =
-    process.env.NETLIFY_DATABASE_URL ||
-    process.env.NETLIFY_DATABASE_URL_UNPOOLED ||
-    process.env.DATABASE_URL ||
+    process.env.NETLIFY_DATABASE_URL ??
+    process.env.NETLIFY_DATABASE_URL_UNPOOLED ??
+    process.env.DATABASE_URL ??
     "";
 
-  // Netlify UI values can accidentally be saved wrapped in quotes.
-  const connStr = raw.trim().replace(/^['\"]|['\"]$/g, "");
+  // Mantener en sync con src/lib/database-url.ts
+  const connStr = raw.trim().replace(/^['"]|['"]$/g, "");
   if (!connStr) {
     throw new Error("DATABASE_URL no está configurada");
   }
@@ -80,11 +80,45 @@ function isMissingSourceScopeColumnError(error: any): boolean {
   );
 }
 
-function isNoteScheduledForFuture(scheduledAt: unknown): boolean {
-  if (!scheduledAt) return false;
-  const date = new Date(String(scheduledAt));
-  if (Number.isNaN(date.getTime())) return false;
-  return date.getTime() > Date.now();
+function serializeScheduledAt(value: unknown): string | null {
+  if (!value) return null;
+
+  let date: Date;
+  if (value instanceof Date) {
+    date = new Date(
+      Date.UTC(
+        value.getFullYear(),
+        value.getMonth(),
+        value.getDate(),
+        value.getHours(),
+        value.getMinutes(),
+        value.getSeconds(),
+        value.getMilliseconds()
+      )
+    );
+  } else {
+    const raw = String(value).trim();
+    const naive = raw.match(
+      /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?$/
+    );
+    if (naive) {
+      const [, year, month, day, hour, minute, second = "0"] = naive;
+      date = new Date(
+        Date.UTC(
+          Number(year),
+          Number(month) - 1,
+          Number(day),
+          Number(hour),
+          Number(minute),
+          Number(second)
+        )
+      );
+    } else {
+      date = new Date(raw);
+    }
+  }
+
+  return Number.isNaN(date.getTime()) ? null : date.toISOString();
 }
 
 const PUBLISHED_NOTES_SQL = `(scheduled_at IS NULL OR scheduled_at <= NOW())`;
@@ -123,9 +157,15 @@ export const handler: Handler = async (event) => {
         };
       }
 
-      const result = await getPool().query("SELECT * FROM notes WHERE id = $1", [
-        parsedId,
-      ]);
+      const isAdmin = isEventAuthorizedAdmin(event);
+      const visibilitySql = isAdmin
+        ? ""
+        : ` AND ${PUBLISHED_NOTES_SQL}`;
+
+      const result = await getPool().query(
+        `SELECT * FROM notes WHERE id = $1${visibilitySql}`,
+        [parsedId],
+      );
       if (result.rows.length === 0) {
         return {
           statusCode: 404,
@@ -138,14 +178,8 @@ export const handler: Handler = async (event) => {
       note.category = normalizeCategory(note.category);
       note.source_scope = normalizeSourceScope(note.source_scope);
       note.editor = normalizeEditor(note.editor);
-
-      if (isNoteScheduledForFuture(note.scheduled_at) && !isEventAuthorizedAdmin(event)) {
-        return {
-          statusCode: 404,
-          headers: { ...headers, "Content-Type": "application/json" },
-          body: JSON.stringify({ error: "Nota no encontrada" }),
-        };
-      }
+      note.scheduled_at =
+        serializeScheduledAt(note.scheduled_at) ?? note.scheduled_at;
 
       console.log("🧠 Nota encontrada:", note.id);
 

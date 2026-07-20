@@ -1,11 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CategoryArchive from "../components/archive/CategoryArchive.astro";
+import { HOME_HIBRIDOS_ARCHIVE_SKIP } from "../lib/home-news-config";
 
 const staticNotes = [
   {
     href: "/notas-hibridos/nota-scape",
-    img: "/img/ford-scape-hibrida/ford-s.jpg",
+    img: "/img/ford-scape-hibrida/ford-scape-portada.webp",
     alt: "Ford Escape",
     title: "Ford Escape",
     description:
@@ -67,7 +68,7 @@ const staticNotes = [
 >
   <CategoryArchive
     category="hibridos"
-    skipFirst={6}
+    skipFirst={HOME_HIBRIDOS_ARCHIVE_SKIP}
     title="Más modelos híbridos"
     description="Consulta todas las notas de híbridos publicadas y actualizadas."
     staticNotes={staticNotes}

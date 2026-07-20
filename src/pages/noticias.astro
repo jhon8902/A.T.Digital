@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CategoryArchive from "../components/archive/CategoryArchive.astro";
+import { HOME_NEWS_ARCHIVE_SKIP } from "../lib/home-news-config";
 
 const staticNotes = [
   {
@@ -65,7 +66,7 @@ const staticNotes = [
       "deportes",
       "pruebas",
     ]}
-    skipFirst={5}
+    skipFirst={HOME_NEWS_ARCHIVE_SKIP}
     itemsPerPage={6}
     title="Más noticias"
     description="Todas las noticias del sector automotor en un solo lugar."

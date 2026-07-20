@@ -330,6 +330,11 @@ const cloudinaryFolder =
                   <option value="nacional" selected>Nacional</option>
                   <option value="internacional">Internacional</option>
                 </select>
+                <span class="field-hint">
+                  Cobertura editorial: Nacional = mercado Colombia; Internacional
+                  = lanzamiento o nota global. No depende del país en «Origen»
+                  de la ficha técnica.
+                </span>
               </label>
             </div>
 
@@ -553,8 +558,28 @@ const cloudinaryFolder =
                   type="text"
                   id="video1"
                   name="video1"
-                  placeholder="../img/videos-pruebas/mi-video.mp4"
+                  placeholder="/img/videos-pruebas/mi-video.mp4"
                 />
+              </label>
+              <p class="storage-tip grid-span-2">
+                Si la nota ya existe en otra sección (híbridos, eléctricos, etc.),
+                edítala y solo agrega aquí la ruta del <code>.mp4</code>. Aparecerá en
+                Pruebas de manejo con botón <strong>Ver nota</strong>.
+              </p>
+
+              <label class="grid-span-2 pruebas-solo-checkbox">
+                <input
+                  type="checkbox"
+                  id="pruebasSoloVideoField"
+                  name="pruebas_solo_video"
+                  value="1"
+                />
+                <span>
+                  <strong>Solo video en Pruebas</strong> — sin ficha pública ni botón
+                  Ver nota. Ideal para clips editados o futuras pruebas de marca. Usa
+                  categoría Pruebas automáticamente; solo necesitas título, subtítulo
+                  y la ruta del video.
+                </span>
               </label>
 
               <label for="video2">
@@ -847,10 +872,10 @@ const cloudinaryFolder =
         }
 
         .form-page {
-          width: 100%;
-          max-width: 960px;
+          width: min(90%, 1500px);
+          max-width: none;
           margin: 40px auto 56px;
-          padding: 0 20px;
+          padding: 0 12px;
         }
 
         .form-card {
@@ -858,7 +883,7 @@ const cloudinaryFolder =
           background: #ffffff;
           border-radius: var(--radius-card);
           border: 1px solid var(--color-border);
-          padding: 32px 36px 36px;
+          padding: 36px 48px 40px;
           box-shadow: var(--shadow-card);
           overflow: hidden;
         }
@@ -901,7 +926,7 @@ const cloudinaryFolder =
           margin: 12px 0 20px;
           color: #5a6472;
           font-size: var(--text-lead);
-          max-width: 640px;
+          max-width: 70ch;
         }
 
         .header-tags {
@@ -1003,7 +1028,17 @@ const cloudinaryFolder =
         .grid-2 {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 16px 20px;
+          gap: 18px 28px;
+        }
+
+        @media (min-width: 1200px) {
+          .grid-2 {
+            gap: 20px 32px;
+          }
+
+          .form-card {
+            padding: 40px 56px 44px;
+          }
         }
 
         label {
@@ -1375,6 +1410,15 @@ const cloudinaryFolder =
           line-height: 1.6;
         }
 
+        .field-hint {
+          display: block;
+          margin-top: 6px;
+          font-size: 0.82rem;
+          color: #6b7280;
+          line-height: 1.45;
+          font-weight: 400;
+        }
+
         .tip-highlight {
           margin-top: 14px;
           padding: 12px 14px;
@@ -1405,6 +1449,25 @@ const cloudinaryFolder =
         .cloudinary-checkbox input {
           width: auto;
           margin: 0;
+        }
+
+        .pruebas-solo-checkbox {
+          display: flex !important;
+          align-items: flex-start;
+          gap: 10px;
+          margin: 8px 0 0;
+          padding: 12px 14px;
+          border-radius: 10px;
+          background: rgba(8, 52, 31, 0.05);
+          border: 1px solid rgba(8, 52, 31, 0.14);
+          font-weight: 400;
+          line-height: 1.55;
+        }
+
+        .pruebas-solo-checkbox input {
+          width: auto;
+          margin: 3px 0 0;
+          flex-shrink: 0;
         }
 
         .cloudinary-uploader {
@@ -1502,8 +1565,9 @@ const cloudinaryFolder =
           }
 
           .form-page {
+            width: 94%;
             margin: 20px auto 40px;
-            padding: 0 14px;
+            padding: 0 8px;
           }
 
           .form-card {

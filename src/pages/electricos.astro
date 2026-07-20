@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CategoryArchive from "../components/archive/CategoryArchive.astro";
+import { HOME_ELECTRICOS_ARCHIVE_SKIP } from "../lib/home-news-config";
 
 const staticNotes = [
   {
@@ -60,6 +61,6 @@ const staticNotes = [
     title="Más modelos eléctricos"
     description="Listado completo de notas sobre movilidad eléctrica en Colombia."
     staticNotes={staticNotes}
-    skipFirst={6}
+    skipFirst={HOME_ELECTRICOS_ARCHIVE_SKIP}
   />
 </Layout>

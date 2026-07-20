@@ -5,18 +5,21 @@
   --hyb-accent: #0d6e8c;
   --hyb-muted: #5a6470;
   --hyb-surface: #ffffff;
-  --hyb-bg: #f4f5f7;
+  --hyb-bg: var(--home-section-bg, #f0f3f0);
   --hyb-border: #e2e5ea;
   --hyb-chip: rgba(13, 110, 140, 0.1);
 
   width: 100%;
-  background: var(--hyb-bg);
+  background-color: var(--hyb-bg);
+  background-image: var(--home-relief-image);
+  background-size: var(--home-relief-size);
+  background-repeat: repeat;
   padding: clamp(2.75rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem);
   scroll-margin-top: 5.5rem;
 }
 
 .hibridos-inner {
-  width: min(1280px, 100%);
+  width: min(96%, 1760px);
   margin: 0 auto;
 }
 
@@ -280,4 +283,20 @@
   .hibrido-card:hover {
     transform: none;
   }
+}
+
+.hibridos-carousel {
+  margin-bottom: 1.25rem;
+}
+
+.hibrido-chips--carousel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.hibrido-chips--carousel .hibrido-chip {
+  font-size: 0.72rem;
+  padding: 4px 8px;
 }

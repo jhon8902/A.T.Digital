@@ -5,18 +5,21 @@
   --ev-accent: var(--color-accent, #e6b410);
   --ev-muted: #5a6470;
   --ev-surface: #ffffff;
-  --ev-bg: #f4f5f7;
+  --ev-bg: var(--home-section-bg, #f0f3f0);
   --ev-border: #e2e5ea;
   --ev-chip: rgba(8, 52, 31, 0.08);
 
   width: 100%;
-  background: var(--ev-bg);
+  background-color: var(--ev-bg);
+  background-image: var(--home-relief-image);
+  background-size: var(--home-relief-size);
+  background-repeat: repeat;
   padding: clamp(2.75rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem);
   scroll-margin-top: 5.5rem;
 }
 
 .electricos-inner {
-  width: min(1280px, 100%);
+  width: min(96%, 1760px);
   margin: 0 auto;
 }
 
@@ -280,4 +283,20 @@
   .electrico-card:hover {
     transform: none;
   }
+}
+
+.electricos-carousel {
+  margin-bottom: 1.25rem;
+}
+
+.electrico-chips--carousel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.electrico-chips--carousel .electrico-chip {
+  font-size: 0.72rem;
+  padding: 4px 8px;
 }

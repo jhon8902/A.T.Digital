@@ -1,0 +1,61 @@
+---
+description: Formato editorial para crear notas A.T. Digital (título, subtítulo, 5 bloques, imágenes)
+alwaysApply: true
+---
+
+# Notas editoriales — A.T. Digital
+
+Cuando el usuario pida crear, redactar o sugerir una **nota** para el formulario, usar **siempre** este formato (sin pedir confirmación del formato).
+
+## Título
+```
+[Marca] [Modelo] [Año]: [frase gancho corta]
+```
+
+## Subtítulo
+Una sola oración ≤ 150 caracteres que amplíe el titular.
+
+## Contenido — 5 bloques (copiar tal cual)
+Cada bloque sigue esta estructura exacta:
+
+```
+Título: [Encabezado del bloque] |
+[Párrafo denso con datos concretos: cifras, versiones, tecnología, contexto.]
+```
+
+**Temas sugeridos por bloque:**
+1. Presentación / contexto / lanzamiento
+2. Diseño / exterior / identidad
+3. Interior / espacio / confort
+4. Motorización / rendimiento / carga o mecánica
+5. Tecnología / ediciones / veredicto o legado
+
+- Texto plano, sin HTML.
+- Tono: editorial A.T. Digital — preciso, con cifras, fluido entre bloques.
+- Categoría habitual: `deportes`, `electricos`, `hibridos`, `noticias`, `lanzamientos` o `pruebas` según el auto.
+
+## Alineación imagen ↔ bloque
+Incluir siempre esta tabla al sugerir imágenes:
+
+| Imagen | Bloque |
+|--------|--------|
+| image1 | Portada — [exterior / hero del modelo] |
+| image2 | Bloque 1 — [tema del bloque 1] |
+| image3 | Bloque 2 — [tema del bloque 2] |
+| image4 | Bloque 3 — [tema del bloque 3] |
+| image5 | Bloque 4 — [tema del bloque 4] |
+| image6 | Bloque 5 — [tema del bloque 5] |
+
+El usuario sube sus propias imágenes; sugerir **qué tipo de foto** va en cada slot, no URLs inventadas.
+
+## Entrega al usuario
+Devolver en este orden:
+1. Título
+2. Subtítulo
+3. Contenido (5 bloques — copiar tal cual)
+4. Categoría sugerida
+5. Tabla de alineación imagen ↔ bloque
+6. Ficha técnica (solo si la pide o es relevante)
+
+## Ejemplo de referencia (Skoda Peaq 2026)
+Ver `docs/plantilla-nota.md` para campos del formulario y checklist de publicación.

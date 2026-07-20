@@ -18,7 +18,8 @@
     "catalog:validate": "node ./scripts/validate-automatch-catalog.cjs",
     "catalog:sync": "node ./scripts/sync-automatch-catalog.cjs",
     "catalog:seed-dealers": "node ./scripts/seed-dealers.cjs",
-    "automatch:seed-ejemplo": "node ./scripts/seed-automatch-ejemplo.cjs"
+    "automatch:seed-ejemplo": "node ./scripts/seed-automatch-ejemplo.cjs",
+    "check:notes": "node ./scripts/check-note-access.mjs"
   },
   "dependencies": {
     "@astrojs/netlify": "^6.5.10",

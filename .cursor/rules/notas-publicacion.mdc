@@ -1,0 +1,47 @@
+---
+description: Reglas de publicación y carga de notas dinámicas (/notas/[id])
+globs:
+  - src/pages/notas/**
+  - src/lib/notes-query.ts
+  - src/lib/load-published-note.ts
+  - src/lib/note-scheduling.ts
+  - src/lib/database-url.ts
+  - netlify/functions/get-notes.ts
+  - src/pages/api/get-notes.ts
+alwaysApply: false
+---
+
+# Publicación de notas — invariantes
+
+## Carga de detalle `/notas/[id]`
+
+- Usar **solo** `resolvePublishedNoteById()` de `src/lib/load-published-note.ts`.
+- No duplicar fetch HTTP ni lógica de fallback en la página.
+- **No** usar `isNoteScheduledForFuture()` en rutas públicas: la visibilidad la define SQL.
+
+## Visibilidad pública
+
+- Filtro canónico: `PUBLISHED_NOTES_SQL` → `(scheduled_at IS NULL OR scheduled_at <= NOW())`.
+- Aplicar en `queryNoteById`, `queryPublishedNotes` y endpoints `get-notes`.
+- `isNoteScheduledForFuture` solo en formulario/admin para preview.
+
+## Fechas `scheduled_at`
+
+- Columna BD: `timestamp without time zone`.
+- Leer siempre con `parseScheduledAt()` / `serializeScheduledAt()` de `note-scheduling.ts`.
+- No comparar con `new Date(scheduled_at)` directo (rompe en Colombia vs Netlify UTC).
+
+## Conexión PostgreSQL
+
+- Orden en `src/lib/database-url.ts`:
+  1. `NETLIFY_DATABASE_URL`
+  2. `NETLIFY_DATABASE_URL_UNPOOLED`
+  3. `DATABASE_URL`
+- Mantener el mismo orden en `netlify/functions/get-notes.ts` (`resolveConnectionString`).
+- Pool único: `getPool()` de `src/lib/db.ts`.
+
+## Antes de merge/deploy
+
+```bash
+npm run check:notes
+```

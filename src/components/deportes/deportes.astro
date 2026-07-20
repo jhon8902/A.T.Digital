@@ -1,5 +1,6 @@
 ---
-import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import { resolveSiteNotes, type SiteNote } from "../../lib/api";
+import { normalizeNoteCategory } from "../../lib/notes-query";
 import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
@@ -20,9 +21,10 @@ type DeporteItem = {
 
 interface Props {
   compact?: boolean;
+  notes?: SiteNote[];
 }
 
-const { compact = false } = Astro.props as Props;
+const { compact = false, notes: prefetchedNotes } = Astro.props as Props;
 const HOME_VISIBLE_COUNT = compact ? 2 : 3;
 
 function normalizeSourceScope(scope?: string) {
@@ -164,12 +166,11 @@ const staticDeportes: DeporteItem[] = [
 let dynamicDeportes: DeporteItem[] = [];
 
 try {
-  const apiUrl = getApiUrl("get-notes");
-  const data = await fetchWithTimeout(apiUrl);
+  const data = await resolveSiteNotes(prefetchedNotes);
 
-  if (data && Array.isArray(data)) {
+  if (data.length > 0) {
     dynamicDeportes = data
-      .filter((note: any) => note.category?.toLowerCase() === "deportes")
+      .filter((note: any) => normalizeNoteCategory(note.category) === "deportes")
       .map((note: any) => ({
         href: `/notas/${note.id}`,
         img:

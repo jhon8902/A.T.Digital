@@ -1,9 +1,18 @@
 ---
-import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import { resolveSiteNotes, type SiteNote } from "../../lib/api";
+import { normalizeNoteCategory } from "../../lib/notes-query";
 import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
 } from "../../lib/note-scheduling";
+import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
+import { HOME_ELECTRICOS_CAROUSEL_LIMIT } from "../../lib/home-news-config";
+
+interface Props {
+  notes?: SiteNote[];
+}
+
+const { notes: prefetchedNotes } = Astro.props;
 
 type ElectricoItem = {
   href: string;
@@ -19,7 +28,6 @@ type ElectricoItem = {
 };
 
 let dynamicElectricos: ElectricoItem[] = [];
-const HOME_VISIBLE_COUNT = 6;
 
 function normalizeSourceScope(scope?: string) {
   return scope?.toLowerCase() === "internacional"
@@ -126,12 +134,11 @@ function buildChips(item: { description?: string; chips?: string[] }) {
 }
 
 try {
-  const apiUrl = getApiUrl("get-notes");
-  const data = await fetchWithTimeout(apiUrl);
+  const data = await resolveSiteNotes(prefetchedNotes);
 
-  if (data && Array.isArray(data)) {
+  if (data.length > 0) {
     dynamicElectricos = data
-      .filter((note) => note.category?.toLowerCase() === "electricos")
+      .filter((note) => normalizeNoteCategory(note.category) === "electricos")
       .map((note) => {
         const portada =
           note.image1?.trim() ||
@@ -143,7 +150,7 @@ try {
           img: normalizeImg(portada),
           alt: note.title,
           title: note.title,
-          description: note.subtitle || "",
+          description: getNewsCardDeck(note.title, note.subtitle),
           fecha: formatNotePublishedLabel(note),
           editor: note.editor || "Jhon Aparicio",
           source_scope: normalizeSourceScope(note.source_scope),
@@ -240,11 +247,10 @@ const deduplicatedStaticElectricos = staticElectricosWithDate.filter(
 
 const allElectricos = [...dynamicElectricos, ...deduplicatedStaticElectricos]
   .sort((a, b) => b.sortDate - a.sortDate)
-  .slice(0, HOME_VISIBLE_COUNT);
+  .slice(0, HOME_ELECTRICOS_CAROUSEL_LIMIT);
 ---
 
 <link rel="stylesheet" href="/css/electricos-section.css" />
-
 <section
   id="electricos"
   class="electricos-section"
@@ -262,52 +268,80 @@ const allElectricos = [...dynamicElectricos, ...deduplicatedStaticElectricos]
 
     {
       allElectricos.length > 0 && (
-        <div class="electricos-grid">
-          {allElectricos.map((nota) => {
-            const chips = buildChips(nota);
-            const scope = normalizeSourceScope(nota.source_scope);
-            const fecha = cleanPublishedDate(nota.fecha);
+        <div class="news-carousel-wrap electricos-carousel" data-carousel-root>
+          <div class="news-carousel-header">
+            <h3 class="news-carousel-heading">Modelos destacados</h3>
+            <div class="news-carousel-nav">
+              <button
+                type="button"
+                class="news-carousel-btn news-carousel-btn--prev"
+                aria-label="Modelo anterior"
+              >
+                <i class="fa-solid fa-chevron-left" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                class="news-carousel-btn news-carousel-btn--next"
+                aria-label="Modelo siguiente"
+              >
+                <i class="fa-solid fa-chevron-right" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+          <div class="news-carousel">
+            {allElectricos.map((nota) => {
+              const chips = buildChips(nota);
+              const scope = normalizeSourceScope(nota.source_scope);
+              const fecha = cleanPublishedDate(nota.fecha);
 
-            return (
-              <article class="electrico-card">
-                <a href={nota.href} class="electrico-card__media">
-                  <img
-                    src={nota.img}
-                    alt={nota.alt}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </a>
-                <div class="electrico-card__body">
-                  <div class="electrico-card__meta">
-                    <span class={`electrico-scope electrico-scope--${scope}`}>
-                      {sourceScopeLabel(nota.source_scope)}
-                    </span>
-                    {fecha && (
-                      <span class="electrico-card__date">{fecha}</span>
-                    )}
-                  </div>
-                  <h3>
-                    <a href={nota.href}>{nota.title}</a>
-                  </h3>
-                  <div class="electrico-chips">
-                    {chips.map((chip) => (
-                      <span class="electrico-chip">{chip}</span>
-                    ))}
-                  </div>
-                  <p class="electrico-desc">{nota.description}</p>
-                  <div class="electrico-card__actions">
-                    <a href={nota.href} class="electrico-card__cta">
-                      Ver ficha
-                    </a>
-                    <a href="/automatch-find" class="electrico-card__automatch">
-                      Comparar en AutoMatch
-                    </a>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+              return (
+                <article class="news-carousel-card">
+                  <a href={nota.href} class="news-carousel-card__link">
+                    <div class="news-carousel-card__image">
+                      <img
+                        src={nota.img}
+                        alt={nota.alt}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                    <div class="news-carousel-card__body">
+                      <div class="news-meta-tags">
+                        <span class="news-tag">Eléctricos</span>
+                        <span
+                          class={
+                            "scope-tag" +
+                            (scope === "internacional"
+                              ? " scope-tag--international"
+                              : " scope-tag--national")
+                          }
+                        >
+                          {sourceScopeLabel(nota.source_scope)}
+                        </span>
+                      </div>
+                      <h4 class="news-carousel-card__title">
+                        {getNewsCardTitle(nota.title)}
+                      </h4>
+                      {nota.description && (
+                        <p class="news-carousel-card__deck">{nota.description}</p>
+                      )}
+                      <div class="electrico-chips electrico-chips--carousel">
+                        {chips.map((chip) => (
+                          <span class="electrico-chip">{chip}</span>
+                        ))}
+                      </div>
+                      {fecha && (
+                        <p class="news-date">
+                          <i class="fa-regular fa-calendar" aria-hidden="true" />
+                          <span>{fecha}</span>
+                        </p>
+                      )}
+                    </div>
+                  </a>
+                </article>
+              );
+            })}
+          </div>
         </div>
       )
     }

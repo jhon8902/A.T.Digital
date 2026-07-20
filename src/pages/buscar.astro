@@ -7,6 +7,7 @@ import {
   mapNoteToSearchEntry,
   type SearchEntry,
 } from "../lib/search";
+import { isPublicEditorialNote } from "../lib/pruebas-solo";
 
 export const prerender = false;
 
@@ -24,9 +25,9 @@ let dynamicEntries: SearchEntry[] = [];
 if (query) {
   const notes = await fetchWithTimeout(getApiUrl("get-notes"), 8000);
   if (Array.isArray(notes)) {
-    dynamicEntries = (notes as Note[]).map((note) =>
-      mapNoteToSearchEntry(note),
-    );
+    dynamicEntries = (notes as Note[])
+      .filter((note) => isPublicEditorialNote(note))
+      .map((note) => mapNoteToSearchEntry(note));
   }
 }
 

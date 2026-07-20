@@ -16,6 +16,8 @@ interface Props {
   articleAuthor?: string;
   articleSection?: string;
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+  robots?: string;
+  trackAnalytics?: boolean;
 }
 
 const {
@@ -35,6 +37,8 @@ const {
   articleAuthor,
   articleSection,
   jsonLd,
+  robots = "index, follow",
+  trackAnalytics = true,
 } = Astro.props;
 
 const siteUrl = Astro.site?.href ?? "https://autotechdigital.com";
@@ -143,6 +147,8 @@ switch (categoria) {
     categoriaCSS = "/css/lanzamientos.css";
     break;
   case "deportes":
+    categoriaCSS = "/css/deportes.css";
+    break;
   case "pruebas":
     categoriaCSS = "/css/lanzamientos.css";
     break;
@@ -175,6 +181,7 @@ const structuredData =
         ...buildOrganizationJsonLd(siteUrl),
       };
 const structuredDataJson = JSON.stringify(structuredData);
+const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID?.trim() || "";
 ---
 
 <!doctype html>
@@ -188,15 +195,36 @@ const structuredDataJson = JSON.stringify(structuredData);
     <!-- SEO Básico -->
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={robots} />
     <meta name="author" content="Auto-Tech-Digital" />
     <meta name="theme-color" content="#08341f" />
+
+    {
+      trackAnalytics && gaMeasurementId && (
+        <>
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+          />
+          <script is:inline define:vars={{ gaMeasurementId }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", gaMeasurementId);
+          </script>
+        </>
+      )
+    }
 
     <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
     <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:secure_url" content={ogImageUrl} />
+    <meta property="og:image:alt" content={title} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content="Auto-Tech-Digital" />
     <meta property="og:locale" content="es_CO" />

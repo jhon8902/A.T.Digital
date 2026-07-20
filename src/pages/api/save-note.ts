@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import pkg from "pg";
 import { normalizeScheduledAtInput } from "../../lib/note-scheduling";
+import { appendPruebasSoloMeta } from "../../lib/pruebas-solo";
 
 const { Pool } = pkg;
 
@@ -461,21 +462,44 @@ export const POST: APIRoute = async ({ request }) => {
       spec_traccion,
       spec_precio_cop,
       scheduled_at,
+      pruebas_solo_video,
     } = body;
+
+    const pruebasSoloVideo =
+      pruebas_solo_video === true ||
+      pruebas_solo_video === 1 ||
+      pruebas_solo_video === "1" ||
+      pruebas_solo_video === "true";
 
     const normalizedTitle = normalizeTextField(title);
     const normalizedSubtitle = normalizeTextField(subtitle);
     const normalizedEditor = normalizeTextField(editor) || "Jhon Aparicio";
     const normalizedContent = normalizeTextField(content);
 
-    if (!normalizedTitle || !normalizedContent) {
+    if (pruebasSoloVideo) {
+      if (!normalizedTitle) {
+        return new Response(
+          JSON.stringify({ error: "El título es obligatorio para el video" }),
+          { status: 400, headers },
+        );
+      }
+
+      if (!normalizeMediaUrl(video1)) {
+        return new Response(
+          JSON.stringify({
+            error: "Agrega la ruta del video principal (.mp4) para publicar en Pruebas",
+          }),
+          { status: 400, headers },
+        );
+      }
+    } else if (!normalizedTitle || !normalizedContent) {
       return new Response(
         JSON.stringify({ error: "Título y contenido son obligatorios" }),
         { status: 400, headers }
       );
     }
 
-    category = resolveCategory(category);
+    category = pruebasSoloVideo ? "pruebas" : resolveCategory(category);
 
     if (!ALLOWED_CATEGORIES.has(category)) {
       return new Response(
@@ -503,7 +527,9 @@ export const POST: APIRoute = async ({ request }) => {
       subtitle: normalizedSubtitle,
       editor: normalizedEditor,
       source_scope: normalizedSourceScope,
-      content: normalizedContent,
+      content: pruebasSoloVideo
+        ? appendPruebasSoloMeta(normalizedContent)
+        : normalizedContent,
       category,
       image1: normalizeMediaUrl(image1),
       image2: normalizeMediaUrl(image2),

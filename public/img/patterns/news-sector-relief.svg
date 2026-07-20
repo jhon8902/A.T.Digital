@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" aria-hidden="true">
+  <g fill="none" stroke="#08341f" stroke-width="1" opacity="0.07">
+    <path d="M0,50 Q100,20 200,50 T400,50" />
+    <path d="M0,100 Q100,70 200,100 T400,100" />
+    <path d="M0,150 Q100,120 200,150 T400,150" />
+    <path d="M0,200 Q100,170 200,200 T400,200" />
+    <path d="M0,250 Q100,220 200,250 T400,250" />
+    <path d="M0,300 Q100,270 200,300 T400,300" />
+    <path d="M0,350 Q100,320 200,350 T400,350" />
+  </g>
+  <g fill="none" stroke="#08341f" stroke-width="0.85" opacity="0.045">
+    <path d="M0,25 Q100,45 200,25 T400,25" />
+    <path d="M0,75 Q100,95 200,75 T400,75" />
+    <path d="M0,125 Q100,145 200,125 T400,125" />
+    <path d="M0,175 Q100,195 200,175 T400,175" />
+    <path d="M0,225 Q100,245 200,225 T400,225" />
+    <path d="M0,275 Q100,295 200,275 T400,275" />
+    <path d="M0,325 Q100,345 200,325 T400,325" />
+    <path d="M0,375 Q100,395 200,375 T400,375" />
+  </g>
+  <g fill="#08341f" opacity="0.05">
+    <circle cx="80" cy="80" r="1" />
+    <circle cx="200" cy="60" r="0.85" />
+    <circle cx="320" cy="80" r="1" />
+    <circle cx="120" cy="200" r="0.9" />
+    <circle cx="280" cy="200" r="0.9" />
+    <circle cx="200" cy="280" r="0.85" />
+    <circle cx="80" cy="320" r="1" />
+    <circle cx="320" cy="320" r="1" />
+  </g>
+</svg>

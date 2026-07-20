@@ -5,6 +5,7 @@ import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
 } from "../../lib/note-scheduling";
+import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
 const { currentId, category } = Astro.props;
 
 let relatedNotes = [];
@@ -49,7 +50,14 @@ try {
               <span class="nota-relacionada-autor">
                 {note.editor || "AutoTechDigital"}
               </span>
-              <h3>{note.title}</h3>
+              <h3>{getNewsCardTitle(note.title)}</h3>
+              {
+                getNewsCardDeck(note.title, note.subtitle) && (
+                  <p class="nota-relacionada-deck">
+                    {getNewsCardDeck(note.title, note.subtitle)}
+                  </p>
+                )
+              }
             </div>
           </a>
         ))}
@@ -157,6 +165,16 @@ try {
     margin: 0;
     color: #08341f;
     line-height: 1.3;
+  }
+  .nota-relacionada-deck {
+    font-size: 0.88rem;
+    line-height: 1.4;
+    color: #555;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   @media (max-width: 700px) {
     .notas-relacionadas-grid {

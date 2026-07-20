@@ -1,13 +1,25 @@
 ---
-import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import { resolveSiteNotes, type SiteNote } from "../../lib/api";
 import { getNotePublishTimestamp } from "../../lib/note-scheduling";
+import {
+  buildPruebaVideosFromNotes,
+  slugPruebaTitle,
+} from "../../lib/pruebas-videos";
+
+interface Props {
+  notes?: SiteNote[];
+}
+
+const { notes: prefetchedNotes } = Astro.props;
 
 type PruebaItem = {
+  noteId?: number;
   title: string;
   subtitle: string;
   video?: string;
   image?: string;
   href?: string;
+  showNoteLink?: boolean;
   sortDate: number;
 };
 
@@ -66,20 +78,10 @@ const staticPruebas: PruebaItem[] = [
 let dynamicPruebas: PruebaItem[] = [];
 
 try {
-  const apiUrl = getApiUrl("get-notes");
-  const data = await fetchWithTimeout(apiUrl);
+  const data = await resolveSiteNotes(prefetchedNotes);
 
-  if (data && Array.isArray(data)) {
-    dynamicPruebas = data
-      .filter((note: any) => note.category?.toLowerCase() === "pruebas")
-      .map((note: any) => ({
-        title: note.title || "Sin título",
-        subtitle: note.subtitle || "",
-        video: note.video1?.trim() || undefined,
-        image: note.image1?.trim() || undefined,
-        href: `/notas/${note.id}`,
-        sortDate: getNotePublishTimestamp(note),
-      }));
+  if (data.length > 0) {
+    dynamicPruebas = buildPruebaVideosFromNotes(data);
   }
 } catch (err) {
   console.error("Error cargando pruebas dinámicas:", err);
@@ -88,12 +90,7 @@ try {
 const HOME_VISIBLE_COUNT = staticPruebas.length;
 
 function slugTitle(t?: string) {
-  return (t || "")
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]/g, "");
+  return slugPruebaTitle(t);
 }
 
 const dynamicPruebasTitles = new Set(
@@ -109,7 +106,7 @@ const allPruebas = [...dynamicPruebas, ...deduplicatedStaticPruebas].sort(
 const homePruebas = allPruebas.slice(0, HOME_VISIBLE_COUNT);
 ---
 
-<link rel="stylesheet" href="/css/pruebas.css" />
+<link rel="stylesheet" href="/css/pruebas.css?v=4" />
 
 <section
   id="pruebas"
@@ -189,7 +186,7 @@ const homePruebas = allPruebas.slice(0, HOME_VISIBLE_COUNT);
                   <h4>{prueba.title}</h4>
                   <p class="prueba-rail-desc">{prueba.subtitle}</p>
                   <div class="prueba-rail-actions">
-                    {prueba.href && (
+                    {prueba.showNoteLink && prueba.href && (
                       <a href={prueba.href} class="archivo-link">
                         Ver nota
                       </a>

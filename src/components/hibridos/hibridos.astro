@@ -1,9 +1,18 @@
 ---
-import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import { resolveSiteNotes, type SiteNote } from "../../lib/api";
 import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
 } from "../../lib/note-scheduling";
+import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
+import { HOME_HIBRIDOS_CAROUSEL_LIMIT } from "../../lib/home-news-config";
+import { normalizeNoteCategory } from "../../lib/notes-query";
+
+interface Props {
+  notes?: SiteNote[];
+}
+
+const { notes: prefetchedNotes } = Astro.props;
 
 type HibridoItem = {
   href: string;
@@ -19,15 +28,6 @@ type HibridoItem = {
 };
 
 let dynamicHibridos: HibridoItem[] = [];
-const HOME_VISIBLE_COUNT = 6;
-
-function normalizeString(str?: string) {
-  return str
-    ?.normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .trim()
-    .toLowerCase();
-}
 
 function normalizeSourceScope(scope?: string) {
   return scope?.toLowerCase() === "internacional"
@@ -134,12 +134,11 @@ function buildChips(item: { description?: string; title?: string; chips?: string
 }
 
 try {
-  const apiUrl = getApiUrl("get-notes");
-  const data = await fetchWithTimeout(apiUrl);
+  const data = await resolveSiteNotes(prefetchedNotes);
 
-  if (data && Array.isArray(data)) {
+  if (data.length > 0) {
     dynamicHibridos = data
-      .filter((note) => normalizeString(note.category) === "hibridos")
+      .filter((note) => normalizeNoteCategory(note.category) === "hibridos")
       .map((note) => {
         const portada =
           note.image1?.trim() ||
@@ -151,7 +150,7 @@ try {
           img: normalizeImg(portada),
           alt: note.title,
           title: note.title,
-          description: note.subtitle || "",
+          description: getNewsCardDeck(note.title, note.subtitle),
           fecha: formatNotePublishedLabel(note),
           editor: note.editor || "Jhon Aparicio",
           source_scope: normalizeSourceScope(note.source_scope),
@@ -166,7 +165,7 @@ try {
 const staticHibridos: Omit<HibridoItem, "sortDate">[] = [
   {
     href: "/notas-hibridos/nota-scape",
-    img: "/img/ford-scape-hibrida/ford-s.webp",
+    img: "/img/ford-scape-hibrida/ford-scape-portada.webp",
     alt: "Ford Escape",
     title: "Ford Escape Hybrid",
     description:
@@ -257,11 +256,10 @@ const deduplicatedStaticHibridos = staticHibridosWithDate.filter(
 
 const allHibridos = [...dynamicHibridos, ...deduplicatedStaticHibridos]
   .sort((a, b) => b.sortDate - a.sortDate)
-  .slice(0, HOME_VISIBLE_COUNT);
+  .slice(0, HOME_HIBRIDOS_CAROUSEL_LIMIT);
 ---
 
 <link rel="stylesheet" href="/css/hibridos-section.css" />
-
 <section
   id="hibridos"
   class="hibridos-section"
@@ -279,52 +277,80 @@ const allHibridos = [...dynamicHibridos, ...deduplicatedStaticHibridos]
 
     {
       allHibridos.length > 0 && (
-        <div class="hibridos-grid">
-          {allHibridos.map((nota) => {
-            const chips = buildChips(nota);
-            const scope = normalizeSourceScope(nota.source_scope);
-            const fecha = cleanPublishedDate(nota.fecha);
+        <div class="news-carousel-wrap hibridos-carousel" data-carousel-root>
+          <div class="news-carousel-header">
+            <h3 class="news-carousel-heading">Modelos destacados</h3>
+            <div class="news-carousel-nav">
+              <button
+                type="button"
+                class="news-carousel-btn news-carousel-btn--prev"
+                aria-label="Modelo anterior"
+              >
+                <i class="fa-solid fa-chevron-left" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                class="news-carousel-btn news-carousel-btn--next"
+                aria-label="Modelo siguiente"
+              >
+                <i class="fa-solid fa-chevron-right" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+          <div class="news-carousel">
+            {allHibridos.map((nota) => {
+              const chips = buildChips(nota);
+              const scope = normalizeSourceScope(nota.source_scope);
+              const fecha = cleanPublishedDate(nota.fecha);
 
-            return (
-              <article class="hibrido-card">
-                <a href={nota.href} class="hibrido-card__media">
-                  <img
-                    src={nota.img}
-                    alt={nota.alt}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </a>
-                <div class="hibrido-card__body">
-                  <div class="hibrido-card__meta">
-                    <span class={`hibrido-scope hibrido-scope--${scope}`}>
-                      {sourceScopeLabel(nota.source_scope)}
-                    </span>
-                    {fecha && (
-                      <span class="hibrido-card__date">{fecha}</span>
-                    )}
-                  </div>
-                  <h3>
-                    <a href={nota.href}>{nota.title}</a>
-                  </h3>
-                  <div class="hibrido-chips">
-                    {chips.map((chip) => (
-                      <span class="hibrido-chip">{chip}</span>
-                    ))}
-                  </div>
-                  <p class="hibrido-desc">{nota.description}</p>
-                  <div class="hibrido-card__actions">
-                    <a href={nota.href} class="hibrido-card__cta">
-                      Ver ficha
-                    </a>
-                    <a href="/automatch-find" class="hibrido-card__automatch">
-                      Comparar en AutoMatch
-                    </a>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+              return (
+                <article class="news-carousel-card">
+                  <a href={nota.href} class="news-carousel-card__link">
+                    <div class="news-carousel-card__image">
+                      <img
+                        src={nota.img}
+                        alt={nota.alt}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                    <div class="news-carousel-card__body">
+                      <div class="news-meta-tags">
+                        <span class="news-tag">Híbridos</span>
+                        <span
+                          class={
+                            "scope-tag" +
+                            (scope === "internacional"
+                              ? " scope-tag--international"
+                              : " scope-tag--national")
+                          }
+                        >
+                          {sourceScopeLabel(nota.source_scope)}
+                        </span>
+                      </div>
+                      <h4 class="news-carousel-card__title">
+                        {getNewsCardTitle(nota.title)}
+                      </h4>
+                      {nota.description && (
+                        <p class="news-carousel-card__deck">{nota.description}</p>
+                      )}
+                      <div class="hibrido-chips hibrido-chips--carousel">
+                        {chips.map((chip) => (
+                          <span class="hibrido-chip">{chip}</span>
+                        ))}
+                      </div>
+                      {fecha && (
+                        <p class="news-date">
+                          <i class="fa-regular fa-calendar" aria-hidden="true" />
+                          <span>{fecha}</span>
+                        </p>
+                      )}
+                    </div>
+                  </a>
+                </article>
+              );
+            })}
+          </div>
         </div>
       )
     }

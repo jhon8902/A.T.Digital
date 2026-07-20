@@ -1,6 +1,8 @@
 ---
-import { getApiUrl, fetchWithTimeout } from "../../lib/api";
-import { getNewsCardTitle, usesCompactNewsCardTitle } from "../../lib/editorial";
+import { resolveSiteNotes } from "../../lib/api";
+import { normalizeNoteCategory } from "../../lib/notes-query";
+import { isPublicEditorialNote } from "../../lib/pruebas-solo";
+import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
 import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
@@ -36,15 +38,6 @@ const {
   itemsPerPage = 12,
   skipFirst = 0,
 } = Astro.props as Props;
-
-function normalizeCategory(value: string) {
-  return value
-    ?.toString()
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
 
 function extractFirstImage(html: string | undefined) {
   if (!html) return null;
@@ -170,19 +163,20 @@ function cleanPublishedDate(value?: string) {
 let dynamicNotes: Array<NoteItem & { sortDate: number }> = [];
 
 try {
-  const apiUrl = getApiUrl("get-notes");
-  const data = await fetchWithTimeout(apiUrl);
+  const data = await resolveSiteNotes();
 
-  if (data && Array.isArray(data)) {
+  if (data.length > 0) {
     const categorySet = categories
-      ? new Set(categories.map((c) => normalizeCategory(c)))
+      ? new Set(categories.map((c) => normalizeNoteCategory(c)))
       : null;
 
     dynamicNotes = data
       .filter((note: any) =>
-        categorySet
-          ? categorySet.has(normalizeCategory(note.category))
-          : normalizeCategory(note.category) === normalizeCategory(category),
+        isPublicEditorialNote(note) &&
+        (categorySet
+          ? categorySet.has(normalizeNoteCategory(note.category))
+          : normalizeNoteCategory(note.category) ===
+            normalizeNoteCategory(category)),
       )
       .map((note: any) => ({
         href: `/notas/${note.id}`,
@@ -192,7 +186,7 @@ try {
           "/img/default.jpg",
         alt: note.title || "nota",
         title: note.title || "Sin título",
-        description: note.subtitle || "",
+        description: getNewsCardDeck(note.title, note.subtitle),
         editor: note.editor || "Jhon Aparicio",
         source_scope: note.source_scope || "nacional",
         fecha: formatNotePublishedLabel(note),
@@ -225,7 +219,17 @@ const allNotes = [...dynamicNotes, ...deduplicatedStatic].sort(
 );
 
 // Omitir las primeras N notas que ya están visibles en la página principal
-const archiveNotes = skipFirst > 0 ? allNotes.slice(skipFirst) : allNotes;
+let archiveNotes = skipFirst > 0 ? allNotes.slice(skipFirst) : allNotes;
+
+// Si no cargaron dinámicas, no ocultar todo el archivo con skipFirst
+if (
+  archiveNotes.length === 0 &&
+  allNotes.length > 0 &&
+  dynamicNotes.length === 0 &&
+  skipFirst > 0
+) {
+  archiveNotes = allNotes;
+}
 
 const totalPages = Math.max(1, Math.ceil(archiveNotes.length / itemsPerPage));
 const requestedPage = Number(Astro.url.searchParams.get("page") || "1");
@@ -239,8 +243,7 @@ const paginatedNotes = archiveNotes.slice(
   startIndex + itemsPerPage,
 );
 
-const isNoticiasArchive = normalizeCategory(category) === "noticias";
-const useCompactCardTitle = usesCompactNewsCardTitle(category);
+const isNoticiasArchive = normalizeNoteCategory(category) === "noticias";
 
 function pageHref(page: number) {
   return page <= 1 ? "?" : `?page=${page}`;
@@ -272,11 +275,7 @@ function pageHref(page: number) {
               <span class={sourceScopeClass(note.source_scope)}>
                 {sourceScopeLabel(note.source_scope)}
               </span>
-              <h2>
-                {useCompactCardTitle
-                  ? getNewsCardTitle(note.title)
-                  : note.title}
-              </h2>
+              <h2>{getNewsCardTitle(note.title)}</h2>
               <p class="archivo-date">
                 <i class="fa-regular fa-user" aria-hidden="true" />
                 <span class="meta-author">

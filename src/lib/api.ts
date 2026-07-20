@@ -4,6 +4,8 @@
  * Netlify Dev maneja automáticamente el enrutamiento correcto
  */
 
+import { queryPublishedNotes, type SiteNote } from "./notes-query";
+
 function getServerBaseUrl(): string {
   if (typeof window !== "undefined") return "";
 
@@ -42,3 +44,25 @@ export async function fetchWithTimeout(url: string, timeout: number = 5000) {
     return null;
   }
 }
+
+async function loadSiteNotesFromSources(): Promise<SiteNote[]> {
+  try {
+    return await queryPublishedNotes();
+  } catch (error) {
+    console.error("Error consultando notas en DB, usando API:", error);
+    const data = await fetchWithTimeout(getApiUrl("get-notes"), 15000);
+    return Array.isArray(data) ? (data as SiteNote[]) : [];
+  }
+}
+
+export async function resolveSiteNotes(
+  prefetched?: SiteNote[] | null
+): Promise<SiteNote[]> {
+  if (Array.isArray(prefetched) && prefetched.length > 0) {
+    return prefetched;
+  }
+
+  return loadSiteNotesFromSources();
+}
+
+export type { SiteNote };

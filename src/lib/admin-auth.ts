@@ -7,6 +7,7 @@ const PROTECTED_PATHS = [
   "/api/save-note",
   "/api/update-note",
   "/api/delete-note",
+  "/api/upload-cloudinary",
 ];
 
 export function isProtectedAdminPath(pathname: string): boolean {

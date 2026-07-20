@@ -3,6 +3,10 @@ import pkg from "pg";
 import {
   normalizeScheduledAtInput,
 } from "../../lib/note-scheduling";
+import {
+  appendPruebasSoloMeta,
+  stripPruebasSoloMeta,
+} from "../../lib/pruebas-solo";
 
 const { Pool } = pkg;
 
@@ -223,6 +227,11 @@ async function handleUpdate(request: Request) {
     }
 
     const updates: Record<string, string | null> = {};
+    const pruebasSoloVideo =
+      body.pruebas_solo_video === true ||
+      body.pruebas_solo_video === 1 ||
+      body.pruebas_solo_video === "1" ||
+      body.pruebas_solo_video === "true";
 
     if (hasOwn(body, "title")) {
       const title = normalizeTextField(body?.title);
@@ -233,14 +242,22 @@ async function handleUpdate(request: Request) {
     }
 
     if (hasOwn(body, "content")) {
-      const content = normalizeTextField(body?.content);
-      if (!content) {
-        return new Response(JSON.stringify({ error: "Contenido invalido" }), { status: 400, headers });
+      let content = normalizeTextField(body?.content);
+      if (pruebasSoloVideo) {
+        updates.content = appendPruebasSoloMeta(content);
+        updates.category = "pruebas";
+      } else {
+        content = stripPruebasSoloMeta(content);
+        if (!content) {
+          return new Response(JSON.stringify({ error: "Contenido invalido" }), { status: 400, headers });
+        }
+        updates.content = content;
       }
-      updates.content = content;
+    } else if (pruebasSoloVideo) {
+      updates.category = "pruebas";
     }
 
-    if (hasOwn(body, "category")) {
+    if (hasOwn(body, "category") && !pruebasSoloVideo) {
       const category = resolveCategory(String(body?.category || ""));
       if (!ALLOWED_CATEGORIES.has(category)) {
         return new Response(

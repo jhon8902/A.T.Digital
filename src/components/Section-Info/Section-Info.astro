@@ -1,14 +1,32 @@
 ---
-import { getApiUrl, fetchWithTimeout } from "../../lib/api";
-import { getNewsCardTitle } from "../../lib/editorial";
+import { resolveSiteNotes, type SiteNote } from "../../lib/api";
+import {
+  getNewsCardDeck,
+  getNewsCardTitle,
+} from "../../lib/editorial";
 import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
 } from "../../lib/note-scheduling";
+
+import { inferSourceScope } from "../../lib/notes-query";
+import { isPublicEditorialNote } from "../../lib/pruebas-solo";
+import {
+  HOME_NEWS_CAROUSEL_LIMIT,
+  HOME_NEWS_HERO_COUNT,
+  HOME_NEWS_POOL_SIZE,
+  HOME_NEWS_SCOPE_POOL_SIZE,
+} from "../../lib/home-news-config";
+import { sectorRadarPreview } from "../../lib/sector-radar";
+
+interface Props {
+  notes?: SiteNote[];
+}
+
+const { notes: prefetchedNotes } = Astro.props;
 // --- CARGA Y FILTRO DE NOTAS RECIENTES PARA PORTADA ---
 
 let dynamicNotes: any[] = [];
-const HOME_VISIBLE_COUNT = 5;
 const HOME_NEWS_CATEGORIES = new Set([
   "noticias",
   "lanzamientos",
@@ -33,11 +51,34 @@ function normalizeSourceScope(scope?: string) {
     : "nacional";
 }
 
+function resolveNoteScope(note: {
+  source_scope?: string;
+  spec_origen?: string;
+}) {
+  return inferSourceScope(note);
+}
+
 function sourceScopeLabel(scope?: string) {
   return normalizeSourceScope(scope) === "internacional"
     ? "Internacional"
     : "Nacional";
 }
+
+function categoryLabel(category?: string) {
+  const normalized = normalizeCategory(category);
+  const labels: Record<string, string> = {
+    lanzamientos: "Lanzamiento",
+    electricos: "Eléctricos",
+    hibridos: "Híbridos",
+    deportes: "Deportes",
+    pruebas: "Pruebas",
+    noticias: "Noticias",
+  };
+  return labels[normalized] || "Noticias";
+}
+
+const HOME_NEWS_HERO_SLIDE_LIMIT =
+  HOME_NEWS_HERO_COUNT + HOME_NEWS_CAROUSEL_LIMIT;
 
 function cleanPublishedDate(value?: string) {
   return (value || "").replace(/^Publicado:\s*/i, "").trim();
@@ -141,12 +182,13 @@ function parseDateValue(value?: string) {
 }
 
 try {
-  const data = await fetchWithTimeout(getApiUrl("get-notes"));
+  const data = await resolveSiteNotes(prefetchedNotes);
 
-  if (data && Array.isArray(data)) {
+  if (data.length > 0) {
     // 2️⃣ Mostramos en portada lo más reciente de categorías editoriales
     const filtered = data.filter((note: any) =>
-      HOME_NEWS_CATEGORIES.has(normalizeCategory(note.category)),
+      HOME_NEWS_CATEGORIES.has(normalizeCategory(note.category)) &&
+      isPublicEditorialNote(note),
     );
 
     // 3️⃣ Normalizamos formato para el carrusel
@@ -155,9 +197,11 @@ try {
       img: note.image1 || extractFirstImage(note.content) || "/img/default.jpg",
       alt: note.title,
       caption: note.title,
+      subtitle: note.subtitle || "",
       fecha: formatNotePublishedLabel(note),
       editor: note.editor || "Jhon Aparicio",
-      source_scope: normalizeSourceScope(note.source_scope),
+      source_scope: resolveNoteScope(note),
+      category: normalizeCategory(note.category),
       sortDate: getNotePublishTimestamp(note),
     }));
   }
@@ -174,6 +218,7 @@ const staticNotes = [
     caption: "Ford Bronco: la última apuesta todoterreno.",
     fecha: "Publicado: 01/07/2025",
     source_scope: "nacional",
+    category: "noticias",
   },
   {
     href: "/noticias-carrusel/noticia-audi",
@@ -182,6 +227,7 @@ const staticNotes = [
     caption: "Audi E-TRON: el SUV eléctrico más elegante de la marca.",
     fecha: "Publicado: 28/06/2025",
     source_scope: "nacional",
+    category: "noticias",
   },
   {
     href: "/noticias-carrusel/noticia-bmw-concept",
@@ -190,6 +236,7 @@ const staticNotes = [
     caption: "BMW Concept XM: El Futuro del Lujo y la Potencia Híbrida",
     fecha: "Publicado: 25/06/2025",
     source_scope: "nacional",
+    category: "noticias",
   },
   {
     href: "/noticias-carrusel/noticia-bmw",
@@ -198,6 +245,7 @@ const staticNotes = [
     caption: "BMW Serie 5: poderoso y ahora electrificado.",
     fecha: "Publicado: 20/06/2025",
     source_scope: "nacional",
+    category: "noticias",
   },
   {
     href: "/noticias-carrusel/noticia-dfsk",
@@ -206,6 +254,7 @@ const staticNotes = [
     caption: "DFSK seres e5: la híbrida para 7 pasajeros en Colombia.",
     fecha: "Publicado: 15/06/2025",
     source_scope: "nacional",
+    category: "noticias",
   },
 ];
 
@@ -229,15 +278,53 @@ const dynamicNotesTitles = new Set(
 const deduplicatedStaticNotes = staticNotesWithDate.filter(
   (n) => !dynamicNotesTitles.has(slugTitle(n.caption)),
 );
-const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
-  .sort((a, b) => b.sortDate - a.sortDate)
-  .slice(0, HOME_VISIBLE_COUNT);
+const allCandidates = [...dynamicNotes, ...deduplicatedStaticNotes].sort(
+  (a, b) => b.sortDate - a.sortDate,
+);
+const allNotes = allCandidates.slice(0, HOME_NEWS_POOL_SIZE);
+const heroCarouselNotes = allNotes;
+
+function buildScopeCarouselNotes(
+  candidates: typeof allCandidates,
+  limitPerScope = 24,
+) {
+  const nacionalNotes = candidates.filter(
+    (note) => normalizeSourceScope(note.source_scope) === "nacional",
+  );
+  const internacionalNotes = candidates.filter(
+    (note) => normalizeSourceScope(note.source_scope) === "internacional",
+  );
+  const merged = [
+    ...internacionalNotes.slice(0, limitPerScope),
+    ...nacionalNotes.slice(0, limitPerScope),
+  ];
+  const seen = new Set<string>();
+
+  return merged.filter((note) => {
+    if (seen.has(note.href)) return false;
+    seen.add(note.href);
+    return true;
+  });
+}
+
+const scopeCarouselNotes = buildScopeCarouselNotes(
+  allCandidates,
+  HOME_NEWS_SCOPE_POOL_SIZE / 2,
+);
 ---
 
-<section id="noticias" class="section-info w-full py-30" aria-labelledby="noticias-heading">
+<link rel="stylesheet" href="/css/news-interactive.css?v=42" />
+
+<section
+  id="noticias"
+  class="section-info section-info--interactive w-full py-30"
+  aria-labelledby="noticias-heading"
+  data-hero-slide-limit={HOME_NEWS_HERO_SLIDE_LIMIT}
+  data-carousel-limit={HOME_NEWS_CAROUSEL_LIMIT}
+>
   <header class="info-header">
     <p class="noticias-eyebrow">Noticias</p>
-    <h2 id="noticias-heading" class="info-titulo anim-titulo">Sector automotor</h2>
+    <h2 id="noticias-heading" class="info-titulo">Sector automotor</h2>
     <p class="noticias-home-lead">
       Lo más reciente que publicamos a diario: lanzamientos, fichas técnicas y
       cobertura del sector en un solo lugar.
@@ -245,75 +332,255 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
   </header>
 
   <div class="container mx-auto px-2">
-    <div class="news-grid">
+    <div class="news-showcase">
+      <div
+        class="news-filters"
+        role="tablist"
+        aria-label="Filtrar noticias por alcance"
+      >
+        <button
+          type="button"
+          class="news-filter-btn is-active"
+          data-filter="all"
+          role="tab"
+          aria-selected="true"
+        >
+          Todas
+        </button>
+        <button
+          type="button"
+          class="news-filter-btn"
+          data-filter="nacional"
+          role="tab"
+          aria-selected="false"
+        >
+          Nacional
+        </button>
+        <button
+          type="button"
+          class="news-filter-btn"
+          data-filter="internacional"
+          role="tab"
+          aria-selected="false"
+        >
+          Internacional
+        </button>
+      </div>
+
       {
-        allNotes.map((nota, index) => (
-          <>
-            <article
-              class={"news-card" + (index === 0 ? " news-card--featured" : "")}
-            >
-              <a href={nota.href} class="news-card-link">
-                <div class="news-card-image">
-                  <img
-                    src={nota.img}
-                    alt={nota.alt}
-                    class="w-full h-full object-cover"
-                    loading={index === 0 ? "eager" : "lazy"}
-                    fetchpriority={index === 0 ? "high" : "auto"}
-                    decoding="async"
-                  />
-                </div>
-                <div class="news-card-content">
-                  <div class="news-meta-tags">
-                    <span class="news-tag">Noticias</span>
-                    <span
-                      class={
-                        "scope-tag" +
-                        (nota.source_scope === "internacional"
-                          ? " scope-tag--international"
-                          : " scope-tag--national")
-                      }
+        heroCarouselNotes.length > 0 && (
+          <div
+            class="news-hero-carousel"
+            data-hero-carousel-root
+            aria-roledescription="carrusel"
+            aria-label="Noticias destacadas del sector automotor"
+          >
+            <div class="news-hero-carousel-toolbar">
+              <p class="news-hero-carousel-status" aria-live="polite">
+                <span class="news-hero-carousel-counter">1 / 1</span>
+                <span class="news-hero-carousel-hint">
+                  Desliza o usa las flechas para explorar
+                </span>
+              </p>
+              <div class="news-carousel-nav">
+                <button
+                  type="button"
+                  class="news-carousel-btn news-hero-carousel-btn--prev"
+                  aria-label="Noticia anterior"
+                >
+                  <i class="fa-solid fa-chevron-left" aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  class="news-carousel-btn news-hero-carousel-btn--next"
+                  aria-label="Noticia siguiente"
+                >
+                  <i class="fa-solid fa-chevron-right" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+
+            <div class="news-hero-carousel-viewport">
+              <div class="news-hero-carousel-track news-hero-carousel-track--fade">
+                {
+                  heroCarouselNotes.map((nota, index) => (
+                    <article
+                      class:list={[
+                        "news-hero",
+                        "news-hero-carousel-slide",
+                        { "is-active": index === 0 },
+                      ]}
+                      data-scope={normalizeSourceScope(nota.source_scope)}
+                      data-category={nota.category || "noticias"}
+                      data-carousel-index={index}
+                      aria-roledescription="slide"
                     >
-                      {sourceScopeLabel(nota.source_scope)}
-                    </span>
-                  </div>
-                  <h3 class="news-title">{getNewsCardTitle(nota.caption)}</h3>
-                  <p class="news-date">
-                    <i class="fa-regular fa-user" aria-hidden="true" />
-                    <span class="meta-author">
-                      {nota.editor || "Jhon Aparicio"}
-                    </span>
-                    <span class="meta-sep">•</span>
-                    <i class="fa-regular fa-calendar" aria-hidden="true" />
-                    <span class="meta-date">
-                      {cleanPublishedDate(nota.fecha)}
-                    </span>
-                  </p>
-                </div>
-              </a>
-            </article>
-          </>
-        ))
+                      <a href={nota.href} class="news-hero__link">
+                        <div class="news-hero__media">
+                          <img
+                            src={nota.img}
+                            alt={nota.alt}
+                            loading={index === 0 ? "eager" : "lazy"}
+                            fetchpriority={index === 0 ? "high" : "auto"}
+                            decoding="async"
+                          />
+                          <div class="news-meta-tags news-meta-tags--overlay">
+                            <span class="news-tag">
+                              {categoryLabel(nota.category)}
+                            </span>
+                            <span
+                              class={
+                                "scope-tag" +
+                                (nota.source_scope === "internacional"
+                                  ? " scope-tag--international"
+                                  : " scope-tag--national")
+                              }
+                            >
+                              {sourceScopeLabel(nota.source_scope)}
+                            </span>
+                          </div>
+                        </div>
+                        <div class="news-hero__body">
+                          <h3 class="news-hero__title">
+                            {getNewsCardTitle(nota.caption)}
+                          </h3>
+                          {
+                            getNewsCardDeck(nota.caption, nota.subtitle) && (
+                              <p class="news-hero__deck">
+                                {getNewsCardDeck(nota.caption, nota.subtitle)}
+                              </p>
+                            )
+                          }
+                          <p class="news-date">
+                            <i class="fa-regular fa-user" aria-hidden="true" />
+                            <span>{nota.editor || "Jhon Aparicio"}</span>
+                            <span class="meta-sep">•</span>
+                            <i class="fa-regular fa-calendar" aria-hidden="true" />
+                            <span>{cleanPublishedDate(nota.fecha)}</span>
+                          </p>
+                          <span class="news-hero__cta">Leer nota →</span>
+                        </div>
+                      </a>
+                    </article>
+                  ))
+                }
+              </div>
+            </div>
+
+            <div
+              class="news-hero-carousel-dots"
+              role="tablist"
+              aria-label="Ir a una noticia"
+            />
+          </div>
+        )
       }
-      <article class="news-card news-card--insight">
+
+      {
+        scopeCarouselNotes.length > 0 && (
+          <div
+            class="news-carousel-wrap news-scope-carousel"
+            data-scope-carousel-root
+            hidden
+          >
+            <div class="news-carousel-header">
+              <h3 class="news-carousel-heading">Noticias del sector</h3>
+              <div class="news-carousel-nav">
+                <button
+                  type="button"
+                  class="news-carousel-btn news-carousel-btn--prev"
+                  aria-label="Noticia anterior"
+                >
+                  <i class="fa-solid fa-chevron-left" aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  class="news-carousel-btn news-carousel-btn--next"
+                  aria-label="Noticia siguiente"
+                >
+                  <i class="fa-solid fa-chevron-right" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+            <div class="news-carousel">
+              {
+                scopeCarouselNotes.map((nota, index) => (
+                  <article
+                    class="news-carousel-card"
+                    data-scope={normalizeSourceScope(nota.source_scope)}
+                    data-category={nota.category || "noticias"}
+                  >
+                    <a href={nota.href} class="news-carousel-card__link">
+                      <div class="news-carousel-card__image">
+                        <img
+                          src={nota.img}
+                          alt={nota.alt}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                      <div class="news-carousel-card__body">
+                        <div class="news-meta-tags">
+                          <span class="news-tag">
+                            {categoryLabel(nota.category)}
+                          </span>
+                          <span
+                            class={
+                              "scope-tag" +
+                              (nota.source_scope === "internacional"
+                                ? " scope-tag--international"
+                                : " scope-tag--national")
+                            }
+                          >
+                            {sourceScopeLabel(nota.source_scope)}
+                          </span>
+                        </div>
+                        <h4 class="news-carousel-card__title">
+                          {getNewsCardTitle(nota.caption)}
+                        </h4>
+                        {
+                          getNewsCardDeck(nota.caption, nota.subtitle) && (
+                            <p class="news-carousel-card__deck">
+                              {getNewsCardDeck(nota.caption, nota.subtitle)}
+                            </p>
+                          )
+                        }
+                        <p class="news-date">
+                          <i class="fa-regular fa-calendar" aria-hidden="true" />
+                          <span>{cleanPublishedDate(nota.fecha)}</span>
+                        </p>
+                      </div>
+                    </a>
+                  </article>
+                ))
+              }
+            </div>
+          </div>
+        )
+      }
+
+      <p class="news-filter-empty" hidden>
+        No hay noticias en este alcance por ahora.
+      </p>
+
+      <div class="ver-mas-noticias-section ver-mas-noticias-section--above-radar">
+        <a href="/noticias" class="ver-mas-noticias-btn">Ver más noticias</a>
+      </div>
+
+      <article class="news-insight">
         <div class="news-card-content">
-          <span class="news-tag news-tag--insight">Radar del sector</span>
+          <span class="news-tag">Radar del sector</span>
           <h3 class="news-title">
-            Tendencias clave que estamos siguiendo esta semana
+            {sectorRadarPreview.title}
           </h3>
           <p class="news-date">
-            Electromovilidad, ADAS y lanzamientos locales con foco en Colombia.
+            {sectorRadarPreview.summary}
           </p>
           <a class="news-read-more" href="/tendencias-del-sector">
             Explorar tendencias →
           </a>
         </div>
       </article>
-    </div>
-
-    <!-- Botón Ver más noticias -->
-    <div class="ver-mas-noticias-section">
-      <a href="/noticias" class="ver-mas-noticias-btn">Ver más noticias</a>
     </div>
   </div>
 </section>
@@ -326,12 +593,43 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
   }
 
   .container {
-    width: min(90%, 1700px);
-    max-width: 1700px;
+    width: min(96%, 1760px);
+    max-width: 1760px;
     margin: 0 auto; /* Centra el contenido */
-    padding: 40px; /* Elimina padding innecesario */
+    padding: 32px 20px;
     font-family: "Georgia", serif;
-    background: #fbf7f2;
+    background: #fff;
+  }
+
+  .section-info.section-info--interactive {
+    background-color: #f0f3f0 !important;
+    background-image: var(--home-relief-image);
+    background-size: var(--home-relief-size);
+    background-repeat: repeat;
+  }
+
+  .section-info--interactive .container {
+    background: #fff !important;
+  }
+
+  .section-info--interactive .info-header {
+    background: transparent !important;
+  }
+
+  .section-info--interactive .info-header .info-titulo {
+    color: #08341f !important;
+  }
+
+  .section-info--interactive .info-header .noticias-home-lead {
+    color: #5a6470 !important;
+  }
+
+  .section-info--interactive .info-header .info-titulo::before {
+    background: linear-gradient(90deg, #000, #d4a742);
+  }
+
+  .section-info--interactive .info-header .info-titulo::after {
+    background: linear-gradient(90deg, #d4a742, #000);
   }
 
   .section-info {
@@ -413,10 +711,6 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     padding: 0;
   }
 
-  .info-titulo.animate-title {
-    animation: fadeInUp 1s ease-out;
-  }
-
   .info-titulo::before {
     content: "";
     flex: 1;
@@ -424,6 +718,11 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     background: linear-gradient(90deg, #000, #d4a742);
     min-width: 0;
     max-width: 650px;
+    opacity: 0;
+    transform: scaleX(0.88);
+    transform-origin: right center;
+    animation: infoTituloLineIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 1.15s;
   }
 
   .info-titulo::after {
@@ -433,6 +732,31 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     background: linear-gradient(90deg, #d4a742, #000);
     min-width: 0;
     max-width: 650px;
+    opacity: 0;
+    transform: scaleX(0.88);
+    transform-origin: left center;
+    animation: infoTituloLineIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 1.28s;
+  }
+
+  @keyframes infoTituloLineIn {
+    0% {
+      opacity: 0;
+      transform: scaleX(0.88);
+    }
+    100% {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .info-titulo::before,
+    .info-titulo::after {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
   }
 
   .info-descripcion {
@@ -473,11 +797,17 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
 
   @media (max-width: 600px) {
     .info-header {
-      padding: 20px 0;
+      padding: 20px 0 1.5rem;
       background: transparent;
       border-bottom: none;
       align-items: center;
       text-align: center;
+    }
+
+    .section-info--interactive .info-header {
+      padding: clamp(2rem, 5vw, 3rem) 20px 1.5rem !important;
+      align-items: center !important;
+      text-align: center !important;
     }
 
     .noticias-home-lead {
@@ -718,6 +1048,18 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     color: #ffffff;
   }
 
+  .news-card--featured .news-deck {
+    color: rgba(255, 255, 255, 0.94);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    font-weight: 500;
+    margin: 0.15rem 0 0.35rem;
+    text-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.45),
+      0 0 8px rgba(0, 0, 0, 0.25);
+    -webkit-line-clamp: 3;
+  }
+
   .news-card--featured .news-date {
     color: #d1d5db;
   }
@@ -762,13 +1104,14 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
 
   .news-tag {
     display: inline-block;
-    background: #f8ca26;
-    color: #1a1a1a;
+    background: rgba(230, 180, 16, 0.14);
+    color: #6b5310;
+    border: none;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding: 6px 14px;
+    padding: 6px 12px;
     border-radius: 20px;
     width: fit-content;
   }
@@ -782,7 +1125,6 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
 
   .scope-tag {
     display: inline-block;
-    color: #ffffff;
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
@@ -790,14 +1132,28 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     padding: 6px 12px;
     border-radius: 20px;
     width: fit-content;
+    border: none;
   }
 
   .scope-tag--national {
-    background: #1f6f43;
+    background: rgba(8, 52, 31, 0.12);
+    color: #08341f;
   }
 
   .scope-tag--international {
-    background: #1d4ed8;
+    background: rgba(29, 78, 216, 0.12);
+    color: #1a56c4;
+  }
+
+  .news-showcase .news-hero-carousel .news-meta-tags--overlay .news-tag,
+  .news-showcase .news-hero-carousel .news-meta-tags--overlay .scope-tag,
+  .news-showcase .news-hero-carousel .news-meta-tags--overlay .scope-tag--national,
+  .news-showcase .news-hero-carousel .news-meta-tags--overlay .scope-tag--international {
+    background: rgba(0, 0, 0, 0.42) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.94) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
 
   .scope-tag--featured {
@@ -830,6 +1186,19 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     line-height: 1.4;
     margin: 0;
     font-family: "Georgia", serif;
+  }
+
+  .news-deck {
+    font-size: 1.02rem;
+    line-height: 1.52;
+    color: #333;
+    margin: 0.4rem 0 0.15rem;
+    font-family: "Source Sans 3", sans-serif;
+    font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .news-date {
@@ -900,28 +1269,6 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
     transform: translateX(6px);
   }
 
-  /* animacion titulo pricipal h1 - MISMO PATRÓN QUE HÍBRIDOS */
-  .anim-titulo {
-    opacity: 0;
-    transform: translateY(0);
-    transition: none;
-  }
-
-  .anim-titulo.animate-title {
-    animation: fadeInUp 1s ease-out;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(0);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
   @keyframes zoomInFade {
     from {
       opacity: 0;
@@ -946,9 +1293,28 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
       padding: 0;
     }
 
-    .section-info {
+    .section-info:not(.section-info--interactive) {
       background: white;
       padding: 20px 0;
+    }
+
+    .section-info.section-info--interactive {
+      padding: 0 !important;
+      background-color: #f0f3f0 !important;
+      background-image: var(--home-relief-image);
+      background-size: var(--home-relief-size);
+      background-repeat: repeat;
+    }
+
+    .section-info--interactive .info-header {
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: clamp(2rem, 5vw, 3rem) 20px 1.75rem !important;
+      align-items: center !important;
+      text-align: center !important;
+      background: transparent !important;
+      box-sizing: border-box;
     }
 
     #noticias {
@@ -1012,6 +1378,15 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
       text-shadow: none;
     }
 
+    .news-card--featured .news-deck {
+      color: #3a3a3a;
+      font-size: 1rem;
+      line-height: 1.5;
+      text-shadow: none;
+      margin: 0.35rem 0 0.5rem;
+      -webkit-line-clamp: 3;
+    }
+
     .news-card--featured .news-date {
       color: #555;
       text-shadow: none;
@@ -1034,6 +1409,10 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
 
     .news-title {
       font-size: 1.2rem;
+    }
+
+    .news-deck {
+      font-size: 0.98rem;
     }
   }
 
@@ -1155,9 +1534,9 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
       color: #ffffff;
       background: linear-gradient(
         90deg,
-        rgba(0, 0, 0, 0.34) 0%,
-        rgba(0, 0, 0, 0.18) 58%,
-        rgba(0, 0, 0, 0) 100%
+        rgba(0, 0, 0, 0.52) 0%,
+        rgba(0, 0, 0, 0.28) 55%,
+        rgba(0, 0, 0, 0.06) 100%
       );
       display: flex;
       flex-direction: column;
@@ -1177,12 +1556,25 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
       color: #ffffff;
       font-size: clamp(2.1rem, 3.15vw, 2.95rem);
       line-height: 1.15;
-      margin-bottom: 18px;
+      margin-bottom: 12px;
       text-shadow:
         0 1px 2px rgba(0, 0, 0, 0.22),
         0 0 4px rgba(0, 0, 0, 0.12);
       font-weight: 800;
       letter-spacing: 0.5px;
+    }
+
+    .news-card--featured .news-deck {
+      color: rgba(255, 255, 255, 0.96);
+      font-size: clamp(1.08rem, 1.45vw, 1.32rem);
+      line-height: 1.55;
+      font-weight: 500;
+      max-width: min(52ch, 92%);
+      margin: 0 0 16px;
+      text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.5),
+        0 0 10px rgba(0, 0, 0, 0.28);
+      -webkit-line-clamp: 3;
     }
 
     .news-card--featured .news-date {
@@ -1269,6 +1661,13 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
       line-height: 1.35;
     }
 
+    .news-card:not(.news-card--featured):not(.news-card--insight) .news-deck {
+      font-size: 1.08rem;
+      line-height: 1.55;
+      color: #2f2f2f;
+      margin: 0.35rem 0 0.2rem;
+    }
+
     .news-card--insight .news-title {
       color: #ffffff;
       font-size: 1.55rem;
@@ -1308,6 +1707,18 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
       flex-direction: column;
       gap: 6px;
       align-items: flex-start;
+    }
+
+    .section-info--interactive .info-header {
+      align-items: center !important;
+      text-align: center !important;
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+
+    .section-info--interactive .info-header .info-titulo {
+      text-align: center !important;
+      width: 100%;
     }
 
     .info-titulo {
@@ -1376,6 +1787,14 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
       text-shadow: none;
     }
 
+    .news-card--featured .news-deck {
+      color: #333;
+      font-size: 1.02rem;
+      line-height: 1.5;
+      text-shadow: none;
+      margin: 0 0 10px;
+    }
+
     .news-card--featured .news-date {
       font-size: 0.85rem;
       color: #111111;
@@ -1431,29 +1850,4 @@ const allNotes = [...dynamicNotes, ...deduplicatedStaticNotes]
   }
 </style>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const tituloNoticias = document.querySelector(
-      "#noticias .info-titulo",
-    ) as HTMLElement;
-
-    if (!tituloNoticias) return;
-
-    const observerNoticias = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            tituloNoticias.classList.add("animate-title");
-            tituloNoticias.style.opacity = "1";
-          } else {
-            tituloNoticias.classList.remove("animate-title");
-            tituloNoticias.style.opacity = "0";
-          }
-        });
-      },
-      { threshold: 0.5 },
-    );
-
-    observerNoticias.observe(tituloNoticias);
-  });
-</script>
+<script src="/js/news-interactive.js?v=9" defer></script>

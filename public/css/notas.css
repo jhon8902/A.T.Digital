@@ -68,6 +68,29 @@
   margin-bottom: 0;
 }
 
+/* Ficha técnica — tipografía unificada en notas dinámicas (/notas/[id]) */
+.articulo-container .ficha-tecnica-profesional {
+  padding: clamp(24px, 4vw, 40px) clamp(14px, 3vw, 24px);
+}
+
+.articulo-container .ficha-tecnica-profesional h2 {
+  font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+  line-height: 1.3;
+  margin-bottom: 1.1rem;
+  border-bottom: 3px solid #e6b410;
+  padding-bottom: 0.6rem;
+  text-wrap: balance;
+}
+
+.articulo-container .ficha-tecnica-profesional .ficha-item strong {
+  font-size: clamp(0.88rem, 1.05vw, 0.98rem);
+}
+
+.articulo-container .ficha-tecnica-profesional .ficha-item p {
+  font-size: clamp(0.84rem, 1vw, 0.94rem);
+  line-height: 1.55;
+}
+
 
 
 

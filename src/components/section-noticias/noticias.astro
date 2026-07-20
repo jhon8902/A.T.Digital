@@ -1,9 +1,17 @@
 ---
-import { getApiUrl, fetchWithTimeout } from "../../lib/api";
+import { resolveSiteNotes, type SiteNote } from "../../lib/api";
+import { normalizeNoteCategory } from "../../lib/notes-query";
 import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
 } from "../../lib/note-scheduling";
+import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
+
+interface Props {
+  notes?: SiteNote[];
+}
+
+const { notes: prefetchedNotes } = Astro.props;
 
 type LanzamientoItem = {
   href: string;
@@ -119,18 +127,17 @@ function normalizeHref(href: string) {
 }
 
 try {
-  const apiUrl = getApiUrl("get-notes");
-  const data = await fetchWithTimeout(apiUrl);
+  const data = await resolveSiteNotes(prefetchedNotes);
 
-  if (data && Array.isArray(data)) {
+  if (data.length > 0) {
     dynamicLanzamientos = data
-      .filter((note: any) => note.category?.toLowerCase() === "lanzamientos")
+      .filter((note: any) => normalizeNoteCategory(note.category) === "lanzamientos")
       .map((note: any) => ({
         href: `/notas/${note.id}`,
         img: normalizeImg(note.image1 || "/img/default.jpg"),
         alt: note.title,
         title: note.title,
-        description: note.subtitle || "",
+        description: getNewsCardDeck(note.title, note.subtitle),
         fecha: formatNotePublishedLabel(note),
         editor: note.editor || "Jhon Aparicio",
         source_scope: normalizeSourceScope(note.source_scope),
@@ -228,7 +235,7 @@ const homeLanzamientos = [
   .slice(0, HOME_VISIBLE_COUNT);
 ---
 
-<link rel="stylesheet" href="/css/lanzamientos-section.css" />
+<link rel="stylesheet" href="/css/lanzamientos-section.css?v=2" />
 
 <section
   id="lanzamientos"
@@ -263,36 +270,47 @@ const homeLanzamientos = [
                   <img
                     src={nota.img}
                     alt={nota.alt}
-                    loading="lazy"
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchpriority={index === 0 ? "high" : "auto"}
                     decoding="async"
                   />
+                  <span
+                    class={`lanzamiento-scope lanzamiento-scope--overlay lanzamiento-scope--${scope}`}
+                  >
+                    {sourceScopeLabel(nota.source_scope)}
+                  </span>
                 </a>
                 <div class="lanzamiento-item__body">
                   {index === 0 && (
                     <span class="lanzamiento-badge-new">Recién llegado</span>
                   )}
                   <div class="lanzamiento-item__meta">
-                    <span class={`lanzamiento-scope lanzamiento-scope--${scope}`}>
-                      {sourceScopeLabel(nota.source_scope)}
-                    </span>
                     {fecha && (
                       <span class="lanzamiento-item__date">{fecha}</span>
                     )}
                   </div>
                   <h3>
-                    <a href={nota.href}>{nota.title}</a>
+                    <a href={nota.href}>{getNewsCardTitle(nota.title)}</a>
                   </h3>
-                  <p class="lanzamiento-desc">{nota.description}</p>
+                  {
+                    nota.description && (
+                      <p class="lanzamiento-desc">{nota.description}</p>
+                    )
+                  }
                   <div class="lanzamiento-item__actions">
                     <a href={nota.href} class="lanzamiento-item__cta">
                       Ver lanzamiento →
                     </a>
-                    <a
-                      href="/automatch-find"
-                      class="lanzamiento-item__automatch"
-                    >
-                      Comparar en AutoMatch
-                    </a>
+                    {
+                      index === 0 && (
+                        <a
+                          href="/automatch-find"
+                          class="lanzamiento-item__automatch"
+                        >
+                          Comparar en AutoMatch
+                        </a>
+                      )
+                    }
                   </div>
                 </div>
               </article>

@@ -169,11 +169,13 @@
 .articulo-container.lanzamientos .ficha-tecnica-profesional h2 {
   font-family: "Georgia", serif;
   text-align: center;
-  font-size: 32px;
+  font-size: clamp(1.15rem, 2.4vw, 1.55rem);
   color: #08341f;
-  margin-bottom: 30px;
+  margin-bottom: 1.1rem;
   border-bottom: 3px solid #e6b410;
-  padding: 0 0 15px;
+  padding: 0 0 0.6rem;
+  line-height: 1.3;
+  text-wrap: balance;
 }
 
 .articulo-container.lanzamientos .ficha-tecnica-profesional .ficha-grid {
@@ -198,7 +200,7 @@
 
 .articulo-container.lanzamientos .ficha-tecnica-profesional .ficha-item strong {
   display: block;
-  font-size: 16px;
+  font-size: clamp(0.88rem, 1.05vw, 0.98rem);
   color: #08341f;
   margin-bottom: 8px;
   font-weight: 700;
@@ -206,8 +208,8 @@
 }
 
 .articulo-container.lanzamientos .ficha-tecnica-profesional .ficha-item p {
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: clamp(0.84rem, 1vw, 0.94rem);
+  line-height: 1.55;
   color: #444;
   margin: 0;
   font-family: "Georgia", serif;
@@ -243,8 +245,8 @@
     text-align: left;
     display: block;
     margin: 24px 0 0;
-    border-bottom: none;
-    padding-bottom: 0;
+    border-bottom: 2px solid rgba(230, 180, 16, 0.5);
+    padding-bottom: 8px;
     line-height: 1.08;
     letter-spacing: 0.012em;
     text-wrap: balance;
@@ -404,17 +406,5 @@
 
   .articulo-container.lanzamientos .noticia-parrafo {
     font-size: 1.2rem;
-  }
-
-  .articulo-container.lanzamientos .ficha-tecnica-profesional h2 {
-    font-size: 38px;
-  }
-
-  .articulo-container.lanzamientos .ficha-tecnica-profesional .ficha-item strong {
-    font-size: 20px;
-  }
-
-  .articulo-container.lanzamientos .ficha-tecnica-profesional .ficha-item p {
-    font-size: 18px;
   }
 }

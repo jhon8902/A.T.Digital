@@ -5,14 +5,20 @@ import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
 } from "../lib/note-scheduling";
+import {
+  buildPruebaVideosFromNotes,
+  slugPruebaTitle,
+} from "../lib/pruebas-videos";
 
 type PruebaItem = {
+  noteId?: number;
   title: string;
   subtitle: string;
   editor?: string;
   video?: string;
   image?: string;
   href?: string;
+  showNoteLink?: boolean;
   fecha?: string;
   source_scope?: string;
   sortDate: number;
@@ -117,19 +123,10 @@ try {
   const data = await fetchWithTimeout(apiUrl);
 
   if (data && Array.isArray(data)) {
-    dynamicPruebas = data
-      .filter((note: any) => note.category?.toLowerCase() === "pruebas")
-      .map((note: any) => ({
-        title: note.title || "Sin título",
-        subtitle: note.subtitle || "",
-        editor: note.editor || "Jhon Aparicio",
-        video: note.video1?.trim() || undefined,
-        image: note.image1?.trim() || undefined,
-        href: `/notas/${note.id}`,
-        fecha: formatNotePublishedLabel(note),
-        source_scope: normalizeSourceScope(note.source_scope),
-        sortDate: getNotePublishTimestamp(note),
-      }));
+    dynamicPruebas = buildPruebaVideosFromNotes(data, {
+      formatFecha: (note) => formatNotePublishedLabel(note),
+      formatSourceScope: (note) => normalizeSourceScope(note.source_scope),
+    });
   }
 } catch (err) {
   console.error("Error cargando pruebas dinámicas:", err);
@@ -138,7 +135,13 @@ try {
 const HOME_VISIBLE_COUNT = staticPruebas.length;
 const ITEMS_PER_PAGE = 8;
 
-const allPruebas = [...dynamicPruebas, ...staticPruebas].sort(
+const dynamicPruebaSlugs = new Set(
+  dynamicPruebas.map((item) => slugPruebaTitle(item.title)),
+);
+const deduplicatedStaticPruebas = staticPruebas.filter(
+  (item) => !dynamicPruebaSlugs.has(slugPruebaTitle(item.title)),
+);
+const allPruebas = [...dynamicPruebas, ...deduplicatedStaticPruebas].sort(
   (a, b) => b.sortDate - a.sortDate,
 );
 
@@ -272,7 +275,7 @@ function pageHref(page: number) {
                       <p class="prueba-rail-desc">{item.subtitle}</p>
                     )}
                     <div class="prueba-rail-actions">
-                      {item.href && (
+                      {item.showNoteLink && item.href && (
                         <a href={item.href} class="archivo-link">
                           Ver nota
                         </a>

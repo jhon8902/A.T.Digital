@@ -1,84 +1,40 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import {
+  sectorRadarActive,
+  sectorRadarArchive,
+  sectorRadarHero,
+  sectorRadarSource,
+  sectorRadarTrends,
+} from "../lib/sector-radar";
 
-const trends = [
-  {
-    tag: "Electromovilidad",
-    title: "Infraestructura de carga en ciudades intermedias",
-    summary:
-      "Crecen los proyectos de carga rapida en corredores urbanos y regionales, con nuevos actores privados.",
-    date: "Feb 2026",
-    metric: "+32% estaciones nuevas",
-  },
-  {
-    tag: "ADAS",
-    title: "Seguridad activa como estandar de compra",
-    summary:
-      "Los compradores priorizan frenado autonomo, mantenimiento de carril y sensores 360 en la comparacion.",
-    date: "Feb 2026",
-    metric: "3 de cada 5 lo exige",
-  },
-  {
-    tag: "Hibridos",
-    title: "Mezcla ideal entre autonomia y costo",
-    summary:
-      "La adopcion de hibridos sube en flotas y familias por ahorro en combustible y menor ansiedad de carga.",
-    date: "Ene 2026",
-    metric: "+18% en ventas",
-  },
-  {
-    tag: "Normativa",
-    title: "Incentivos locales para tecnologias limpias",
-    summary:
-      "Nuevos beneficios tributarios y facilidades de circulacion impulsan la demanda de modelos electrificados.",
-    date: "Ene 2026",
-    metric: "4 ciudades con cambios",
-  },
-  {
-    tag: "Conectividad",
-    title: "Software definido para la experiencia a bordo",
-    summary:
-      "Los fabricantes integran actualizaciones OTA para mejorar rendimiento, entretenimiento y seguridad.",
-    date: "Dic 2025",
-    metric: "60% con OTA",
-  },
-  {
-    tag: "Mercado",
-    title: "Lanzamientos compactos para Colombia",
-    summary:
-      "El segmento compacto electrificado gana terreno con precios mas accesibles y mayor disponibilidad.",
-    date: "Dic 2025",
-    metric: "+22% en consultas",
-  },
-];
+const trends = sectorRadarTrends;
 ---
 
 <Layout title="Tendencias del sector" bodyClass="tendencias-page">
   <section class="tendencias-hero">
     <div class="hero-inner">
       <span class="hero-kicker">Radar del sector</span>
+      <p class="hero-edition">
+        Edición actual — {sectorRadarActive.label} · {sectorRadarActive.period}
+      </p>
       <h1>Tendencias clave del mercado automotor en Colombia</h1>
       <p>
-        Un resumen visual y editorial de lo que esta moviendo la industria:
-        tecnologias, regulaciones y senales de compra.
+        {sectorRadarHero.description}
       </p>
       <div class="hero-actions">
         <a class="cta-primary" href="/#noticias">Ver noticias</a>
         <a class="cta-secondary" href="#tendencias-grid">Explorar tendencias</a>
       </div>
       <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-value">6</span>
-          <span class="stat-label">focos activos</span>
-        </div>
-        <div class="stat">
-          <span class="stat-value">12</span>
-          <span class="stat-label">semanas de analisis</span>
-        </div>
-        <div class="stat">
-          <span class="stat-value">2026</span>
-          <span class="stat-label">actualizacion</span>
-        </div>
+        {
+          sectorRadarHero.stats.map((stat) => (
+            <div class="stat">
+              <span class="stat-value">{stat.value}</span>
+              <span class="stat-label">{stat.label}</span>
+            </div>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -91,20 +47,67 @@ const trends = [
             <span class="trend-tag">{trend.tag}</span>
             <span class="trend-date">{trend.date}</span>
           </div>
+          <p class="trend-metric" aria-label="Dato clave">
+            {trend.metric}
+          </p>
           <h2>{trend.title}</h2>
-          <p>{trend.summary}</p>
-          <div class="trend-metric">{trend.metric}</div>
+          <p class="trend-summary">{trend.summary}</p>
         </article>
       ))
     }
+    <p class="tendencias-source">
+      <strong>{sectorRadarSource.label}:</strong> {sectorRadarSource.text}
+    </p>
   </section>
+
+  {
+    sectorRadarArchive.length > 0 && (
+      <section id="tendencias-archivo" class="tendencias-archivo">
+        <div class="tendencias-archivo-inner">
+          <h2>Ediciones anteriores</h2>
+          <p class="tendencias-archivo-lead">
+            Cada actualización queda registrada con su fecha y fuente para que
+            puedas contrastar cómo evolucionan las señales del mercado.
+          </p>
+          {sectorRadarArchive.map((edition) => (
+            <details class="tendencias-archive-item">
+              <summary>
+                <span class="tendencias-archive-title">{edition.label}</span>
+                <span class="tendencias-archive-period">{edition.period}</span>
+              </summary>
+              <div class="tendencias-archive-body">
+                <p class="tendencias-source tendencias-source--archive">
+                  <strong>{edition.source.label}:</strong> {edition.source.text}
+                </p>
+                <div class="tendencias-grid tendencias-grid--archive">
+                  {edition.trends.map((trend) => (
+                    <article class="trend-card trend-card--archive">
+                      <div class="trend-card-top">
+                        <span class="trend-tag">{trend.tag}</span>
+                        <span class="trend-date">{trend.date}</span>
+                      </div>
+                      <p class="trend-metric" aria-label="Dato clave">
+                        {trend.metric}
+                      </p>
+                      <h3>{trend.title}</h3>
+                      <p class="trend-summary">{trend.summary}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+    )
+  }
 
   <section class="tendencias-cta">
     <div class="cta-content">
-      <h3>Quieres mas contexto en tiempo real</h3>
+      <h3>Quieres más contexto en tiempo real</h3>
       <p>
-        Revisa las ultimas notas y actualizaciones para entender como se
-        materializan estas tendencias en el mercado local.
+        Revisa las últimas notas y el balance del primer semestre para entender
+        cómo se materializan estas tendencias en el mercado local.
       </p>
       <a class="cta-primary" href="/#noticias">Ir a noticias</a>
     </div>
@@ -141,6 +144,14 @@ const trends = [
     font-size: 13px;
     font-weight: 700;
     color: #f8ca26;
+  }
+
+  .hero-edition {
+    margin: -8px 0 0;
+    font-size: 0.95rem;
+    color: rgba(248, 250, 252, 0.72);
+    font-family: "Poppins", sans-serif;
+    letter-spacing: 0.02em;
   }
 
   .tendencias-hero h1 {
@@ -225,26 +236,35 @@ const trends = [
   }
 
   .tendencias-grid {
-    max-width: 1200px;
+    max-width: 1080px;
     margin: 0 auto;
-    padding: 60px 24px;
+    padding: clamp(48px, 6vw, 72px) clamp(20px, 4vw, 32px);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 24px;
+    grid-template-columns: 1fr;
+    gap: 28px;
     background: #f8f7f4;
   }
 
+  @media (min-width: 720px) {
+    .tendencias-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 32px 28px;
+    }
+  }
+
   .trend-card {
-    border: 1px solid rgba(248, 202, 38, 0.2);
-    border-radius: 18px;
-    padding: 26px;
+    border: 1px solid rgba(8, 52, 31, 0.08);
+    border-radius: 20px;
+    padding: clamp(26px, 3vw, 34px) clamp(24px, 3vw, 32px);
     color: #1a1a1a;
-    box-shadow: 0 12px 30px rgba(17, 24, 39, 0.2);
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(17, 24, 39, 0.06);
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
     position: relative;
     overflow: hidden;
+    min-height: 0;
   }
 
   .trend-card::after {
@@ -253,11 +273,12 @@ const trends = [
     inset: 0;
     background: radial-gradient(
       circle at top right,
-      rgba(248, 202, 38, 0.12),
-      transparent 55%
+      rgba(248, 202, 38, 0.1),
+      transparent 58%
     );
     opacity: 0;
     transition: opacity 0.3s ease;
+    pointer-events: none;
   }
 
   .trend-card:hover::after {
@@ -268,42 +289,192 @@ const trends = [
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.85rem;
+    gap: 12px;
+    font-size: 0.8125rem;
     color: rgba(26, 26, 26, 0.85) !important;
+    position: relative;
+    z-index: 1;
   }
 
   .trend-tag {
     background: #f8ca26;
     color: #1a1a1a;
-    padding: 4px 12px;
+    padding: 5px 12px;
     border-radius: 999px;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
   }
 
   .trend-date {
-    color: rgba(26, 26, 26, 0.8) !important;
+    color: rgba(26, 26, 26, 0.65) !important;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .trend-metric {
+    margin: 4px 0 2px;
+    padding: 12px 16px;
+    background: linear-gradient(
+      135deg,
+      rgba(248, 202, 38, 0.14) 0%,
+      rgba(248, 202, 38, 0.06) 100%
+    );
+    border-left: 4px solid #d4a742;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: clamp(1.15rem, 2vw, 1.35rem);
+    line-height: 1.2;
+    color: #08341f;
+    letter-spacing: -0.01em;
+    position: relative;
+    z-index: 1;
   }
 
   .trend-card h2 {
     margin: 0;
-    font-size: 1.55rem;
+    font-size: clamp(1.2rem, 1.6vw, 1.38rem);
     font-family: "Georgia", serif;
     color: #1a1a1a !important;
+    line-height: 1.32;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
   }
 
-  .trend-card p {
+  .trend-summary {
     margin: 0;
-    line-height: 1.68;
-    font-size: 1.03rem;
-    color: rgba(26, 26, 26, 0.85) !important;
+    line-height: 1.72;
+    font-size: 1.02rem;
+    color: rgba(26, 26, 26, 0.82) !important;
+    font-family: "Poppins", sans-serif;
+    max-width: 48ch;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tendencias-source {
+    grid-column: 1 / -1;
+    margin: 8px 0 0;
+    padding: 18px 20px;
+    border-radius: 12px;
+    background: rgba(8, 52, 31, 0.05);
+    border: 1px solid rgba(8, 52, 31, 0.08);
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: rgba(26, 26, 26, 0.75);
     font-family: "Poppins", sans-serif;
   }
 
-  .trend-metric {
-    margin-top: auto;
+  .tendencias-source strong {
+    color: #08341f;
     font-weight: 700;
-    color: #1a1a1a;
-    font-size: 1.02rem;
+  }
+
+  .tendencias-archivo {
+    padding: 0 clamp(20px, 4vw, 32px) clamp(48px, 6vw, 64px);
+    background: #f8f7f4;
+  }
+
+  .tendencias-archivo-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .tendencias-archivo h2 {
+    margin: 0;
+    font-family: "Georgia", serif;
+    font-size: clamp(1.65rem, 2.5vw, 2rem);
+    color: #08341f;
+  }
+
+  .tendencias-archivo-lead {
+    margin: 0;
+    max-width: 62ch;
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(26, 26, 26, 0.72);
+  }
+
+  .tendencias-archive-item {
+    border: 1px solid rgba(8, 52, 31, 0.1);
+    border-radius: 16px;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(17, 24, 39, 0.04);
+  }
+
+  .tendencias-archive-item summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+    padding: 18px 22px;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .tendencias-archive-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .tendencias-archive-item summary::after {
+    content: "+";
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #d4a742;
+    line-height: 1;
+  }
+
+  .tendencias-archive-item[open] summary::after {
+    content: "−";
+  }
+
+  .tendencias-archive-title {
+    font-weight: 700;
+    color: #08341f;
+    font-size: 1.05rem;
+  }
+
+  .tendencias-archive-period {
+    color: rgba(26, 26, 26, 0.62);
+    font-size: 0.92rem;
+  }
+
+  .tendencias-archive-body {
+    padding: 0 22px 22px;
+    border-top: 1px solid rgba(8, 52, 31, 0.08);
+  }
+
+  .tendencias-source--archive {
+    margin: 18px 0 20px;
+  }
+
+  .tendencias-grid--archive {
+    padding: 0;
+    background: transparent;
+    gap: 20px;
+  }
+
+  .trend-card--archive h3 {
+    margin: 0;
+    font-size: clamp(1.15rem, 1.5vw, 1.3rem);
+    font-family: "Georgia", serif;
+    color: #1a1a1a !important;
+    line-height: 1.32;
+    font-weight: 700;
+  }
+
+  .trend-card--archive {
+    box-shadow: none;
+    border-color: rgba(8, 52, 31, 0.06);
+    background: #faf9f7;
   }
 
   .tendencias-cta {
@@ -353,7 +524,18 @@ const trends = [
     }
 
     .tendencias-grid {
-      padding: 40px 20px;
+      padding: 40px 18px 48px;
+      gap: 22px;
+    }
+
+    .trend-card {
+      padding: 24px 20px;
+      gap: 12px;
+    }
+
+    .trend-metric {
+      padding: 10px 14px;
+      font-size: 1.12rem;
     }
 
     .cta-content {
@@ -376,11 +558,14 @@ const trends = [
     }
 
     .trend-card h2 {
-      font-size: 1.42rem;
+      font-size: 1.22rem;
+      line-height: 1.34;
     }
 
-    .trend-card p {
-      font-size: 1rem;
+    .trend-summary {
+      font-size: 0.98rem;
+      line-height: 1.68;
+      max-width: none;
     }
   }
 </style>
