@@ -24,6 +24,8 @@ export const STATIC_SITEMAP_PATHS = [
   "/automatch",
   "/automatch/archivo",
   "/automatch-find",
+  "/calculadora-tco",
+  "/concesionarios",
   "/notas-electricos/nota-byd-sealion7",
   "/notas-electricos/nota-mini-cooper",
   "/notas-electricos/nota-peugeot-e3008",

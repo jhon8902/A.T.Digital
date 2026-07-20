@@ -1,0 +1,215 @@
+---
+import Layout from "../layouts/Layout.astro";
+import catalogAutos from "../data/automatch/autos.json";
+import specsData from "../data/automatch/specs.json";
+import { inferFuelTypeFromCatalog } from "../lib/tco-calculator";
+
+const vehicles = catalogAutos.map((auto) => {
+  const specs = specsData[auto.especificaciones_id as keyof typeof specsData] as
+    | Record<string, string>
+    | undefined;
+
+  let consumoLitros100km: number | undefined;
+  let consumoKwh100km: number | undefined;
+
+  if (specs?.consumo_real) {
+    const match = specs.consumo_real.match(/([\d.]+)/);
+    if (match) consumoLitros100km = Number(match[1]);
+  }
+  if (specs?.consumo) {
+    const match = specs.consumo.match(/([\d.]+)/);
+    if (match) consumoKwh100km = Number(match[1]);
+  }
+  if (specs?.consumo_hibrido) {
+    const match = specs.consumo_hibrido.match(/([\d.]+)/);
+    if (match) consumoLitros100km = Number(match[1]);
+  }
+
+  return {
+    id: auto.id,
+    nombre: auto.nombre,
+    precio: auto.precio,
+    tipo: auto.tipo,
+    año: auto.año,
+    fuelType: inferFuelTypeFromCatalog(auto.tipo),
+    consumoLitros100km,
+    consumoKwh100km,
+  };
+});
+
+const vehiclesJson = JSON.stringify(vehicles);
+---
+
+<link rel="stylesheet" href="/css/calculadora-tco.css" />
+
+<Layout
+  title="Calculadora de costo total (TCO) | AutoTech Digital"
+  description="Calcula cuánto cuesta tener un auto en Colombia: combustible, SOAT, seguro, mantenimiento, impuestos y depreciación."
+>
+  <section class="tco-page">
+    <header class="tco-hero">
+      <p class="tco-hero__eyebrow">Herramienta · Colombia</p>
+      <h1 class="tco-hero__title">
+        ¿Cuánto cuesta <span>de verdad</span> tu auto?
+      </h1>
+      <p class="tco-hero__lead">
+        Estima el costo total de propiedad (TCO): energía, obligaciones legales,
+        seguro, mantenimiento, impuestos y depreciación. Valores orientativos
+        que puedes ajustar.
+      </p>
+      <a href="/automatch-find" class="tco-hero__link">
+        ¿Aún no eliges modelo? Prueba AutoMatch →
+      </a>
+    </header>
+
+    <div class="tco-layout">
+      <form id="tco-form" class="tco-form" novalidate>
+        <h2 class="tco-form__title">Datos del vehículo</h2>
+
+        <label for="tco-vehicle">Modelo del catálogo (opcional)</label>
+        <select id="tco-vehicle">
+          <option value="">Personalizar manualmente</option>
+          {
+            vehicles.map((v) => (
+              <option
+                value={v.id}
+                data-precio={v.precio}
+                data-fuel={v.fuelType}
+                data-litros={v.consumoLitros100km ?? ""}
+                data-kwh={v.consumoKwh100km ?? ""}
+              >
+                {v.nombre} ({v.año})
+              </option>
+            ))
+          }
+        </select>
+
+        <label for="tco-precio">Precio del vehículo (COP)</label>
+        <input
+          type="number"
+          id="tco-precio"
+          min="0"
+          step="1000000"
+          placeholder="Ej: 120000000"
+          required
+        />
+
+        <label for="tco-fuel">Tipo de energía</label>
+        <select id="tco-fuel" required>
+          <option value="gasolina">Gasolina</option>
+          <option value="diesel">Diésel</option>
+          <option value="hibrido">Híbrido</option>
+          <option value="electrico">Eléctrico</option>
+        </select>
+
+        <div class="tco-form__row">
+          <div>
+            <label for="tco-km">Kilómetros al año</label>
+            <input type="number" id="tco-km" min="0" step="500" value="15000" required />
+          </div>
+          <div>
+            <label for="tco-years">Años de propiedad</label>
+            <input type="number" id="tco-years" min="1" max="10" value="5" required />
+          </div>
+        </div>
+
+        <details class="tco-advanced">
+          <summary>Ajustes avanzados (opcional)</summary>
+          <div class="tco-advanced__grid">
+            <div>
+              <label for="tco-litros">Consumo (L/100 km)</label>
+              <input type="number" id="tco-litros" min="0" step="0.1" placeholder="Auto" />
+            </div>
+            <div>
+              <label for="tco-kwh">Consumo (kWh/100 km)</label>
+              <input type="number" id="tco-kwh" min="0" step="0.1" placeholder="Auto" />
+            </div>
+            <div>
+              <label for="tco-gas-price">Precio combustible ($/L)</label>
+              <input type="number" id="tco-gas-price" min="0" step="100" placeholder="14500" />
+            </div>
+            <div>
+              <label for="tco-kwh-price">Precio electricidad ($/kWh)</label>
+              <input type="number" id="tco-kwh-price" min="0" step="10" placeholder="620" />
+            </div>
+            <div>
+              <label for="tco-soat">SOAT anual (COP)</label>
+              <input type="number" id="tco-soat" min="0" step="10000" placeholder="480000" />
+            </div>
+            <div>
+              <label for="tco-rtm">Revisión técnico-mecánica (COP)</label>
+              <input type="number" id="tco-rtm" min="0" step="10000" placeholder="380000" />
+            </div>
+          </div>
+        </details>
+
+        <button type="submit" class="tco-btn tco-btn--primary">
+          Calcular costo total
+        </button>
+      </form>
+
+      <div id="tco-results" class="tco-results" hidden>
+        <h2 class="tco-results__title">Resultado estimado</h2>
+
+        <div class="tco-summary">
+          <article class="tco-summary__card tco-summary__card--highlight">
+            <p class="tco-summary__label">Costo total ({` `}<span id="tco-years-label">5</span> años)</p>
+            <p id="tco-total" class="tco-summary__value">—</p>
+          </article>
+          <article class="tco-summary__card">
+            <p class="tco-summary__label">Promedio mensual</p>
+            <p id="tco-monthly" class="tco-summary__value">—</p>
+          </article>
+          <article class="tco-summary__card">
+            <p class="tco-summary__label">Costo por km</p>
+            <p id="tco-per-km" class="tco-summary__value">—</p>
+          </article>
+          <article class="tco-summary__card">
+            <p class="tco-summary__label">Valor residual estimado</p>
+            <p id="tco-residual" class="tco-summary__value">—</p>
+          </article>
+        </div>
+
+        <div class="tco-breakdown">
+          <h3>Desglose acumulado</h3>
+          <ul id="tco-breakdown-list" class="tco-breakdown__list"></ul>
+        </div>
+
+        <div class="tco-table-wrap">
+          <h3>Por año</h3>
+          <table class="tco-table">
+            <thead>
+              <tr>
+                <th>Año</th>
+                <th>Combustible</th>
+                <th>Obligaciones</th>
+                <th>Seguro</th>
+                <th>Manten.</th>
+                <th>Impuesto</th>
+                <th>Deprec.</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="tco-table-body"></tbody>
+          </table>
+        </div>
+
+        <p class="tco-disclaimer">
+          Cifras orientativas para planificación. SOAT, impuesto vehicular y
+          seguros varían por ciudad, cilindraje y aseguradora. No constituye
+          asesoría financiera.
+        </p>
+
+        <div class="tco-cta">
+          <a href="/automatch-find" class="tco-btn tco-btn--secondary">
+            Comparar con AutoMatch
+          </a>
+          <a href="/contacto" class="tco-btn tco-btn--ghost">Asesoría editorial</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script id="tco-vehicles-data" type="application/json" set:html={vehiclesJson} />
+  <script src="/js/calculadora-tco.js" defer></script>
+</Layout>

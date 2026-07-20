@@ -9,8 +9,6 @@ $script:AutomatchPaths = @(
   "public/css/automatch-find.css",
   "public/css/automatch-cta.css",
   "public/js/automatch-v3.js",
-  "public/js/automatch.js",
-  "public/js/automatch-v2.js",
   "src/pages/automatch.astro",
   "src/pages/automatch-find.astro",
   "src/components/leads/AutoMatchCTA.astro"

@@ -92,6 +92,21 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
                       />
                     ))}
                   </div>
+                  <div class="carousel-meta-bar">
+                    <div class="carousel-dots" aria-label="Navegacion de imagenes">
+                      {(auto.imagenes as string[]).map((_, index) => (
+                        <button
+                          type="button"
+                          class={`carousel-dot ${index === 0 ? "active" : ""}`}
+                          data-index={String(index)}
+                          aria-label={`Ir a la imagen ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                    <span class="carousel-counter">
+                      1 / {(auto.imagenes as string[]).length}
+                    </span>
+                  </div>
                 </div>
 
                 <div class="auto-card-titlebar">
@@ -102,22 +117,6 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
                   <button type="button" class="carousel-nav next" aria-label="Imagen siguiente">
                     <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
                   </button>
-                </div>
-
-                <div class="carousel-meta-bar">
-                  <div class="carousel-dots" aria-label="Navegacion de imagenes">
-                    {(auto.imagenes as string[]).map((_, index) => (
-                      <button
-                        type="button"
-                        class={`carousel-dot ${index === 0 ? "active" : ""}`}
-                        data-index={String(index)}
-                        aria-label={`Ir a la imagen ${index + 1}`}
-                      />
-                    ))}
-                  </div>
-                  <span class="carousel-counter">
-                    1 / {(auto.imagenes as string[]).length}
-                  </span>
                 </div>
 
                 <div class="auto-card-actions">
@@ -173,6 +172,21 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
                     />
                   ))}
                 </div>
+                <div class="carousel-meta-bar">
+                  <div class="carousel-dots" aria-label="Navegacion de imagenes">
+                    {(auto.imagenes as string[]).map((_, index) => (
+                      <button
+                        type="button"
+                        class={`carousel-dot ${index === 0 ? "active" : ""}`}
+                        data-index={String(index)}
+                        aria-label={`Ir a la imagen ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                  <span class="carousel-counter">
+                    1 / {(auto.imagenes as string[]).length}
+                  </span>
+                </div>
               </div>
 
               <div class="auto-card-titlebar">
@@ -183,22 +197,6 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
                 <button type="button" class="carousel-nav next" aria-label="Imagen siguiente">
                   <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
                 </button>
-              </div>
-
-              <div class="carousel-meta-bar">
-                <div class="carousel-dots" aria-label="Navegacion de imagenes">
-                  {(auto.imagenes as string[]).map((_, index) => (
-                    <button
-                      type="button"
-                      class={`carousel-dot ${index === 0 ? "active" : ""}`}
-                      data-index={String(index)}
-                      aria-label={`Ir a la imagen ${index + 1}`}
-                    />
-                  ))}
-                </div>
-                <span class="carousel-counter">
-                  1 / {(auto.imagenes as string[]).length}
-                </span>
               </div>
 
               <div class="auto-card-actions">
@@ -450,11 +448,11 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     margin: 0;
     color: #111;
     text-transform: uppercase;
-    font-weight: 600;
-    font-size: 1rem;
-    line-height: 1.2;
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 1.22;
     text-align: center;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.03em;
     flex: 0 1 auto;
     max-width: calc(100% - 5.75rem);
   }
@@ -462,10 +460,11 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
   @media (min-width: 900px) {
     .auto-card-titlebar {
       gap: 0.8rem;
+      margin: 0.2rem 0 0.5rem;
     }
 
     .auto-card-titlebar h3 {
-      font-size: 1.02rem;
+      font-size: 1.28rem;
       max-width: none;
     }
   }
@@ -530,6 +529,16 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     overflow: hidden;
     background: #0f1f17;
     margin-bottom: 0.75rem;
+  }
+
+  .auto-carousel-shell::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 3.5rem;
+    background: linear-gradient(to top, rgba(8, 20, 14, 0.62), transparent);
+    z-index: 2;
+    pointer-events: none;
   }
 
   .auto-carousel {
@@ -600,36 +609,38 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
   .carousel-nav {
     position: static;
     flex: 0 0 auto;
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1.5px solid rgba(8, 52, 31, 0.16);
+    border: 1.5px solid #3d6b57;
     border-radius: 50%;
     padding: 0;
     cursor: pointer;
-    color: #08341f;
+    color: #3d6b57;
     background: #fff;
-    box-shadow: 0 2px 8px rgba(8, 52, 31, 0.08);
+    box-shadow: 0 2px 8px rgba(42, 92, 69, 0.12);
     transform: none;
     transition:
       transform 0.2s ease,
-      background-color 0.2s ease,
-      border-color 0.2s ease,
-      box-shadow 0.2s ease;
+      background 0.2s ease,
+      box-shadow 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
   }
 
   .carousel-nav i {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    font-weight: 700;
   }
 
   .carousel-nav:hover {
-    background: #08341f;
+    background: linear-gradient(135deg, #3d6b57 0%, #2f5f4c 100%);
     color: #fff;
-    border-color: #08341f;
-    transform: scale(1.04);
-    box-shadow: 0 4px 14px rgba(8, 52, 31, 0.18);
+    border-color: #3d6b57;
+    transform: scale(1.06);
+    box-shadow: 0 4px 14px rgba(42, 92, 69, 0.24);
   }
 
   .carousel-nav:active {
@@ -637,18 +648,25 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
   }
 
   .carousel-meta-bar {
+    position: absolute;
+    bottom: 0.55rem;
+    left: 0;
+    right: 0;
+    z-index: 3;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
-    margin-bottom: 0.55rem;
-    padding: 0 0.1rem;
+    margin-bottom: 0;
+    padding: 0 0.65rem;
+    pointer-events: none;
   }
 
   .carousel-dots {
     display: flex;
     align-items: center;
     gap: 0.42rem;
+    pointer-events: auto;
   }
 
   .carousel-dot {
@@ -656,18 +674,18 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     height: 8px;
     border-radius: 999px;
     border: none;
-    background: rgba(8, 52, 31, 0.22);
+    background: rgba(255, 255, 255, 0.45);
     cursor: pointer;
     transition:
       width 0.2s ease,
       background-color 0.2s ease,
       opacity 0.2s ease;
-    opacity: 0.9;
+    opacity: 0.95;
     padding: 0;
   }
 
   .carousel-dot:hover {
-    background: rgba(8, 52, 31, 0.45);
+    background: rgba(255, 255, 255, 0.72);
   }
 
   .carousel-dot.active {
@@ -678,15 +696,18 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
 
   .carousel-counter {
     font-family: var(--font-body, "Source Sans 3", sans-serif);
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 600;
     letter-spacing: 0.04em;
-    color: #4b5563;
-    background: rgba(8, 52, 31, 0.06);
-    border: 1px solid rgba(8, 52, 31, 0.1);
+    color: #fff;
+    background: rgba(8, 52, 31, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 999px;
     padding: 0.28rem 0.62rem;
     white-space: nowrap;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    pointer-events: auto;
   }
 
   /* ========== BOTÓN AUTOMATCH ========== */
@@ -868,23 +889,13 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
 
     .auto-card-titlebar h3 {
       margin: 0;
-      font-size: 1.08rem;
-      letter-spacing: 0.2px;
+      font-size: 1.14rem;
+      letter-spacing: 0.025em;
     }
 
     .carousel-nav {
       width: 36px;
       height: 36px;
-    }
-
-    .form-comentario {
-      gap: 0.4rem;
-    }
-
-    .form-comentario input,
-    .form-comentario textarea {
-      padding: 0.5rem;
-      font-size: 0.85rem;
     }
 
     .btn-automatch {
@@ -938,7 +949,7 @@ const hasMoreAutos = mergedAutos.length > HOME_VISIBLE_COUNT;
     }
 
     .auto-card-titlebar h3 {
-      font-size: 0.92rem;
+      font-size: 1.02rem;
     }
 
     .carousel-nav {

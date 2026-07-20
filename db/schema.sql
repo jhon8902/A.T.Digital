@@ -140,41 +140,6 @@ CREATE TABLE IF NOT EXISTS comentarios (
 
 CREATE INDEX IF NOT EXISTS idx_comentarios_note_id ON comentarios(note_id);
 
-CREATE TABLE IF NOT EXISTS automatch (
-  id SERIAL PRIMARY KEY,
-  user_ip TEXT,
-  auto_id INT NOT NULL,
-  decision TEXT CHECK (decision IN ('like', 'superlike', 'dislike')),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE INDEX IF NOT EXISTS idx_automatch_auto_id ON automatch(auto_id);
-CREATE INDEX IF NOT EXISTS idx_automatch_decision ON automatch(decision);
-
-CREATE TABLE IF NOT EXISTS automatch_likes (
-  id SERIAL PRIMARY KEY,
-  auto_id TEXT NOT NULL,
-  tipo TEXT NOT NULL CHECK (tipo IN ('like', 'corazon')),
-  client_id TEXT NOT NULL,
-  user_ip TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE (auto_id, tipo, client_id)
-);
-
-CREATE INDEX IF NOT EXISTS idx_automatch_likes_auto_id ON automatch_likes(auto_id);
-CREATE INDEX IF NOT EXISTS idx_automatch_likes_tipo ON automatch_likes(tipo);
-
-CREATE TABLE IF NOT EXISTS automatch_comments (
-  id SERIAL PRIMARY KEY,
-  auto_id TEXT NOT NULL,
-  nombre TEXT NOT NULL,
-  mensaje TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE INDEX IF NOT EXISTS idx_automatch_comments_auto_id ON automatch_comments(auto_id);
-CREATE INDEX IF NOT EXISTS idx_automatch_comments_created_at ON automatch_comments(created_at DESC);
-
 CREATE TABLE IF NOT EXISTS test_drives (
   id SERIAL PRIMARY KEY,
   auto_id INT NOT NULL,
