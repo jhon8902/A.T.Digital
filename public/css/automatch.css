@@ -169,6 +169,12 @@
   z-index: 1;
 }
 
+.btn-automatch--ghost::before,
+.btn-automatch--ghost:hover::before,
+.automatch-hero .btn-automatch::before {
+  display: none;
+}
+
 .btn-automatch:hover {
   background: linear-gradient(135deg, #d4932e 0%, #c17f1a 100%);
   transform: translateY(-3px) scale(1.05);

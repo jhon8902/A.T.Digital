@@ -73,6 +73,14 @@ export const STATIC_SEARCH_ENTRIES: SearchEntry[] = [
     keywords: ["test drive", "review", "pruebas"],
   },
   {
+    title: "Catálogo de modelos",
+    description: "Todos los autos en AutoMatch: nuevos, seminuevos y usados.",
+    href: "/automatch/archivo",
+    category: "automatch",
+    type: "pagina",
+    keywords: ["catalogo", "modelos", "nuevos", "usados", "seminuevos"],
+  },
+  {
     title: "AutoMatch",
     description: "Herramienta para encontrar el auto ideal.",
     href: "/automatch-find",

@@ -34,10 +34,11 @@
   line-height: 1.12;
   margin: 0 auto 1rem;
   max-width: 22ch;
+  color: #ffffff !important;
 }
 
 .tco-hero__title span {
-  color: var(--tco-accent);
+  color: var(--tco-accent) !important;
 }
 
 .tco-hero__lead {

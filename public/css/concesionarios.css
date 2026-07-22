@@ -31,10 +31,11 @@
   line-height: 1.1;
   max-width: 20ch;
   margin: 0 auto 1rem;
+  color: #ffffff !important;
 }
 
 .dealer-hero__title span {
-  color: var(--dl-accent);
+  color: var(--dl-accent) !important;
 }
 
 .dealer-hero__lead {

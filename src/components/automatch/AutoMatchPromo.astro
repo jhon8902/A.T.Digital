@@ -3,12 +3,14 @@ interface Props {
   variant?: "default" | "compact";
   title?: string;
   description?: string;
+  showSecondary?: boolean;
 }
 
 const {
   variant = "default",
   title = "¿Encontraste tu próximo auto?",
-  description = "Usa AutoMatch para comparar modelos, ver fichas y solicitar test drive con un asesor.",
+  description = "Usa AutoMatch para comparar modelos, ver detalles y solicitar test drive con un asesor.",
+  showSecondary = true,
 } = Astro.props;
 ---
 
@@ -21,12 +23,16 @@ const {
   <div class="automatch-promo__actions">
     <a href="/automatch-find" class="automatch-promo__btn automatch-promo__btn--primary">
       <i class="fa-solid fa-sliders" aria-hidden="true"></i>
-      Probar AutoMatch
+      Buscar auto para comprar
     </a>
-    <a href="/#automatch" class="automatch-promo__btn automatch-promo__btn--secondary">
-      <i class="fa-solid fa-car-side" aria-hidden="true"></i>
-      Ver fichas
-    </a>
+    {
+      showSecondary && (
+        <a href="/#automatch" class="automatch-promo__btn automatch-promo__btn--secondary">
+          <i class="fa-solid fa-car-side" aria-hidden="true"></i>
+          Ver destacados
+        </a>
+      )
+    }
   </div>
 </section>
 

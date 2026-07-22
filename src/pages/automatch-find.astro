@@ -13,97 +13,122 @@ import AutoMatchBanner from "../components/automatch/AutoMatchBanner.astro";
         Encuentra tu auto ideal con <span>AutoMatch</span>
       </h1>
       <p class="automatch-find-hero__lead">
-        Responde unas preguntas sobre presupuesto, uso y ciudad. Te mostramos el
-        modelo que mejor encaja y puedes solicitar test drive con un asesor.
+        Cuatro preguntas esenciales y te mostramos el mejor match. Luego puedes
+        contactar al concesionario o ver cómo llegar.
       </p>
-      <a href="/" class="automatch-find-hero__back">← Volver al inicio</a>
+      <p class="automatch-find-hero__time">
+        <i class="fa-regular fa-clock" aria-hidden="true"></i>
+        Toma menos de 1 minuto
+      </p>
+      <div class="automatch-find-hero__links">
+        <a href="/automatch" class="automatch-find-hero__back">Ver catálogo</a>
+        <a href="/calculadora-tco" class="automatch-find-hero__back"
+          >Calculadora TCO</a
+        >
+      </div>
     </header>
 
     <AutoMatchBanner />
 
-    <details class="user-profile-form">
-      <summary>Tu perfil (opcional)</summary>
-      <p class="user-profile-form__hint">
-        Guardamos estos datos en tu navegador para afinar recomendaciones en
-        futuras búsquedas.
-      </p>
-      <form id="user-profile-form">
-        <label for="user-name">Nombre / alias</label>
-        <input type="text" id="user-name" placeholder="Tu nombre" />
-
-        <label for="user-city">Ciudad</label>
-        <input type="text" id="user-city" placeholder="Ej: Bogotá" />
-
-        <label for="user-age">Edad (opcional)</label>
-        <input
-          type="number"
-          id="user-age"
-          placeholder="25"
-          min="16"
-          max="120"
-        />
-
-        <label for="user-preferences">Preferencia de carrocería</label>
-        <select id="user-preferences">
-          <option value="">Seleccionar...</option>
-          <option value="suv">SUV</option>
-          <option value="sedan">Sedán</option>
-          <option value="hatchback">Hatchback</option>
-          <option value="pickup">Pickup</option>
-          <option value="convertible">Convertible</option>
-        </select>
-      </form>
-    </details>
-
     <div class="automatch-container">
       <form id="automatch-form" class="form-section">
-        <h2 class="form-section__title">Cuéntanos qué buscas</h2>
+        <div class="form-steps" aria-hidden="true">
+          <span class="form-steps__item form-steps__item--active" data-step="1"
+            >1. Esencial</span
+          >
+          <span class="form-steps__item" data-step="2" id="step-2-label"
+            >2. Usados (opcional)</span
+          >
+        </div>
 
-        <label for="presupuesto">Presupuesto (millones COP)</label>
-        <select id="presupuesto" required>
-          <option value="">Seleccionar...</option>
-          <option value="70-90">$70 – $90 millones</option>
-          <option value="90-120">$90 – $120 millones</option>
-          <option value="120-150">$120 – $150 millones</option>
-          <option value="150-180">$150 – $180 millones</option>
-          <option value="180-220">$180 – $220 millones</option>
-          <option value="220-280">$220 – $280 millones</option>
-          <option value="280-380">$280 – $380 millones</option>
-          <option value="380-500">$380 – $500 millones</option>
-          <option value="500+">Más de $500 millones</option>
-        </select>
+        <div class="form-step" id="form-step-essential">
+          <h2 class="form-section__title">Paso 1 — Lo esencial</h2>
 
-        <label for="uso">Tipo de uso</label>
-        <select id="uso" required>
-          <option value="">Seleccionar...</option>
-          <option value="urbano">Urbano</option>
-          <option value="familiar">Familiar</option>
-          <option value="trabajo">Trabajo</option>
-          <option value="deportivo">Deportivo</option>
-        </select>
+          <label for="presupuesto">Presupuesto (millones COP)</label>
+          <select id="presupuesto" required>
+            <option value="">Seleccionar...</option>
+            <option value="40-70">$40 – $70 millones</option>
+            <option value="70-100">$70 – $100 millones</option>
+            <option value="100-130">$100 – $130 millones</option>
+            <option value="130-180">$130 – $180 millones</option>
+            <option value="180-280">$180 – $280 millones</option>
+            <option value="280+">Más de $280 millones</option>
+          </select>
 
-        <label for="tipo">Tipo de vehículo</label>
-        <select id="tipo" required>
-          <option value="">Seleccionar...</option>
-          <option value="gasolina">Gasolina</option>
-          <option value="híbrido">Híbrido</option>
-          <option value="eléctrico">Eléctrico</option>
-        </select>
+          <label for="uso">¿Para qué lo usarás?</label>
+          <select id="uso" required>
+            <option value="">Seleccionar...</option>
+            <option value="urbano">Ciudad / diario</option>
+            <option value="familiar">Familia / viajes</option>
+            <option value="trabajo">Trabajo / carga</option>
+            <option value="deportivo">Deportivo / placer</option>
+          </select>
 
-        <label for="condicion">Condición</label>
-        <select id="condicion" required>
-          <option value="">Seleccionar...</option>
-          <option value="nuevo">Nuevo (0 km)</option>
-          <option value="seminuevo">Seminuevo (1–3 años)</option>
-          <option value="usado">Usado (más de 3 años)</option>
-          <option value="ambos">Nuevo o usado</option>
-        </select>
+          <label for="tipo">Tipo de motor</label>
+          <select id="tipo" required>
+            <option value="">Seleccionar...</option>
+            <option value="gasolina">Gasolina</option>
+            <option value="híbrido">Híbrido</option>
+            <option value="eléctrico">Eléctrico</option>
+          </select>
 
-        <label for="ciudad">Ciudad</label>
-        <input type="text" id="ciudad" placeholder="Ej: Bogotá" required />
+          <label for="condicion">Condición</label>
+          <select id="condicion" required>
+            <option value="">Seleccionar...</option>
+            <option value="nuevo">Nuevo (0 km)</option>
+            <option value="seminuevo">Seminuevo (1–3 años)</option>
+            <option value="usado">Usado (+3 años)</option>
+            <option value="ambos">Nuevo o usado</option>
+          </select>
+
+          <label for="ciudad">Ciudad</label>
+          <select id="ciudad" required>
+            <option value="">Seleccionar...</option>
+            <option value="bogotá">Bogotá</option>
+            <option value="medellín">Medellín</option>
+            <option value="cali">Cali</option>
+            <option value="barranquilla">Barranquilla</option>
+            <option value="bucaramanga">Bucaramanga</option>
+            <option value="cartagena">Cartagena</option>
+            <option value="pereira">Pereira</option>
+            <option value="manizales">Manizales</option>
+          </select>
+        </div>
+
+        <div class="form-step form-step--used" id="form-step-used" hidden>
+          <h2 class="form-section__title">Paso 2 — Filtros de usados</h2>
+          <p class="form-step__hint">
+            Solo si buscas seminuevo o usado. Puedes dejarlos en “cualquiera”.
+          </p>
+
+          <label for="placa">Placa (pico y placa)</label>
+          <select id="placa">
+            <option value="ambos">Me da igual</option>
+            <option value="par">Solo placa par</option>
+            <option value="impar">Solo placa impar</option>
+          </select>
+
+          <label for="kilometraje">Kilometraje</label>
+          <select id="kilometraje">
+            <option value="cualquiera">Cualquier kilometraje</option>
+            <option value="0-30000">Menos de 30.000 km</option>
+            <option value="30000-60000">30.000 – 60.000 km</option>
+            <option value="60000-90000">60.000 – 90.000 km</option>
+            <option value="90000+">Más de 90.000 km</option>
+          </select>
+
+          <label for="carroceria">Carrocería</label>
+          <select id="carroceria">
+            <option value="">Todas</option>
+            <option value="suv">SUV / camioneta</option>
+            <option value="sedán">Sedán</option>
+            <option value="hatchback">Hatchback</option>
+            <option value="pickup">Pickup</option>
+          </select>
+        </div>
 
         <div class="button-group">
-          <button type="submit" class="btn-match">Buscar mi AutoMatch</button>
+          <button type="submit" class="btn-match">Ver mi AutoMatch</button>
           <button
             type="button"
             id="btn-nueva-busqueda"
@@ -121,6 +146,26 @@ import AutoMatchBanner from "../components/automatch/AutoMatchBanner.astro";
       </div>
 
       <div id="resultado" class="resultado resultado-section"></div>
+
+      <details class="user-profile-form user-profile-form--bottom">
+        <summary>Tu perfil (opcional)</summary>
+        <p class="user-profile-form__hint">
+          Guardamos nombre y ciudad en tu navegador para futuras búsquedas.
+        </p>
+        <div id="user-profile-form">
+          <label for="user-name">Nombre / alias</label>
+          <input type="text" id="user-name" placeholder="Tu nombre" />
+
+          <label for="user-city">Ciudad habitual</label>
+          <select id="user-city">
+            <option value="">Seleccionar...</option>
+            <option value="bogotá">Bogotá</option>
+            <option value="medellín">Medellín</option>
+            <option value="cali">Cali</option>
+            <option value="barranquilla">Barranquilla</option>
+          </select>
+        </div>
+      </details>
     </div>
   </section>
 

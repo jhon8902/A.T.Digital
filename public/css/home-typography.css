@@ -184,7 +184,22 @@ body.home-page .deportes-more,
 body.home-page .lanzamientos-more,
 body.home-page .pruebas-more,
 body.home-page .section-info .ver-mas-noticias-btn {
-  font-size: var(--home-section-cta);
+  font-size: clamp(1.02rem, 1.35vw, 1.18rem);
+}
+
+body.home-page #automatch .ver-mas-automatch-container .btn-automatch--ver-mas {
+  font-size: clamp(1.02rem, 1.35vw, 1.18rem);
+}
+
+body.home-page #automatch .automatch-hero .btn-automatch--ghost {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+  text-transform: none !important;
+}
+
+body.home-page #automatch .automatch-hero .btn-automatch--ghost i {
+  color: #ffffff !important;
 }
 
 body.home-page .pruebas-rail-title {
@@ -200,6 +215,10 @@ body.home-page .automatch-promo__copy p:last-child {
 }
 
 /* AutoMatch en home — fichas con relieve editorial (preview) */
+body.home-page #automatch {
+  overflow: visible;
+}
+
 body.home-page #automatch .automatch-section--cards {
   background-color: var(--home-section-bg) !important;
   background-image: var(--home-relief-image) !important;

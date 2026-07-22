@@ -63,11 +63,6 @@ try {
 
     <Electricos notes={homeNotes} />
 
-    <AutoMatchPromo
-      title="Compara eléctricos con AutoMatch"
-      description="Filtra por autonomía, precio y uso. Encuentra el modelo ideal para ti."
-    />
-
     <Hibridos notes={homeNotes} />
     <Noticias notes={homeNotes} />
 
@@ -80,7 +75,8 @@ try {
     <AutoMatchPromo
       variant="compact"
       title="¿Listo para encontrar tu próximo auto?"
-      description="Usa AutoMatch para comparar modelos y ver fichas destacadas."
+      description="Cuando ya exploraste los modelos, usa AutoMatch para comparar y contactar un asesor."
+      showSecondary={false}
     />
 
     <section
@@ -91,7 +87,7 @@ try {
     </section>
   </div>
 
-  <link rel="stylesheet" href="/css/home-typography.css?v=9" />
+  <link rel="stylesheet" href="/css/home-typography.css?v=11" />
 </Layout>
 
 <style>

@@ -67,11 +67,30 @@ const headerSearchData = encodeURIComponent(
         <li>
           <a href="/" class="nav-home">Inicio</a>
         </li>
-        <li>
-          <a href="/automatch" data-section="automatch" class="nav-primary">AutoMatch</a>
-        </li>
-        <li>
-          <a href="/automatch-find" class="nav-cta">Encontrar mi auto</a>
+        <li class="nav-dropdown nav-dropdown--tools">
+          <button
+            type="button"
+            class="nav-dropdown-toggle"
+            aria-expanded="false"
+            aria-haspopup="true"
+          >
+            Herramientas
+            <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+          </button>
+          <ul class="nav-dropdown-menu">
+            <li>
+              <a href="/automatch/archivo">Catálogo de modelos</a>
+            </li>
+            <li>
+              <a href="/automatch-find">Buscar auto para comprar</a>
+            </li>
+            <li>
+              <a href="/calculadora-tco">Calculadora TCO</a>
+            </li>
+            <li>
+              <a href="/concesionarios">Para concesionarios</a>
+            </li>
+          </ul>
         </li>
         <li>
           <a href="/#electricos" data-section="electricos">Eléctricos</a>
@@ -163,10 +182,16 @@ const headerSearchData = encodeURIComponent(
       <ul>
         <li class="menu-mobile-group-label">Producto</li>
         <li>
-          <a href="/automatch" data-section="automatch" class="nav-primary">AutoMatch</a>
+          <a href="/automatch/archivo">Catálogo de modelos</a>
         </li>
         <li>
-          <a href="/automatch-find" class="nav-cta">Encontrar mi auto</a>
+          <a href="/automatch-find">Buscar auto para comprar</a>
+        </li>
+        <li>
+          <a href="/calculadora-tco">Calculadora TCO</a>
+        </li>
+        <li>
+          <a href="/concesionarios">Para concesionarios</a>
         </li>
 
         <li class="menu-mobile-group-label">Explorar</li>
@@ -1524,13 +1549,16 @@ const headerSearchData = encodeURIComponent(
       updateScrollTopButton();
     });
 
-    const navDropdown = document.querySelector(".nav-dropdown");
-    const navDropdownToggle = document.querySelector(".nav-dropdown-toggle");
+    document.querySelectorAll(".nav-dropdown").forEach((navDropdown) => {
+      const navDropdownToggle = navDropdown.querySelector(".nav-dropdown-toggle");
+      if (!navDropdownToggle) return;
 
-    if (navDropdown && navDropdownToggle) {
       navDropdownToggle.addEventListener("click", () => {
         const isOpen = navDropdown.classList.toggle("is-open");
-        navDropdownToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        navDropdownToggle.setAttribute(
+          "aria-expanded",
+          isOpen ? "true" : "false",
+        );
       });
 
       document.addEventListener("click", (event) => {
@@ -1539,7 +1567,7 @@ const headerSearchData = encodeURIComponent(
           navDropdownToggle.setAttribute("aria-expanded", "false");
         }
       });
-    }
+    });
 
     const hashLinks = document.querySelectorAll('a[href^="/#"], a[href^="#"]');
 

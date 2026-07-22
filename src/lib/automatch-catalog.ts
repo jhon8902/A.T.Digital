@@ -25,6 +25,7 @@ export interface AutomatchCarouselItem {
   catalogId?: number;
   noteId?: number;
   especificacionesId?: string;
+  condicion?: string;
   href: string;
   toolHref: string;
   ctaLabel: string;
@@ -55,6 +56,12 @@ interface CatalogAuto {
   ciudad: string;
   condicion: string;
   año?: number;
+  kilometraje?: number;
+  placa?: "par" | "impar";
+  placa_ultimo_digito?: number;
+  carroceria?: string;
+  transmision?: string;
+  demo?: boolean;
   imagen_principal: string;
   galeria: string[];
   especificaciones_id: string;
@@ -69,6 +76,9 @@ export interface AutomatchConcesionario {
   whatsapp?: string;
   email?: string;
   horario?: string;
+  sede?: string;
+  lat?: number;
+  lng?: number;
 }
 
 export interface AutomatchCatalogVehicle {
@@ -80,6 +90,12 @@ export interface AutomatchCatalogVehicle {
   ciudad: string;
   condicion: string;
   año?: number;
+  kilometraje?: number;
+  placa?: "par" | "impar";
+  placa_ultimo_digito?: number;
+  carroceria?: string;
+  transmision?: string;
+  demo?: boolean;
   imagen_principal: string;
   galeria: string[];
   descripcion: string;
@@ -313,7 +329,12 @@ function applyCatalogFields(
     ...vehicle,
     tipo: catalog.tipo || vehicle.tipo,
     uso: catalog.uso || vehicle.uso,
-    condicion: catalog.condicion || vehicle.condicion,
+    condicion:
+      vehicle.demo ||
+      vehicle.condicion === "usado" ||
+      vehicle.condicion === "seminuevo"
+        ? vehicle.condicion
+        : catalog.condicion || vehicle.condicion,
     ciudad: catalog.ciudad
       ? normalizeAutomatchText(catalog.ciudad)
       : vehicle.ciudad,
@@ -360,9 +381,10 @@ export function buildAutomatchCarousel(
       catalogId: auto.id,
       noteId,
       especificacionesId: auto.especificaciones_id,
+      condicion: auto.condicion || "nuevo",
       href: resolveCarouselFichaHref(auto.especificaciones_id, noteId),
       toolHref: "/automatch-find",
-      ctaLabel: "Ver ficha",
+      ctaLabel: "Ver modelo",
       toolCtaLabel: "Usar AutoMatch",
       source: matchedNote ? "merged" : "catalog",
     });
@@ -390,13 +412,14 @@ export function buildAutomatchCarousel(
       descripcion:
         note.subtitle?.trim() ||
         (plain.length > 110 ? `${plain.slice(0, 107).trim()}...` : plain) ||
-        "Ficha AutoMatch del modelo.",
+        "Modelo destacado en AutoMatch.",
       content: note.content,
       imagenes,
       noteId: Number(note.id),
+      condicion: "nuevo",
       href: `/notas/${note.id}`,
       toolHref: "/automatch-find",
-      ctaLabel: "Ver ficha",
+      ctaLabel: "Ver modelo",
       toolCtaLabel: "Usar AutoMatch",
       source: "note",
     });
@@ -532,6 +555,12 @@ function catalogAutoToVehicle(
     ciudad: normalizeAutomatchText(auto.ciudad),
     condicion: auto.condicion || "nuevo",
     año: auto.año,
+    kilometraje: auto.kilometraje,
+    placa: auto.placa,
+    placa_ultimo_digito: auto.placa_ultimo_digito,
+    carroceria: auto.carroceria,
+    transmision: auto.transmision,
+    demo: auto.demo,
     imagen_principal: auto.imagen_principal,
     galeria: gallery.length ? gallery : [auto.imagen_principal],
     descripcion:
@@ -541,7 +570,7 @@ function catalogAutoToVehicle(
     concesionario: { ...auto.concesionario },
   };
 
-  if (matchedNote?.image1) {
+  if (matchedNote) {
     const noteImages = collectNoteGallery(matchedNote, { skipCover: false });
     vehicle.galeria = uniqueUrls([...noteImages, ...vehicle.galeria]);
     if (noteImages[0]) vehicle.imagen_principal = noteImages[0];
@@ -631,10 +660,12 @@ export function buildAutomatchCatalog(
   const autos: AutomatchCatalogVehicle[] = [];
 
   for (const auto of catalog) {
-    const matchedNote = findMatchingNote(
-      auto.nombre,
-      dbNotes,
-    ) as AutomatchDbNoteFull | undefined;
+    const matchedNote = auto.demo
+      ? undefined
+      : (findMatchingNote(
+          auto.nombre,
+          dbNotes,
+        ) as AutomatchDbNoteFull | undefined);
 
     if (matchedNote) {
       usedNoteIds.add(String(matchedNote.id));

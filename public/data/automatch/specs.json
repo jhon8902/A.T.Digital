@@ -401,5 +401,92 @@
       "Caja amplia",
       "Modos de manejo"
     ]
+  },
+  "chevrolet-blazer-rs-usado": {
+    "motor": "V6 3.6L gasolina",
+    "potencia": "~308 hp",
+    "transmision": "Automática",
+    "traccion": "4x4",
+    "consumo_real": "11.5 l/100km",
+    "equipamiento": [
+      "Piloto automático",
+      "Cámara de reversa",
+      "Techo corredizo",
+      "Tapizado en cuero",
+      "Climatizador",
+      "Sensores de parqueo"
+    ]
+  },
+  "mazda-cx5-gt-usado": {
+    "motor": "2.5L gasolina",
+    "potencia": "~187 hp",
+    "transmision": "Automática",
+    "traccion": "4x4",
+    "consumo_real": "9.8 l/100km",
+    "equipamiento": [
+      "Head-up display",
+      "Control crucero adaptativo",
+      "Cámara 360°",
+      "Asientos en cuero",
+      "BOSE audio",
+      "Faros LED"
+    ]
+  },
+  "peugeot-2008-active-usado": {
+    "motor": "1.2L turbo gasolina",
+    "potencia": "~130 hp",
+    "transmision": "Automática",
+    "traccion": "4x2",
+    "consumo_real": "7.5 l/100km",
+    "equipamiento": [
+      "i-Cockpit",
+      "Pantalla táctil",
+      "Apple CarPlay / Android Auto",
+      "Control de estabilidad",
+      "Cámara de reversa"
+    ]
+  },
+  "nissan-versa-sense-usado": {
+    "motor": "1.6L gasolina",
+    "potencia": "~109 hp",
+    "transmision": "Automática CVT",
+    "traccion": "Delantera",
+    "consumo_real": "7.2 l/100km",
+    "equipamiento": [
+      "Aire acondicionado",
+      "Bluetooth",
+      "Control crucero",
+      "ABS",
+      "Airbags frontales"
+    ]
+  },
+  "chevrolet-onix-premier-usado": {
+    "motor": "1.0L turbo gasolina",
+    "potencia": "~116 hp",
+    "transmision": "Automática",
+    "traccion": "Delantera",
+    "consumo_real": "6.8 l/100km",
+    "equipamiento": [
+      "MyLink 8\"",
+      "OnStar",
+      "Cámara de reversa",
+      "Wi-Fi integrado",
+      "Control de estabilidad"
+    ]
+  },
+  "ford-escape-platinum-usado": {
+    "motor": "2.0L EcoBoost gasolina",
+    "potencia": "~250 hp",
+    "transmision": "Automática",
+    "traccion": "4x4",
+    "consumo_real": "9.2 l/100km",
+    "equipamiento": [
+      "SYNC 3",
+      "Asientos en cuero",
+      "Techo panorámico",
+      "Ford Co-Pilot360",
+      "Portón eléctrico",
+      "Sensores de parqueo"
+    ]
   }
 }
