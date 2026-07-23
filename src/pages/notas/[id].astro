@@ -7,6 +7,7 @@ import { getDealerForNote, type NoteDealerInfo } from "../../lib/leads";
 import {
   getNewsCardTitle,
   getNewsTitleHook,
+  splitEditorialParagraph,
 } from "../../lib/editorial";
 import {
   formatNotePublishDateLong,
@@ -242,18 +243,12 @@ const uniqueContentBlocks = contentParagraphs.map((paragraph, index) => {
   const customTitle = customTitles[index];
   const normalizedParagraph = inlineManual ? inlineManual.paragraph : paragraph;
   
-  // Solo split si hay máximo 2 párrafos para evitar timeout
-  const paragraphParts = normalizedParagraph
-    .split(/\r?\n/)
-    .map((part) => part.trim())
-    .filter(Boolean)
-    .slice(0, 3); // Limitar a máximo 3 partes
-  
+  const paragraphParts = splitEditorialParagraph(normalizedParagraph);
   const title = inlineManual?.title || customTitle || makeBlockTitle(normalizedParagraph, index);
 
   return {
     paragraph: normalizedParagraph,
-    paragraphs: paragraphParts.length > 1 ? paragraphParts : [normalizedParagraph],
+    paragraphs: paragraphParts,
     title,
   };
 });
@@ -449,42 +444,54 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
       <section class={`articulo-container ${categoryClass}`}>
         <article class={`noticia-detalle${useSmartImageFrame ? " smart-note-frame" : ""}`}>
           {
-            coverImage && (
-              <img
-                class="noticia-portada noticia-portada--main"
-                src={coverImage}
-                alt={note.title}
-                loading="lazy"
-                decoding="async"
-              />
-            )
-          }
+            <>
+              <p class="nota-eyebrow">
+                {sectionLabel(note.category)} · {sourceScopeLabel(note.source_scope)}
+              </p>
 
-          <h1>{displayTitle}</h1>
-          <div class="nota-meta-line">
-            <span class="nota-meta-item">
-              <i class="fa-regular fa-user" aria-hidden="true"></i>
-              <span>{note.editor?.trim() || "Jhon Aparicio"}</span>
-            </span>
-            {
-              formatNotePublishDateLong(note) && (
+              <h1>{displayTitle}</h1>
+              <div class="nota-meta-line">
                 <span class="nota-meta-item">
-                  <i class="fa-regular fa-calendar" aria-hidden="true"></i>
-                  <span>{formatNotePublishDateLong(note)}</span>
+                  <i class="fa-regular fa-user" aria-hidden="true"></i>
+                  <span>{note.editor?.trim() || "Jhon Aparicio"}</span>
                 </span>
-              )
-            }
-            <span class="nota-meta-item">
-              <i class="fa-regular fa-bookmark" aria-hidden="true"></i>
-              <span>{sectionLabel(note.category)}</span>
-            </span>
-            <span class="nota-meta-item">
-              <i class="fa-regular fa-compass" aria-hidden="true"></i>
-              <span>{sourceScopeLabel(note.source_scope)}</span>
-            </span>
-          </div>
+                {
+                  formatNotePublishDateLong(note) && (
+                    <span class="nota-meta-item">
+                      <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                      <span>{formatNotePublishDateLong(note)}</span>
+                    </span>
+                  )
+                }
+                <span class="nota-meta-item">
+                  <i class="fa-regular fa-bookmark" aria-hidden="true"></i>
+                  <span>{sectionLabel(note.category)}</span>
+                </span>
+                <span class="nota-meta-item">
+                  <i class="fa-regular fa-compass" aria-hidden="true"></i>
+                  <span>{sourceScopeLabel(note.source_scope)}</span>
+                </span>
+              </div>
 
-          {displayLead && <p class="noticia-descripcion">{displayLead}</p>}
+              {
+                displayLead && (
+                  <p class="noticia-descripcion">{displayLead}</p>
+                )
+              }
+
+              {
+                coverImage && (
+                  <img
+                    class="noticia-portada noticia-portada--main"
+                    src={coverImage}
+                    alt={note.title}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )
+              }
+            </>
+          }
 
           {
             uniqueContentBlocks.length > 0 ? (
@@ -495,8 +502,17 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
                     <div class="noticia-texto">
                       <h2 class="noticia-titulo">{block.title}</h2>
                       {
-                        block.paragraphs.map((paragraphText) => (
-                          <p class="noticia-parrafo">{paragraphText}</p>
+                        block.paragraphs.map((paragraphText, paragraphIndex) => (
+                          <p
+                            class:list={[
+                              "noticia-parrafo",
+                              index === 0 &&
+                                paragraphIndex === 0 &&
+                                "noticia-parrafo--lead",
+                            ]}
+                          >
+                            {paragraphText}
+                          </p>
                         ))
                       }
                     </div>
@@ -672,6 +688,8 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
 </Layout>
 
 <style>
+  /* Estilos de nota: ver /css/nota-article.css */
+
   .nota-not-found {
     width: min(100%, 720px);
     margin: 3rem auto 4rem;
@@ -735,37 +753,5 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
     background: #08341f;
     color: #fff;
     border-color: #08341f;
-  }
-
-  .nota-meta-line {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem 1rem;
-    margin: 0.35rem 0 0.9rem;
-    color: #5a5a5a;
-    font-size: 0.96rem;
-    line-height: 1.3;
-  }
-
-  .nota-meta-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-weight: 500;
-  }
-
-  .nota-meta-item i {
-    font-size: 0.95rem;
-    opacity: 1;
-    color: #e6b410;
-  }
-
-  @media (max-width: 640px) {
-    .nota-meta-line {
-      margin-bottom: 0.7rem;
-      font-size: 0.9rem;
-      gap: 0.5rem 0.85rem;
-    }
   }
 </style>

@@ -44,17 +44,17 @@
   --font-display: var(--font-editorial);
   --radius-card: 12px;
   --shadow-card: 0 4px 16px rgba(8, 52, 31, 0.08);
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --leading-body: 1.65;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.3rem;
+  --leading-body: 1.68;
 
   /* Home — escala tipográfica unificada */
   --home-eyebrow: 0.82rem;
   --home-section-title: clamp(2.1rem, 3.2vw, 2.95rem);
-  --home-section-lead: clamp(1.05rem, 1.35vw, 1.2rem);
+  --home-section-lead: clamp(1.08rem, 1.35vw, 1.28rem);
   --home-card-title: clamp(1.2rem, 1.35vw, 1.6rem);
-  --home-card-body: clamp(0.98rem, 1vw, 1.06rem);
+  --home-card-body: clamp(1.02rem, 1.05vw, 1.12rem);
   --home-card-meta: 0.84rem;
   --home-card-scope: 0.72rem;
   --home-card-chip: 0.78rem;
@@ -75,9 +75,9 @@
   :root {
     --home-eyebrow: 0.875rem;
     --home-section-title: 2.95rem;
-    --home-section-lead: 1.2rem;
+    --home-section-lead: 1.28rem;
     --home-card-title: 1.6rem;
-    --home-card-body: 1.06rem;
+    --home-card-body: 1.12rem;
     --home-card-meta: 0.875rem;
     --home-card-scope: 0.75rem;
     --home-card-chip: 0.8125rem;

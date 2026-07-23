@@ -130,35 +130,19 @@ const categoryLabel = (() => {
   }
 })();
 
-// 🔹 Definimos el CSS de categoría que se cargará dinámicamente
-let categoriaCSS = "";
-switch (categoria) {
-  case "electricos":
-  case "eléctricos":
-    categoriaCSS = "/css/electricos.css";
-    break;
-  case "hibridos":
-    categoriaCSS = "/css/hibridos.css";
-    break;
-  case "noticias":
-    categoriaCSS = "/css/noticias.css";
-    break;
-  case "lanzamientos":
-    categoriaCSS = "/css/lanzamientos.css";
-    break;
-  case "deportes":
-    categoriaCSS = "/css/deportes.css";
-    break;
-  case "pruebas":
-    categoriaCSS = "/css/lanzamientos.css";
-    break;
-  case "automatch":
-    categoriaCSS = "/css/automatch.css";
-    break;
-  default:
-    categoriaCSS = "";
-    break;
-}
+// CSS de artículo dinámico (/notas/[id]) — plantilla unificada
+const NOTE_ARTICLE_CATEGORIES = new Set([
+  "electricos",
+  "eléctricos",
+  "hibridos",
+  "noticias",
+  "lanzamientos",
+  "deportes",
+  "pruebas",
+  "automatch",
+  "general",
+]);
+const loadNoteArticleCSS = NOTE_ARTICLE_CATEGORIES.has(categoria);
 import Header from "../components/header/Header.astro";
 import Footer from "../components/footer/footer.astro";
 import {
@@ -280,8 +264,11 @@ const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID?.trim() || "";
     <link rel="stylesheet" href="/css/base.css" />
     <link rel="stylesheet" href="/css/common.css" />
 
-    <!-- Estilos específicos según la categoría (solo para notas) -->
-    {categoriaCSS && <link rel="stylesheet" href={categoriaCSS} />}
+    <!-- Plantilla unificada de notas dinámicas -->
+    {loadNoteArticleCSS && <link rel="stylesheet" href="/css/nota-article.css" />}
+    {categoria === "automatch" && (
+      <link rel="stylesheet" href="/css/automatch-ficha-nota.css" />
+    )}
 
     <!-- Estilos del footer -->
     <link rel="stylesheet" href="/css/footer.css" />

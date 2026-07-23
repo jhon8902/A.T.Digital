@@ -40,3 +40,47 @@ export function getNewsCardDeck(
 export function usesCompactNewsCardTitle(_category?: string): boolean {
   return true;
 }
+
+/**
+ * Divide un bloque editorial en varios <p> para mejorar legibilidad.
+ * Respeta párrafos explícitos (doble salto) y parte textos muy largos por oración.
+ */
+export function splitEditorialParagraph(text: string): string[] {
+  const trimmed = (text || "").trim();
+  if (!trimmed) return [];
+
+  const byBlank = trimmed
+    .split(/\n\s*\n/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+  if (byBlank.length > 1) return byBlank;
+
+  const byLine = trimmed
+    .split(/\r?\n/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+  if (byLine.length > 1) return byLine;
+
+  if (trimmed.length <= 300) return [trimmed];
+
+  const sentences =
+    trimmed.match(/[^.!?…]+[.!?…]+(?:\s+|$)|[^.!?…]+$/g) || [trimmed];
+  const chunks: string[] = [];
+  let buffer = "";
+
+  for (const sentence of sentences) {
+    const piece = sentence.trim();
+    if (!piece) continue;
+
+    const candidate = buffer ? `${buffer} ${piece}` : piece;
+    if (buffer && candidate.length > 280) {
+      chunks.push(buffer.trim());
+      buffer = piece;
+    } else {
+      buffer = candidate;
+    }
+  }
+
+  if (buffer.trim()) chunks.push(buffer.trim());
+  return chunks.length > 1 ? chunks : [trimmed];
+}
