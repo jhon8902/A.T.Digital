@@ -488,5 +488,20 @@
       "Portón eléctrico",
       "Sensores de parqueo"
     ]
+  },
+  "chery-icar-03t-reev": {
+    "motor": "REEV (2 eléctricos + generador 1.5 TGDI)",
+    "potencia": "422 hp",
+    "autonomia": "170 km EV | +800 km combinada",
+    "traccion": "Integral iWD 4x4",
+    "equipamiento": [
+      "Pantalla 15,6\" FHD",
+      "11 ADAS",
+      "Cámara 540°",
+      "Carga DC 90 kW",
+      "9 modos de manejo",
+      "Techo panorámico",
+      "Asientos ventilados"
+    ]
   }
 }

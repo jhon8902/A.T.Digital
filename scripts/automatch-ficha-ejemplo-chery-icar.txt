@@ -1,0 +1,27 @@
+FICHA DE EJEMPLO — Chery iCAR 03T REEV (formulario AutoMatch)
+====================================================================
+
+Categoría: AutoMatch
+Ámbito: Nacional
+Título: Chery iCAR 03T REEV
+Subtítulo: Rango extendido 4x4 con 422 hp: preventa en Colombia desde $124.990.000.
+
+--- Imágenes (carpeta sugerida) ---
+/img/chery-icar-03t/chery-icar-03t-portada.webp
+/img/chery-icar-03t/chery-icar-03t-exterior.webp
+/img/chery-icar-03t/chery-icar-03t-interior.webp
+/img/chery-icar-03t/chery-icar-03t-aventura.webp
+/img/chery-icar-03t/chery-icar-03t-tecnologia.webp
+/img/chery-icar-03t/chery-icar-03t-seguridad.webp
+
+Fuente recomendada: galería oficial en https://www.chery.com.co/icar-03t/
+
+--- Catálogo JSON ---
+especificaciones_id: chery-icar-03t-reev
+Ya agregado en src/data/automatch/autos.json (id 30)
+
+--- Insertar en BD ---
+npm run catalog:sync
+npm run automatch:seed-chery-icar
+
+Luego abre /automatch-find y busca por precio ~130M, tipo eléctrico o uso familiar.

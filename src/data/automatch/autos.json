@@ -867,5 +867,36 @@
       "lat": 4.7016,
       "lng": -74.1469
     }
+  },
+  {
+    "id": 30,
+    "nombre": "Chery iCAR 03T REEV",
+    "tipo": "eléctrico",
+    "uso": "familiar",
+    "precio": 129990000,
+    "ciudad": "bogotá",
+    "condicion": "nuevo",
+    "año": 2027,
+    "carroceria": "suv",
+    "transmision": "automática",
+    "imagen_principal": "/img/chery-icar-03t/chery-icar-03t-portada.webp",
+    "galeria": [
+      "/img/chery-icar-03t/chery-icar-03t-exterior.webp",
+      "/img/chery-icar-03t/chery-icar-03t-interior.webp",
+      "/img/chery-icar-03t/chery-icar-03t-aventura.webp",
+      "/img/chery-icar-03t/chery-icar-03t-tecnologia.webp"
+    ],
+    "descripcion": "SUV REEV 4x4 con 422 hp, autonomía combinada +800 km y preventa desde $129.990.000 en Colombia.",
+    "especificaciones_id": "chery-icar-03t-reev",
+    "concesionario": {
+      "id": 30,
+      "nombre": "Chery Colombia - Grupo Vardí",
+      "direccion": "Red nacional — 22 concesionarios",
+      "telefono": "+57 322 366 8989",
+      "whatsapp": "573223668989",
+      "email": "contacto@chery.com.co",
+      "horario": "Lunes-Viernes 8:00-18:00 | Sábados 9:00-13:00",
+      "sede": "Bogotá y principales ciudades"
+    }
   }
 ]
