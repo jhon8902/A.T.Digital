@@ -125,7 +125,9 @@ body.nota-page .articulo-container .noticia-bloque {
   border-top: 1px solid rgba(8, 52, 31, 0.06);
 }
 
-body.nota-page .articulo-container .noticia-bloque:first-of-type {
+body.nota-page
+  .articulo-container
+  .noticia-bloque:first-of-type:not(.noticia-bloque--automatch) {
   border-top: none;
   padding-top: 0;
 }

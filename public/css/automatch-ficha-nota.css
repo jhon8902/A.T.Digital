@@ -165,12 +165,6 @@ body.automatch .noticia-detalle--automatch-ficha .noticia-bloque--automatch {
 
 body.automatch
   .noticia-detalle--automatch-ficha
-  .noticia-bloque--automatch:first-of-type {
-  margin-top: 0.25rem;
-}
-
-body.automatch
-  .noticia-detalle--automatch-ficha
   .noticia-bloque--automatch
   .noticia-texto {
   display: contents;
@@ -283,6 +277,26 @@ body.automatch .noticia-detalle--automatch-ficha .noticia-galeria-complementaria
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.8fr);
     align-items: stretch;
+    border-bottom: 1px solid rgba(8, 52, 31, 0.08);
+  }
+
+  body.automatch.nota-page
+    .articulo-container
+    .noticia-detalle--automatch-ficha
+    .automatch-ficha-hero
+    + .noticia-bloque--automatch {
+    padding-top: clamp(2.75rem, 4vw, 3.5rem) !important;
+    margin-top: 0 !important;
+    border-top: none;
+  }
+
+  body.automatch.nota-page
+    .articulo-container
+    .noticia-detalle--automatch-ficha
+    .noticia-bloque--automatch
+    .noticia-titulo {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
   }
 
   .automatch-ficha-hero__media {
