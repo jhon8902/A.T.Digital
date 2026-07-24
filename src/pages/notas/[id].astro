@@ -9,6 +9,7 @@ import { getDealerForNote, type NoteDealerInfo } from "../../lib/leads";
 import {
   getNewsCardTitle,
   getNewsTitleHook,
+  isLikelySubheading,
   splitEditorialParagraph,
 } from "../../lib/editorial";
 import {
@@ -639,22 +640,42 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
               uniqueContentBlocks.map((block, index) => {
                 const blockImage = galleryImages[index];
                 return (
-                  <section class={`noticia-bloque${index % 2 === 1 ? " imagen-izquierda" : ""}`}>
+                  <section
+                    class:list={[
+                      "noticia-bloque",
+                      !isAutomatchNote && index % 2 === 1 && "imagen-izquierda",
+                      isAutomatchNote && "noticia-bloque--automatch",
+                      isAutomatchNote &&
+                        block.paragraphs.length >= 4 &&
+                        "noticia-bloque--long",
+                    ]}
+                  >
                     <div class="noticia-texto">
                       <h2 class="noticia-titulo">{block.title}</h2>
                       {
-                        block.paragraphs.map((paragraphText, paragraphIndex) => (
-                          <p
-                            class:list={[
-                              "noticia-parrafo",
-                              index === 0 &&
-                                paragraphIndex === 0 &&
-                                "noticia-parrafo--lead",
-                            ]}
-                          >
-                            {paragraphText}
-                          </p>
-                        ))
+                        block.paragraphs.map((paragraphText, paragraphIndex) => {
+                          if (
+                            isAutomatchNote &&
+                            isLikelySubheading(paragraphText)
+                          ) {
+                            return (
+                              <h3 class="noticia-subtitulo">{paragraphText}</h3>
+                            );
+                          }
+
+                          return (
+                            <p
+                              class:list={[
+                                "noticia-parrafo",
+                                index === 0 &&
+                                  paragraphIndex === 0 &&
+                                  "noticia-parrafo--lead",
+                              ]}
+                            >
+                              {paragraphText}
+                            </p>
+                          );
+                        })
                       }
                     </div>
                     {

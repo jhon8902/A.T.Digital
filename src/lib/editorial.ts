@@ -84,3 +84,13 @@ export function splitEditorialParagraph(text: string): string[] {
   if (buffer.trim()) chunks.push(buffer.trim());
   return chunks.length > 1 ? chunks : [trimmed];
 }
+
+/** Línea corta sin cierre de oración — útil como subtítulo dentro de bloques largos. */
+export function isLikelySubheading(text: string): boolean {
+  const trimmed = (text || "").trim();
+  if (trimmed.length < 12 || trimmed.length > 80) return false;
+  if (/[.!?…]$/.test(trimmed)) return false;
+  if (/^t[ií]tulo\s*:/i.test(trimmed)) return false;
+  if (/^\d+[\d.,\s]*$/.test(trimmed)) return false;
+  return true;
+}
