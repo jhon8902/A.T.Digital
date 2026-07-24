@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>AutoTech Digital — Presentación V12 Magazine</title>
+  <style>
+    @page { size: A4; margin: 18mm 16mm; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      color: #1a1a1a;
+      line-height: 1.55;
+      font-size: 10.5pt;
+      margin: 0;
+      background: #fff;
+    }
+    .cover {
+      min-height: 250mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem;
+      background: linear-gradient(165deg, #062818 0%, #08341f 55%, #0a4228 100%);
+      color: #fff;
+      page-break-after: always;
+    }
+    .cover__eyebrow {
+      color: #f0c14a;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .cover h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2.4rem;
+      line-height: 1.15;
+      margin: 0 0 1rem;
+      max-width: 14ch;
+    }
+    .cover h1 span { color: #f0c14a; }
+    .cover__sub {
+      font-size: 1.05rem;
+      max-width: 36ch;
+      opacity: 0.92;
+      margin-bottom: 2rem;
+    }
+    .cover__meta {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      border-top: 1px solid rgba(240, 193, 74, 0.35);
+      padding-top: 1rem;
+      margin-top: auto;
+    }
+    section {
+      padding: 0 0 1.25rem;
+      page-break-inside: avoid;
+    }
+    .page {
+      page-break-after: always;
+      padding-top: 0.5rem;
+    }
+    h2 {
+      font-family: Georgia, serif;
+      color: #08341f;
+      font-size: 1.35rem;
+      margin: 0 0 0.75rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 2px solid #f0c14a;
+    }
+    h3 {
+      color: #08341f;
+      font-size: 1rem;
+      margin: 1rem 0 0.4rem;
+    }
+    p { margin: 0 0 0.65rem; }
+    ul { margin: 0.25rem 0 0.75rem; padding-left: 1.2rem; }
+    li { margin-bottom: 0.3rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5pt;
+      margin: 0.5rem 0 1rem;
+    }
+    th, td {
+      border: 1px solid #d5dbe3;
+      padding: 0.45rem 0.55rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #08341f;
+      color: #fff;
+      font-weight: 600;
+    }
+    tr:nth-child(even) td { background: #f4f5f7; }
+    .quote {
+      background: #f4f5f7;
+      border-left: 4px solid #f0c14a;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+      font-style: italic;
+      color: #333;
+    }
+    .diagram {
+      background: #f4f5f7;
+      border: 1px solid #d5dbe3;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: Consolas, monospace;
+      font-size: 8.5pt;
+      line-height: 1.45;
+      white-space: pre;
+      margin: 0.75rem 0;
+    }
+    .badge {
+      display: inline-block;
+      background: #08341f;
+      color: #f0c14a;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge--live { background: #0a4228; }
+    .badge--wip { background: #5a6470; }
+    .badge--future { background: #888; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .card {
+      border: 1px solid #d5dbe3;
+      border-radius: 8px;
+      padding: 0.75rem;
+      background: #fff;
+    }
+    .card h4 {
+      margin: 0 0 0.35rem;
+      color: #08341f;
+      font-size: 0.95rem;
+    }
+    .card p { font-size: 9.5pt; margin: 0; color: #444; }
+    .fill-blank {
+      color: #888;
+      font-style: italic;
+    }
+    .footer-note {
+      font-size: 8.5pt;
+      color: #666;
+      margin-top: 1.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #e0e0e0;
+    }
+    .closing {
+      background: linear-gradient(135deg, #08341f, #0a4228);
+      color: #fff;
+      padding: 1.25rem;
+      border-radius: 10px;
+      margin-top: 0.75rem;
+    }
+    .closing h3 { color: #f0c14a; margin-top: 0; }
+    .closing p { margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+
+  <div class="cover">
+    <p class="cover__eyebrow">Presentación estratégica · 2026</p>
+    <h1>Auto<span>Tech</span> Digital</h1>
+    <p class="cover__sub">
+      Ecosistema digital automotriz en Colombia: medio editorial, herramientas
+      inteligentes y programa B2B para concesionarios.
+    </p>
+    <p class="cover__meta">
+      autotechdigital.com<br />
+      Documento preparado para reunión con dirección V12 Magazine<br />
+      Confidencial — uso interno
+    </p>
+  </div>
+
+  <div class="page">
+    <section>
+      <h2>1. Resumen ejecutivo</h2>
+      <p class="quote">
+        «AutoTech Digital no es solo una revista online. Es un ecosistema que
+        combina contenido editorial, herramientas para el comprador y un canal
+        B2B para concesionarios. Construimos el puente entre informarse,
+        decidir y actuar.»
+      </p>
+      <table>
+        <tr><th>Qué es</th><td>Plataforma automotriz digital enfocada en Colombia</td></tr>
+        <tr><th>Qué resuelve</th><td>Comprador perdido entre notas sueltas; concesionarios sin leads calificados</td></tr>
+        <tr><th>Diferenciador</th><td>Contenido + herramientas (AutoMatch, TCO) + conversión comercial</td></tr>
+        <tr><th>Estado</th><td>Producto en producción y crecimiento activo en redes</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>2. El problema y la oportunidad</h2>
+      <table>
+        <tr><th>Hoy en el mercado</th><th>Lo que falta</th></tr>
+        <tr><td>Muchas notas y reviews sueltas</td><td>Recorrido completo: informarse → comparar → contactar</td></tr>
+        <tr><td>Medios que solo publican</td><td>Herramientas con datos reales (precio COP, TCO, ciudad)</td></tr>
+        <tr><td>Leads fríos para dealers</td><td>Contactos con intención (presupuesto, modelo, ciudad)</td></tr>
+        <tr><td>Contenido genérico</td><td>Enfoque Colombia y segmento EV/híbridos en crecimiento</td></tr>
+      </table>
+      <p><strong>Oportunidad:</strong> quien domine contenido + herramientas + conversión tendrá ventaja frente a medios tradicionales.</p>
+    </section>
+  </div>
+
+  <div class="page">
+    <section>
+      <h2>3. El ecosistema AutoTech</h2>
+      <div class="diagram">┌─────────────────────────────────────────────────────┐
+│           AUTOTECH DIGITAL (Motor editorial)         │
+│  Noticias · Lanzamientos · Eléctricos · Híbridos    │
+│  Pruebas · Fichas técnicas · SEO · Redes sociales   │
+└────────────────────────┬────────────────────────────┘
+                         │
+     ┌───────────────────┼───────────────────┐
+     ▼                   ▼                   ▼
+┌──────────┐      ┌─────────────┐     ┌──────────────┐
+│ AutoMatch│      │ Calculadora │     │ Programa     │
+│          │      │ TCO         │     │ Concesionarios│
+│ Encuentra│      │ Costo real  │     │ Leads B2B    │
+│ tu auto  │      │ Colombia    │     │ + Dashboard  │
+└──────────┘      └─────────────┘     └──────────────┘
+                         │
+                         ▼ (futuro)
+                 ┌──────────────┐
+                 │ AutoTech Panel│
+                 └──────────────┘</div>
+    </section>
+
+    <section>
+      <h2>4. Productos — estado actual</h2>
+
+      <h3><span class="badge badge--live">En producción</span> AutoTech Digital</h3>
+      <ul>
+        <li>Portal: noticias, lanzamientos, eléctricos, híbridos, deportes, pruebas</li>
+        <li>Fichas técnicas editoriales con formato propio (5 bloques + imágenes)</li>
+        <li>Panel editorial para crear y publicar notas</li>
+        <li>Presencia activa en Instagram, TikTok y Facebook</li>
+      </ul>
+
+      <h3><span class="badge badge--wip">Avanzado</span> AutoMatch</h3>
+      <ul>
+        <li>Buscador por presupuesto, uso, ciudad y tipo de vehículo</li>
+        <li>Catálogo de modelos en Colombia con fichas y especificaciones</li>
+        <li>Solicitud de test drive integrada en notas y secciones del sitio</li>
+        <li>Flujo: Nota → AutoMatch → Test drive → Lead al concesionario</li>
+      </ul>
+
+      <h3><span class="badge badge--live">Lanzado</span> Calculadora TCO</h3>
+      <ul>
+        <li>Costo total de propiedad: combustible, SOAT, RTM, seguro, mantenimiento, impuestos, depreciación</li>
+        <li>Integrada con catálogo AutoMatch · URL: /calculadora-tco</li>
+        <li>Potencial SEO: «cuánto cuesta tener un X en Colombia»</li>
+      </ul>
+    </section>
+  </div>
+
+  <div class="page">
+    <section>
+      <h3><span class="badge badge--live">Lanzado</span> Programa Concesionarios B2B</h3>
+      <ul>
+        <li>Landing comercial: /concesionarios — presentación del programa</li>
+        <li>Dashboard operativo: leads, estados, comisiones confirmadas</li>
+        <li>Vinculación concesionario ↔ vehículos del catálogo</li>
+        <li>Modelo: comisión por lead confirmado o plan partner mensual</li>
+      </ul>
+
+      <h3><span class="badge badge--future">Futuro</span> AutoTech Panel</h3>
+      <ul>
+        <li>Personalización digital de la experiencia en el vehículo (temas, widgets)</li>
+        <li>En desarrollo privado; lanzamiento cuando la audiencia alcance escala</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>5. Modelo de negocio</h2>
+      <table>
+        <tr><th>Fuente</th><th>Horizonte</th><th>Descripción</th></tr>
+        <tr><td>Publicidad / sponsors</td><td>Corto plazo</td><td>Marcas automotrices en contenido</td></tr>
+        <tr><td>Leads B2B concesionarios</td><td>En marcha</td><td>Comisión por contacto o plan mensual</td></tr>
+        <tr><td>Contenido patrocinado</td><td>Corto plazo</td><td>Notas y fichas con marcas</td></tr>
+        <tr><td>Herramientas premium</td><td>Mediano plazo</td><td>AutoMatch avanzado, membresía</td></tr>
+        <tr><td>AutoTech Panel</td><td>Largo plazo</td><td>Suscripción + marketplace de temas</td></tr>
+      </table>
+      <p><strong>Apuesta:</strong> contenido trae tráfico · herramientas retienen · B2B monetiza.</p>
+    </section>
+  </div>
+
+  <div class="page">
+    <section>
+      <h2>6. Tecnología y seriedad del producto</h2>
+      <ul>
+        <li>Stack moderno: Astro, TypeScript, PostgreSQL, Netlify</li>
+        <li>APIs propias: notas, leads, autenticación de concesionarios</li>
+        <li>Arquitectura por productos (ramas git: editorial, automatch, panel)</li>
+        <li>Mobile-first y optimización SEO</li>
+      </ul>
+      <p>No es un blog genérico: es un producto digital con backend, panel de dealers y herramientas interactivas.</p>
+    </section>
+
+    <section>
+      <h2>7. Tracción actual <span class="fill-blank">(completar antes de la reunión)</span></h2>
+      <table>
+        <tr><th>Métrica</th><th>Dato</th></tr>
+        <tr><td>Seguidores Instagram</td><td class="fill-blank">_______________</td></tr>
+        <tr><td>Seguidores TikTok</td><td class="fill-blank">_______________</td></tr>
+        <tr><td>Visitas web / mes</td><td class="fill-blank">_______________</td></tr>
+        <tr><td>Notas publicadas</td><td class="fill-blank">_______________</td></tr>
+        <tr><td>Modelos en catálogo AutoMatch</td><td class="fill-blank">_______________</td></tr>
+        <tr><td>Concesionarios en conversación</td><td class="fill-blank">_______________</td></tr>
+      </table>
+    </section>
+  </div>
+
+  <div class="page">
+    <section>
+      <h2>8. Sinergia V12 Magazine × AutoTech Digital</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Lo que V12 aporta</h4>
+          <p>Reconocimiento y red en el sector · Credibilidad ante marcas y dealers · Cross-promotion · Mentoring editorial/comercial</p>
+        </div>
+        <div class="card">
+          <h4>Lo que AutoTech aporta</h4>
+          <p>Plataforma con herramientas propias · Foco EV/híbridos/tecnología · Motor de leads medible · Agilidad de startup</p>
+        </div>
+      </div>
+
+      <h3>Formatos de colaboración posibles</h3>
+      <ol>
+        <li>Mención / cross-post entre audiencias</li>
+        <li>Columna o sección conjunta (herramientas, futuro del auto)</li>
+        <li>Evento o live de lanzamiento con respaldo V12</li>
+        <li>Introducción a red de concesionarios</li>
+        <li>Asesoría editorial sobre fichas y línea de contenido</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>9. Roadmap 2026–2028</h2>
+      <table>
+        <tr><th>Año</th><th>Hitos</th></tr>
+        <tr><td><strong>2026</strong></td><td>Consolidar plataforma + AutoMatch · Primeros concesionarios pagos · TCO como referencia SEO</td></tr>
+        <tr><td><strong>2027</strong></td><td>Escala AutoMatch (más modelos/ciudades) · Dashboard dealer v2 · Comunidad activa</td></tr>
+        <tr><td><strong>2028</strong></td><td>Lanzamiento AutoTech Panel · Marketplace · Posible expansión LATAM</td></tr>
+      </table>
+    </section>
+  </div>
+
+  <div class="page">
+    <section>
+      <h2>10. Demo en vivo (recomendado en reunión)</h2>
+      <ol>
+        <li><strong>autotechdigital.com</strong> — Home y secciones editoriales</li>
+        <li><strong>/automatch-find</strong> — Buscador inteligente</li>
+        <li><strong>/calculadora-tco</strong> — Costo total de propiedad</li>
+        <li><strong>/concesionarios</strong> — Programa B2B</li>
+        <li><strong>/dashboard-concesionario</strong> — Panel de leads (si aplica)</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>11. Cierre — qué busco hoy</h2>
+      <div class="closing">
+        <h3>Impulso estratégico, no inversión en primera reunión</h3>
+        <p class="quote" style="border-left-color:#f0c14a;background:rgba(0,0,0,0.2);color:#fff;font-style:italic;">
+          «Tengo el producto construido y una visión clara. Lo que busco es el empujón de alguien que el sector ya respeta: visibilidad, una intro a marcas o concesionarios, o tu opinión honesta sobre el siguiente paso.»
+        </p>
+        <p><strong>Preguntas para la conversación:</strong></p>
+        <ul>
+          <li>¿Qué ves más fuerte: el medio, AutoMatch o el B2B?</li>
+          <li>¿Conoces dealers que valoren leads digitales calificados?</li>
+          <li>¿Tiene sentido una colaboración puntual antes de algo más grande?</li>
+        </ul>
+      </div>
+    </section>
+
+    <p class="footer-note">
+      AutoTech Digital · autotechdigital.com · Instagram @autotechdigital · Documento generado julio 2026
+    </p>
+  </div>
+
+</body>
+</html>
