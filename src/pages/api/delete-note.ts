@@ -1,41 +1,6 @@
 import type { APIRoute } from "astro";
-import pkg from "pg";
-
-const { Pool } = pkg;
-
-let _pool: InstanceType<typeof Pool> | null = null;
-
-const DB_CONNECTION_TIMEOUT_MS = Number(
-  process.env.DB_CONNECTION_TIMEOUT_MS || "5000"
-);
-const DB_QUERY_TIMEOUT_MS = Number(process.env.DB_QUERY_TIMEOUT_MS || "8000");
-
-function getDatabaseUrl() {
-  const fromImportMeta = (import.meta as any)?.env?.DATABASE_URL;
-  return fromImportMeta || process.env.DATABASE_URL;
-}
-
-function getPool() {
-  if (!_pool) {
-    const connStr = getDatabaseUrl();
-
-    if (!connStr) {
-      throw new Error("DATABASE_URL no esta configurada");
-    }
-
-    _pool = new Pool({
-      connectionString: connStr,
-      ssl: connStr.includes("localhost") ? false : { rejectUnauthorized: false },
-      connectionTimeoutMillis: DB_CONNECTION_TIMEOUT_MS,
-      query_timeout: DB_QUERY_TIMEOUT_MS,
-      statement_timeout: DB_QUERY_TIMEOUT_MS,
-      idleTimeoutMillis: 10000,
-      max: 5,
-    });
-  }
-
-  return _pool;
-}
+import { isAuthorizedAdminRequest } from "../../lib/admin-auth";
+import { getPool } from "../../lib/db";
 
 function responseHeaders() {
   return {
@@ -110,6 +75,16 @@ async function deleteNoteWithDependencies(noteId: number) {
     await tryDeleteDependency(client, "DELETE FROM likes WHERE note_id = $1", noteId);
     await tryDeleteDependency(client, "DELETE FROM comentarios WHERE note_id = $1", noteId);
     await tryDeleteDependency(client, "DELETE FROM comments WHERE note_id = $1", noteId);
+    await tryDeleteDependency(
+      client,
+      "DELETE FROM test_drives WHERE note_id = $1",
+      noteId,
+    );
+    await tryDeleteDependency(
+      client,
+      "UPDATE dealer_vehicles SET note_id = NULL WHERE note_id = $1",
+      noteId,
+    );
 
     // Limpia cualquier otra FK hacia notes.id para evitar 23503
     await deleteForeignKeyDependencies(client, noteId);
@@ -136,8 +111,19 @@ export const OPTIONS: APIRoute = async () => {
   });
 };
 
+function unauthorizedResponse(headers: Record<string, string>) {
+  return new Response(JSON.stringify({ error: "No autorizado" }), {
+    status: 401,
+    headers,
+  });
+}
+
 export const DELETE: APIRoute = async ({ request }) => {
   const headers = responseHeaders();
+
+  if (!isAuthorizedAdminRequest(request)) {
+    return unauthorizedResponse(headers);
+  }
 
   try {
     const url = new URL(request.url);
@@ -189,6 +175,10 @@ export const DELETE: APIRoute = async ({ request }) => {
 
 export const POST: APIRoute = async ({ request }) => {
   const headers = responseHeaders();
+
+  if (!isAuthorizedAdminRequest(request)) {
+    return unauthorizedResponse(headers);
+  }
 
   try {
     const body = await request.json().catch(() => ({}));

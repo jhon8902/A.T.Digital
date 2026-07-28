@@ -100,6 +100,16 @@ function getPool() {
   return _pool;
 }
 
+const poolReady = getPool()
+  .query("SELECT 1")
+  .then(() => undefined)
+  .catch((error) => {
+    console.warn(
+      "[save-note] DB warmup failed:",
+      error instanceof Error ? error.message : error
+    );
+  });
+
 async function getNotesColumns(): Promise<Set<string>> {
   if (_notesColumns) return _notesColumns;
 
@@ -610,6 +620,8 @@ export const handler: Handler = async (event) => {
           })()
         : null,
     };
+
+    await poolReady;
 
     const columns = await getNotesColumns();
     const supportsEditor = columns.has("editor");

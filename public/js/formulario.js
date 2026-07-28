@@ -19,6 +19,7 @@
   const cloudinaryQueue = document.getElementById("cloudinaryQueue");
   const cloudinaryStartSlot = document.getElementById("cloudinaryStartSlot");
   const cloudinaryFillEmptyOnly = document.getElementById("cloudinaryFillEmptyOnly");
+  const imagePreviewStrip = document.getElementById("imagePreviewStrip");
   const publishMode = document.getElementById("publishMode");
   const scheduledAtGroup = document.getElementById("scheduledAtGroup");
   const scheduledAtInput = document.getElementById("scheduledAt");
@@ -298,6 +299,51 @@
   function removeSelectedFile(index) {
     selectedCloudinaryFiles.splice(index, 1);
     renderCloudinaryQueue();
+  }
+
+  function renderImagePreviews() {
+    if (!(imagePreviewStrip instanceof HTMLElement)) return;
+
+    imagePreviewStrip.innerHTML = "";
+    const slots = [];
+
+    for (let i = 1; i <= 6; i += 1) {
+      const url = getFieldValue("image" + String(i)).trim();
+      if (!url) continue;
+      slots.push({ index: i, url: url });
+    }
+
+    if (slots.length === 0) {
+      imagePreviewStrip.hidden = true;
+      return;
+    }
+
+    imagePreviewStrip.hidden = false;
+
+    slots.forEach(function (slot) {
+      const figure = document.createElement("figure");
+      figure.className = "image-preview-item";
+
+      const caption = document.createElement("figcaption");
+      caption.textContent = "Imagen " + String(slot.index);
+
+      const img = document.createElement("img");
+      img.src = slot.url;
+      img.alt = "Vista previa imagen " + String(slot.index);
+      img.loading = "lazy";
+      img.decoding = "async";
+
+      figure.appendChild(img);
+      figure.appendChild(caption);
+      imagePreviewStrip.appendChild(figure);
+    });
+  }
+
+  function bindImagePreviewListeners() {
+    getImageFields().forEach(function (field) {
+      field.addEventListener("input", renderImagePreviews);
+      field.addEventListener("change", renderImagePreviews);
+    });
   }
 
   function renderCloudinaryQueue() {
@@ -607,6 +653,7 @@
         );
         targetField.value = secureUrl;
         uploadedCount += 1;
+        renderImagePreviews();
         setMessage(
           "Subidas " + String(uploadedCount) + " de " + String(selectedCloudinaryFiles.length),
           "#334155"
@@ -787,6 +834,7 @@
     }
 
     applyCategoryMode({ preserveContent: true });
+    renderImagePreviews();
     isPopulatingForm = false;
   }
 
@@ -873,55 +921,36 @@
 
     setMessage("Intentando eliminar nota #" + effectiveEditId + "...", "#334155");
 
-    const attempts = [
-      {
-        method: "POST",
-        endpoint: "/api/delete-note",
-        body: JSON.stringify({ id: Number(effectiveEditId) }),
-        headers: { "Content-Type": "application/json" },
-      },
-      {
-        method: "DELETE",
-        endpoint: "/api/delete-note?id=" + effectiveEditId,
-      },
-      {
-        method: "DELETE",
-        endpoint: "/.netlify/functions/delete-note?id=" + effectiveEditId,
-      },
-    ];
-
     let removed = false;
     let lastError = "No se pudo eliminar la nota";
 
-    for (let i = 0; i < attempts.length; i += 1) {
-      const attempt = attempts[i];
+    try {
+      const response = await fetch("/api/delete-note", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: Number(effectiveEditId) }),
+        credentials: "same-origin",
+      });
+      const raw = await response.text();
+      let parsed = null;
+
       try {
-        const response = await fetch(attempt.endpoint, {
-          method: attempt.method,
-          headers: attempt.headers,
-          body: attempt.body,
-          credentials: "same-origin",
-        });
-        const raw = await response.text();
-        let parsed = null;
-
-        try {
-          parsed = raw ? JSON.parse(raw) : null;
-        } catch (_parseError) {
-          parsed = null;
-        }
-
-        if (response.ok) {
-          removed = true;
-          break;
-        }
-
-        lastError =
-          (parsed && parsed.error) ||
-          (raw ? raw.slice(0, 120) : "No se pudo eliminar la nota");
-      } catch (_error) {
-        lastError = "No hubo respuesta del servidor de borrado";
+        parsed = raw ? JSON.parse(raw) : null;
+      } catch (_parseError) {
+        parsed = null;
       }
+
+      if (response.ok) {
+        removed = true;
+      } else {
+        const detail =
+          parsed && parsed.detail ? " — " + String(parsed.detail) : "";
+        lastError =
+          ((parsed && parsed.error) || "No se pudo eliminar la nota") + detail;
+      }
+    } catch (_error) {
+      lastError =
+        "No hubo respuesta del servidor. Recarga /formulario e inicia sesion de nuevo.";
     }
 
     if (!removed) {
@@ -983,6 +1012,8 @@
 
   setMode(false, "");
   resetDefaults();
+  bindImagePreviewListeners();
+  renderImagePreviews();
 
   if (editNoteIdInput instanceof HTMLInputElement) {
     const initialId = new URLSearchParams(window.location.search).get("id");
@@ -1119,11 +1150,9 @@
         JSON.stringify({ texts, catalog })
       );
       const editorialRaw = stripAutomatchMetaFromContent(data.content || "").trim();
-      const editorialHtml = editorialRaw
-        ? procesarContenidoAHtml(editorialRaw)
-        : "";
-      data.content = editorialHtml
-        ? `${editorialHtml}<!--AUTOMATCH_META:${encodedMeta}-->`
+      // AutoMatch: conservar texto plano con "Titulo: ... |" para alinear bloques e imágenes.
+      data.content = editorialRaw
+        ? `${editorialRaw}\n<!--AUTOMATCH_META:${encodedMeta}-->`
         : `<!--AUTOMATCH_META:${encodedMeta}-->`;
     }
 
@@ -1240,10 +1269,24 @@
         (result && result.detail && result.detail.hint) ||
         "";
       const baseError = (result && result.error) || "Error al guardar la nota";
-      setMessage(detailText ? baseError + " (" + detailText + ")" : baseError, "red");
+      const timeoutHint =
+        /timed out after|TimeoutError/i.test(String(raw)) ||
+        /timed out after|TimeoutError/i.test(baseError)
+          ? " Reinicia el servidor de desarrollo (npm run dev) e intenta de nuevo."
+          : "";
+      setMessage(
+        detailText
+          ? baseError + " (" + detailText + ")" + timeoutHint
+          : baseError + timeoutHint,
+        "red"
+      );
     } catch (error) {
       console.error("Error fetch al guardar nota:", error);
-      setMessage("Error de conexion con el servidor", "red");
+      const message =
+        error instanceof Error && /timed out|TimeoutError/i.test(error.message)
+          ? "La operación tardó demasiado en desarrollo local. Reinicia npm run dev e intenta de nuevo."
+          : "Error de conexion con el servidor";
+      setMessage(message, "red");
     }
   });
 })();

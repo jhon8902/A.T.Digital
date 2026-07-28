@@ -98,6 +98,16 @@ function getPool() {
   return _pool;
 }
 
+const poolReady = getPool()
+  .query("SELECT 1")
+  .then(() => undefined)
+  .catch((error) => {
+    console.warn(
+      "[update-note] DB warmup failed:",
+      error instanceof Error ? error.message : error
+    );
+  });
+
 function normalizeCategory(category: string): string {
   if (!category) return "general";
   return category
@@ -349,6 +359,8 @@ export const handler: Handler = async (event) => {
         body: JSON.stringify({ error: "No hay campos para actualizar" }),
       };
     }
+
+    await poolReady;
 
     const setClauses: string[] = [];
     const values: Array<string | null | number> = [];

@@ -90,7 +90,8 @@ export function requireNodeBasicAuth(req, res) {
       return;
     }
 
-    throw new Error("Respuesta no compatible en requireNodeBasicAuth");
+    console.error("requireNodeBasicAuth: respuesta no compatible con Express/Netlify");
+    return false;
   };
 
   if (!isConfigured()) {

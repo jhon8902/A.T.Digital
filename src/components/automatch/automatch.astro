@@ -9,6 +9,15 @@ function stripHtml(input = "") {
     .trim();
 }
 
+function formatCardPrecio(value?: number) {
+  if (!value || value <= 0) return "";
+  return new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
 const normalizedIncoming = Array.isArray(incomingAutos)
   ? incomingAutos
       .map((auto, index) => {
@@ -29,6 +38,9 @@ const normalizedIncoming = Array.isArray(incomingAutos)
           catalogId: auto?.catalogId,
           noteId: auto?.noteId,
           condicion: String(auto?.condicion || "nuevo"),
+          precioLabel: formatCardPrecio(
+            typeof auto?.precio === "number" ? auto.precio : undefined,
+          ),
         };
       })
       .filter((auto) => auto.nombre && auto.imagenes.length > 0)
@@ -156,6 +168,15 @@ const searchCtaLabel = "Buscar auto para comprar";
                   </button>
                 </div>
 
+                {
+                  auto.precioLabel && (
+                    <p class="auto-card-price">
+                      <span class="auto-card-price__label">Desde</span>
+                      <span class="auto-card-price__value">{auto.precioLabel}</span>
+                    </p>
+                  )
+                }
+
                 <div class="auto-card-actions">
                   <a href={auto.href} class="auto-card-cta auto-card-cta--primary">
                     <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
@@ -254,6 +275,15 @@ const searchCtaLabel = "Buscar auto para comprar";
                   <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
                 </button>
               </div>
+
+              {
+                auto.precioLabel && (
+                  <p class="auto-card-price">
+                    <span class="auto-card-price__label">Desde</span>
+                    <span class="auto-card-price__value">{auto.precioLabel}</span>
+                  </p>
+                )
+              }
 
               <div class="auto-card-actions">
                 <a href={auto.href} class="auto-card-cta auto-card-cta--primary">
@@ -576,6 +606,32 @@ const searchCtaLabel = "Buscar auto para comprar";
     letter-spacing: 0.03em;
     flex: 0 1 auto;
     max-width: calc(100% - 5.75rem);
+  }
+
+  .auto-card-price {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    margin: 0 0 0.55rem;
+    padding: 0 0.5rem;
+    text-align: center;
+  }
+
+  .auto-card-price__label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #5c6b62;
+  }
+
+  .auto-card-price__value {
+    font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: #08341f;
+    letter-spacing: -0.02em;
   }
 
   @media (min-width: 900px) {

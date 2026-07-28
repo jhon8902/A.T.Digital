@@ -490,11 +490,7 @@
   color: #fff;
 }
 
-/* Archivo */
-.pruebas-archivo-page {
-  background: var(--prueba-bg);
-  min-height: 50vh;
-}
+/* Archivo — fondo y paginación en /css/archive-section.css */
 
 .pruebas-archivo {
   width: min(1280px, 100%);
@@ -512,99 +508,6 @@
 
 .pruebas-archivo .pruebas-head {
   margin-bottom: 2rem;
-}
-
-.archivo-empty {
-  text-align: center;
-  font-family: var(--font-body, "Source Sans 3", sans-serif);
-  color: var(--prueba-muted);
-  max-width: 36rem;
-  margin: 0 auto 2rem;
-  line-height: 1.6;
-}
-
-.archivo-scope {
-  display: inline-flex;
-  font-family: var(--font-body, "Source Sans 3", sans-serif);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  padding: 0.22rem 0.55rem;
-  border-radius: 999px;
-  margin-bottom: 0.5rem;
-}
-
-.archivo-scope--nacional {
-  background: rgba(8, 52, 31, 0.09);
-  color: var(--prueba-brand);
-}
-
-.archivo-scope--internacional {
-  background: rgba(15, 60, 120, 0.09);
-  color: #0f3c78;
-}
-
-.archivo-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.35rem 0.5rem;
-  font-family: var(--font-body, "Source Sans 3", sans-serif);
-  font-size: 0.8rem;
-  color: #6b7280;
-  margin-bottom: 0.45rem;
-}
-
-.archivo-meta .meta-sep {
-  opacity: 0.5;
-}
-
-.archivo-placeholder {
-  display: grid;
-  place-items: center;
-  min-height: 100%;
-  color: #9aa3ad;
-  font-family: var(--font-body, "Source Sans 3", sans-serif);
-  font-size: 0.88rem;
-}
-
-.archivo-pagination {
-  margin-top: 2.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.archivo-page-btn {
-  font-family: var(--font-body, "Source Sans 3", sans-serif);
-  font-size: 0.92rem;
-  font-weight: 600;
-  text-decoration: none;
-  color: var(--prueba-brand);
-  border: 1px solid var(--prueba-border);
-  padding: 0.55rem 1rem;
-  border-radius: 999px;
-  background: #fff;
-  transition: background 0.2s ease;
-}
-
-.archivo-page-btn:hover:not(.is-disabled) {
-  background: #f9fafb;
-}
-
-.archivo-page-btn.is-disabled {
-  pointer-events: none;
-  opacity: 0.45;
-}
-
-.archivo-page-indicator {
-  font-family: var(--font-body, "Source Sans 3", sans-serif);
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--prueba-muted);
 }
 
 @media (min-width: 1100px) {

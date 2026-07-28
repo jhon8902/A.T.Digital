@@ -10,6 +10,7 @@ import {
   getNewsCardTitle,
   getNewsTitleHook,
   isLikelySubheading,
+  splitAutomatchEditorialBlocks,
   splitEditorialParagraph,
 } from "../../lib/editorial";
 import {
@@ -163,13 +164,15 @@ const contentText = stripPruebasSoloMeta(
 );
 
 // Mejorar el parseo: dividir cada bloque que comience con 'Titulo:' (sin depender de saltos de línea dobles)
-const contentParagraphs = contentText
-  .replace(/<\/(p|div|article|section|h1|h2|h3|h4|h5|h6|li)>/gi, "\n\n")
-  .replace(/<br\s*\/?\s*>/gi, "\n")
-  .replace(/<[^>]*>/g, "")
-  .split(/(?=^t[ií]tulo\s*:)/gmi)
-  .map((block) => block.trim())
-  .filter(Boolean);
+const contentParagraphs = isAutomatchNote
+  ? splitAutomatchEditorialBlocks(contentText)
+  : contentText
+      .replace(/<\/(p|div|article|section|h1|h2|h3|h4|h5|h6|li)>/gi, "\n\n")
+      .replace(/<br\s*\/?\s*>/gi, "\n")
+      .replace(/<[^>]*>/g, "")
+      .split(/(?=^t[ií]tulo\s*:)/gmi)
+      .map((block) => block.trim())
+      .filter(Boolean);
 
 const galleryImages = [
   note?.image2,
@@ -369,14 +372,11 @@ function formatHeroCop(value?: string | null) {
   }).format(Number.parseInt(digits, 10));
 }
 
-const heroHighlights = [
-  {
-    label: "Precio en Colombia",
-    icon: "fa-solid fa-tags",
-    value:
-      formatHeroCop(note?.spec_precio_cop) ||
-      (priceSpec ? String(priceSpec) : null),
-  },
+const heroPrice =
+  formatHeroCop(note?.spec_precio_cop) ||
+  (priceSpec ? String(priceSpec) : null);
+
+const heroSpecs = [
   {
     label: "Potencia",
     icon: "fa-solid fa-gauge-high",
@@ -569,24 +569,46 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
                 </div>
 
                 {
-                  heroHighlights.length > 0 && (
+                  (heroPrice || heroSpecs.length > 0) && (
                     <div class="automatch-ficha-hero__highlight-card">
                       <p class="automatch-ficha-hero__highlight-title">
                         Datos clave para decidir
                       </p>
-                      <dl class="automatch-ficha-hero__specs">
-                        {heroHighlights.map((item) => (
-                          <div class="automatch-ficha-hero__spec">
-                            <dt>
-                              {item.icon && (
-                                <i class={item.icon} aria-hidden="true"></i>
-                              )}
-                              {item.label}
-                            </dt>
-                            <dd>{item.value}</dd>
+                      {
+                        heroPrice && (
+                          <div class="automatch-ficha-hero__price">
+                            <span class="automatch-ficha-hero__price-label">
+                              <i class="fa-solid fa-tags" aria-hidden="true"></i>
+                              Precio en Colombia
+                            </span>
+                            <span class="automatch-ficha-hero__price-value">
+                              {heroPrice}
+                            </span>
                           </div>
-                        ))}
-                      </dl>
+                        )
+                      }
+                      {
+                        heroSpecs.length > 0 && (
+                          <dl
+                            class:list={[
+                              "automatch-ficha-hero__specs",
+                              heroPrice && "automatch-ficha-hero__specs--with-price",
+                            ]}
+                          >
+                            {heroSpecs.map((item) => (
+                              <div class="automatch-ficha-hero__spec">
+                                <dt>
+                                  {item.icon && (
+                                    <i class={item.icon} aria-hidden="true"></i>
+                                  )}
+                                  {item.label}
+                                </dt>
+                                <dd>{item.value}</dd>
+                              </div>
+                            ))}
+                          </dl>
+                        )
+                      }
                     </div>
                   )
                 }

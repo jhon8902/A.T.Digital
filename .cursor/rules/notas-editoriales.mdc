@@ -1,5 +1,5 @@
 ---
-description: Formato editorial para crear notas A.T. Digital (título, subtítulo, 5 bloques, imágenes)
+description: Formato editorial notas A.T. Digital — longitud nota 174, 5 bloques, ficha con campos del formulario
 alwaysApply: true
 ---
 
@@ -13,28 +13,75 @@ Cuando el usuario pida crear, redactar o sugerir una **nota** para el formulario
 ```
 
 ## Subtítulo
-Una sola oración ≤ 150 caracteres que amplíe el titular.
+
+**Nota actual / lanzamiento / breaking news** — una sola oración ≤ 150 caracteres que amplíe el titular.
+
+**Nota de archivo** (fin de semana, modelos de otros años, conceptos antiguos o de interés histórico) — usar siempre este prefijo:
+```
+Desde el archivo de Auto-Tech-Digital — [resto del subtítulo en una oración]
+```
+
+Las notas de archivo son relleno editorial de fin de semana: tono de redescubrimiento, no de urgencia de lanzamiento.
 
 ## Contenido — 5 bloques (copiar tal cual)
+
 Cada bloque sigue esta estructura exacta:
 
 ```
 Título: [Encabezado del bloque] |
-[Párrafo denso con datos concretos: cifras, versiones, tecnología, contexto.]
+[Párrafo(s) densos con datos concretos: cifras, versiones, tecnología, contexto.]
 ```
 
+### Longitud (referencia obligatoria: nota 174)
+
+- **Tope de longitud = nota 174** ([CUPRA Born](https://autotechdigital.com/notas/174)): densa pero digerible; lectura ~3–4 min. **No superar** ese volumen salvo petición explícita del usuario.
+- Cada bloque: **3–4 oraciones** (máx. 5 si el tema lo exige). Una idea principal por bloque.
+- **2–3 datos clave por bloque** en la narrativa; el resto va a ficha. Evitar catálogo en prosa.
+- Alineación visual con la imagen en `/notas/[id]` se logra con 3–4 oraciones sólidas, no con párrafos enciclopédicos.
+- Si un bloque parece ficha técnica escrita en prosa, recortar y mover specs al formulario de ficha.
+
 **Temas sugeridos por bloque:**
-1. Presentación / contexto / lanzamiento
+1. Presentación / contexto / lanzamiento (en archivo: “Desde el archivo…” / retomamos…)
 2. Diseño / exterior / identidad
 3. Interior / espacio / confort
 4. Motorización / rendimiento / carga o mecánica
-5. Tecnología / ediciones / veredicto o legado
+5. Tecnología / ediciones / veredicto o legado (en archivo: por qué vale recordarlo)
 
 - Texto plano, sin HTML.
 - Tono: editorial A.T. Digital — preciso, con cifras, fluido entre bloques.
 - Categoría habitual: `deportes`, `electricos`, `hibridos`, `noticias`, `lanzamientos` o `pruebas` según el auto.
 
+## Ámbito (formulario)
+
+| Ámbito | Cuándo |
+|--------|--------|
+| `nacional` | Llegada, precios o contexto Colombia |
+| `internacional` | Lanzamiento global, conceptos, archivo, sin confirmación local |
+
+## Ficha técnica
+
+| Tipo de nota | ¿Incluir ficha? |
+|--------------|-----------------|
+| Lanzamiento / modelo real con specs | **Sí**, completa |
+| Archivo con datos útiles aunque antiguos | **Sí**, resumida |
+| Concepto, gaming, prototipo sin specs oficiales | **No** — indicar en bloque 5; campos del formulario vacíos |
+| Fin de semana / archivo sin números | **Opcional** solo si aporta datos curiosos confirmados |
+
+**Nota vs ficha:** la nota cuenta y contextualiza; la ficha es consulta rápida (comparar, decidir). No repetir párrafos ni listas de equipamiento ya narradas. Repetir **3–4 datos ancla** (precio desde, motor, tracción, un dato de capacidad) es aceptable.
+
+**Formato de entrega de la ficha:** siempre con los **campos del formulario** (`src/pages/formulario.astro`, sección «Ficha técnica»), uno por línea, listos para copiar. Campos que no apliquen (p. ej. batería en diésel): indicar «dejar vacío». Campos del formulario:
+
+`spec_segmento` · `spec_precio_estimado` · `spec_versiones` · `spec_origen` · `spec_motorizacion` · `spec_potencia_hp` · `spec_torque_nm` · `spec_bateria_autonomia` · `spec_bateria_kwh` · `spec_autonomia_km` · `spec_carga` · `spec_carga_ac_kw` · `spec_carga_dc_kw` · `spec_aceleracion_0_100` · `spec_seguridad` · `spec_equipamiento` · `spec_pros` · `spec_contras` · `spec_competidores` · `spec_traccion` · `spec_precio_cop`
+
+## Imágenes internacionales vs versión local
+
+Si las fotos son de versión internacional (X-Line, turbo, etc.) y el texto habla de versiones Colombia:
+- Aclaración en bloque 1 del contenido.
+- Sello opcional en portada: `Versión internacional — diseño de referencia`.
+- No usar fotos que contradigan el texto (ej. motor turbo si en Colombia solo hay 2.0 atmosférico).
+
 ## Alineación imagen ↔ bloque
+
 Incluir siempre esta tabla al sugerir imágenes:
 
 | Imagen | Bloque |
@@ -49,13 +96,18 @@ Incluir siempre esta tabla al sugerir imágenes:
 El usuario sube sus propias imágenes; sugerir **qué tipo de foto** va en cada slot, no URLs inventadas.
 
 ## Entrega al usuario
+
 Devolver en este orden:
 1. Título
 2. Subtítulo
 3. Contenido (5 bloques — copiar tal cual)
 4. Categoría sugerida
-5. Tabla de alineación imagen ↔ bloque
-6. Ficha técnica (solo si la pide o es relevante)
+5. Ámbito sugerido (`nacional` / `internacional`)
+6. Tabla de alineación imagen ↔ bloque
+7. Ficha técnica — campos del formulario (solo cuando aplique; ver tabla anterior)
 
-## Ejemplo de referencia (Skoda Peaq 2026)
-Ver `docs/plantilla-nota.md` para campos del formulario y checklist de publicación.
+## Ejemplo de referencia
+
+- Layout y longitud de párrafos: nota 174 (CUPRA Born) en el sitio.
+- Subtítulo archivo: nota 167 (`Desde el archivo de Auto-Tech-Digital — …`).
+- Campos del formulario: `docs/plantilla-nota.md`.

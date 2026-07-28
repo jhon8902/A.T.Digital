@@ -41,6 +41,16 @@ function getPool() {
   return _pool;
 }
 
+const poolReady = getPool()
+  .query("SELECT 1")
+  .then(() => undefined)
+  .catch((error) => {
+    console.warn(
+      "[update-note] DB warmup failed:",
+      error instanceof Error ? error.message : error
+    );
+  });
+
 async function getNotesColumns(): Promise<Set<string>> {
   if (_notesColumns) return _notesColumns;
 
@@ -335,6 +345,8 @@ async function handleUpdate(request: Request) {
     }
 
     const columns = await getNotesColumns();
+    await poolReady;
+
     const setClauses: string[] = [];
     const values: Array<string | null | number> = [];
 

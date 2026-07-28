@@ -26,6 +26,7 @@ export interface AutomatchCarouselItem {
   noteId?: number;
   especificacionesId?: string;
   condicion?: string;
+  precio?: number;
   href: string;
   toolHref: string;
   ctaLabel: string;
@@ -245,26 +246,75 @@ function buildCatalogCarouselImages(
   matchedNote?: AutomatchDbNote | null,
   skipCover?: boolean,
 ): string[] {
+  if (matchedNote) {
+    const noteImages = collectNoteGallery(matchedNote, {
+      skipCover: Boolean(skipCover),
+    });
+    if (noteImages.length > 0) {
+      const catalogFillers = uniqueUrls(
+        auto.galeria?.length ? auto.galeria : [auto.imagen_principal],
+      );
+      return padCarouselImages(noteImages, catalogFillers, CAROUSEL_IMAGE_COUNT);
+    }
+  }
+
   const gallery = uniqueUrls(
     auto.galeria?.length ? auto.galeria : [auto.imagen_principal],
   );
 
-  if (!skipCover || !matchedNote) {
-    return padCarouselImages(gallery, [], CAROUSEL_IMAGE_COUNT);
-  }
+  return padCarouselImages(gallery, [], CAROUSEL_IMAGE_COUNT);
+}
 
-  const cover = normalizeImageUrl(matchedNote.image1);
-  const withoutCover = cover
-    ? gallery.filter((url) => url.toLowerCase() !== cover.toLowerCase())
-    : [...gallery];
+function carouselItemRecency(
+  item: AutomatchCarouselItem,
+  dbNotes: AutomatchDbNote[],
+): number {
+  if (!item.noteId) return 0;
+  const note = dbNotes.find((entry) => String(entry.id) === String(item.noteId));
+  return note ? noteRecency(note) : 0;
+}
 
-  const noteFillers = collectNoteGallery(matchedNote, { skipCover: true });
+function sortCarouselItems(
+  items: AutomatchCarouselItem[],
+  dbNotes: AutomatchDbNote[],
+): AutomatchCarouselItem[] {
+  return [...items].sort((left, right) => {
+    const recencyDiff =
+      carouselItemRecency(right, dbNotes) - carouselItemRecency(left, dbNotes);
+    if (recencyDiff !== 0) return recencyDiff;
+    return (right.catalogId || 0) - (left.catalogId || 0);
+  });
+}
 
-  return padCarouselImages(
-    withoutCover,
-    [...noteFillers, ...gallery],
-    CAROUSEL_IMAGE_COUNT,
+function catalogVehicleRecency(
+  vehicle: AutomatchCatalogVehicle,
+  dbNotes: AutomatchDbNoteFull[],
+): number {
+  if (!vehicle.noteId) return 0;
+  const note = dbNotes.find(
+    (entry) => String(entry.id) === String(vehicle.noteId),
   );
+  return note ? noteRecency(note) : 0;
+}
+
+function sortCatalogVehicles(
+  vehicles: AutomatchCatalogVehicle[],
+  dbNotes: AutomatchDbNoteFull[],
+): AutomatchCatalogVehicle[] {
+  return [...vehicles].sort((left, right) => {
+    const recencyDiff =
+      catalogVehicleRecency(right, dbNotes) - catalogVehicleRecency(left, dbNotes);
+    if (recencyDiff !== 0) return recencyDiff;
+    const leftId =
+      typeof left.catalogId === "number"
+        ? left.catalogId
+        : Number.parseInt(String(left.id).replace(/\D/g, ""), 10) || 0;
+    const rightId =
+      typeof right.catalogId === "number"
+        ? right.catalogId
+        : Number.parseInt(String(right.id).replace(/\D/g, ""), 10) || 0;
+    return rightId - leftId;
+  });
 }
 
 function noteRecency(note: AutomatchDbNote) {
@@ -368,6 +418,14 @@ export function buildAutomatchCarousel(
     );
 
     const noteId = matchedNote ? Number(matchedNote.id) : undefined;
+    let precio = auto.precio;
+    if (matchedNote) {
+      const catalogMeta = resolveCatalogFromNote(
+        matchedNote as AutomatchDbNoteFull,
+      );
+      const parsedPrecio = parsePrecioCOP(catalogMeta.precio_cop);
+      if (parsedPrecio > 0) precio = parsedPrecio;
+    }
 
     items.push({
       id: matchedNote ? String(matchedNote.id) : `catalog-${auto.id}`,
@@ -382,6 +440,7 @@ export function buildAutomatchCarousel(
       noteId,
       especificacionesId: auto.especificaciones_id,
       condicion: auto.condicion || "nuevo",
+      precio,
       href: resolveCarouselFichaHref(auto.especificaciones_id, noteId),
       toolHref: "/automatch-find",
       ctaLabel: "Ver modelo",
@@ -406,6 +465,11 @@ export function buildAutomatchCarousel(
     }
 
     const plain = stripHtml(note.content || "");
+    const catalogMeta = resolveCatalogFromNote(note as AutomatchDbNoteFull);
+    const precio =
+      parsePrecioCOP(catalogMeta.precio_cop) ||
+      parsePrecioCOP((note as AutomatchDbNoteFull).spec_precio_cop);
+
     items.push({
       id: String(note.id),
       nombre: note.title,
@@ -416,7 +480,8 @@ export function buildAutomatchCarousel(
       content: note.content,
       imagenes,
       noteId: Number(note.id),
-      condicion: "nuevo",
+      condicion: catalogMeta.condicion || "nuevo",
+      precio: precio > 0 ? precio : undefined,
       href: `/notas/${note.id}`,
       toolHref: "/automatch-find",
       ctaLabel: "Ver modelo",
@@ -425,7 +490,7 @@ export function buildAutomatchCarousel(
     });
   }
 
-  return items;
+  return sortCarouselItems(items, dbNotes);
 }
 
 function parsePrecioCOP(value?: string | number | null): number {
@@ -697,5 +762,5 @@ export function buildAutomatchCatalog(
     autos.push(vehicle);
   }
 
-  return { autos, specs };
+  return { autos: sortCatalogVehicles(autos, dbNotes), specs };
 }
