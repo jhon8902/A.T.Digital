@@ -9,6 +9,7 @@ import {
   buildPruebaVideosFromNotes,
   slugPruebaTitle,
 } from "../lib/pruebas-videos";
+import { HOME_PRUEBAS_HOME_LIMIT } from "../lib/home-news-config";
 
 type PruebaItem = {
   noteId?: number;
@@ -132,7 +133,7 @@ try {
   console.error("Error cargando pruebas dinámicas:", err);
 }
 
-const HOME_VISIBLE_COUNT = staticPruebas.length;
+const HOME_VISIBLE_COUNT = HOME_PRUEBAS_HOME_LIMIT;
 const ITEMS_PER_PAGE = 8;
 
 const dynamicPruebaSlugs = new Set(

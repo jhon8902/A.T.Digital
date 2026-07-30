@@ -285,18 +285,28 @@
   }
 }
 
-.hibridos-carousel {
-  margin-bottom: 1.25rem;
+/* Grilla home — tarjetas unificadas con «Lo más reciente» */
+.hibridos-home-grid .news-carousel-card {
+  flex: none;
+  width: 100%;
+  max-width: none;
+  height: 100%;
 }
 
-.hibrido-chips--carousel {
+.hibridos-home-grid .news-carousel-card__link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.hibrido-chips--grid {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   margin-top: 4px;
 }
 
-.hibrido-chips--carousel .hibrido-chip {
+.hibrido-chips--grid .hibrido-chip {
   font-size: 0.72rem;
   padding: 4px 8px;
 }

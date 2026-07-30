@@ -285,18 +285,28 @@
   }
 }
 
-.electricos-carousel {
-  margin-bottom: 1.25rem;
+/* Grilla home — tarjetas unificadas con «Lo más reciente» */
+.electricos-home-grid .news-carousel-card {
+  flex: none;
+  width: 100%;
+  max-width: none;
+  height: 100%;
 }
 
-.electrico-chips--carousel {
+.electricos-home-grid .news-carousel-card__link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.electrico-chips--grid {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   margin-top: 4px;
 }
 
-.electrico-chips--carousel .electrico-chip {
+.electrico-chips--grid .electrico-chip {
   font-size: 0.72rem;
   padding: 4px 8px;
 }

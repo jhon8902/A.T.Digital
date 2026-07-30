@@ -149,7 +149,7 @@ h1, h2, h3, h4 {
   }
 
   body.home-page h2,
-  body.home-page h3 {
+  body.home-page h3:not(.news-carousel-card__title) {
     font-size: clamp(1.65rem, 2.2vw, 2.15rem);
   }
 }

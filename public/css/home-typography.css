@@ -110,7 +110,7 @@ body.home-page .noticias-home-lead {
   font-size: var(--home-section-lead);
 }
 
-/* Títulos de tarjetas pequeñas — mismo tamaño que Noticias */
+/* Títulos de tarjetas pequeñas — mismo tamaño que Lanzamientos */
 body.home-page .electrico-card__body h3,
 body.home-page .hibrido-card__body h3,
 body.home-page .deporte-card__body h3,
@@ -118,6 +118,13 @@ body.home-page .lanzamiento-item__body h3,
 body.home-page .prueba-rail-card__body h4,
 body.home-page .section-info .news-card:not(.news-card--featured):not(.news-card--insight) .news-title {
   font-size: var(--home-card-title) !important;
+}
+
+@media (min-width: 1024px) {
+  body.home-page .news-carousel-card__title {
+    font-size: var(--home-card-title) !important;
+    line-height: 1.12 !important;
+  }
 }
 
 /* Destacado de Noticias — más grande, solo esa tarjeta (desktop) */

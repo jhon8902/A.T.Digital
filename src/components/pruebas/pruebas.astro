@@ -1,6 +1,7 @@
 ---
 import { resolveSiteNotes, type SiteNote } from "../../lib/api";
 import { getNotePublishTimestamp } from "../../lib/note-scheduling";
+import { HOME_PRUEBAS_HOME_LIMIT } from "../../lib/home-news-config";
 import {
   buildPruebaVideosFromNotes,
   slugPruebaTitle,
@@ -87,7 +88,7 @@ try {
   console.error("Error cargando pruebas dinámicas:", err);
 }
 
-const HOME_VISIBLE_COUNT = staticPruebas.length;
+const HOME_VISIBLE_COUNT = HOME_PRUEBAS_HOME_LIMIT;
 
 function slugTitle(t?: string) {
   return slugPruebaTitle(t);

@@ -1,0 +1,79 @@
+---
+import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
+
+interface Props {
+  href: string;
+  img: string;
+  alt: string;
+  caption: string;
+  subtitle?: string;
+  fecha?: string;
+  source_scope?: string;
+  category?: string;
+  categoryLabel: string;
+  scopeLabel: string;
+  carouselIndex?: number;
+  priority?: boolean;
+}
+
+const {
+  href,
+  img,
+  alt,
+  caption,
+  subtitle,
+  fecha = "",
+  source_scope = "nacional",
+  category = "noticias",
+  categoryLabel,
+  scopeLabel,
+  carouselIndex,
+  priority = false,
+} = Astro.props;
+
+const isInternational = source_scope === "internacional";
+---
+
+<article
+  class="news-carousel-card"
+  data-scope={source_scope}
+  data-category={category}
+  data-carousel-index={carouselIndex}
+>
+  <a href={href} class="news-carousel-card__link">
+    <div class="news-carousel-card__image">
+      <img
+        src={img}
+        alt={alt}
+        loading={priority ? "eager" : "lazy"}
+        fetchpriority={priority ? "high" : "auto"}
+        decoding="async"
+      />
+    </div>
+    <div class="news-carousel-card__body">
+      <div class="news-meta-tags">
+        <span class="news-tag">{categoryLabel}</span>
+        <span
+          class:list={[
+            "scope-tag",
+            isInternational ? "scope-tag--international" : "scope-tag--national",
+          ]}
+        >
+          {scopeLabel}
+        </span>
+      </div>
+      <h4 class="news-carousel-card__title">{getNewsCardTitle(caption)}</h4>
+      {
+        getNewsCardDeck(caption, subtitle) && (
+          <p class="news-carousel-card__deck">
+            {getNewsCardDeck(caption, subtitle)}
+          </p>
+        )
+      }
+      <p class="news-date">
+        <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+        <span>{fecha}</span>
+      </p>
+    </div>
+  </a>
+</article>

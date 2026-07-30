@@ -1,10 +1,6 @@
 ---
 import { resolveSiteNotes, type SiteNote } from "../../lib/api";
 import {
-  getNewsCardDeck,
-  getNewsCardTitle,
-} from "../../lib/editorial";
-import {
   formatNotePublishedLabel,
   getNotePublishTimestamp,
 } from "../../lib/note-scheduling";
@@ -15,9 +11,9 @@ import {
   HOME_NEWS_CAROUSEL_LIMIT,
   HOME_NEWS_HERO_COUNT,
   HOME_NEWS_POOL_SIZE,
-  HOME_NEWS_SCOPE_POOL_SIZE,
 } from "../../lib/home-news-config";
 import { sectorRadarPreview } from "../../lib/sector-radar";
+import NewsCarouselCard from "./NewsCarouselCard.astro";
 
 interface Props {
   notes?: SiteNote[];
@@ -76,9 +72,6 @@ function categoryLabel(category?: string) {
   };
   return labels[normalized] || "Noticias";
 }
-
-const HOME_NEWS_HERO_SLIDE_LIMIT =
-  HOME_NEWS_HERO_COUNT + HOME_NEWS_CAROUSEL_LIMIT;
 
 function cleanPublishedDate(value?: string) {
   return (value || "").replace(/^Publicado:\s*/i, "").trim();
@@ -282,7 +275,10 @@ const allCandidates = [...dynamicNotes, ...deduplicatedStaticNotes].sort(
   (a, b) => b.sortDate - a.sortDate,
 );
 const allNotes = allCandidates.slice(0, HOME_NEWS_POOL_SIZE);
-const heroCarouselNotes = allNotes;
+const homeCarouselNotes = allNotes.slice(
+  0,
+  HOME_NEWS_HERO_COUNT + HOME_NEWS_CAROUSEL_LIMIT,
+);
 
 function buildScopeCarouselNotes(
   candidates: typeof allCandidates,
@@ -309,17 +305,16 @@ function buildScopeCarouselNotes(
 
 const scopeCarouselNotes = buildScopeCarouselNotes(
   allCandidates,
-  HOME_NEWS_SCOPE_POOL_SIZE / 2,
+  HOME_NEWS_CAROUSEL_LIMIT,
 );
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css?v=42" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=46" />
 
 <section
   id="noticias"
   class="section-info section-info--interactive w-full py-30"
   aria-labelledby="noticias-heading"
-  data-hero-slide-limit={HOME_NEWS_HERO_SLIDE_LIMIT}
   data-carousel-limit={HOME_NEWS_CAROUSEL_LIMIT}
 >
   <header class="info-header">
@@ -368,110 +363,48 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
       </div>
 
       {
-        heroCarouselNotes.length > 0 && (
+        homeCarouselNotes.length > 0 && (
           <div
-            class="news-hero-carousel"
-            data-hero-carousel-root
-            aria-roledescription="carrusel"
-            aria-label="Noticias destacadas del sector automotor"
+            class="news-carousel-wrap news-home-carousel"
+            data-home-carousel-root
           >
-            <div class="news-hero-carousel-toolbar">
-              <p class="news-hero-carousel-status" aria-live="polite">
-                <span class="news-hero-carousel-counter">1 / 1</span>
-                <span class="news-hero-carousel-hint">
-                  Desliza o usa las flechas para explorar
-                </span>
-              </p>
+            <div class="news-carousel-header">
+              <h3 class="news-carousel-heading">Lo más reciente</h3>
               <div class="news-carousel-nav">
                 <button
                   type="button"
-                  class="news-carousel-btn news-hero-carousel-btn--prev"
+                  class="news-carousel-btn news-carousel-btn--prev"
                   aria-label="Noticia anterior"
                 >
                   <i class="fa-solid fa-chevron-left" aria-hidden="true" />
                 </button>
                 <button
                   type="button"
-                  class="news-carousel-btn news-hero-carousel-btn--next"
+                  class="news-carousel-btn news-carousel-btn--next"
                   aria-label="Noticia siguiente"
                 >
                   <i class="fa-solid fa-chevron-right" aria-hidden="true" />
                 </button>
               </div>
             </div>
-
-            <div class="news-hero-carousel-viewport">
-              <div class="news-hero-carousel-track news-hero-carousel-track--fade">
-                {
-                  heroCarouselNotes.map((nota, index) => (
-                    <article
-                      class:list={[
-                        "news-hero",
-                        "news-hero-carousel-slide",
-                        { "is-active": index === 0 },
-                      ]}
-                      data-scope={normalizeSourceScope(nota.source_scope)}
-                      data-category={nota.category || "noticias"}
-                      data-carousel-index={index}
-                      aria-roledescription="slide"
-                    >
-                      <a href={nota.href} class="news-hero__link">
-                        <div class="news-hero__media">
-                          <img
-                            src={nota.img}
-                            alt={nota.alt}
-                            loading={index === 0 ? "eager" : "lazy"}
-                            fetchpriority={index === 0 ? "high" : "auto"}
-                            decoding="async"
-                          />
-                          <div class="news-meta-tags news-meta-tags--overlay">
-                            <span class="news-tag">
-                              {categoryLabel(nota.category)}
-                            </span>
-                            <span
-                              class={
-                                "scope-tag" +
-                                (nota.source_scope === "internacional"
-                                  ? " scope-tag--international"
-                                  : " scope-tag--national")
-                              }
-                            >
-                              {sourceScopeLabel(nota.source_scope)}
-                            </span>
-                          </div>
-                        </div>
-                        <div class="news-hero__body">
-                          <h3 class="news-hero__title">
-                            {getNewsCardTitle(nota.caption)}
-                          </h3>
-                          {
-                            getNewsCardDeck(nota.caption, nota.subtitle) && (
-                              <p class="news-hero__deck">
-                                {getNewsCardDeck(nota.caption, nota.subtitle)}
-                              </p>
-                            )
-                          }
-                          <p class="news-date">
-                            <i class="fa-regular fa-user" aria-hidden="true" />
-                            <span>{nota.editor || "Jhon Aparicio"}</span>
-                            <span class="meta-sep">•</span>
-                            <i class="fa-regular fa-calendar" aria-hidden="true" />
-                            <span>{cleanPublishedDate(nota.fecha)}</span>
-                          </p>
-                          <span class="news-hero__cta">Leer nota →</span>
-                        </div>
-                      </a>
-                    </article>
-                  ))
-                }
-              </div>
+            <div class="news-carousel">
+              {homeCarouselNotes.map((nota, index) => (
+                <NewsCarouselCard
+                  href={nota.href}
+                  img={nota.img}
+                  alt={nota.alt}
+                  caption={nota.caption}
+                  subtitle={nota.subtitle}
+                  fecha={cleanPublishedDate(nota.fecha)}
+                  source_scope={normalizeSourceScope(nota.source_scope)}
+                  category={nota.category || "noticias"}
+                  categoryLabel={categoryLabel(nota.category)}
+                  scopeLabel={sourceScopeLabel(nota.source_scope)}
+                  carouselIndex={index}
+                  priority={index === 0}
+                />
+              ))}
             </div>
-
-            <div
-              class="news-hero-carousel-dots"
-              role="tablist"
-              aria-label="Ir a una noticia"
-            />
           </div>
         )
       }
@@ -504,54 +437,19 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
             </div>
             <div class="news-carousel">
               {
-                scopeCarouselNotes.map((nota, index) => (
-                  <article
-                    class="news-carousel-card"
-                    data-scope={normalizeSourceScope(nota.source_scope)}
-                    data-category={nota.category || "noticias"}
-                  >
-                    <a href={nota.href} class="news-carousel-card__link">
-                      <div class="news-carousel-card__image">
-                        <img
-                          src={nota.img}
-                          alt={nota.alt}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </div>
-                      <div class="news-carousel-card__body">
-                        <div class="news-meta-tags">
-                          <span class="news-tag">
-                            {categoryLabel(nota.category)}
-                          </span>
-                          <span
-                            class={
-                              "scope-tag" +
-                              (nota.source_scope === "internacional"
-                                ? " scope-tag--international"
-                                : " scope-tag--national")
-                            }
-                          >
-                            {sourceScopeLabel(nota.source_scope)}
-                          </span>
-                        </div>
-                        <h4 class="news-carousel-card__title">
-                          {getNewsCardTitle(nota.caption)}
-                        </h4>
-                        {
-                          getNewsCardDeck(nota.caption, nota.subtitle) && (
-                            <p class="news-carousel-card__deck">
-                              {getNewsCardDeck(nota.caption, nota.subtitle)}
-                            </p>
-                          )
-                        }
-                        <p class="news-date">
-                          <i class="fa-regular fa-calendar" aria-hidden="true" />
-                          <span>{cleanPublishedDate(nota.fecha)}</span>
-                        </p>
-                      </div>
-                    </a>
-                  </article>
+                scopeCarouselNotes.map((nota) => (
+                  <NewsCarouselCard
+                    href={nota.href}
+                    img={nota.img}
+                    alt={nota.alt}
+                    caption={nota.caption}
+                    subtitle={nota.subtitle}
+                    fecha={cleanPublishedDate(nota.fecha)}
+                    source_scope={normalizeSourceScope(nota.source_scope)}
+                    category={nota.category || "noticias"}
+                    categoryLabel={categoryLabel(nota.category)}
+                    scopeLabel={sourceScopeLabel(nota.source_scope)}
+                  />
                 ))
               }
             </div>
@@ -1104,15 +1002,16 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 
   .news-tag {
     display: inline-block;
-    background: rgba(230, 180, 16, 0.14);
-    color: #6b5310;
-    border: none;
+    background: rgba(230, 180, 16, 0.28);
+    color: #08341f;
+    border: 1px solid rgba(212, 167, 66, 0.55);
+    font-family: "Source Sans 3", sans-serif;
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.06em;
     padding: 6px 12px;
-    border-radius: 20px;
+    border-radius: 999px;
     width: fit-content;
   }
 
@@ -1136,13 +1035,15 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
   }
 
   .scope-tag--national {
-    background: rgba(8, 52, 31, 0.12);
-    color: #08341f;
+    background: #08341f;
+    color: #fff;
+    border: 1px solid #08341f;
   }
 
   .scope-tag--international {
-    background: rgba(29, 78, 216, 0.12);
-    color: #1a56c4;
+    background: #fff;
+    color: #08341f;
+    border: 1.5px solid rgba(8, 52, 31, 0.28);
   }
 
   .news-showcase .news-hero-carousel .news-meta-tags--overlay .news-tag,
@@ -1850,4 +1751,4 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
   }
 </style>
 
-<script src="/js/news-interactive.js?v=9" defer></script>
+<script src="/js/news-interactive.js?v=10" defer></script>

@@ -616,6 +616,22 @@
   margin-bottom: 32px;
 }
 
+.news-home-carousel {
+  margin-top: 8px;
+}
+
+.news-home-carousel .news-carousel-heading {
+  font-size: clamp(1.35rem, 2vw, 1.55rem);
+}
+
+.news-showcase--home-cards .news-home-carousel {
+  margin-bottom: 28px;
+}
+
+.news-showcase--scope-filter .news-home-carousel {
+  display: none;
+}
+
 .news-carousel-wrap.is-empty {
   display: none;
 }
@@ -803,21 +819,21 @@
 }
 
 /* Catálogos home: marco un poco más bajo que el carrusel de noticias */
-.electricos-carousel .news-carousel-card__image,
-.hibridos-carousel .news-carousel-card__image {
+.electricos-home-grid .news-carousel-card__image,
+.hibridos-home-grid .news-carousel-card__image {
   aspect-ratio: 16 / 10;
   min-height: 165px;
 }
 
-.electricos-carousel .news-carousel-card__image img,
-.hibridos-carousel .news-carousel-card__image img {
+.electricos-home-grid .news-carousel-card__image img,
+.hibridos-home-grid .news-carousel-card__image img {
   object-fit: cover;
   object-position: center 42%;
 }
 
 @media (min-width: 1024px) {
-  .electricos-carousel .news-carousel-card__image,
-  .hibridos-carousel .news-carousel-card__image {
+  .electricos-home-grid .news-carousel-card__image,
+  .hibridos-home-grid .news-carousel-card__image {
     aspect-ratio: 16 / 10;
     min-height: 185px;
   }
@@ -862,17 +878,67 @@
   gap: 8px;
 }
 
-.news-showcase .news-tag {
+/* Etiquetas — paleta A.T. Digital (verde + dorado, sin azul ajeno) */
+.news-carousel-card .news-tag,
+.news-showcase .news-tag,
+.electricos-home-grid .news-tag,
+.hibridos-home-grid .news-tag {
   display: inline-block;
-  background: rgba(230, 180, 16, 0.14);
-  color: #6b5310;
-  border: none;
+  font-family: "Source Sans 3", sans-serif;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.45px;
+  letter-spacing: 0.06em;
   padding: 6px 12px;
-  border-radius: 20px;
+  border-radius: 999px;
+  background: rgba(230, 180, 16, 0.28);
+  color: #08341f;
+  border: 1px solid rgba(212, 167, 66, 0.55);
+}
+
+.news-carousel-card .scope-tag,
+.news-showcase .scope-tag,
+.electricos-home-grid .scope-tag,
+.hibridos-home-grid .scope-tag {
+  display: inline-block;
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.news-carousel-card .scope-tag--national,
+.news-showcase .scope-tag--national,
+.electricos-home-grid .scope-tag--national,
+.hibridos-home-grid .scope-tag--national {
+  background: #08341f;
+  color: #fff;
+  border: 1px solid #08341f;
+}
+
+.news-carousel-card .scope-tag--international,
+.news-showcase .scope-tag--international,
+.electricos-home-grid .scope-tag--international,
+.hibridos-home-grid .scope-tag--international {
+  background: #fff;
+  color: #08341f;
+  border: 1.5px solid rgba(8, 52, 31, 0.28);
+}
+
+.news-showcase .news-tag {
+  display: inline-block;
+  background: rgba(230, 180, 16, 0.28);
+  color: #08341f;
+  border: 1px solid rgba(212, 167, 66, 0.55);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 6px 12px;
+  border-radius: 999px;
 }
 
 .news-showcase .scope-tag {
@@ -880,20 +946,22 @@
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.06em;
   padding: 6px 12px;
-  border-radius: 20px;
+  border-radius: 999px;
   border: none;
 }
 
 .news-showcase .scope-tag--national {
-  background: rgba(8, 52, 31, 0.12);
-  color: #08341f;
+  background: #08341f;
+  color: #fff;
+  border: 1px solid #08341f;
 }
 
 .news-showcase .scope-tag--international {
-  background: rgba(29, 78, 216, 0.12);
-  color: #1a56c4;
+  background: #fff;
+  color: #08341f;
+  border: 1.5px solid rgba(8, 52, 31, 0.28);
 }
 
 .news-showcase .news-hero-carousel .news-hero__body {
@@ -1026,7 +1094,8 @@
   }
 
   .news-carousel-card__title {
-    font-size: 1.28rem;
+    font-size: var(--home-card-title, 1.6rem);
+    line-height: 1.12;
   }
 
   .news-carousel-card__deck {
