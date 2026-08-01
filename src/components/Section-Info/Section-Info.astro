@@ -309,7 +309,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 );
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css?v=46" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=50" />
 
 <section
   id="noticias"
@@ -1748,6 +1748,22 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     .ver-mas-noticias-section {
       justify-content: center;
     }
+  }
+</style>
+
+<style is:global>
+  /* Noticias home — sin borde ni halo (va embebido, no depende de caché del CSS externo) */
+  #noticias .news-showcase .news-carousel-card {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  #noticias .news-showcase .news-carousel-card:hover {
+    border: none !important;
+    outline: none !important;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(8, 52, 31, 0.1) !important;
   }
 </style>
 

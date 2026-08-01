@@ -622,6 +622,57 @@ const cloudinaryFolder =
 
           <fieldset id="noteSpecGroup" class="group-box note-spec-box">
             <legend>Ficha técnica (opcional pero recomendada)</legend>
+
+            <div class="spec-import-panel grid-span-2">
+              <p class="spec-import-help">
+                Pega aquí el bloque de ficha que te entrega el asistente (una línea
+                por campo: <code>spec_campo: valor</code>). Pulsa
+                <strong>Rellenar campos</strong> y se completan solos.
+              </p>
+              <label class="spec-import-label" for="specImportText">
+                Importar ficha técnica
+                <textarea
+                  id="specImportText"
+                  class="spec-import-textarea"
+                  rows="9"
+                  spellcheck="false"
+                  placeholder={`spec_segmento: SUV mediana
+spec_precio_estimado: Desde $262.900.000 COP
+spec_versiones: Advanced Hybrid (única versión)
+spec_origen: Importación Honda
+spec_motorizacion: Híbrido e:HEV
+spec_potencia_hp: 204 hp combinados
+spec_traccion: AWD
+spec_precio_cop: $262.900.000`}
+                ></textarea>
+              </label>
+              <div class="spec-import-actions">
+                <button
+                  type="button"
+                  id="specImportBtn"
+                  class="btn-secondary spec-import-btn"
+                >
+                  Rellenar campos
+                </button>
+                <button
+                  type="button"
+                  id="specImportClearSpecBtn"
+                  class="btn-secondary spec-import-btn spec-import-btn--muted"
+                >
+                  Vaciar ficha
+                </button>
+                <label class="spec-import-checkbox">
+                  <input type="checkbox" id="specImportOverwrite" checked />
+                  Sobrescribir campos que ya tengan texto
+                </label>
+              </div>
+              <p
+                id="specImportStatus"
+                class="spec-import-status"
+                aria-live="polite"
+              ></p>
+            </div>
+
             <div class="grid-2">
               <label>
                 Segmento
@@ -1152,6 +1203,106 @@ const cloudinaryFolder =
           grid-column: 1 / -1;
         }
 
+        .spec-import-panel {
+          margin-bottom: 18px;
+          padding: 16px 18px;
+          border: 1px dashed rgba(8, 52, 31, 0.22);
+          border-radius: 12px;
+          background: rgba(240, 248, 244, 0.55);
+        }
+
+        .spec-import-help {
+          margin: 0 0 12px;
+          font-size: 0.92rem;
+          line-height: 1.55;
+          color: #4b5563;
+        }
+
+        .spec-import-help code {
+          font-size: 0.86em;
+          background: rgba(8, 52, 31, 0.07);
+          padding: 2px 6px;
+          border-radius: 4px;
+        }
+
+        .spec-import-label {
+          display: block;
+          font-weight: 600;
+          color: var(--color-brand);
+          font-size: 0.92rem;
+        }
+
+        .spec-import-textarea {
+          display: block;
+          width: 100%;
+          margin-top: 8px;
+          padding: 12px 14px;
+          border: 1px solid var(--color-border);
+          border-radius: 10px;
+          font-family: ui-monospace, "Cascadia Code", "Consolas", monospace;
+          font-size: 0.82rem;
+          line-height: 1.5;
+          resize: vertical;
+          min-height: 160px;
+          background: #fff;
+        }
+
+        .spec-import-textarea:focus {
+          outline: 2px solid rgba(8, 52, 31, 0.2);
+          border-color: var(--color-brand);
+        }
+
+        .spec-import-actions {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 10px 16px;
+          margin-top: 12px;
+        }
+
+        .spec-import-btn {
+          width: auto !important;
+          margin-top: 0 !important;
+          padding: 10px 18px !important;
+          font-size: 0.9rem !important;
+        }
+
+        .spec-import-btn--muted {
+          background: #f3f4f6 !important;
+          color: #374151 !important;
+          border: 1px solid #d1d5db !important;
+        }
+
+        .spec-import-checkbox {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.88rem;
+          font-weight: 500;
+          color: #4b5563;
+          cursor: pointer;
+        }
+
+        .spec-import-checkbox input {
+          width: auto;
+          margin: 0;
+        }
+
+        .spec-import-status {
+          margin: 10px 0 0;
+          font-size: 0.88rem;
+          line-height: 1.45;
+          min-height: 1.25em;
+        }
+
+        .spec-import-status.is-ok {
+          color: #0d6b3f;
+        }
+
+        .spec-import-status.is-error {
+          color: #b42318;
+        }
+
         .form-section--compact {
           padding-top: 12px;
         }
@@ -1633,7 +1784,7 @@ const cloudinaryFolder =
         }
       </style>
 
-      <script src="/js/formulario.js" defer></script>
+      <script src="/js/formulario.js?v=2" defer></script>
     </main>
   </body>
 </html>

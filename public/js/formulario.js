@@ -87,6 +87,18 @@
     "texto_img6_linea1",
   ];
 
+  const SPEC_FIELD_NAMES = editableFields.filter(function (name) {
+    return name.indexOf("spec_") === 0;
+  });
+
+  const SPEC_FIELD_SET = new Set(SPEC_FIELD_NAMES);
+
+  const specImportText = document.getElementById("specImportText");
+  const specImportBtn = document.getElementById("specImportBtn");
+  const specImportClearSpecBtn = document.getElementById("specImportClearSpecBtn");
+  const specImportOverwrite = document.getElementById("specImportOverwrite");
+  const specImportStatus = document.getElementById("specImportStatus");
+
   function byName(name) {
     return form.querySelector('[name="' + name + '"]');
   }
@@ -112,6 +124,121 @@
       return el.value;
     }
     return "";
+  }
+
+  function normalizeSpecImportValue(raw) {
+    const value = String(raw == null ? "" : raw).trim();
+    if (!value) return "";
+    if (/^\(dejar\s+vac[ií]o\)$/i.test(value)) return "";
+    if (/^dejar\s+vac[ií]o$/i.test(value)) return "";
+    return value;
+  }
+
+  function parseSpecImportText(text) {
+    const parsed = {};
+    let trimmed = String(text || "").trim();
+    if (!trimmed) return parsed;
+
+    trimmed = trimmed
+      .replace(/^```[\w-]*\s*/gm, "")
+      .replace(/```\s*$/gm, "")
+      .trim();
+
+    if (trimmed.charAt(0) === "{") {
+      try {
+        const obj = JSON.parse(trimmed);
+        Object.keys(obj).forEach(function (key) {
+          const normalizedKey = String(key).trim().toLowerCase();
+          if (SPEC_FIELD_SET.has(normalizedKey)) {
+            parsed[normalizedKey] = normalizeSpecImportValue(obj[key]);
+          }
+        });
+        return parsed;
+      } catch (_error) {
+        /* continuar con formato línea por línea */
+      }
+    }
+
+    trimmed.split(/\r?\n/).forEach(function (line) {
+      let clean = String(line || "").trim();
+      if (!clean) return;
+      clean = clean.replace(/^[-*•]\s+/, "");
+      const colonIndex = clean.indexOf(":");
+      if (colonIndex < 1) return;
+      const key = clean.slice(0, colonIndex).trim().toLowerCase();
+      if (!SPEC_FIELD_SET.has(key)) return;
+      parsed[key] = normalizeSpecImportValue(clean.slice(colonIndex + 1));
+    });
+
+    return parsed;
+  }
+
+  function setSpecImportStatus(text, kind) {
+    if (!(specImportStatus instanceof HTMLElement)) return;
+    specImportStatus.textContent = text;
+    specImportStatus.classList.remove("is-ok", "is-error");
+    if (kind === "ok") specImportStatus.classList.add("is-ok");
+    if (kind === "error") specImportStatus.classList.add("is-error");
+  }
+
+  function clearSpecFields() {
+    SPEC_FIELD_NAMES.forEach(function (name) {
+      setFieldValue(name, "");
+    });
+  }
+
+  function applySpecImport() {
+    if (!(specImportText instanceof HTMLTextAreaElement)) return;
+
+    const parsed = parseSpecImportText(specImportText.value);
+    const keys = Object.keys(parsed);
+    if (!keys.length) {
+      setSpecImportStatus(
+        "No se reconocieron campos. Usa líneas como spec_segmento: SUV mediana",
+        "error",
+      );
+      return;
+    }
+
+    const overwrite =
+      specImportOverwrite instanceof HTMLInputElement &&
+      specImportOverwrite.checked;
+
+    let applied = 0;
+    let skipped = 0;
+
+    keys.forEach(function (key) {
+      if (!overwrite && String(getFieldValue(key) || "").trim()) {
+        skipped += 1;
+        return;
+      }
+      setFieldValue(key, parsed[key]);
+      applied += 1;
+    });
+
+    let message =
+      applied === 1
+        ? "1 campo actualizado."
+        : applied + " campos actualizados.";
+    if (skipped > 0) {
+      message +=
+        " " +
+        skipped +
+        " omitido(s) porque ya tenían texto (activa «Sobrescribir» para forzar).";
+    }
+    setSpecImportStatus(message, "ok");
+  }
+
+  function initSpecImport() {
+    if (specImportBtn instanceof HTMLButtonElement) {
+      specImportBtn.addEventListener("click", applySpecImport);
+    }
+    if (specImportClearSpecBtn instanceof HTMLButtonElement) {
+      specImportClearSpecBtn.addEventListener("click", function () {
+        clearSpecFields();
+        setSpecImportStatus("Ficha técnica vaciada.", "ok");
+      });
+    }
   }
 
   function setMessage(text, color) {
@@ -1012,6 +1139,7 @@
 
   setMode(false, "");
   resetDefaults();
+  initSpecImport();
   bindImagePreviewListeners();
   renderImagePreviews();
 
