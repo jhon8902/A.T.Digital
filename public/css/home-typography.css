@@ -285,8 +285,37 @@ body.home-page .section-info.section-info--interactive > .container {
 }
 
 body.home-page .electricos-inner,
-body.home-page .hibridos-inner {
+body.home-page .hibridos-inner,
+body.home-page .lanzamientos-inner,
+body.home-page .deportes-inner {
   background: #fff !important;
+}
+
+/* Tarjetas planas — Lanzamientos */
+body.home-page #lanzamientos .lanzamiento-item,
+body.home-page #lanzamientos .lanzamiento-item:hover,
+body.home-page #lanzamientos .lanzamiento-item.is-latest,
+body.home-page #lanzamientos .lanzamiento-item.is-latest:hover {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Tarjetas planas — Deportes */
+body.home-page #deportes .deporte-card,
+body.home-page #deportes .deporte-card:hover {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body.home-page #deportes .deporte-card__media {
+  border-radius: 14px;
+}
+
+body.home-page #deportes .deporte-card__media img {
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* Tarjetas planas — Eléctricos / Híbridos (carga al final, gana la cascada) */

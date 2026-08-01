@@ -13,13 +13,16 @@
   background-image: var(--home-relief-image);
   background-size: var(--home-relief-size);
   background-repeat: repeat;
-  padding: clamp(2.75rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem);
+  padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1rem, 3vw, 2rem);
   scroll-margin-top: 5.5rem;
 }
 
 .lanzamientos-inner {
-  width: min(1280px, 100%);
+  width: min(96%, 1760px);
   margin: 0 auto;
+  background: #fff;
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.25rem, 3vw, 2rem);
+  box-sizing: border-box;
 }
 
 .lanzamientos-head {
@@ -67,27 +70,27 @@
   grid-template-columns: minmax(0, 1fr);
   gap: 0;
   align-items: stretch;
-  background: var(--lz-surface);
-  border: 1px solid var(--lz-border);
-  border-radius: calc(var(--radius-card, 12px) + 2px);
-  overflow: hidden;
-  transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  transition: transform 0.22s ease;
 }
 
 .lanzamiento-item:hover {
-  border-color: #c8ced8;
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.07);
-  transform: translateY(-1px);
+  border: none;
+  box-shadow: none;
+  transform: translateY(-4px);
 }
 
 .lanzamiento-item.is-latest {
-  border: 2px solid #d4a742;
-  box-shadow: 0 14px 36px rgba(8, 52, 31, 0.1);
+  border: none;
+  box-shadow: none;
 }
 
 .lanzamiento-item.is-latest:hover {
-  border-color: #c9a83a;
-  box-shadow: 0 16px 40px rgba(8, 52, 31, 0.12);
+  border: none;
+  box-shadow: none;
 }
 
 .lanzamiento-item__media {
@@ -118,19 +121,28 @@
   pointer-events: none;
   font-size: 8px;
   letter-spacing: 0.08em;
-  padding: 2px 7px;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.44);
+  padding: 3px 9px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
   color: rgba(255, 255, 255, 0.94);
+  isolation: isolate;
+}
+
+.lanzamiento-scope--overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: skewX(-12deg);
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.44);
   border: 1px solid rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
 }
 
 .lanzamiento-scope--overlay.lanzamiento-scope--nacional,
 .lanzamiento-scope--overlay.lanzamiento-scope--internacional {
-  background: rgba(0, 0, 0, 0.44);
   color: rgba(255, 255, 255, 0.94);
 }
 
@@ -266,17 +278,34 @@
   font-weight: 600;
   color: var(--lz-brand);
   text-decoration: none;
-  padding: 0.62rem 1.15rem;
-  border: 1px solid var(--lz-border);
-  border-radius: 999px;
+  padding: 0.62rem 1.25rem;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  position: relative;
+  isolation: isolate;
+  z-index: 0;
+  transition: transform 0.2s ease;
+}
+
+.lanzamientos-more::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: skewX(-12deg);
+  z-index: -1;
   background: #fff;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  border: 1.5px solid var(--lz-border);
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .lanzamientos-more:hover {
+  transform: translateY(-1px);
+}
+
+.lanzamientos-more:hover::before {
   background: #f9fafb;
   border-color: #cbd2dc;
-  transform: translateY(-1px);
 }
 
 @media (min-width: 641px) {
@@ -284,12 +313,17 @@
     grid-template-columns: clamp(16rem, 38%, 22rem) minmax(0, 1fr);
     gap: 1.15rem;
     align-items: center;
-    padding: 0.9rem 1.15rem 0.9rem 0.9rem;
+    padding: 0;
   }
 
   .lanzamiento-item__media {
     aspect-ratio: 16 / 10;
-    border-radius: calc(var(--radius-card, 12px));
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .lanzamiento-item.is-latest .lanzamiento-item__media {
+    box-shadow: 0 0 0 2px #d4a742;
   }
 
   .lanzamiento-item__body {
@@ -303,12 +337,13 @@
   .lanzamiento-item.is-latest {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
     gap: 1.35rem;
-    padding: 1.1rem 1.35rem 1.1rem 1rem;
+    padding: 0;
   }
 
   .lanzamiento-item.is-latest .lanzamiento-item__media {
     aspect-ratio: 16 / 9;
     min-height: 14rem;
+    border-radius: 14px;
   }
 
   .lanzamiento-item.is-latest .lanzamiento-item__body h3 {
@@ -329,6 +364,11 @@
 @media (max-width: 640px) {
   .lanzamiento-item {
     grid-template-columns: 1fr;
+  }
+
+  .lanzamiento-item__media {
+    border-radius: 14px;
+    overflow: hidden;
   }
 
   .lanzamiento-item__media img {

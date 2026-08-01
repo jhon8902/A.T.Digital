@@ -14,13 +14,16 @@
   background-image: var(--home-relief-image);
   background-size: var(--home-relief-size);
   background-repeat: repeat;
-  padding: clamp(2.25rem, 4vw, 3.25rem) clamp(1rem, 3vw, 2rem);
+  padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1rem, 3vw, 2rem);
   scroll-margin-top: 5.5rem;
 }
 
 .deportes-inner {
-  width: min(1280px, 100%);
+  width: min(96%, 1760px);
   margin: 0 auto;
+  background: #fff;
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.25rem, 3vw, 2rem);
+  box-sizing: border-box;
 }
 
 .deportes-head {
@@ -70,17 +73,17 @@
 .deporte-card {
   display: flex;
   flex-direction: column;
-  background: var(--dep-surface);
-  border: 1px solid var(--dep-border);
-  border-radius: calc(var(--radius-card, 12px) + 2px);
-  overflow: hidden;
-  transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  transition: transform 0.22s ease;
 }
 
 .deporte-card:hover {
-  border-color: #d0b8a0;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
-  transform: translateY(-2px);
+  border: none;
+  box-shadow: none;
+  transform: translateY(-4px);
 }
 
 .deporte-card__media {
@@ -88,6 +91,7 @@
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background: #111827;
+  border-radius: 14px;
 }
 
 .deporte-card__media img {
@@ -124,18 +128,39 @@
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  padding: 0.2rem 0.5rem;
-  border-radius: 999px;
+  padding: 0.28rem 0.62rem;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  position: relative;
+  isolation: isolate;
+}
+
+.deporte-scope::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: skewX(-12deg);
+  z-index: -1;
+  border: 1.5px solid transparent;
 }
 
 .deporte-scope--nacional {
-  background: rgba(8, 52, 31, 0.09);
-  color: var(--dep-brand);
+  color: #fff;
+}
+
+.deporte-scope--nacional::before {
+  background: #08341f;
+  border-color: #08341f;
 }
 
 .deporte-scope--internacional {
-  background: rgba(15, 60, 120, 0.09);
-  color: #0f3c78;
+  color: #08341f;
+}
+
+.deporte-scope--internacional::before {
+  background: #fff;
+  border-color: rgba(8, 52, 31, 0.28);
 }
 
 .deporte-card__date {
@@ -196,7 +221,6 @@
   gap: 0.65rem 1rem;
   margin-top: auto;
   padding-top: 0.5rem;
-  border-top: 1px solid #eef1f4;
 }
 
 .deporte-card__cta {
@@ -229,17 +253,34 @@
   font-weight: 600;
   color: var(--dep-brand);
   text-decoration: none;
-  padding: 0.62rem 1.15rem;
-  border: 1px solid var(--dep-border);
-  border-radius: 999px;
+  padding: 0.62rem 1.25rem;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  position: relative;
+  isolation: isolate;
+  z-index: 0;
+  transition: transform 0.2s ease;
+}
+
+.deportes-more::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: skewX(-12deg);
+  z-index: -1;
   background: #fff;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  border: 1.5px solid var(--dep-border);
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .deportes-more:hover {
+  transform: translateY(-1px);
+}
+
+.deportes-more:hover::before {
   background: #f9fafb;
   border-color: #cbd2dc;
-  transform: translateY(-1px);
 }
 
 @media (max-width: 768px) {

@@ -419,17 +419,34 @@
   font-weight: 600;
   color: var(--prueba-brand);
   text-decoration: none;
-  padding: 0.62rem 1.15rem;
-  border: 1px solid var(--prueba-border);
-  border-radius: 999px;
+  padding: 0.62rem 1.25rem;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  position: relative;
+  isolation: isolate;
+  z-index: 0;
+  transition: transform 0.2s ease;
+}
+
+.pruebas-more::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: skewX(-12deg);
+  z-index: -1;
   background: #fff;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  border: 1.5px solid var(--prueba-border);
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .pruebas-more:hover {
+  transform: translateY(-1px);
+}
+
+.pruebas-more:hover::before {
   background: #f9fafb;
   border-color: #cbd2dc;
-  transform: translateY(-1px);
 }
 
 /* Home — bloque oscuro tipo cine */
@@ -447,15 +464,28 @@
   box-shadow: 0 6px 18px rgba(230, 180, 16, 0.28);
 }
 
+.pruebas-section .prueba-rail-card {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
 .pruebas-section .prueba-rail-card.is-centered {
-  border-color: rgba(230, 180, 16, 0.32);
-  box-shadow:
-    0 22px 50px rgba(0, 0, 0, 0.48),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
+  border: none;
+  box-shadow: none;
 }
 
 .pruebas-section .prueba-rail-card.is-centered:hover {
-  border-color: rgba(230, 180, 16, 0.48);
+  border: none;
+}
+
+.pruebas-section .prueba-rail-card__media {
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.pruebas-section .prueba-rail-card.is-centered .prueba-rail-card__media {
+  box-shadow: 0 0 0 2px rgba(230, 180, 16, 0.42);
 }
 
 .pruebas-section .prueba-rail-ep {
@@ -464,6 +494,7 @@
 
 .pruebas-section .prueba-rail-actions {
   border-top-color: rgba(255, 255, 255, 0.1);
+  border-top: none;
 }
 
 .pruebas-section .archivo-link {
@@ -479,14 +510,20 @@
 }
 
 .pruebas-section .pruebas-more {
-  background: transparent;
   color: #f4f7f5;
+}
+
+.pruebas-section .pruebas-more::before {
+  background: transparent;
   border-color: rgba(255, 255, 255, 0.22);
 }
 
-.pruebas-section .pruebas-more:hover {
+.pruebas-section .pruebas-more:hover::before {
   background: rgba(255, 255, 255, 0.07);
   border-color: rgba(230, 180, 16, 0.42);
+}
+
+.pruebas-section .pruebas-more:hover {
   color: #fff;
 }
 
