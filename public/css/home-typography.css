@@ -27,12 +27,20 @@ body.home-page .lanzamientos-title,
 body.home-page .deportes-title,
 body.home-page .pruebas-title,
 body.home-page .section-info .info-titulo {
-  font-size: var(--home-section-title) !important;
+  font-size: clamp(1.95rem, 2.75vw, 2.65rem) !important;
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1.08 !important;
   display: flex !important;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.85rem, 2.5vw, 1.75rem);
+  gap: clamp(1rem, 2.2vw, 1.85rem);
   width: 100%;
+}
+
+body.home-page .pruebas-title {
+  color: #eef3ef !important;
 }
 
 body.home-page .electricos-title::before,
@@ -50,10 +58,10 @@ body.home-page .section-info .info-titulo::after {
   content: "" !important;
   display: block !important;
   flex: 1;
-  height: 2px;
+  height: 1px;
   min-width: 0;
-  max-width: 280px;
-  opacity: 1 !important;
+  max-width: 300px;
+  opacity: 0.72 !important;
   transform: none !important;
   animation: none !important;
 }
@@ -64,7 +72,7 @@ body.home-page .lanzamientos-title::before,
 body.home-page .deportes-title::before,
 body.home-page .pruebas-title::before,
 body.home-page .section-info .info-titulo::before {
-  background: linear-gradient(90deg, transparent, #d4a742) !important;
+  background: linear-gradient(90deg, transparent, rgba(212, 167, 66, 0.85)) !important;
 }
 
 body.home-page .electricos-title::after,
@@ -73,7 +81,7 @@ body.home-page .lanzamientos-title::after,
 body.home-page .deportes-title::after,
 body.home-page .pruebas-title::after,
 body.home-page .section-info .info-titulo::after {
-  background: linear-gradient(90deg, #d4a742, transparent) !important;
+  background: linear-gradient(90deg, rgba(212, 167, 66, 0.85), transparent) !important;
 }
 
 @media (max-width: 768px) {
