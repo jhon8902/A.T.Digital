@@ -284,6 +284,53 @@ body.home-page .section-info.section-info--interactive > .container {
   background: #fff !important;
 }
 
+body.home-page .electricos-inner,
+body.home-page .hibridos-inner {
+  background: #fff !important;
+}
+
+/* Tarjetas planas — Eléctricos / Híbridos (carga al final, gana la cascada) */
+body.home-page #electricos .electricos-home-grid .news-carousel-card,
+body.home-page #electricos .electricos-home-grid .news-carousel-card:hover,
+body.home-page #hibridos .hibridos-home-grid .news-carousel-card,
+body.home-page #hibridos .hibridos-home-grid .news-carousel-card:hover {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+
+body.home-page #electricos .electricos-home-grid .news-carousel-card__link,
+body.home-page #electricos .electricos-home-grid .news-carousel-card__image,
+body.home-page #electricos .electricos-home-grid .news-carousel-card__body,
+body.home-page #electricos .electricos-home-grid .news-carousel-card__image img,
+body.home-page #hibridos .hibridos-home-grid .news-carousel-card__link,
+body.home-page #hibridos .hibridos-home-grid .news-carousel-card__image,
+body.home-page #hibridos .hibridos-home-grid .news-carousel-card__body,
+body.home-page #hibridos .hibridos-home-grid .news-carousel-card__image img {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+body.home-page #electricos .electricos-home-grid .news-carousel-card__image,
+body.home-page #hibridos .hibridos-home-grid .news-carousel-card__image {
+  background: transparent !important;
+}
+
+body.home-page #electricos .electricos-home-grid .news-carousel-card__body,
+body.home-page #hibridos .hibridos-home-grid .news-carousel-card__body {
+  background: transparent !important;
+}
+
+body.home-page #electricos .electricos-home-grid .news-carousel-card:hover .news-carousel-card__image img,
+body.home-page #hibridos .hibridos-home-grid .news-carousel-card:hover .news-carousel-card__image img {
+  transform: none !important;
+}
+
 @media (max-width: 768px) {
   body.home-page .section-info.section-info--interactive .info-header {
     background: transparent !important;

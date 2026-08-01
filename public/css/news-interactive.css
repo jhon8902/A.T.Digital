@@ -774,6 +774,54 @@
   box-shadow: 0 12px 28px rgba(8, 52, 31, 0.1);
 }
 
+/* Eléctricos / Híbridos home — tarjeta plana (imagen + texto sin marco) */
+#electricos .electricos-home-grid .news-carousel-card,
+#electricos .electricos-home-grid .news-carousel-card:hover,
+#hibridos .hibridos-home-grid .news-carousel-card,
+#hibridos .hibridos-home-grid .news-carousel-card:hover {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+}
+
+#electricos .electricos-home-grid .news-carousel-card__link,
+#electricos .electricos-home-grid .news-carousel-card__image,
+#electricos .electricos-home-grid .news-carousel-card__body,
+#electricos .electricos-home-grid .news-carousel-card__image img,
+#hibridos .hibridos-home-grid .news-carousel-card__link,
+#hibridos .hibridos-home-grid .news-carousel-card__image,
+#hibridos .hibridos-home-grid .news-carousel-card__body,
+#hibridos .hibridos-home-grid .news-carousel-card__image img {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+#electricos .electricos-home-grid .news-carousel-card__image,
+#hibridos .hibridos-home-grid .news-carousel-card__image {
+  border-radius: 14px;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+#electricos .electricos-home-grid .news-carousel-card__body,
+#hibridos .hibridos-home-grid .news-carousel-card__body {
+  background: transparent !important;
+}
+
+#electricos .electricos-home-grid .news-carousel-card:hover,
+#hibridos .hibridos-home-grid .news-carousel-card:hover {
+  transform: none;
+}
+
+#electricos .electricos-home-grid .news-carousel-card:hover .news-carousel-card__image img,
+#hibridos .hibridos-home-grid .news-carousel-card:hover .news-carousel-card__image img {
+  transform: none;
+}
+
 .news-carousel-card.is-filtered-out {
   display: none;
 }
@@ -824,6 +872,18 @@
 .news-carousel-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
+}
+
+#electricos .electricos-home-grid .news-carousel-card:hover,
+#hibridos .hibridos-home-grid .news-carousel-card:hover,
+#noticias .news-showcase .news-carousel-card:hover {
+  transform: translateY(-4px);
+  box-shadow: none !important;
+}
+
+#electricos .electricos-home-grid .news-carousel-card:hover,
+#hibridos .hibridos-home-grid .news-carousel-card:hover {
+  transform: none;
 }
 
 .news-carousel-card__link {

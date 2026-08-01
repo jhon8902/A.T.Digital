@@ -14,13 +14,16 @@
   background-image: var(--home-relief-image);
   background-size: var(--home-relief-size);
   background-repeat: repeat;
-  padding: clamp(2.75rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem);
+  padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1rem, 3vw, 2rem);
   scroll-margin-top: 5.5rem;
 }
 
 .electricos-inner {
   width: min(96%, 1760px);
   margin: 0 auto;
+  background: #fff;
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.25rem, 3vw, 2rem);
+  box-sizing: border-box;
 }
 
 .electricos-head {
@@ -297,6 +300,44 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+/* Home — tarjetas planas: sin marco en imagen ni texto */
+#electricos .electricos-home-grid .news-carousel-card,
+#electricos .electricos-home-grid .news-carousel-card:hover {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+}
+
+#electricos .electricos-home-grid .news-carousel-card__link,
+#electricos .electricos-home-grid .news-carousel-card__image,
+#electricos .electricos-home-grid .news-carousel-card__body {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+#electricos .electricos-home-grid .news-carousel-card__image {
+  border-radius: 14px;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+#electricos .electricos-home-grid .news-carousel-card__body {
+  background: transparent !important;
+}
+
+#electricos .electricos-home-grid .news-carousel-card:hover {
+  transform: translateY(-4px);
+}
+
+#electricos .electricos-home-grid .news-carousel-card:hover .news-carousel-card__image,
+#electricos .electricos-home-grid .news-carousel-card:hover .news-carousel-card__body {
+  box-shadow: none !important;
 }
 
 .electrico-chips--grid {
