@@ -339,7 +339,7 @@
 }
 
 #hibridos .hibridos-home-grid .news-carousel-card__image {
-  border-radius: 14px;
+  border-radius: 0;
   overflow: hidden;
   background: transparent !important;
 }

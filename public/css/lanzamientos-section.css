@@ -318,12 +318,12 @@
 
   .lanzamiento-item__media {
     aspect-ratio: 16 / 10;
-    border-radius: 14px;
+    border-radius: 0;
     overflow: hidden;
   }
 
   .lanzamiento-item.is-latest .lanzamiento-item__media {
-    box-shadow: 0 0 0 2px #d4a742;
+    box-shadow: none;
   }
 
   .lanzamiento-item__body {
@@ -343,7 +343,7 @@
   .lanzamiento-item.is-latest .lanzamiento-item__media {
     aspect-ratio: 16 / 9;
     min-height: 14rem;
-    border-radius: 14px;
+    border-radius: 0;
   }
 
   .lanzamiento-item.is-latest .lanzamiento-item__body h3 {
@@ -367,7 +367,7 @@
   }
 
   .lanzamiento-item__media {
-    border-radius: 14px;
+    border-radius: 0;
     overflow: hidden;
   }
 

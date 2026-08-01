@@ -480,7 +480,7 @@
 }
 
 .pruebas-section .prueba-rail-card__media {
-  border-radius: 14px;
+  border-radius: 0;
   overflow: hidden;
 }
 

@@ -71,15 +71,21 @@
 }
 
 .section-info.section-info--interactive .info-header .info-titulo {
-  color: #08341f !important;
+  color: #041a10 !important;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif !important;
+  font-weight: 700 !important;
 }
 
 .section-info.section-info--interactive .info-header .info-titulo::before {
-  background: linear-gradient(90deg, #000, #d4a742) !important;
+  background: linear-gradient(90deg, transparent, #000 22%, #d4a742) !important;
+  opacity: 1 !important;
+  height: 2px !important;
 }
 
 .section-info.section-info--interactive .info-header .info-titulo::after {
-  background: linear-gradient(90deg, #d4a742, #000) !important;
+  background: linear-gradient(90deg, #d4a742, #000 78%, transparent) !important;
+  opacity: 1 !important;
+  height: 2px !important;
 }
 
 .section-info.section-info--interactive .info-header .noticias-home-lead {
@@ -143,7 +149,8 @@
 }
 
 .section-info.section-info--interactive .news-insight {
-  border: 1px solid rgba(8, 52, 31, 0.1);
+  border: none;
+  border-radius: 0;
   box-shadow: 0 12px 28px rgba(8, 52, 31, 0.1);
 }
 
@@ -758,7 +765,7 @@
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
-  border-radius: 14px;
+  border-radius: 0;
   overflow: hidden;
 }
 
@@ -772,7 +779,7 @@
 }
 
 #noticias .news-showcase .news-carousel-card:hover .news-carousel-card__image {
-  box-shadow: 0 12px 28px rgba(8, 52, 31, 0.1);
+  box-shadow: none !important;
 }
 
 /* Eléctricos / Híbridos home — tarjeta plana (imagen + texto sin marco) */
@@ -803,7 +810,7 @@
 
 #electricos .electricos-home-grid .news-carousel-card__image,
 #hibridos .hibridos-home-grid .news-carousel-card__image {
-  border-radius: 14px;
+  border-radius: 0;
   overflow: hidden;
   background: transparent !important;
 }
@@ -950,7 +957,7 @@
 .news-carousel-card__title {
   font-family: "Source Sans 3", sans-serif;
   font-size: var(--home-card-title, clamp(1.2rem, 1.35vw, 1.6rem));
-  font-weight: 600;
+  font-weight: 700;
   font-synthesis: none;
   letter-spacing: -0.015em;
   line-height: 1.22;
@@ -989,13 +996,14 @@
   font-family: "Source Sans 3", sans-serif;
   font-size: 11px;
   font-weight: 700;
+  font-synthesis: none;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   padding: 6px 12px;
   border-radius: 999px;
-  background: rgba(230, 180, 16, 0.28);
+  background: #fff;
   color: #08341f;
-  border: 1px solid rgba(212, 167, 66, 0.55);
+  border: 1.5px solid rgba(8, 52, 31, 0.28);
 }
 
 .news-carousel-card .scope-tag,
@@ -1006,6 +1014,7 @@
   font-family: "Source Sans 3", sans-serif;
   font-size: 11px;
   font-weight: 700;
+  font-synthesis: none;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   padding: 6px 12px;
@@ -1032,9 +1041,9 @@
 
 .news-showcase .news-tag {
   display: inline-block;
-  background: rgba(230, 180, 16, 0.28);
+  background: #fff;
   color: #08341f;
-  border: 1px solid rgba(212, 167, 66, 0.55);
+  border: 1.5px solid rgba(8, 52, 31, 0.28);
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
@@ -1116,7 +1125,8 @@
 /* Insight + CTA */
 .news-showcase .news-insight {
   background: linear-gradient(160deg, #1f1f1f 0%, #262725 60%, #2c2c2c 100%);
-  border-radius: 14px;
+  border: none;
+  border-radius: 0;
   padding: 28px 24px;
   margin-bottom: 8px;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
@@ -1469,7 +1479,7 @@
 
   .news-showcase .news-insight {
     margin: 0;
-    border-radius: 12px;
+    border-radius: 0;
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
   }
 }
@@ -1535,8 +1545,8 @@
   inset: 0;
   transform: skewX(-12deg);
   z-index: -1;
-  background: rgba(230, 180, 16, 0.14);
-  border: 1.5px solid rgba(212, 167, 66, 0.55);
+  background: #fff;
+  border: 1.5px solid rgba(8, 52, 31, 0.28);
 }
 
 #noticias .news-showcase .news-carousel-card .scope-tag {

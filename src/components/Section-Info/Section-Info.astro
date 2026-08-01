@@ -309,7 +309,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 );
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css?v=57" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=65" />
 
 <section
   id="noticias"
@@ -585,13 +585,13 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
   }
 
   .info-titulo {
-    color: var(--color-brand, #08341f);
+    color: #041a10;
     font-size: var(--home-section-title, clamp(2.1rem, 3.2vw, 2.95rem));
-    letter-spacing: 0.02em;
-    font-family: var(--font-display, "Georgia", serif);
+    letter-spacing: 0.01em;
+    font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
     text-transform: none;
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 1.08;
     text-shadow: none;
     opacity: 1;
     transform: translateY(0);
@@ -613,28 +613,26 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     content: "";
     flex: 1;
     height: 2px;
-    background: linear-gradient(90deg, #000, #d4a742);
-    min-width: 0;
+    background: linear-gradient(90deg, transparent, #000 18%, #d4a742);
+    min-width: 2.5rem;
     max-width: 650px;
-    opacity: 0;
-    transform: scaleX(0.88);
+    opacity: 1;
+    transform: none;
     transform-origin: right center;
-    animation: infoTituloLineIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: 1.15s;
+    animation: none;
   }
 
   .info-titulo::after {
     content: "";
     flex: 1;
     height: 2px;
-    background: linear-gradient(90deg, #d4a742, #000);
-    min-width: 0;
+    background: linear-gradient(90deg, #d4a742, #000 82%, transparent);
+    min-width: 2.5rem;
     max-width: 650px;
-    opacity: 0;
-    transform: scaleX(0.88);
+    opacity: 1;
+    transform: none;
     transform-origin: left center;
-    animation: infoTituloLineIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: 1.28s;
+    animation: none;
   }
 
   @keyframes infoTituloLineIn {
@@ -674,18 +672,13 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     }
 
     .info-titulo {
-      display: block;
+      display: flex;
       justify-content: center;
       text-align: center;
-      gap: 0;
+      gap: clamp(1rem, 2.2vw, 1.85rem);
       font-size: clamp(2rem, 3.8vw, 2.5rem);
       letter-spacing: 0.02em;
-    }
-
-    .info-titulo::before,
-    .info-titulo::after {
-      display: none !important;
-      content: none !important;
+      font-weight: 700;
     }
 
     .info-descripcion {
@@ -728,7 +721,8 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 
     .info-titulo::before,
     .info-titulo::after {
-      display: none;
+      display: none !important;
+      content: none !important;
     }
   }
 
@@ -1002,9 +996,9 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 
   .news-tag {
     display: inline-block;
-    background: rgba(230, 180, 16, 0.28);
+    background: #fff;
     color: #08341f;
-    border: 1px solid rgba(212, 167, 66, 0.55);
+    border: 1.5px solid rgba(8, 52, 31, 0.28);
     font-family: "Source Sans 3", sans-serif;
     font-size: 12px;
     font-weight: 700;

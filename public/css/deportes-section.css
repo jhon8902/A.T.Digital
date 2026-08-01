@@ -91,7 +91,7 @@
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background: #111827;
-  border-radius: 14px;
+  border-radius: 0;
 }
 
 .deporte-card__media img {
