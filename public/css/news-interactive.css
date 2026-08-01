@@ -736,17 +736,42 @@
     opacity 0.3s ease;
 }
 
-/* Sector automotor — sin borde ni halo en el contorno */
+/* Sector automotor — tarjeta plana: sin caja blanca ni marco */
 #noticias .news-showcase .news-carousel-card,
 #noticias .news-showcase .news-carousel-card:hover {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+}
+
+#noticias .news-showcase .news-carousel-card__link {
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
 }
 
+#noticias .news-showcase .news-carousel-card__image {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+#noticias .news-showcase .news-carousel-card__body {
+  background: transparent !important;
+  border: none !important;
+}
+
 #noticias .news-showcase .news-carousel-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(8, 52, 31, 0.1) !important;
+}
+
+#noticias .news-showcase .news-carousel-card:hover .news-carousel-card__image {
+  box-shadow: 0 12px 28px rgba(8, 52, 31, 0.1);
 }
 
 .news-carousel-card.is-filtered-out {
@@ -799,11 +824,6 @@
 .news-carousel-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
-}
-
-#noticias .news-showcase .news-carousel-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(8, 52, 31, 0.1) !important;
 }
 
 .news-carousel-card__link {
