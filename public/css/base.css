@@ -140,6 +140,12 @@ h1, h2, h3, h4 {
   line-height: 1.2;
 }
 
+h3.news-carousel-card__title,
+h4.news-carousel-card__title {
+  font-family: "Source Sans 3", var(--font-body);
+  font-weight: 600;
+}
+
 @media (min-width: 1024px) {
   body.home-page,
   body.nota-page,

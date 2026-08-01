@@ -949,10 +949,11 @@
 
 .news-carousel-card__title {
   font-family: "Source Sans 3", sans-serif;
-  font-size: 1.15rem;
+  font-size: var(--home-card-title, clamp(1.2rem, 1.35vw, 1.6rem));
   font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
+  font-synthesis: none;
+  letter-spacing: -0.015em;
+  line-height: 1.22;
   color: #062818;
   margin: 0;
   display: -webkit-box;

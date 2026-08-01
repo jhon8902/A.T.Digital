@@ -161,17 +161,22 @@ body.home-page .section-info .news-card:not(.news-card--featured):not(.news-card
 }
 
 @media (min-width: 1024px) {
+  body.home-page h3.news-carousel-card__title,
+  body.home-page h4.news-carousel-card__title,
   body.home-page .news-carousel-card__title {
-    font-size: var(--home-card-title) !important;
-    line-height: 1.2 !important;
     font-family: "Source Sans 3", sans-serif !important;
+    font-size: var(--home-card-title) !important;
     font-weight: 600 !important;
-    letter-spacing: -0.02em;
+    font-synthesis: none !important;
+    line-height: 1.22 !important;
+    letter-spacing: -0.015em;
     color: #062818 !important;
   }
 }
 
-/* Titulares de tarjeta — sans 600, verde más profundo */
+/* Titulares de tarjeta — sans 600, tamaño completo en todo el home */
+body.home-page h3.news-carousel-card__title,
+body.home-page h4.news-carousel-card__title,
 body.home-page .news-carousel-card__title,
 body.home-page .news-carousel-heading,
 body.home-page .electrico-card__body h3,
@@ -183,8 +188,10 @@ body.home-page .hibrido-card__body h3 a,
 body.home-page .deporte-card__body h3 a,
 body.home-page .lanzamiento-item__body h3 a {
   font-family: "Source Sans 3", sans-serif !important;
+  font-size: var(--home-card-title) !important;
   font-weight: 600 !important;
-  letter-spacing: -0.02em;
+  font-synthesis: none !important;
+  letter-spacing: -0.015em;
   color: #062818 !important;
 }
 
