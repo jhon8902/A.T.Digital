@@ -387,9 +387,13 @@
   border: 1.5px solid transparent;
 }
 
+#electricos .electricos-home-grid .scope-tag--national {
+  color: #08341f;
+}
+
 #electricos .electricos-home-grid .scope-tag--national::before {
-  background: #08341f;
-  border-color: #08341f;
+  background: #fff;
+  border-color: rgba(8, 52, 31, 0.28);
 }
 
 #electricos .electricos-home-grid .scope-tag--international::before {

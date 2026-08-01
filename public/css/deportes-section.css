@@ -146,12 +146,12 @@
 }
 
 .deporte-scope--nacional {
-  color: #fff;
+  color: #08341f;
 }
 
 .deporte-scope--nacional::before {
-  background: #08341f;
-  border-color: #08341f;
+  background: #fff;
+  border-color: rgba(8, 52, 31, 0.28);
 }
 
 .deporte-scope--internacional {

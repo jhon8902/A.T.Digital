@@ -32,6 +32,7 @@ body.home-page .section-info .info-titulo {
   font-weight: 600 !important;
   letter-spacing: 0.02em !important;
   line-height: 1.08 !important;
+  color: #062818 !important;
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -41,6 +42,37 @@ body.home-page .section-info .info-titulo {
 
 body.home-page .pruebas-title {
   color: #eef3ef !important;
+}
+
+/* Híbridos — título más presente y líneas laterales visibles */
+body.home-page #hibridos .hibridos-eyebrow {
+  color: #0d6e8c !important;
+  font-weight: 700;
+}
+
+body.home-page #hibridos .hibridos-title {
+  font-weight: 600 !important;
+  font-size: clamp(2.05rem, 2.9vw, 2.85rem) !important;
+  color: #062818 !important;
+}
+
+@media (min-width: 769px) {
+  body.home-page #hibridos .hibridos-title::before,
+  body.home-page #hibridos .hibridos-title::after {
+    display: block !important;
+    content: "" !important;
+    height: 2px !important;
+    max-width: 320px !important;
+    opacity: 1 !important;
+  }
+
+  body.home-page #hibridos .hibridos-title::before {
+    background: linear-gradient(90deg, transparent, #0d6e8c 55%, #d4a742) !important;
+  }
+
+  body.home-page #hibridos .hibridos-title::after {
+    background: linear-gradient(90deg, #d4a742, #0d6e8c 45%, transparent) !important;
+  }
 }
 
 body.home-page .electricos-title::before,
@@ -133,13 +165,14 @@ body.home-page .section-info .news-card:not(.news-card--featured):not(.news-card
     font-size: var(--home-card-title) !important;
     line-height: 1.2 !important;
     font-family: "Source Sans 3", sans-serif !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
     letter-spacing: -0.02em;
-    color: #08341f !important;
+    color: #062818 !important;
   }
 }
 
-/* Titulares de tarjeta — sans (serif reservado al título de sección) */
+/* Titulares de tarjeta — sans 600, verde más profundo */
+body.home-page .news-carousel-card__title,
 body.home-page .news-carousel-heading,
 body.home-page .electrico-card__body h3,
 body.home-page .hibrido-card__body h3,
@@ -150,14 +183,15 @@ body.home-page .hibrido-card__body h3 a,
 body.home-page .deporte-card__body h3 a,
 body.home-page .lanzamiento-item__body h3 a {
   font-family: "Source Sans 3", sans-serif !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   letter-spacing: -0.02em;
-  color: #08341f !important;
+  color: #062818 !important;
 }
 
 body.home-page .news-carousel-heading {
+  font-weight: 600 !important;
   letter-spacing: 0.01em;
-  color: #10161f !important;
+  color: #062818 !important;
 }
 
 /* Destacado de Noticias — más grande, solo esa tarjeta (desktop) */
