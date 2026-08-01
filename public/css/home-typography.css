@@ -123,8 +123,33 @@ body.home-page .section-info .news-card:not(.news-card--featured):not(.news-card
 @media (min-width: 1024px) {
   body.home-page .news-carousel-card__title {
     font-size: var(--home-card-title) !important;
-    line-height: 1.12 !important;
+    line-height: 1.2 !important;
+    font-family: "Source Sans 3", sans-serif !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
+    color: #08341f !important;
   }
+}
+
+/* Titulares de tarjeta — sans (serif reservado al título de sección) */
+body.home-page .news-carousel-heading,
+body.home-page .electrico-card__body h3,
+body.home-page .hibrido-card__body h3,
+body.home-page .deporte-card__body h3,
+body.home-page .lanzamiento-item__body h3,
+body.home-page .electrico-card__body h3 a,
+body.home-page .hibrido-card__body h3 a,
+body.home-page .deporte-card__body h3 a,
+body.home-page .lanzamiento-item__body h3 a {
+  font-family: "Source Sans 3", sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em;
+  color: #08341f !important;
+}
+
+body.home-page .news-carousel-heading {
+  letter-spacing: 0.01em;
+  color: #10161f !important;
 }
 
 /* Destacado de Noticias — más grande, solo esa tarjeta (desktop) */
