@@ -241,17 +241,34 @@
   font-weight: 600;
   color: var(--hyb-brand);
   text-decoration: none;
-  padding: 0.62rem 1.15rem;
-  border: 1px solid var(--hyb-border);
-  border-radius: 999px;
+  padding: 0.62rem 1.25rem;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  position: relative;
+  isolation: isolate;
+  z-index: 0;
+  transition: transform 0.2s ease;
+}
+
+.hibridos-more::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: skewX(-12deg);
+  z-index: -1;
   background: #fff;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  border: 1.5px solid var(--hyb-border);
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .hibridos-more:hover {
+  transform: translateY(-1px);
+}
+
+.hibridos-more:hover::before {
   background: #f9fafb;
   border-color: #cbd2dc;
-  transform: translateY(-1px);
 }
 
 @media (max-width: 1024px) {
@@ -350,4 +367,32 @@
 .hibrido-chips--grid .hibrido-chip {
   font-size: 0.72rem;
   padding: 4px 8px;
+}
+
+/* Etiquetas de ámbito — borde paralelogramo */
+#hibridos .hibridos-home-grid .scope-tag {
+  position: relative;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  isolation: isolate;
+}
+
+#hibridos .hibridos-home-grid .scope-tag::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: skewX(-12deg);
+  z-index: -1;
+  border: 1.5px solid transparent;
+}
+
+#hibridos .hibridos-home-grid .scope-tag--national::before {
+  background: #08341f;
+  border-color: #08341f;
+}
+
+#hibridos .hibridos-home-grid .scope-tag--international::before {
+  background: #fff;
+  border-color: rgba(8, 52, 31, 0.28);
 }
