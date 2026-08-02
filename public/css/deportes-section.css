@@ -290,6 +290,106 @@
   }
 }
 
+/* Home compact — filas densas, no tarjetas a medio viewport */
+.deportes-section--compact {
+  padding: clamp(1rem, 2.5vw, 1.75rem) clamp(1rem, 3vw, 2rem);
+}
+
+.deportes-section--compact .deportes-inner {
+  padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.15rem, 3vw, 1.85rem);
+}
+
+.deportes-section--compact .deportes-head {
+  margin-bottom: 1.15rem;
+}
+
+.deportes-section--compact .deportes-lead {
+  font-size: clamp(1rem, 1.2vw, 1.12rem);
+  max-width: 36rem;
+}
+
+.deportes-section--compact .deportes-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+.deportes-section--compact .deporte-card {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 32%) minmax(0, 1fr);
+  gap: 0.85rem 1rem;
+  align-items: center;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid #e8eaee;
+}
+
+.deportes-section--compact .deporte-card:last-child {
+  border-bottom: none;
+}
+
+.deportes-section--compact .deporte-card:hover {
+  transform: none;
+}
+
+.deportes-section--compact .deporte-card__media {
+  aspect-ratio: 16 / 10;
+  min-height: 0;
+}
+
+.deportes-section--compact .deporte-card:hover .deporte-card__media img {
+  transform: scale(1.02);
+}
+
+.deportes-section--compact .deporte-card__body {
+  padding: 0.1rem 0.15rem 0.1rem 0;
+  gap: 0.3rem;
+}
+
+.deportes-section--compact .deporte-card__body h3 {
+  font-size: clamp(1.05rem, 1.25vw, 1.28rem);
+  line-height: 1.25;
+}
+
+.deportes-section--compact .deporte-desc {
+  font-size: 0.95rem;
+  -webkit-line-clamp: 2;
+}
+
+.deportes-section--compact .deporte-chips {
+  display: none;
+}
+
+.deportes-section--compact .deporte-card__actions {
+  padding-top: 0.25rem;
+}
+
+.deportes-section--compact .deporte-card__cta {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.88rem;
+}
+
+.deportes-section--compact .deportes-footer {
+  margin-top: 1.15rem;
+}
+
+@media (max-width: 640px) {
+  .deportes-section--compact .deporte-card {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+    padding: 1rem 0;
+  }
+
+  .deportes-section--compact .deporte-card__media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .deportes-section--compact .deporte-card__body {
+    padding: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .deporte-card,
   .deporte-card__media img,
