@@ -10,9 +10,11 @@ import { normalizeNoteCategory } from "../../lib/notes-query";
 
 interface Props {
   notes?: SiteNote[];
+  /** Home: columna compacta dentro del bloque Movilidad */
+  compact?: boolean;
 }
 
-const { notes: prefetchedNotes } = Astro.props;
+const { notes: prefetchedNotes, compact = false } = Astro.props;
 
 type HibridoItem = {
   href: string;
@@ -114,7 +116,13 @@ function normalizeImg(src: string) {
 }
 
 function buildChips(item: { description?: string; title?: string; chips?: string[] }) {
-  if (item.chips?.length) return item.chips.slice(0, 3);
+  const normalize = (list: string[]) =>
+    list
+      .map((c) => c.trim())
+      .filter((c) => c && !/^destacado$/i.test(c))
+      .slice(0, 2);
+
+  if (item.chips?.length) return normalize(item.chips);
 
   const chips: string[] = [];
   const text = `${item.title || ""} ${item.description || ""}`.toLowerCase();
@@ -130,7 +138,7 @@ function buildChips(item: { description?: string; title?: string; chips?: string
   if (/awd|tracción|4x4|bóxer|boxer/i.test(text)) chips.push("AWD");
 
   if (chips.length === 0) chips.push("Híbrido");
-  return chips.slice(0, 3);
+  return normalize(chips);
 }
 
 try {
@@ -172,7 +180,7 @@ const staticHibridos: Omit<HibridoItem, "sortDate">[] = [
       "Motor eléctrico y gasolina con bajo consumo y buena autonomía. Ideal para viajes largos y manejo urbano cómodo.",
     fecha: "Publicado: 13-mar",
     source_scope: "nacional",
-    chips: ["HEV", "SUV", "Bajo consumo"],
+    chips: ["HEV", "SUV"],
   },
   {
     href: "/notas-hibridos/nota-volvo-cx90",
@@ -183,7 +191,7 @@ const staticHibridos: Omit<HibridoItem, "sortDate">[] = [
       "SUV premium con motor híbrido, diseño escandinavo y enfoque en seguridad, confort y tecnología.",
     fecha: "Publicado: 16-mar",
     source_scope: "nacional",
-    chips: ["PHEV", "SUV", "Premium"],
+    chips: ["PHEV", "SUV"],
   },
   {
     href: "/notas-hibridos/nota-subaru",
@@ -194,7 +202,7 @@ const staticHibridos: Omit<HibridoItem, "sortDate">[] = [
       "Motor bóxer con asistencia eléctrica para tracción estable y eficiencia en caminos mixtos y ciudad.",
     fecha: "Publicado: 21-mar",
     source_scope: "nacional",
-    chips: ["HEV", "AWD", "SUV"],
+    chips: ["HEV", "AWD"],
   },
   {
     href: "/notas-hibridos/nota-kona",
@@ -205,7 +213,7 @@ const staticHibridos: Omit<HibridoItem, "sortDate">[] = [
       "SUV compacto con consumo eficiente, diseño moderno y asistencias de conducción conectadas.",
     fecha: "Publicado: 25-mar",
     source_scope: "nacional",
-    chips: ["HEV", "Compacto", "Conectado"],
+    chips: ["HEV", "Compacto"],
   },
   {
     href: "/notas-hibridos/nota-audi-q7",
@@ -216,7 +224,7 @@ const staticHibridos: Omit<HibridoItem, "sortDate">[] = [
       "SUV híbrido enchufable con motor V6, autonomía eléctrica y alto nivel de confort y tecnología.",
     fecha: "Publicado: 28-mar",
     source_scope: "nacional",
-    chips: ["PHEV", "Premium", "V6"],
+    chips: ["PHEV", "Premium"],
   },
   {
     href: "/notas-hibridos/nota-nissan",
@@ -227,7 +235,7 @@ const staticHibridos: Omit<HibridoItem, "sortDate">[] = [
       "SUV híbrido con motor e-Power, confort familiar y manejo suave para ciudad y carretera.",
     fecha: "Publicado: 30-mar",
     source_scope: "nacional",
-    chips: ["e-Power", "SUV", "Familiar"],
+    chips: ["e-Power", "SUV"],
   },
 ];
 
@@ -259,79 +267,151 @@ const allHibridos = [...dynamicHibridos, ...deduplicatedStaticHibridos]
   .slice(0, HOME_HIBRIDOS_HOME_LIMIT);
 ---
 
-<link rel="stylesheet" href="/css/hibridos-section.css?v=7" />
+<link rel="stylesheet" href="/css/hibridos-section.css?v=9" />
 <section
   id="hibridos"
-  class="hibridos-section"
+  class:list={["hibridos-section", compact && "hibridos-section--compact"]}
   aria-labelledby="hibridos-heading"
 >
   <div class="hibridos-inner">
     <header class="hibridos-head">
       <p class="hibridos-eyebrow">Electrificación intermedia</p>
       <h2 id="hibridos-heading" class="hibridos-title">Carros híbridos</h2>
-      <p class="hibridos-lead">
-        HEV, PHEV y e-Power en Colombia: consumo, tipo de híbrido y fichas para
-        comparar con AutoMatch.
-      </p>
+      {
+        !compact && (
+          <p class="hibridos-lead">
+            HEV, PHEV y e-Power: consumo, tipo de híbrido y fichas para entender
+            la electrificación intermedia en el mercado global.
+          </p>
+        )
+      }
+      {
+        compact && (
+          <p class="hibridos-lead">
+            HEV, PHEV y e-Power: consumo y fichas para comparar.
+          </p>
+        )
+      }
     </header>
 
     {
-      allHibridos.length > 0 && (
-        <div class="hibridos-grid hibridos-home-grid">
-          {allHibridos.map((nota, index) => {
-            const chips = buildChips(nota);
-            const scope = normalizeSourceScope(nota.source_scope);
-            const fecha = cleanPublishedDate(nota.fecha);
+      allHibridos.length > 0 &&
+        (compact ? (
+          <div class="mobility-list" role="list">
+            {allHibridos.map((nota, index) => {
+              const chips = buildChips(nota);
+              const scope = normalizeSourceScope(nota.source_scope);
+              const fecha = cleanPublishedDate(nota.fecha);
 
-            return (
-              <article class="news-carousel-card">
-                <a href={nota.href} class="news-carousel-card__link">
-                  <div class="news-carousel-card__image">
-                    <img
-                      src={nota.img}
-                      alt={nota.alt}
-                      loading={index === 0 ? "eager" : "lazy"}
-                      fetchpriority={index === 0 ? "high" : "auto"}
-                      decoding="async"
-                    />
-                  </div>
-                  <div class="news-carousel-card__body">
-                    <div class="news-meta-tags">
-                      <span
-                        class={
-                          "scope-tag" +
-                          (scope === "internacional"
-                            ? " scope-tag--international"
-                            : " scope-tag--national")
-                        }
-                      >
-                        {sourceScopeLabel(nota.source_scope)}
-                      </span>
+              return (
+                <article class="mobility-row" role="listitem">
+                  <a href={nota.href} class="mobility-row__link">
+                    <div class="mobility-row__media">
+                      <img
+                        src={nota.img}
+                        alt={nota.alt}
+                        loading={index < 2 ? "eager" : "lazy"}
+                        decoding="async"
+                      />
                     </div>
-                    <h3 class="news-carousel-card__title">
-                      {getNewsCardTitle(nota.title)}
-                    </h3>
-                    {nota.description && (
-                      <p class="news-carousel-card__deck">{nota.description}</p>
-                    )}
-                    <div class="hibrido-chips hibrido-chips--grid">
-                      {chips.map((chip) => (
-                        <span class="hibrido-chip">{chip}</span>
-                      ))}
+                    <div class="mobility-row__body">
+                      <div class="mobility-row__meta">
+                        <span
+                          class={
+                            "scope-tag" +
+                            (scope === "internacional"
+                              ? " scope-tag--international"
+                              : " scope-tag--national")
+                          }
+                        >
+                          {sourceScopeLabel(nota.source_scope)}
+                        </span>
+                      </div>
+                      <h3 class="mobility-row__title">
+                        {getNewsCardTitle(nota.title)}
+                      </h3>
+                      {nota.description && (
+                        <p class="mobility-row__deck">{nota.description}</p>
+                      )}
+                      {chips.length > 0 && (
+                        <div class="mobility-row__chips">
+                          {chips.map((chip) => (
+                            <span class="hibrido-chip">{chip}</span>
+                          ))}
+                        </div>
+                      )}
+                      {fecha && (
+                        <p class="news-date">
+                          <span>{fecha}</span>
+                        </p>
+                      )}
                     </div>
-                    {fecha && (
-                      <p class="news-date">
-                        <i class="fa-regular fa-calendar" aria-hidden="true" />
-                        <span>{fecha}</span>
-                      </p>
-                    )}
-                  </div>
-                </a>
-              </article>
-            );
-          })}
-        </div>
-      )
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div class="hibridos-grid hibridos-home-grid">
+            {allHibridos.map((nota, index) => {
+              const chips = buildChips(nota);
+              const scope = normalizeSourceScope(nota.source_scope);
+              const fecha = cleanPublishedDate(nota.fecha);
+
+              return (
+                <article class="news-carousel-card">
+                  <a href={nota.href} class="news-carousel-card__link">
+                    <div class="news-carousel-card__image">
+                      <img
+                        src={nota.img}
+                        alt={nota.alt}
+                        loading={index === 0 ? "eager" : "lazy"}
+                        fetchpriority={index === 0 ? "high" : "auto"}
+                        decoding="async"
+                      />
+                    </div>
+                    <div class="news-carousel-card__body">
+                      <div class="news-meta-tags">
+                        <span
+                          class={
+                            "scope-tag" +
+                            (scope === "internacional"
+                              ? " scope-tag--international"
+                              : " scope-tag--national")
+                          }
+                        >
+                          {sourceScopeLabel(nota.source_scope)}
+                        </span>
+                      </div>
+                      <h3 class="news-carousel-card__title">
+                        {getNewsCardTitle(nota.title)}
+                      </h3>
+                      {nota.description && (
+                        <p class="news-carousel-card__deck">
+                          {nota.description}
+                        </p>
+                      )}
+                      <div class="hibrido-chips hibrido-chips--grid">
+                        {chips.map((chip) => (
+                          <span class="hibrido-chip">{chip}</span>
+                        ))}
+                      </div>
+                      {fecha && (
+                        <p class="news-date">
+                          <i
+                            class="fa-regular fa-calendar"
+                            aria-hidden="true"
+                          />
+                          <span>{fecha}</span>
+                        </p>
+                      )}
+                    </div>
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+        ))
     }
 
     <footer class="hibridos-footer">

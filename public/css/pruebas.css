@@ -11,11 +11,11 @@
 }
 
 .pruebas-section {
-  --prueba-brand: #eef3ef;
+  --prueba-brand: #f2f6f3;
   --prueba-accent: var(--color-accent, #e6b410);
-  --prueba-muted: #a8b5ad;
+  --prueba-muted: #aebbb4;
   --prueba-surface: #1a2a22;
-  --prueba-bg: #0d1612;
+  --prueba-bg: #132019;
   --prueba-border: rgba(255, 255, 255, 0.11);
   --prueba-rail-card-width: clamp(19rem, 78vw, 38rem);
 }
@@ -24,9 +24,9 @@
   width: 100%;
   background: linear-gradient(
     165deg,
-    #0b1310 0%,
-    #101f18 45%,
-    #0d1612 100%
+    #14241c 0%,
+    #183028 48%,
+    #132019 100%
   );
   padding: clamp(2.75rem, 5vw, 4.25rem) clamp(1rem, 3vw, 2rem);
   scroll-margin-top: 5.5rem;
@@ -108,7 +108,7 @@
 .pruebas-rail-toolbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 1rem;
   margin-bottom: 0.85rem;
   padding: 0 0.2rem;

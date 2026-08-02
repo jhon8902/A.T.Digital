@@ -12,7 +12,7 @@ import {
   HOME_NEWS_HERO_COUNT,
   HOME_NEWS_POOL_SIZE,
 } from "../../lib/home-news-config";
-import { sectorRadarPreview } from "../../lib/sector-radar";
+import { sectorRadarEditionMeta, sectorRadarPreview } from "../../lib/sector-radar";
 import NewsCarouselCard from "./NewsCarouselCard.astro";
 
 interface Props {
@@ -309,7 +309,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 );
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css?v=65" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=70" />
 
 <section
   id="noticias"
@@ -321,8 +321,8 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     <p class="noticias-eyebrow">Noticias</p>
     <h2 id="noticias-heading" class="info-titulo">Sector automotor</h2>
     <p class="noticias-home-lead">
-      Lo más reciente que publicamos a diario: lanzamientos, fichas técnicas y
-      cobertura del sector en un solo lugar.
+      Cobertura diaria del sector: lanzamientos, fichas técnicas y noticias
+      nacionales e internacionales en un solo lugar.
     </p>
   </header>
 
@@ -465,17 +465,36 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
         <a href="/noticias" class="ver-mas-noticias-btn">Ver más noticias</a>
       </div>
 
-      <article class="news-insight">
-        <div class="news-card-content">
-          <span class="news-tag">Radar del sector</span>
-          <h3 class="news-title">
+      <article class="sector-radar-preview" aria-labelledby="sector-radar-heading">
+        <div class="sector-radar-preview__inner">
+          <header class="sector-radar-preview__header">
+            <span class="sector-radar-preview__eyebrow">Radar del sector</span>
+            <p class="sector-radar-preview__edition">
+              {sectorRadarEditionMeta.label} · {sectorRadarEditionMeta.period}
+            </p>
+          </header>
+          <h3 id="sector-radar-heading" class="sector-radar-preview__title">
             {sectorRadarPreview.title}
           </h3>
-          <p class="news-date">
+          <p class="sector-radar-preview__summary">
             {sectorRadarPreview.summary}
           </p>
-          <a class="news-read-more" href="/tendencias-del-sector">
-            Explorar tendencias →
+          <dl class="sector-radar-preview__metrics">
+            {
+              sectorRadarPreview.metrics.map((metric) => (
+                <div class="sector-radar-preview__metric">
+                  <dt class="sector-radar-preview__metric-value">
+                    {metric.value}
+                  </dt>
+                  <dd class="sector-radar-preview__metric-label">
+                    {metric.label}
+                  </dd>
+                </div>
+              ))
+            }
+          </dl>
+          <a class="sector-radar-preview__cta" href="/tendencias-del-sector">
+            Explorar tendencias
           </a>
         </div>
       </article>
@@ -996,15 +1015,15 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 
   .news-tag {
     display: inline-block;
-    background: #fff;
-    color: #08341f;
-    border: 1.5px solid rgba(8, 52, 31, 0.28);
+    background: transparent;
+    color: #5a6470;
+    border: 1px solid rgba(8, 52, 31, 0.14);
     font-family: "Source Sans 3", sans-serif;
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 9px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 6px 12px;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
     border-radius: 999px;
     width: fit-content;
   }
@@ -1018,26 +1037,26 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 
   .scope-tag {
     display: inline-block;
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 9px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.4px;
-    padding: 6px 12px;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
     border-radius: 20px;
     width: fit-content;
     border: none;
   }
 
   .scope-tag--national {
-    background: #08341f;
-    color: #fff;
-    border: 1px solid #08341f;
+    background: transparent;
+    color: #5a6470;
+    border: 1px solid rgba(8, 52, 31, 0.14);
   }
 
   .scope-tag--international {
-    background: #fff;
-    color: #08341f;
-    border: 1.5px solid rgba(8, 52, 31, 0.28);
+    background: transparent;
+    color: #5a6470;
+    border: 1px solid rgba(8, 52, 31, 0.14);
   }
 
   .news-showcase .news-hero-carousel .news-meta-tags--overlay .news-tag,

@@ -235,7 +235,7 @@ const homeLanzamientos = [
   .slice(0, HOME_VISIBLE_COUNT);
 ---
 
-<link rel="stylesheet" href="/css/lanzamientos-section.css?v=5" />
+<link rel="stylesheet" href="/css/lanzamientos-section.css?v=8" />
 
 <section
   id="lanzamientos"
@@ -247,7 +247,7 @@ const homeLanzamientos = [
       <p class="lanzamientos-eyebrow">Novedades del mercado</p>
       <h2 id="lanzamientos-heading" class="lanzamientos-title">Lanzamientos</h2>
       <p class="lanzamientos-lead">
-        Los modelos que acaban de llegar o se presentan en Colombia: fichas,
+        Los modelos que acaban de presentarse o llegan al mercado: fichas,
         versiones e imágenes.
       </p>
     </header>
@@ -281,9 +281,6 @@ const homeLanzamientos = [
                   </span>
                 </a>
                 <div class="lanzamiento-item__body">
-                  {index === 0 && (
-                    <span class="lanzamiento-badge-new">Recién llegado</span>
-                  )}
                   <div class="lanzamiento-item__meta">
                     {fecha && (
                       <span class="lanzamiento-item__date">{fecha}</span>

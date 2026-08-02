@@ -107,7 +107,7 @@ const allPruebas = [...dynamicPruebas, ...deduplicatedStaticPruebas].sort(
 const homePruebas = allPruebas.slice(0, HOME_VISIBLE_COUNT);
 ---
 
-<link rel="stylesheet" href="/css/pruebas.css?v=6" />
+<link rel="stylesheet" href="/css/pruebas.css?v=8" />
 
 <section
   id="pruebas"
@@ -120,8 +120,8 @@ const homePruebas = allPruebas.slice(0, HOME_VISIBLE_COUNT);
       <p class="pruebas-eyebrow">Test drive en video</p>
       <h2 id="pruebas-heading" class="pruebas-title">Pruebas de manejo</h2>
       <p class="pruebas-lead">
-        Ponemos a prueba los vehículos más relevantes del mercado y te contamos
-        lo esencial de cada marca en formato video.
+        Ponemos a prueba vehículos relevantes y te contamos lo esencial de cada
+        marca en formato video.
       </p>
     </header>
 
@@ -129,7 +129,6 @@ const homePruebas = allPruebas.slice(0, HOME_VISIBLE_COUNT);
       homePruebas.length > 0 && (
         <div class="pruebas-rail-wrap">
           <div class="pruebas-rail-toolbar">
-            <h3 class="pruebas-rail-title">Episodios</h3>
             <div class="pruebas-rail-controls">
               <span class="pruebas-rail-counter" data-rail-counter aria-live="polite">
                 1 / {homePruebas.length}
@@ -138,14 +137,14 @@ const homePruebas = allPruebas.slice(0, HOME_VISIBLE_COUNT);
                 <button
                   type="button"
                   class="pruebas-rail-btn prev"
-                  aria-label="Episodio anterior"
+                  aria-label="Prueba anterior"
                 >
                   <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
                 </button>
                 <button
                   type="button"
                   class="pruebas-rail-btn next"
-                  aria-label="Siguiente episodio"
+                  aria-label="Siguiente prueba"
                 >
                   <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
                 </button>
@@ -181,9 +180,6 @@ const homePruebas = allPruebas.slice(0, HOME_VISIBLE_COUNT);
                   )}
                 </div>
                 <div class="prueba-rail-card__body">
-                  <p class="prueba-rail-ep">
-                    Episodio {index + 1}
-                  </p>
                   <h4>{prueba.title}</h4>
                   <p class="prueba-rail-desc">{prueba.subtitle}</p>
                   <div class="prueba-rail-actions">

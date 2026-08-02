@@ -25,13 +25,11 @@ body.home-page h2.electricos-title,
 body.home-page h2.hibridos-title,
 body.home-page h2.lanzamientos-title,
 body.home-page h2.deportes-title,
-body.home-page h2.pruebas-title,
 body.home-page h2.info-titulo,
 body.home-page .electricos-title,
 body.home-page .hibridos-title,
 body.home-page .lanzamientos-title,
 body.home-page .deportes-title,
-body.home-page .pruebas-title,
 body.home-page .section-info .info-titulo,
 body.home-page .section-info.section-info--interactive .info-header .info-titulo {
   font-size: clamp(2.2rem, 3.15vw, 3.05rem) !important;
@@ -50,13 +48,96 @@ body.home-page .section-info.section-info--interactive .info-header .info-titulo
   text-shadow: 0 0 0.35px #041a10;
 }
 
-body.home-page .pruebas-title {
-  color: #eef3ef !important;
-  -webkit-text-stroke: 0.45px #eef3ef;
-  text-shadow: none;
+/* Pruebas — tipografía clara sobre bloque oscuro (sin heredar verde #041a10) */
+body.home-page .pruebas-title,
+body.home-page h2.pruebas-title {
+  font-size: clamp(2.2rem, 3.15vw, 3.05rem) !important;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif !important;
+  font-weight: 700 !important;
+  font-synthesis: weight !important;
+  letter-spacing: 0.01em !important;
+  line-height: 1.08 !important;
+  color: #f2f6f3 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 2.2vw, 1.85rem);
+  width: 100%;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
 }
 
-/* Híbridos — título más presente y líneas laterales visibles */
+/* Movilidad split — títulos de columna más presentes */
+body.home-page .home-mobility .electricos-title,
+body.home-page .home-mobility h2.electricos-title,
+body.home-page .home-mobility .hibridos-title,
+body.home-page .home-mobility h2.hibridos-title,
+body.home-page .home-mobility #hibridos .hibridos-title {
+  font-size: clamp(1.95rem, 2.6vw, 2.45rem) !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+  gap: 0 !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+  color: #041a10 !important;
+}
+
+body.home-page .home-mobility .electricos-title::before,
+body.home-page .home-mobility .electricos-title::after,
+body.home-page .home-mobility .hibridos-title::before,
+body.home-page .home-mobility .hibridos-title::after {
+  display: none !important;
+  content: none !important;
+}
+
+body.home-page .home-mobility .mobility-row__title {
+  font-family: "Source Sans 3", sans-serif !important;
+  font-size: clamp(1.15rem, 1.35vw, 1.35rem) !important;
+  font-weight: 700 !important;
+  color: #062818 !important;
+}
+
+body.home-page .home-mobility .mobility-row__deck,
+body.home-page .home-mobility .electricos-lead,
+body.home-page .home-mobility .hibridos-lead {
+  color: #4b5563 !important;
+  font-size: clamp(1rem, 1.15vw, 1.12rem) !important;
+}
+
+body.home-page .home-mobility .electricos-section,
+body.home-page .home-mobility .hibridos-section {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+body.home-page .home-mobility .electricos-inner,
+body.home-page .home-mobility .hibridos-inner {
+  background: transparent !important;
+}
+
+body.home-page #pruebas .prueba-rail-card__body h4,
+body.home-page #pruebas h4.prueba-rail-card__title,
+body.home-page .prueba-rail-card__body h4 {
+  font-family: "Source Sans 3", sans-serif !important;
+  font-size: var(--home-card-title) !important;
+  font-weight: 700 !important;
+  font-synthesis: none !important;
+  letter-spacing: -0.015em;
+  color: #f2f6f3 !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+}
+
+body.home-page #pruebas .prueba-rail-desc,
+body.home-page .prueba-rail-desc {
+  color: #aebbb4 !important;
+}
+
+body.home-page #pruebas .pruebas-rail-title {
+  color: #f2f6f3 !important;
+}
+
+/* Híbridos — acento de sección */
 body.home-page #hibridos .hibridos-eyebrow {
   color: #0d6e8c !important;
   font-weight: 700;
@@ -71,64 +152,66 @@ body.home-page h2.hibridos-title {
   color: #041a10 !important;
 }
 
-/* Líneas laterales de títulos de sección — visibles en desktop/tablet */
-@media (min-width: 601px) {
-  body.home-page .electricos-title::before,
-  body.home-page .electricos-title::after,
-  body.home-page .hibridos-title::before,
-  body.home-page .hibridos-title::after,
-  body.home-page .lanzamientos-title::before,
-  body.home-page .lanzamientos-title::after,
-  body.home-page .deportes-title::before,
-  body.home-page .deportes-title::after,
-  body.home-page .pruebas-title::before,
-  body.home-page .pruebas-title::after,
-  body.home-page .section-info .info-titulo::before,
-  body.home-page .section-info .info-titulo::after,
-  body.home-page .section-info.section-info--interactive .info-header .info-titulo::before,
-  body.home-page .section-info.section-info--interactive .info-header .info-titulo::after {
-    content: "" !important;
-    display: block !important;
-    flex: 1 1 0 !important;
-    height: 2px !important;
-    min-width: 2.5rem !important;
-    max-width: 420px !important;
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
-    visibility: visible !important;
-  }
+/* Líneas laterales de títulos de sección */
+body.home-page .electricos-title::before,
+body.home-page .electricos-title::after,
+body.home-page .hibridos-title::before,
+body.home-page .hibridos-title::after,
+body.home-page .lanzamientos-title::before,
+body.home-page .lanzamientos-title::after,
+body.home-page .deportes-title::before,
+body.home-page .deportes-title::after,
+body.home-page .pruebas-title::before,
+body.home-page .pruebas-title::after,
+body.home-page .section-info .info-titulo::before,
+body.home-page .section-info .info-titulo::after {
+  content: "";
+  display: block;
+  flex: 1 1 2.5rem;
+  height: 1px;
+  min-width: 2.5rem;
+  max-width: 300px;
+  opacity: 0.85;
+  transform: none;
+  animation: none;
+}
 
-  body.home-page .electricos-title::before,
-  body.home-page .hibridos-title::before,
-  body.home-page .lanzamientos-title::before,
-  body.home-page .deportes-title::before,
-  body.home-page .pruebas-title::before,
-  body.home-page .section-info .info-titulo::before,
-  body.home-page .section-info.section-info--interactive .info-header .info-titulo::before {
-    background: linear-gradient(90deg, transparent, #000 22%, #d4a742) !important;
-  }
+body.home-page .electricos-title::before,
+body.home-page .hibridos-title::before,
+body.home-page .lanzamientos-title::before,
+body.home-page .deportes-title::before,
+body.home-page .pruebas-title::before,
+body.home-page .section-info .info-titulo::before {
+  background: linear-gradient(90deg, transparent, rgba(212, 167, 66, 0.95));
+}
 
-  body.home-page .electricos-title::after,
-  body.home-page .hibridos-title::after,
-  body.home-page .lanzamientos-title::after,
-  body.home-page .deportes-title::after,
-  body.home-page .pruebas-title::after,
-  body.home-page .section-info .info-titulo::after,
-  body.home-page .section-info.section-info--interactive .info-header .info-titulo::after {
-    background: linear-gradient(90deg, #d4a742, #000 78%, transparent) !important;
+body.home-page .electricos-title::after,
+body.home-page .hibridos-title::after,
+body.home-page .lanzamientos-title::after,
+body.home-page .deportes-title::after,
+body.home-page .pruebas-title::after,
+body.home-page .section-info .info-titulo::after {
+  background: linear-gradient(90deg, rgba(212, 167, 66, 0.95), transparent);
+}
+
+@media (min-width: 769px) {
+  body.home-page #hibridos .hibridos-title::before,
+  body.home-page #hibridos .hibridos-title::after {
+    height: 1px;
+    max-width: 320px;
+    opacity: 1;
   }
 
   body.home-page #hibridos .hibridos-title::before {
-    background: linear-gradient(90deg, transparent, #0d6e8c 55%, #d4a742) !important;
+    background: linear-gradient(90deg, transparent, #0d6e8c 55%, #d4a742);
   }
 
   body.home-page #hibridos .hibridos-title::after {
-    background: linear-gradient(90deg, #d4a742, #0d6e8c 45%, transparent) !important;
+    background: linear-gradient(90deg, #d4a742, #0d6e8c 45%, transparent);
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   body.home-page .electricos-title::before,
   body.home-page .electricos-title::after,
   body.home-page .hibridos-title::before,
@@ -140,11 +223,8 @@ body.home-page h2.hibridos-title {
   body.home-page .pruebas-title::before,
   body.home-page .pruebas-title::after,
   body.home-page .section-info .info-titulo::before,
-  body.home-page .section-info .info-titulo::after,
-  body.home-page .section-info.section-info--interactive .info-header .info-titulo::before,
-  body.home-page .section-info.section-info--interactive .info-header .info-titulo::after {
-    display: none !important;
-    content: none !important;
+  body.home-page .section-info .info-titulo::after {
+    display: none;
   }
 }
 
@@ -182,16 +262,8 @@ body.home-page .section-info .news-card:not(.news-card--featured):not(.news-card
 }
 
 /* Titulares de tarjeta — sans 700, tamaño completo en todo el home */
-body.home-page h3.news-carousel-card__title,
-body.home-page h4.news-carousel-card__title,
-body.home-page .news-carousel-card__title,
-body.home-page .news-carousel-heading,
-body.home-page .electrico-card__body h3,
-body.home-page .hibrido-card__body h3,
-body.home-page .deporte-card__body h3,
 body.home-page .lanzamiento-item__body h3,
 body.home-page .lanzamiento-item__body h3 a,
-body.home-page .prueba-rail-card__body h4,
 body.home-page .electrico-card__body h3 a,
 body.home-page .hibrido-card__body h3 a,
 body.home-page .deporte-card__body h3 a {
@@ -203,10 +275,39 @@ body.home-page .deporte-card__body h3 a {
   color: #062818 !important;
 }
 
-body.home-page .news-carousel-heading {
+body.home-page h3.news-carousel-card__title,
+body.home-page h4.news-carousel-card__title,
+body.home-page .news-carousel-card__title,
+body.home-page .electrico-card__body h3,
+body.home-page .hibrido-card__body h3,
+body.home-page .deporte-card__body h3 {
+  font-family: "Source Sans 3", sans-serif !important;
+  font-size: var(--home-card-title) !important;
   font-weight: 700 !important;
-  letter-spacing: 0.01em;
+  font-synthesis: none !important;
+  letter-spacing: -0.015em;
   color: #062818 !important;
+}
+
+/* Subtítulo de bloque — más suave que el título de nota */
+body.home-page .news-carousel-heading {
+  font-family: "Source Sans 3", sans-serif !important;
+  font-size: clamp(1.15rem, 1.5vw, 1.3rem) !important;
+  font-weight: 600 !important;
+  font-synthesis: none !important;
+  letter-spacing: 0.01em;
+  color: #3d4a44 !important;
+}
+
+body.home-page .news-carousel-card__deck {
+  color: #4b5563 !important;
+  font-size: var(--home-card-body) !important;
+}
+
+body.home-page .section-info .news-date,
+body.home-page .news-carousel-card .news-date {
+  font-size: 0.75rem !important;
+  color: #8a939e !important;
 }
 
 /* Destacado de Noticias — más grande, solo esa tarjeta (desktop) */
@@ -231,8 +332,7 @@ body.home-page .prueba-rail-desc {
 body.home-page .electrico-card__date,
 body.home-page .hibrido-card__date,
 body.home-page .deporte-card__date,
-body.home-page .lanzamiento-item__date,
-body.home-page .section-info .news-date {
+body.home-page .lanzamiento-item__date {
   font-size: var(--home-card-meta);
   font-family: var(--font-body, "Source Sans 3", sans-serif);
 }
@@ -240,21 +340,48 @@ body.home-page .section-info .news-date {
 body.home-page .electrico-scope,
 body.home-page .hibrido-scope,
 body.home-page .deporte-scope,
-body.home-page .lanzamiento-scope,
+body.home-page .lanzamiento-scope:not(.lanzamiento-scope--overlay),
 body.home-page .section-info .scope-tag,
 body.home-page .section-info .news-tag,
 body.home-page .news-carousel-card .scope-tag,
 body.home-page .news-carousel-card .news-tag {
-  font-size: var(--home-card-chip) !important;
+  font-size: var(--home-card-scope) !important;
   font-family: var(--font-body, "Source Sans 3", sans-serif);
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   font-synthesis: none !important;
+  color: #5a6470 !important;
+  letter-spacing: 0.04em;
+  padding: 3px 8px !important;
+}
+
+/* Scope sobre imagen — texto blanco legible (no heredar gris de meta) */
+body.home-page #lanzamientos .lanzamiento-scope--overlay,
+body.home-page #lanzamientos .lanzamiento-scope--overlay.lanzamiento-scope--nacional,
+body.home-page #lanzamientos .lanzamiento-scope--overlay.lanzamiento-scope--internacional {
+  color: rgba(255, 255, 255, 0.95) !important;
+  background: transparent !important;
+  border: none !important;
+  font-size: 9px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em;
+  padding: 4px 10px !important;
 }
 
 body.home-page .electrico-chip,
 body.home-page .hibrido-chip,
 body.home-page .deporte-chip {
-  font-size: var(--home-card-chip);
+  font-size: var(--home-card-scope) !important;
+  font-weight: 600 !important;
+  color: #5a6470 !important;
+  background: transparent !important;
+  border: 1px solid rgba(8, 52, 31, 0.14) !important;
+  border-radius: 2px !important;
+  padding: 3px 8px !important;
+}
+
+body.home-page .electrico-desc,
+body.home-page .hibrido-desc {
+  color: #4b5563 !important;
 }
 
 body.home-page .electrico-card__cta,

@@ -10,9 +10,11 @@ import { HOME_ELECTRICOS_HOME_LIMIT } from "../../lib/home-news-config";
 
 interface Props {
   notes?: SiteNote[];
+  /** Home: columna compacta dentro del bloque Movilidad */
+  compact?: boolean;
 }
 
-const { notes: prefetchedNotes } = Astro.props;
+const { notes: prefetchedNotes, compact = false } = Astro.props;
 
 type ElectricoItem = {
   href: string;
@@ -114,13 +116,19 @@ function normalizeImg(src: string) {
 }
 
 function buildChips(item: { description?: string; chips?: string[] }) {
-  if (item.chips?.length) return item.chips.slice(0, 3);
+  const normalize = (list: string[]) =>
+    list
+      .map((c) => c.trim())
+      .filter((c) => c && !/^destacado$/i.test(c))
+      .slice(0, 2);
+
+  if (item.chips?.length) return normalize(item.chips);
 
   const chips: string[] = [];
   const text = (item.description || "").toLowerCase();
 
   const km = text.match(/(\d{2,4})\s*km/);
-  if (km) chips.push(`${km[1]} km autonomía`);
+  if (km) chips.push(`${km[1]} km`);
 
   if (/suv/i.test(text)) chips.push("SUV");
   if (/compacto/i.test(text)) chips.push("Compacto");
@@ -130,7 +138,7 @@ function buildChips(item: { description?: string; chips?: string[] }) {
   if (/carga/i.test(text)) chips.push("Carga rápida");
 
   if (chips.length === 0) chips.push("100% eléctrico");
-  return chips.slice(0, 3);
+  return normalize(chips);
 }
 
 try {
@@ -169,10 +177,10 @@ const staticElectricos: Omit<ElectricoItem, "sortDate">[] = [
     alt: "Volvo EX90",
     title: "Volvo EX90",
     description:
-      "SUV eléctrico premium con autonomía de hasta 500 km, diseño vanguardista y uno de los más cotizados en Colombia.",
+      "SUV eléctrico premium con autonomía de hasta 500 km, diseño vanguardista y alto nivel de cotización.",
     fecha: "Publicado: 10-feb",
     source_scope: "nacional",
-    chips: ["500 km", "SUV", "Premium"],
+    chips: ["500 km", "SUV"],
   },
   {
     href: "/notas-electricos/nota-mini-cooper",
@@ -183,7 +191,7 @@ const staticElectricos: Omit<ElectricoItem, "sortDate">[] = [
       "Compacto eléctrico con enfoque urbano: lujo, tecnología y confort en un tamaño ideal para la ciudad.",
     fecha: "Publicado: 13-mar",
     source_scope: "nacional",
-    chips: ["Compacto", "Uso urbano", "Premium"],
+    chips: ["Compacto", "Uso urbano"],
   },
   {
     href: "/notas-electricos/nota-byd-sealion7",
@@ -194,7 +202,7 @@ const staticElectricos: Omit<ElectricoItem, "sortDate">[] = [
       "SUV deportivo y sostenible que combina diseño, potencia y propuesta tecnológica para el mercado actual.",
     fecha: "Publicado: 13-mar",
     source_scope: "nacional",
-    chips: ["SUV", "Deportivo", "AWD"],
+    chips: ["SUV", "Deportivo"],
   },
   {
     href: "/notas-electricos/nota-peugeot-e3008",
@@ -205,7 +213,7 @@ const staticElectricos: Omit<ElectricoItem, "sortDate">[] = [
       "SUV eléctrico con diseño llamativo, buen rendimiento y carga rápida para uso diario y viajes.",
     fecha: "Publicado: 24-mar",
     source_scope: "nacional",
-    chips: ["SUV", "Carga rápida", "Diseño"],
+    chips: ["SUV", "Carga rápida"],
   },
   {
     href: "/notas-electricos/nota-renault-megane",
@@ -216,7 +224,7 @@ const staticElectricos: Omit<ElectricoItem, "sortDate">[] = [
       "Compacto eficiente para movilidad urbana con estética futurista y buen equilibrio entre autonomía y confort.",
     fecha: "Publicado: 20-abril",
     source_scope: "nacional",
-    chips: ["Compacto", "E-Tech", "Uso urbano"],
+    chips: ["Compacto", "E-Tech"],
   },
 ];
 
@@ -250,79 +258,151 @@ const allElectricos = [...dynamicElectricos, ...deduplicatedStaticElectricos]
   .slice(0, HOME_ELECTRICOS_HOME_LIMIT);
 ---
 
-<link rel="stylesheet" href="/css/electricos-section.css?v=7" />
+<link rel="stylesheet" href="/css/electricos-section.css?v=9" />
 <section
   id="electricos"
-  class="electricos-section"
+  class:list={["electricos-section", compact && "electricos-section--compact"]}
   aria-labelledby="electricos-heading"
 >
   <div class="electricos-inner">
     <header class="electricos-head">
       <p class="electricos-eyebrow">Movilidad eléctrica</p>
       <h2 id="electricos-heading" class="electricos-title">Carros eléctricos</h2>
-      <p class="electricos-lead">
-        Modelos 100% eléctricos en Colombia: autonomía, carga y fichas para
-        comparar con AutoMatch.
-      </p>
+      {
+        !compact && (
+          <p class="electricos-lead">
+            Modelos 100% eléctricos: autonomía, carga y fichas técnicas para
+            seguir la movilidad eléctrica a nivel global.
+          </p>
+        )
+      }
+      {
+        compact && (
+          <p class="electricos-lead">
+            Autonomía, carga y fichas de modelos 100% eléctricos.
+          </p>
+        )
+      }
     </header>
 
     {
-      allElectricos.length > 0 && (
-        <div class="electricos-grid electricos-home-grid">
-          {allElectricos.map((nota, index) => {
-            const chips = buildChips(nota);
-            const scope = normalizeSourceScope(nota.source_scope);
-            const fecha = cleanPublishedDate(nota.fecha);
+      allElectricos.length > 0 &&
+        (compact ? (
+          <div class="mobility-list" role="list">
+            {allElectricos.map((nota, index) => {
+              const chips = buildChips(nota);
+              const scope = normalizeSourceScope(nota.source_scope);
+              const fecha = cleanPublishedDate(nota.fecha);
 
-            return (
-              <article class="news-carousel-card">
-                <a href={nota.href} class="news-carousel-card__link">
-                  <div class="news-carousel-card__image">
-                    <img
-                      src={nota.img}
-                      alt={nota.alt}
-                      loading={index === 0 ? "eager" : "lazy"}
-                      fetchpriority={index === 0 ? "high" : "auto"}
-                      decoding="async"
-                    />
-                  </div>
-                  <div class="news-carousel-card__body">
-                    <div class="news-meta-tags">
-                      <span
-                        class={
-                          "scope-tag" +
-                          (scope === "internacional"
-                            ? " scope-tag--international"
-                            : " scope-tag--national")
-                        }
-                      >
-                        {sourceScopeLabel(nota.source_scope)}
-                      </span>
+              return (
+                <article class="mobility-row" role="listitem">
+                  <a href={nota.href} class="mobility-row__link">
+                    <div class="mobility-row__media">
+                      <img
+                        src={nota.img}
+                        alt={nota.alt}
+                        loading={index < 2 ? "eager" : "lazy"}
+                        decoding="async"
+                      />
                     </div>
-                    <h3 class="news-carousel-card__title">
-                      {getNewsCardTitle(nota.title)}
-                    </h3>
-                    {nota.description && (
-                      <p class="news-carousel-card__deck">{nota.description}</p>
-                    )}
-                    <div class="electrico-chips electrico-chips--grid">
-                      {chips.map((chip) => (
-                        <span class="electrico-chip">{chip}</span>
-                      ))}
+                    <div class="mobility-row__body">
+                      <div class="mobility-row__meta">
+                        <span
+                          class={
+                            "scope-tag" +
+                            (scope === "internacional"
+                              ? " scope-tag--international"
+                              : " scope-tag--national")
+                          }
+                        >
+                          {sourceScopeLabel(nota.source_scope)}
+                        </span>
+                      </div>
+                      <h3 class="mobility-row__title">
+                        {getNewsCardTitle(nota.title)}
+                      </h3>
+                      {nota.description && (
+                        <p class="mobility-row__deck">{nota.description}</p>
+                      )}
+                      {chips.length > 0 && (
+                        <div class="mobility-row__chips">
+                          {chips.map((chip) => (
+                            <span class="electrico-chip">{chip}</span>
+                          ))}
+                        </div>
+                      )}
+                      {fecha && (
+                        <p class="news-date">
+                          <span>{fecha}</span>
+                        </p>
+                      )}
                     </div>
-                    {fecha && (
-                      <p class="news-date">
-                        <i class="fa-regular fa-calendar" aria-hidden="true" />
-                        <span>{fecha}</span>
-                      </p>
-                    )}
-                  </div>
-                </a>
-              </article>
-            );
-          })}
-        </div>
-      )
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div class="electricos-grid electricos-home-grid">
+            {allElectricos.map((nota, index) => {
+              const chips = buildChips(nota);
+              const scope = normalizeSourceScope(nota.source_scope);
+              const fecha = cleanPublishedDate(nota.fecha);
+
+              return (
+                <article class="news-carousel-card">
+                  <a href={nota.href} class="news-carousel-card__link">
+                    <div class="news-carousel-card__image">
+                      <img
+                        src={nota.img}
+                        alt={nota.alt}
+                        loading={index === 0 ? "eager" : "lazy"}
+                        fetchpriority={index === 0 ? "high" : "auto"}
+                        decoding="async"
+                      />
+                    </div>
+                    <div class="news-carousel-card__body">
+                      <div class="news-meta-tags">
+                        <span
+                          class={
+                            "scope-tag" +
+                            (scope === "internacional"
+                              ? " scope-tag--international"
+                              : " scope-tag--national")
+                          }
+                        >
+                          {sourceScopeLabel(nota.source_scope)}
+                        </span>
+                      </div>
+                      <h3 class="news-carousel-card__title">
+                        {getNewsCardTitle(nota.title)}
+                      </h3>
+                      {nota.description && (
+                        <p class="news-carousel-card__deck">
+                          {nota.description}
+                        </p>
+                      )}
+                      <div class="electrico-chips electrico-chips--grid">
+                        {chips.map((chip) => (
+                          <span class="electrico-chip">{chip}</span>
+                        ))}
+                      </div>
+                      {fecha && (
+                        <p class="news-date">
+                          <i
+                            class="fa-regular fa-calendar"
+                            aria-hidden="true"
+                          />
+                          <span>{fecha}</span>
+                        </p>
+                      )}
+                    </div>
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+        ))
     }
 
     <footer class="electricos-footer">

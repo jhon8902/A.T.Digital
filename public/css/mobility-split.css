@@ -1,0 +1,228 @@
+/* ========== HOME — Eléctricos + Híbridos en bloque compartido ========== */
+
+.home-mobility {
+  width: 100%;
+  background-color: var(--home-section-bg, #f0f3f0);
+  background-image: var(--home-relief-image);
+  background-size: var(--home-relief-size);
+  background-repeat: repeat;
+  padding: clamp(1rem, 2.5vw, 2rem) 0;
+}
+
+.home-mobility__panel {
+  width: min(100%, 1760px);
+  margin: 0 auto;
+  background: #fff;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  box-sizing: border-box;
+}
+
+/* Columnas compactas: sin fondo/padding propio de sección */
+.home-mobility .electricos-section--compact,
+.home-mobility .hibridos-section--compact {
+  background: transparent;
+  background-image: none;
+  padding: 0;
+  scroll-margin-top: 5.5rem;
+}
+
+.home-mobility .electricos-section--compact .electricos-inner,
+.home-mobility .hibridos-section--compact .hibridos-inner {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  background: transparent;
+  padding: clamp(1.35rem, 3vw, 2.25rem) clamp(0.85rem, 3vw, 1.85rem);
+}
+
+.home-mobility .electricos-head,
+.home-mobility .hibridos-head {
+  text-align: left;
+  margin-bottom: 1.15rem;
+  padding-inline: 0.15rem;
+}
+
+.home-mobility .electricos-lead,
+.home-mobility .hibridos-lead {
+  max-width: 38ch;
+  margin: 0.4rem 0 0;
+  font-size: clamp(1.02rem, 1.2vw, 1.14rem);
+  line-height: 1.55;
+  color: #4b5563;
+}
+
+.home-mobility .electricos-footer,
+.home-mobility .hibridos-footer {
+  justify-content: flex-start;
+  margin-top: 1.25rem;
+  padding-inline: 0.15rem;
+}
+
+/* Lista — mobile: imagen arriba, texto abajo (prioridad visual) */
+.mobility-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mobility-row {
+  border-top: 1px solid rgba(8, 52, 31, 0.08);
+}
+
+.mobility-row:last-child {
+  border-bottom: 1px solid rgba(8, 52, 31, 0.08);
+}
+
+.mobility-row__link {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  align-items: start;
+  padding: 1rem 0;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s ease;
+}
+
+.mobility-row__link:hover {
+  background: rgba(8, 52, 31, 0.03);
+}
+
+.mobility-row__media {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #e8ece8;
+}
+
+.mobility-row__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.mobility-row__link:hover .mobility-row__media img {
+  transform: scale(1.04);
+}
+
+.mobility-row__body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  padding-inline: 0.15rem;
+}
+
+.mobility-row__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+}
+
+.mobility-row__title {
+  font-family: "Source Sans 3", sans-serif;
+  font-size: clamp(1.18rem, 3.8vw, 1.35rem);
+  font-weight: 700;
+  font-synthesis: none;
+  letter-spacing: -0.015em;
+  line-height: 1.28;
+  color: #062818;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mobility-row__deck {
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #4b5563;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mobility-row__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.1rem;
+}
+
+.mobility-row .scope-tag,
+.mobility-row .electrico-chip,
+.mobility-row .hibrido-chip {
+  font-size: 0.65rem;
+  padding: 2px 7px;
+}
+
+.mobility-row .news-date {
+  font-size: 0.72rem;
+  color: #8a939e;
+  margin: 0.15rem 0 0;
+}
+
+@media (max-width: 1023px) {
+  .home-mobility .hibridos-section--compact {
+    border-top: 1px solid rgba(8, 52, 31, 0.1);
+  }
+}
+
+/* Desktop: dos columnas + fila horizontal (imagen | texto) */
+@media (min-width: 1024px) {
+  .home-mobility {
+    padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1rem, 3vw, 2rem);
+  }
+
+  .home-mobility__panel {
+    width: min(96%, 1760px);
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .home-mobility .electricos-section--compact .electricos-inner,
+  .home-mobility .hibridos-section--compact .hibridos-inner {
+    padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.15rem, 2.5vw, 1.85rem);
+  }
+
+  .home-mobility .hibridos-section--compact {
+    border-left: 1px solid rgba(8, 52, 31, 0.1);
+    border-top: none;
+  }
+
+  .mobility-row__link {
+    grid-template-columns: minmax(12.5rem, 42%) minmax(0, 1fr);
+    gap: 1.05rem 1.25rem;
+    align-items: center;
+    padding: 1.05rem 0.35rem;
+  }
+
+  .mobility-row__media {
+    aspect-ratio: 16 / 10;
+    min-height: 7.5rem;
+  }
+
+  .mobility-row__body {
+    padding-inline: 0;
+  }
+
+  .mobility-row__title {
+    font-size: clamp(1.15rem, 1.25vw, 1.35rem);
+  }
+
+  .mobility-row__deck {
+    font-size: 1rem;
+  }
+}

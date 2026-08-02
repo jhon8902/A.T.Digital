@@ -13,8 +13,8 @@ let homeNotes = await resolveSiteNotes();
 ---
 
 <Layout
-  title="Auto-Tech-Digital | Autos Eléctricos, Híbridos y Noticias Automotrices en Colombia"
-  description="Descubre los mejores autos eléctricos, híbridos y lanzamientos en Colombia. Pruebas de manejo, fichas técnicas y noticias del mundo automotriz."
+  title="Auto-Tech-Digital | Eléctricos, híbridos y noticias del mundo automotriz"
+  description="Lanzamientos, fichas técnicas, eléctricos, híbridos y pruebas de manejo. Cobertura del sector automotor con mirada global."
   class="home-page"
 >
   <div class="extra-sections" id="extra-sections">
@@ -26,9 +26,18 @@ let homeNotes = await resolveSiteNotes();
 
     <SectionInfo notes={homeNotes} />
 
-    <Electricos notes={homeNotes} />
+    <section
+      class="home-mobility"
+      aria-label="Movilidad eléctrica e híbrida"
+    >
+      <div class="home-mobility__panel">
+        <Electricos notes={homeNotes} compact />
+        <Hibridos notes={homeNotes} compact />
+      </div>
+    </section>
 
-    <Hibridos notes={homeNotes} />
+    <link rel="stylesheet" href="/css/mobility-split.css?v=4" />
+
     <Noticias notes={homeNotes} />
 
     <!-- Banner marca — oculto temporalmente
@@ -53,7 +62,7 @@ let homeNotes = await resolveSiteNotes();
     </section>
   </div>
 
-  <link rel="stylesheet" href="/css/home-typography.css?v=28" />
+  <link rel="stylesheet" href="/css/home-typography.css?v=40" />
 </Layout>
 
 <style>

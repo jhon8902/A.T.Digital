@@ -44,25 +44,25 @@
   --font-display: var(--font-editorial);
   --radius-card: 12px;
   --shadow-card: 0 4px 16px rgba(8, 52, 31, 0.08);
-  --text-base: 1.0625rem;
-  --text-lg: 1.1875rem;
-  --text-xl: 1.3rem;
-  --leading-body: 1.68;
+  --text-base: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.375rem;
+  --leading-body: 1.7;
 
   /* Home — escala tipográfica unificada */
-  --home-eyebrow: 0.82rem;
+  --home-eyebrow: 0.88rem;
   --home-section-title: clamp(2.1rem, 3.2vw, 2.95rem);
-  --home-section-lead: clamp(1.08rem, 1.35vw, 1.28rem);
-  --home-card-title: clamp(1.2rem, 1.35vw, 1.6rem);
-  --home-card-body: clamp(1.02rem, 1.05vw, 1.12rem);
-  --home-card-meta: 0.84rem;
-  --home-card-scope: 0.72rem;
-  --home-card-chip: 0.78rem;
-  --home-card-cta: 0.94rem;
-  --home-card-link: 0.92rem;
-  --home-section-cta: 1rem;
+  --home-section-lead: clamp(1.14rem, 1.4vw, 1.32rem);
+  --home-card-title: clamp(1.28rem, 1.45vw, 1.68rem);
+  --home-card-body: clamp(1.08rem, 1.15vw, 1.2rem);
+  --home-card-meta: 0.9rem;
+  --home-card-scope: 0.7rem;
+  --home-card-chip: 0.82rem;
+  --home-card-cta: 1rem;
+  --home-card-link: 0.98rem;
+  --home-section-cta: 1.05rem;
   --home-news-featured: clamp(2rem, 2.5vw, 2.65rem);
-  --home-rail-title: clamp(1.2rem, 1.35vw, 1.6rem);
+  --home-rail-title: clamp(1.28rem, 1.45vw, 1.68rem);
 
   /* Home — relieve editorial compartido */
   --home-section-bg: #f0f3f0;
@@ -73,19 +73,19 @@
 
 @media (min-width: 1024px) {
   :root {
-    --home-eyebrow: 0.875rem;
+    --home-eyebrow: 0.92rem;
     --home-section-title: 2.95rem;
-    --home-section-lead: 1.28rem;
-    --home-card-title: 1.6rem;
-    --home-card-body: 1.12rem;
-    --home-card-meta: 0.875rem;
-    --home-card-scope: 0.75rem;
-    --home-card-chip: 0.8125rem;
-    --home-card-cta: 0.98rem;
-    --home-card-link: 0.95rem;
-    --home-section-cta: 1.02rem;
+    --home-section-lead: 1.34rem;
+    --home-card-title: 1.68rem;
+    --home-card-body: 1.18rem;
+    --home-card-meta: 0.92rem;
+    --home-card-scope: 0.72rem;
+    --home-card-chip: 0.86rem;
+    --home-card-cta: 1.02rem;
+    --home-card-link: 1rem;
+    --home-section-cta: 1.06rem;
     --home-news-featured: 2.65rem;
-    --home-rail-title: 1.6rem;
+    --home-rail-title: 1.68rem;
   }
 }
 

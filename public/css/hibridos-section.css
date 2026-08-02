@@ -163,24 +163,27 @@
 .hibrido-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
 .hibrido-chip {
   font-family: var(--font-body, "Source Sans 3", sans-serif);
-  font-size: var(--home-card-chip);
+  font-size: var(--home-card-scope);
   font-weight: 600;
-  color: #0a5a72;
-  background: var(--hyb-chip);
-  padding: 0.22rem 0.55rem;
-  border-radius: 999px;
+  font-synthesis: none;
+  color: #5a6470;
+  background: transparent;
+  padding: 3px 8px;
+  border-radius: 2px;
+  border: 1px solid rgba(8, 52, 31, 0.14);
+  letter-spacing: 0.03em;
 }
 
 .hibrido-desc {
   font-family: var(--font-body, "Source Sans 3", sans-serif);
   font-size: var(--home-card-body);
-  line-height: 1.55;
-  color: var(--hyb-muted);
+  line-height: 1.5;
+  color: #6b7280;
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -365,8 +368,12 @@
 }
 
 .hibrido-chips--grid .hibrido-chip {
-  font-size: 0.72rem;
-  padding: 4px 8px;
+  font-size: var(--home-card-scope);
+  padding: 3px 8px;
+  border-radius: 2px;
+  background: transparent;
+  color: #5a6470;
+  border: 1px solid rgba(8, 52, 31, 0.14);
 }
 
 /* Etiquetas de ámbito — borde paralelogramo */
@@ -388,15 +395,15 @@
 }
 
 #hibridos .hibridos-home-grid .scope-tag--national {
-  color: #08341f;
+  color: #5a6470;
 }
 
 #hibridos .hibridos-home-grid .scope-tag--national::before {
-  background: #fff;
-  border-color: rgba(8, 52, 31, 0.28);
+  background: transparent;
+  border-color: rgba(8, 52, 31, 0.14);
 }
 
 #hibridos .hibridos-home-grid .scope-tag--international::before {
-  background: #fff;
-  border-color: rgba(8, 52, 31, 0.28);
+  background: transparent;
+  border-color: rgba(8, 52, 31, 0.14);
 }

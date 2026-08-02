@@ -18,6 +18,7 @@ export type SectorRadarEdition = {
   preview: {
     title: string;
     summary: string;
+    metrics: ReadonlyArray<{ value: string; label: string }>;
   };
   hero: {
     description: string;
@@ -43,14 +44,19 @@ const active: SectorRadarEdition = {
     title: "El sector cerró el primer semestre con un repunte del 50,1%",
     summary:
       "157.620 matrículas, electrificados en 4 de cada 10 ventas y financiamiento verde al alza.",
+    metrics: [
+      { value: "+50,1%", label: "vs. S1 2025" },
+      { value: "157.620", label: "matrículas" },
+      { value: "43,8%", label: "electrificados" },
+    ],
   },
   hero: {
     description:
       "Balance Fenalco y ANDI (julio 2026): recuperación del mercado, boom de electrificados y señales de compra para el segundo semestre.",
     stats: [
-      { value: "6", label: "focos activos" },
-      { value: "S1", label: "2026 analizado" },
-      { value: "Jul", label: "actualización" },
+      { value: "+50,1%", label: "vs. S1 2025" },
+      { value: "157.620", label: "matrículas S1" },
+      { value: "43,8%", label: "electrificados" },
     ],
   },
   source: {
@@ -119,6 +125,11 @@ const archive: SectorRadarEdition[] = [
       title: "Tendencias clave que estamos siguiendo esta semana",
       summary:
         "Electromovilidad, ADAS y lanzamientos locales con foco en Colombia.",
+      metrics: [
+        { value: "6", label: "focos activos" },
+        { value: "Q1", label: "2026" },
+        { value: "Feb", label: "edición" },
+      ],
     },
     hero: {
       description:
@@ -194,3 +205,7 @@ export const sectorRadarTrends = active.trends;
 export const sectorRadarPreview = active.preview;
 export const sectorRadarHero = active.hero;
 export const sectorRadarSource = active.source;
+export const sectorRadarEditionMeta = {
+  label: active.label,
+  period: active.period,
+};
