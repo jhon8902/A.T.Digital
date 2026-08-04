@@ -173,7 +173,7 @@ function pageHref(page: number) {
   title="Videos de Pruebas de Manejo | Auto-Tech-Digital"
   description="Mira los mejores videos de pruebas de manejo de autos eléctricos, híbridos y de alto rendimiento en Colombia. Opiniones honestas y análisis en detalle."
 >
-  <link rel="stylesheet" href="/css/pruebas.css" />
+  <link rel="stylesheet" href="/css/pruebas.css?v=19" />
   <link rel="stylesheet" href="/css/archive-section.css" />
 
   <div class="pruebas-archivo-page">
@@ -207,89 +207,144 @@ function pageHref(page: number) {
 
     {
       paginatedPruebas.length > 0 && (
-        <div class="pruebas-rail-wrap pruebas-rail-wrap--archivo">
-          <div class="pruebas-rail-toolbar">
-            <h2 class="pruebas-rail-title">Episodios del archivo</h2>
-            <div class="pruebas-rail-controls">
-              <span class="pruebas-rail-counter" data-rail-counter aria-live="polite">
-                1 / {paginatedPruebas.length}
-              </span>
-              <div class="pruebas-rail-nav" aria-label="Navegación del carril">
-                <button
-                  type="button"
-                  class="pruebas-rail-btn prev"
-                  aria-label="Episodio anterior"
+        <div class="pruebas-spotlight" data-pruebas-spotlight>
+          <div class="pruebas-spotlight__stage">
+            <div
+              class="pruebas-spotlight__player"
+              data-spotlight-media
+              data-video-card
+            >
+              {paginatedPruebas[0].video ? (
+                <video
+                  data-spotlight-video
+                  playsinline
+                  preload="metadata"
+                  src={paginatedPruebas[0].video}
+                />
+              ) : (
+                <video
+                  data-spotlight-video
+                  playsinline
+                  preload="metadata"
+                  hidden
+                />
+              )}
+              <img
+                data-spotlight-image
+                alt=""
+                hidden={!paginatedPruebas[0].image || !!paginatedPruebas[0].video}
+                src={paginatedPruebas[0].image || undefined}
+              />
+              <button
+                type="button"
+                class="prueba-play"
+                data-spotlight-play
+                aria-label={`Reproducir video de ${paginatedPruebas[0].title}`}
+                hidden={!paginatedPruebas[0].video}
+              />
+            </div>
+
+            <div class="pruebas-spotlight__meta">
+              <div class="pruebas-spotlight__toolbar">
+                <span
+                  class="pruebas-spotlight__counter"
+                  data-spotlight-counter
+                  aria-live="polite"
                 >
-                  <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-                </button>
-                <button
-                  type="button"
-                  class="pruebas-rail-btn next"
-                  aria-label="Siguiente episodio"
+                  1 / {paginatedPruebas.length}
+                </span>
+                <div
+                  class="pruebas-spotlight__nav"
+                  aria-label="Navegación de videos"
                 >
-                  <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-                </button>
+                  <button
+                    type="button"
+                    class="pruebas-rail-btn prev"
+                    data-spotlight-prev
+                    aria-label="Episodio anterior"
+                  >
+                    <i class="fa-solid fa-chevron-left" aria-hidden="true" />
+                  </button>
+                  <button
+                    type="button"
+                    class="pruebas-rail-btn next"
+                    data-spotlight-next
+                    aria-label="Siguiente episodio"
+                  >
+                    <i class="fa-solid fa-chevron-right" aria-hidden="true" />
+                  </button>
+                </div>
+              </div>
+
+              <p
+                class="pruebas-archivo-meta"
+                data-spotlight-metaline
+                hidden={!paginatedPruebas[0].fecha && !paginatedPruebas[0].editor}
+              >
+                {[
+                  sourceScopeLabel(paginatedPruebas[0].source_scope),
+                  paginatedPruebas[0].editor || "Jhon Aparicio",
+                  cleanPublishedDate(paginatedPruebas[0].fecha),
+                ]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </p>
+              <h3 class="pruebas-spotlight__title" data-spotlight-title>
+                {paginatedPruebas[0].title}
+              </h3>
+              <p class="pruebas-spotlight__desc" data-spotlight-desc>
+                {paginatedPruebas[0].subtitle}
+              </p>
+              <div class="pruebas-spotlight__actions" data-spotlight-actions>
+                {paginatedPruebas[0].showNoteLink && paginatedPruebas[0].href && (
+                  <a
+                    href={paginatedPruebas[0].href}
+                    class="archivo-link"
+                    data-spotlight-note
+                  >
+                    Ver nota
+                  </a>
+                )}
+                <a href="/automatch-find" class="prueba-rail-automatch">
+                  Comparar en AutoMatch
+                </a>
               </div>
             </div>
           </div>
 
-          <div class="pruebas-rail-viewport">
-            <div class="pruebas-rail" data-pruebas-rail tabindex="0" aria-label="Archivo de videos">
-              {paginatedPruebas.map((item, index) => (
-                <article class="prueba-rail-card">
-                  <div class="prueba-rail-card__media" data-video-card>
-                    {item.video ? (
-                      <>
-                        <video playsinline preload="metadata">
-                          <source src={item.video} type="video/mp4" />
-                          Tu navegador no soporta videos HTML5.
-                        </video>
-                        <button
-                          type="button"
-                          class="prueba-play"
-                          aria-label={`Reproducir video de ${item.title}`}
-                        />
-                      </>
-                    ) : item.image ? (
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    ) : (
-                      <div class="archivo-placeholder">Sin media</div>
-                    )}
-                  </div>
-                  <div class="prueba-rail-card__body">
-                    <span class={sourceScopeClass(item.source_scope)}>
-                      {sourceScopeLabel(item.source_scope)}
-                    </span>
-                    <h4>{item.title}</h4>
-                    <p class="archivo-meta">
-                      <i class="fa-regular fa-user" aria-hidden="true" />
-                      <span>{item.editor || "Jhon Aparicio"}</span>
-                      <span class="meta-sep">•</span>
-                      <i class="fa-regular fa-calendar" aria-hidden="true" />
-                      <span>{cleanPublishedDate(item.fecha)}</span>
-                    </p>
-                    {item.subtitle && (
-                      <p class="prueba-rail-desc">{item.subtitle}</p>
-                    )}
-                    <div class="prueba-rail-actions">
-                      {item.showNoteLink && item.href && (
-                        <a href={item.href} class="archivo-link">
-                          Ver nota
-                        </a>
-                      )}
-                      <a href="/automatch-find" class="prueba-rail-automatch">
-                        Comparar en AutoMatch
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
+          <div
+            class="pruebas-spotlight__thumbs"
+            role="listbox"
+            aria-label="Episodios del archivo"
+          >
+            {paginatedPruebas.map((item, index) => (
+              <button
+                type="button"
+                class={`pruebas-spotlight__thumb${index === 0 ? " is-active" : ""}`}
+                role="option"
+                aria-selected={index === 0 ? "true" : "false"}
+                data-spotlight-thumb
+                data-index={String(index)}
+                data-title={item.title}
+                data-subtitle={item.subtitle || ""}
+                data-metaline={[
+                  sourceScopeLabel(item.source_scope),
+                  item.editor || "Jhon Aparicio",
+                  cleanPublishedDate(item.fecha),
+                ]
+                  .filter(Boolean)
+                  .join(" · ")}
+                data-video={item.video || ""}
+                data-image={item.image || ""}
+                data-href={item.href || ""}
+                data-show-note={item.showNoteLink ? "1" : "0"}
+              >
+                <span class="pruebas-spotlight__thumb-index">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span class="pruebas-spotlight__thumb-label">{item.title}</span>
+              </button>
+            ))}
           </div>
         </div>
       )
@@ -323,5 +378,5 @@ function pageHref(page: number) {
   </section>
   </div>
 
-  <script type="module" src="/js/pruebas-channel.js"></script>
+  <script type="module" src="/js/pruebas-channel.js?v=7"></script>
 </Layout>

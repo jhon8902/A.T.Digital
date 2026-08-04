@@ -1,278 +1,259 @@
-/** Carril de videos + reproducción única por sección */
+/** Spotlight de videos: stage principal + miniaturas */
 
 export function initPruebasChannel(root) {
-
   if (!(root instanceof HTMLElement)) return;
 
+  const spotlight = root.querySelector("[data-pruebas-spotlight]");
+  if (!(spotlight instanceof HTMLElement)) return;
 
+  const media = spotlight.querySelector("[data-spotlight-media]");
+  const videoEl = spotlight.querySelector("[data-spotlight-video]");
+  const imageEl = spotlight.querySelector("[data-spotlight-image]");
+  const playBtn = spotlight.querySelector("[data-spotlight-play]");
+  const titleEl = spotlight.querySelector("[data-spotlight-title]");
+  const descEl = spotlight.querySelector("[data-spotlight-desc]");
+  const metaLineEl = spotlight.querySelector("[data-spotlight-metaline]");
+  const actionsEl = spotlight.querySelector("[data-spotlight-actions]");
+  const counterEl = spotlight.querySelector("[data-spotlight-counter]");
+  const prevBtn = spotlight.querySelector("[data-spotlight-prev]");
+  const nextBtn = spotlight.querySelector("[data-spotlight-next]");
+  const thumbs = Array.from(
+    spotlight.querySelectorAll("[data-spotlight-thumb]"),
+  );
 
-  const pauseAllRailVideos = (exceptWrapper) => {
+  if (
+    !(media instanceof HTMLElement) ||
+    !(videoEl instanceof HTMLVideoElement) ||
+    !(imageEl instanceof HTMLImageElement) ||
+    thumbs.length === 0
+  ) {
+    return;
+  }
 
-    root.querySelectorAll("[data-video-card].is-playing").forEach((node) => {
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
 
-      if (exceptWrapper && node === exceptWrapper) return;
+  let activeIndex = 0;
+  let noteLink = actionsEl?.querySelector("[data-spotlight-note]") || null;
 
-      node.classList.remove("is-playing");
-
-      const v = node.querySelector("video");
-
-      if (v instanceof HTMLVideoElement) {
-
-        v.pause();
-
-        v.controls = false;
-
-      }
-
-    });
-
-  };
-
-
-
-  root.querySelectorAll("[data-video-card]").forEach((wrapper) => {
-
-    const media = wrapper;
-
-    const video = media.querySelector("video");
-
-    const playBtn = media.querySelector(".prueba-play");
-
-
-
-    if (!(video instanceof HTMLVideoElement) || !(playBtn instanceof HTMLButtonElement)) {
-
-      return;
-
-    }
-
-    playBtn.addEventListener("click", () => {
-
-      pauseAllRailVideos(media);
-
-      media.classList.add("is-playing");
-
-      video.controls = true;
-
-      void video.play();
-
-    });
-
-
-
-    video.addEventListener("ended", () => {
-
-      media.classList.remove("is-playing");
-
-      video.controls = false;
-
-    });
-
-
-
-    video.addEventListener("pause", () => {
-
-      if (video.currentTime === 0 || video.ended) {
-
-        media.classList.remove("is-playing");
-
-        video.controls = false;
-
-      }
-
-    });
-
+  const readThumb = (thumb) => ({
+    title: thumb.getAttribute("data-title") || "",
+    subtitle: thumb.getAttribute("data-subtitle") || "",
+    metaline: thumb.getAttribute("data-metaline") || "",
+    video: thumb.getAttribute("data-video") || "",
+    image: thumb.getAttribute("data-image") || "",
+    href: thumb.getAttribute("data-href") || "",
+    showNote: thumb.getAttribute("data-show-note") === "1",
   });
 
-
-
-  const rail = root.querySelector("[data-pruebas-rail]");
-
-  if (!(rail instanceof HTMLElement)) return;
-
-
-
-  const prevBtn = root.querySelector(".pruebas-rail-btn.prev");
-
-  const nextBtn = root.querySelector(".pruebas-rail-btn.next");
-
-  const counter = root.querySelector("[data-rail-counter]");
-
-  const cards = Array.from(rail.querySelectorAll(".prueba-rail-card"));
-
-
-
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-
-
-  const getScrollStep = () => {
-
-    const card = rail.querySelector(".prueba-rail-card");
-
-    if (!(card instanceof HTMLElement)) return rail.clientWidth * 0.9;
-
-    const gap = parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap || "18") || 18;
-
-    return card.offsetWidth + gap;
-
+  const stopPlayback = () => {
+    media.classList.remove("is-playing");
+    videoEl.pause();
+    videoEl.controls = false;
+    videoEl.removeAttribute("controls");
   };
 
+  const syncOrientation = () => {
+    let isPortrait = false;
 
+    if (!videoEl.hidden && videoEl.videoWidth > 0 && videoEl.videoHeight > 0) {
+      isPortrait = videoEl.videoHeight > videoEl.videoWidth;
+    } else if (
+      !imageEl.hidden &&
+      imageEl.naturalWidth > 0 &&
+      imageEl.naturalHeight > 0
+    ) {
+      isPortrait = imageEl.naturalHeight > imageEl.naturalWidth;
+    }
 
-  const updateRailUi = () => {
+    media.classList.toggle("is-portrait", isPortrait);
+    spotlight.classList.toggle("is-portrait", isPortrait);
 
-    const maxScroll = rail.scrollWidth - rail.clientWidth - 2;
+    const activeThumb = thumbs[activeIndex];
+    if (activeThumb instanceof HTMLElement) {
+      activeThumb.setAttribute(
+        "data-orientation",
+        isPortrait ? "portrait" : "landscape",
+      );
+    }
+  };
 
-    const atStart = rail.scrollLeft <= 2;
+  const applyKnownOrientation = (thumb) => {
+    const known = thumb.getAttribute("data-orientation");
+    if (known === "portrait") {
+      media.classList.add("is-portrait");
+      spotlight.classList.add("is-portrait");
+    } else if (known === "landscape") {
+      media.classList.remove("is-portrait");
+      spotlight.classList.remove("is-portrait");
+    }
+    // Si aún no se conoce, se mantiene el layout actual hasta loadedmetadata
+  };
 
-    const atEnd = rail.scrollLeft >= maxScroll;
+  videoEl.addEventListener("loadedmetadata", syncOrientation);
+  videoEl.addEventListener("loadeddata", syncOrientation);
+  imageEl.addEventListener("load", syncOrientation);
 
+  const updateNoteLink = (item) => {
+    if (!(actionsEl instanceof HTMLElement)) return;
 
+    if (item.showNote && item.href) {
+      if (!(noteLink instanceof HTMLAnchorElement)) {
+        noteLink = document.createElement("a");
+        noteLink.className = "archivo-link";
+        noteLink.setAttribute("data-spotlight-note", "");
+        noteLink.textContent = "Ver nota";
+        actionsEl.prepend(noteLink);
+      }
+      noteLink.href = item.href;
+      noteLink.hidden = false;
+    } else if (noteLink instanceof HTMLAnchorElement) {
+      noteLink.hidden = true;
+    }
+  };
+
+  const setActive = (index, { autoplay = false } = {}) => {
+    const next = Math.max(0, Math.min(thumbs.length - 1, index));
+    const thumb = thumbs[next];
+    if (!(thumb instanceof HTMLElement)) return;
+
+    const item = readThumb(thumb);
+    const changed = next !== activeIndex;
+    activeIndex = next;
+
+    stopPlayback();
+
+    thumbs.forEach((node, i) => {
+      const on = i === activeIndex;
+      node.classList.toggle("is-active", on);
+      node.setAttribute("aria-selected", on ? "true" : "false");
+    });
+
+    if (counterEl instanceof HTMLElement) {
+      counterEl.textContent = `${activeIndex + 1} / ${thumbs.length}`;
+    }
+
+    if (titleEl instanceof HTMLElement) titleEl.textContent = item.title;
+    if (descEl instanceof HTMLElement) {
+      descEl.textContent = item.subtitle;
+      descEl.hidden = !item.subtitle;
+    }
+    if (metaLineEl instanceof HTMLElement) {
+      metaLineEl.textContent = item.metaline;
+      metaLineEl.hidden = !item.metaline;
+    }
+
+    updateNoteLink(item);
+
+    if (playBtn instanceof HTMLButtonElement) {
+      playBtn.hidden = !item.video;
+      playBtn.setAttribute(
+        "aria-label",
+        `Reproducir video de ${item.title}`,
+      );
+    }
+
+    const empty = media.querySelector("[data-spotlight-empty]");
+    if (empty instanceof HTMLElement) empty.hidden = true;
+
+    applyKnownOrientation(thumb);
+
+    if (changed && !prefersReducedMotion.matches) {
+      media.classList.add("is-fading");
+      spotlight.classList.add("is-switching");
+    }
+
+    if (item.video) {
+      imageEl.hidden = true;
+      imageEl.removeAttribute("src");
+      videoEl.hidden = false;
+      if (videoEl.getAttribute("src") !== item.video) {
+        videoEl.src = item.video;
+        videoEl.load();
+      }
+      requestAnimationFrame(syncOrientation);
+    } else if (item.image) {
+      videoEl.hidden = true;
+      videoEl.removeAttribute("src");
+      videoEl.load();
+      imageEl.hidden = false;
+      imageEl.src = item.image;
+      imageEl.alt = item.title;
+      requestAnimationFrame(syncOrientation);
+    } else {
+      videoEl.hidden = true;
+      imageEl.hidden = true;
+      media.classList.remove("is-portrait");
+      spotlight.classList.remove("is-portrait");
+      if (empty instanceof HTMLElement) empty.hidden = false;
+    }
+
+    if (changed && !prefersReducedMotion.matches) {
+      window.setTimeout(() => {
+        media.classList.remove("is-fading");
+        spotlight.classList.remove("is-switching");
+      }, 180);
+    }
 
     if (prevBtn instanceof HTMLButtonElement) {
-
+      const atStart = activeIndex <= 0;
       prevBtn.disabled = atStart;
-
       prevBtn.classList.toggle("is-disabled", atStart);
-
     }
-
     if (nextBtn instanceof HTMLButtonElement) {
-
+      const atEnd = activeIndex >= thumbs.length - 1;
       nextBtn.disabled = atEnd;
-
       nextBtn.classList.toggle("is-disabled", atEnd);
-
     }
 
-
-
-    if (!(counter instanceof HTMLElement) || cards.length === 0) return;
-
-
-
-    const railRect = rail.getBoundingClientRect();
-
-    const centerX = railRect.left + railRect.width * 0.5;
-
-    let active = 0;
-
-    let best = Infinity;
-
-
-
-    cards.forEach((card, index) => {
-
-      const rect = card.getBoundingClientRect();
-
-      const cardCenter = rect.left + rect.width / 2;
-
-      const dist = Math.abs(cardCenter - centerX);
-
-      if (dist < best) {
-
-        best = dist;
-
-        active = index;
-
-      }
-
-      card.classList.toggle("is-centered", index === active);
-
-    });
-
-
-
-    counter.textContent = `${active + 1} / ${cards.length}`;
-
+    if (autoplay && item.video) {
+      media.classList.add("is-playing");
+      videoEl.controls = true;
+      void videoEl.play();
+    }
   };
 
-
-
-  if (prevBtn instanceof HTMLButtonElement) {
-
-    prevBtn.addEventListener("click", () => {
-
-      pauseAllRailVideos();
-
-      rail.scrollBy({
-
-        left: -getScrollStep(),
-
-        behavior: prefersReducedMotion.matches ? "auto" : "smooth",
-
-      });
-
+  if (playBtn instanceof HTMLButtonElement) {
+    playBtn.addEventListener("click", () => {
+      if (videoEl.hidden) return;
+      media.classList.add("is-playing");
+      videoEl.controls = true;
+      void videoEl.play();
     });
-
   }
 
-
-
-  if (nextBtn instanceof HTMLButtonElement) {
-
-    nextBtn.addEventListener("click", () => {
-
-      pauseAllRailVideos();
-
-      rail.scrollBy({
-
-        left: getScrollStep(),
-
-        behavior: prefersReducedMotion.matches ? "auto" : "smooth",
-
-      });
-
-    });
-
-  }
-
-
-
-  rail.addEventListener("scroll", () => {
-
-    window.requestAnimationFrame(updateRailUi);
-
-  }, { passive: true });
-
-
-
-  rail.addEventListener("keydown", (event) => {
-
-    if (!(event instanceof KeyboardEvent)) return;
-
-    if (event.key === "ArrowRight") {
-
-      event.preventDefault();
-
-      nextBtn?.click();
-
-    }
-
-    if (event.key === "ArrowLeft") {
-
-      event.preventDefault();
-
-      prevBtn?.click();
-
-    }
-
+  videoEl.addEventListener("ended", stopPlayback);
+  videoEl.addEventListener("pause", () => {
+    if (videoEl.currentTime === 0 || videoEl.ended) stopPlayback();
   });
 
+  thumbs.forEach((thumb, index) => {
+    thumb.addEventListener("click", () => setActive(index));
+  });
 
+  if (prevBtn instanceof HTMLButtonElement) {
+    prevBtn.addEventListener("click", () => setActive(activeIndex - 1));
+  }
+  if (nextBtn instanceof HTMLButtonElement) {
+    nextBtn.addEventListener("click", () => setActive(activeIndex + 1));
+  }
 
-  updateRailUi();
+  spotlight.addEventListener("keydown", (event) => {
+    if (!(event instanceof KeyboardEvent)) return;
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      setActive(activeIndex + 1);
+    }
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      setActive(activeIndex - 1);
+    }
+  });
 
-  window.addEventListener("resize", updateRailUi, { passive: true });
-
+  setActive(0);
 }
 
-
-
 document.querySelectorAll("[data-pruebas-channel]").forEach((root) => {
-
   initPruebasChannel(root);
-
 });
-

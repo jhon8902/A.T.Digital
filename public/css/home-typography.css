@@ -48,7 +48,7 @@ body.home-page .section-info.section-info--interactive .info-header .info-titulo
   text-shadow: 0 0 0.35px #041a10;
 }
 
-/* Pruebas — tipografía clara sobre bloque oscuro (sin heredar verde #041a10) */
+/* Pruebas — tipografía sobre bloque verde claro (estilo Radar) */
 body.home-page .pruebas-title,
 body.home-page h2.pruebas-title {
   font-size: clamp(2.2rem, 3.15vw, 3.05rem) !important;
@@ -57,14 +57,14 @@ body.home-page h2.pruebas-title {
   font-synthesis: weight !important;
   letter-spacing: 0.01em !important;
   line-height: 1.08 !important;
-  color: #f2f6f3 !important;
+  color: #041a10 !important;
   display: flex !important;
   align-items: center;
   justify-content: center;
   gap: clamp(1rem, 2.2vw, 1.85rem);
   width: 100%;
-  -webkit-text-stroke: 0 !important;
-  text-shadow: none !important;
+  -webkit-text-stroke: 0.55px #041a10;
+  text-shadow: 0 0 0.35px #041a10;
 }
 
 /* Movilidad split — títulos de columna más presentes */
@@ -73,12 +73,14 @@ body.home-page .home-mobility h2.electricos-title,
 body.home-page .home-mobility .hibridos-title,
 body.home-page .home-mobility h2.hibridos-title,
 body.home-page .home-mobility #hibridos .hibridos-title {
-  font-size: clamp(1.95rem, 2.6vw, 2.45rem) !important;
+  font-size: clamp(2.15rem, 2.9vw, 2.7rem) !important;
+  font-weight: 700 !important;
   justify-content: flex-start !important;
   text-align: left !important;
   gap: 0 !important;
-  -webkit-text-stroke: 0 !important;
-  text-shadow: none !important;
+  letter-spacing: 0.005em !important;
+  -webkit-text-stroke: 0.7px #041a10;
+  text-shadow: 0 0 0.55px #041a10;
   color: #041a10 !important;
 }
 
@@ -115,26 +117,19 @@ body.home-page .home-mobility .hibridos-inner {
   background: transparent !important;
 }
 
-body.home-page #pruebas .prueba-rail-card__body h4,
-body.home-page #pruebas h4.prueba-rail-card__title,
-body.home-page .prueba-rail-card__body h4 {
+body.home-page #pruebas .pruebas-spotlight__title {
   font-family: "Source Sans 3", sans-serif !important;
-  font-size: var(--home-card-title) !important;
+  font-size: clamp(1.55rem, 2.5vw, 2.05rem) !important;
   font-weight: 700 !important;
   font-synthesis: none !important;
   letter-spacing: -0.015em;
-  color: #f2f6f3 !important;
+  color: #062818 !important;
   -webkit-text-stroke: 0 !important;
   text-shadow: none !important;
 }
 
-body.home-page #pruebas .prueba-rail-desc,
-body.home-page .prueba-rail-desc {
-  color: #aebbb4 !important;
-}
-
-body.home-page #pruebas .pruebas-rail-title {
-  color: #f2f6f3 !important;
+body.home-page #pruebas .pruebas-spotlight__desc {
+  color: #5a6470 !important;
 }
 
 /* Híbridos — acento de sección */
@@ -180,7 +175,6 @@ body.home-page .electricos-title::before,
 body.home-page .hibridos-title::before,
 body.home-page .lanzamientos-title::before,
 body.home-page .deportes-title::before,
-body.home-page .pruebas-title::before,
 body.home-page .section-info .info-titulo::before {
   background: linear-gradient(90deg, transparent, rgba(212, 167, 66, 0.95));
 }
@@ -189,9 +183,16 @@ body.home-page .electricos-title::after,
 body.home-page .hibridos-title::after,
 body.home-page .lanzamientos-title::after,
 body.home-page .deportes-title::after,
-body.home-page .pruebas-title::after,
 body.home-page .section-info .info-titulo::after {
   background: linear-gradient(90deg, rgba(212, 167, 66, 0.95), transparent);
+}
+
+body.home-page .pruebas-title::before {
+  background: linear-gradient(90deg, transparent, rgba(47, 107, 79, 0.95));
+}
+
+body.home-page .pruebas-title::after {
+  background: linear-gradient(90deg, rgba(47, 107, 79, 0.95), transparent);
 }
 
 @media (min-width: 769px) {
@@ -242,7 +243,6 @@ body.home-page .electrico-card__body h3,
 body.home-page .hibrido-card__body h3,
 body.home-page .deporte-card__body h3,
 body.home-page .lanzamiento-item__body h3,
-body.home-page .prueba-rail-card__body h4,
 body.home-page .section-info .news-card:not(.news-card--featured):not(.news-card--insight) .news-title {
   font-size: var(--home-card-title) !important;
 }
@@ -324,8 +324,7 @@ body.home-page .section-info .news-card--featured .news-title {
 body.home-page .electrico-desc,
 body.home-page .hibrido-desc,
 body.home-page .deporte-desc,
-body.home-page .lanzamiento-desc,
-body.home-page .prueba-rail-desc {
+body.home-page .lanzamiento-desc {
   font-size: var(--home-card-body);
 }
 
@@ -599,9 +598,9 @@ body.home-page #lanzamientos .lanzamiento-item__media,
 body.home-page #lanzamientos .lanzamiento-item__media img,
 body.home-page #deportes .deporte-card__media,
 body.home-page #deportes .deporte-card__media img,
-body.home-page #pruebas .prueba-rail-card__media,
-body.home-page #pruebas .prueba-rail-card__media img,
-body.home-page #pruebas .prueba-rail-card__media video {
+body.home-page #pruebas .pruebas-spotlight__player,
+body.home-page #pruebas .pruebas-spotlight__player img,
+body.home-page #pruebas .pruebas-spotlight__player video {
   border: none !important;
   outline: none !important;
   box-shadow: none !important;

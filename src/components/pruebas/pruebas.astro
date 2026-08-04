@@ -1,6 +1,5 @@
 ---
 import { resolveSiteNotes, type SiteNote } from "../../lib/api";
-import { getNotePublishTimestamp } from "../../lib/note-scheduling";
 import { HOME_PRUEBAS_HOME_LIMIT } from "../../lib/home-news-config";
 import {
   buildPruebaVideosFromNotes,
@@ -105,9 +104,10 @@ const allPruebas = [...dynamicPruebas, ...deduplicatedStaticPruebas].sort(
 );
 
 const homePruebas = allPruebas.slice(0, HOME_VISIBLE_COUNT);
+const first = homePruebas[0];
 ---
 
-<link rel="stylesheet" href="/css/pruebas.css?v=8" />
+<link rel="stylesheet" href="/css/pruebas.css?v=19" />
 
 <section
   id="pruebas"
@@ -126,76 +126,126 @@ const homePruebas = allPruebas.slice(0, HOME_VISIBLE_COUNT);
     </header>
 
     {
-      homePruebas.length > 0 && (
-        <div class="pruebas-rail-wrap">
-          <div class="pruebas-rail-toolbar">
-            <div class="pruebas-rail-controls">
-              <span class="pruebas-rail-counter" data-rail-counter aria-live="polite">
-                1 / {homePruebas.length}
-              </span>
-              <div class="pruebas-rail-nav" aria-label="Navegación del carril">
-                <button
-                  type="button"
-                  class="pruebas-rail-btn prev"
-                  aria-label="Prueba anterior"
+      homePruebas.length > 0 && first && (
+        <div class="pruebas-spotlight" data-pruebas-spotlight>
+          <div class="pruebas-spotlight__stage">
+            <div
+              class="pruebas-spotlight__player"
+              data-spotlight-media
+              data-video-card
+            >
+              {first.video ? (
+                <video
+                  data-spotlight-video
+                  playsinline
+                  preload="metadata"
+                  src={first.video}
+                />
+              ) : (
+                <video
+                  data-spotlight-video
+                  playsinline
+                  preload="metadata"
+                  hidden
+                />
+              )}
+              <img
+                data-spotlight-image
+                alt=""
+                hidden={!first.image || !!first.video}
+                src={first.image || undefined}
+              />
+              {!first.video && !first.image && (
+                <div class="archivo-placeholder" data-spotlight-empty>
+                  Sin video
+                </div>
+              )}
+              <button
+                type="button"
+                class="prueba-play"
+                data-spotlight-play
+                aria-label={`Reproducir video de ${first.title}`}
+                hidden={!first.video}
+              />
+            </div>
+
+            <div class="pruebas-spotlight__meta">
+              <div class="pruebas-spotlight__toolbar">
+                <span
+                  class="pruebas-spotlight__counter"
+                  data-spotlight-counter
+                  aria-live="polite"
                 >
-                  <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-                </button>
-                <button
-                  type="button"
-                  class="pruebas-rail-btn next"
-                  aria-label="Siguiente prueba"
+                  1 / {homePruebas.length}
+                </span>
+                <div
+                  class="pruebas-spotlight__nav"
+                  aria-label="Navegación de videos"
                 >
-                  <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-                </button>
+                  <button
+                    type="button"
+                    class="pruebas-rail-btn prev"
+                    data-spotlight-prev
+                    aria-label="Prueba anterior"
+                  >
+                    <i class="fa-solid fa-chevron-left" aria-hidden="true" />
+                  </button>
+                  <button
+                    type="button"
+                    class="pruebas-rail-btn next"
+                    data-spotlight-next
+                    aria-label="Siguiente prueba"
+                  >
+                    <i class="fa-solid fa-chevron-right" aria-hidden="true" />
+                  </button>
+                </div>
+              </div>
+
+              <h3 class="pruebas-spotlight__title" data-spotlight-title>
+                {first.title}
+              </h3>
+              <p class="pruebas-spotlight__desc" data-spotlight-desc>
+                {first.subtitle}
+              </p>
+              <div class="pruebas-spotlight__actions" data-spotlight-actions>
+                {first.showNoteLink && first.href && (
+                  <a href={first.href} class="archivo-link" data-spotlight-note>
+                    Ver nota
+                  </a>
+                )}
+                <a href="/automatch-find" class="prueba-rail-automatch">
+                  Comparar en AutoMatch
+                </a>
               </div>
             </div>
           </div>
 
-          <div class="pruebas-rail-viewport">
-            <div class="pruebas-rail" data-pruebas-rail tabindex="0" aria-label="Carril de videos">
+          <div
+            class="pruebas-spotlight__thumbs"
+            role="listbox"
+            aria-label="Elegir prueba de manejo"
+          >
             {homePruebas.map((prueba, index) => (
-              <article class="prueba-rail-card" style={`--rail-i: ${index}`}>
-                <div class="prueba-rail-card__media" data-video-card>
-                  {prueba.video ? (
-                    <>
-                      <video playsinline preload="metadata">
-                        <source src={prueba.video} type="video/mp4" />
-                      </video>
-                      <button
-                        type="button"
-                        class="prueba-play"
-                        aria-label={`Reproducir video de ${prueba.title}`}
-                      />
-                    </>
-                  ) : prueba.image ? (
-                    <img
-                      src={prueba.image}
-                      alt={prueba.title}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  ) : (
-                    <div class="archivo-placeholder">Sin video</div>
-                  )}
-                </div>
-                <div class="prueba-rail-card__body">
-                  <h4>{prueba.title}</h4>
-                  <p class="prueba-rail-desc">{prueba.subtitle}</p>
-                  <div class="prueba-rail-actions">
-                    {prueba.showNoteLink && prueba.href && (
-                      <a href={prueba.href} class="archivo-link">
-                        Ver nota
-                      </a>
-                    )}
-                    <a href="/automatch-find" class="prueba-rail-automatch">
-                      Comparar en AutoMatch
-                    </a>
-                  </div>
-                </div>
-              </article>
+              <button
+                type="button"
+                class={`pruebas-spotlight__thumb${index === 0 ? " is-active" : ""}`}
+                role="option"
+                aria-selected={index === 0 ? "true" : "false"}
+                data-spotlight-thumb
+                data-index={String(index)}
+                data-title={prueba.title}
+                data-subtitle={prueba.subtitle}
+                data-video={prueba.video || ""}
+                data-image={prueba.image || ""}
+                data-href={prueba.href || ""}
+                data-show-note={prueba.showNoteLink ? "1" : "0"}
+              >
+                <span class="pruebas-spotlight__thumb-index">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span class="pruebas-spotlight__thumb-label">{prueba.title}</span>
+              </button>
             ))}
-            </div>
           </div>
         </div>
       )
@@ -204,10 +254,10 @@ const homePruebas = allPruebas.slice(0, HOME_VISIBLE_COUNT);
     <div class="pruebas-footer">
       <a href="/pruebas" class="pruebas-more">
         Ver más videos
-        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa-solid fa-arrow-right" aria-hidden="true" />
       </a>
     </div>
   </div>
 </section>
 
-<script type="module" src="/js/pruebas-channel.js"></script>
+<script type="module" src="/js/pruebas-channel.js?v=7"></script>
