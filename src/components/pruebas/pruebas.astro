@@ -107,21 +107,27 @@ const homePruebas = allPruebas.slice(0, HOME_VISIBLE_COUNT);
 const first = homePruebas[0];
 ---
 
-<link rel="stylesheet" href="/css/pruebas.css?v=19" />
+<link rel="stylesheet" href="/css/pruebas.css?v=24" />
 
 <section
   id="pruebas"
-  class="pruebas-section"
+  class="pruebas-section pruebas-section--videos"
   data-pruebas-channel
   aria-labelledby="pruebas-heading"
 >
   <div class="pruebas-inner">
     <header class="pruebas-head">
-      <p class="pruebas-eyebrow">Test drive en video</p>
-      <h2 id="pruebas-heading" class="pruebas-title">Pruebas de manejo</h2>
+      <p class="pruebas-eyebrow">
+        <span class="pruebas-eyebrow__dot" aria-hidden="true"></span>
+        Canal A.T. Digital
+      </p>
+      <h2 id="pruebas-heading" class="pruebas-title">
+        <span class="pruebas-title__mark" aria-hidden="true"></span>
+        Videos
+      </h2>
       <p class="pruebas-lead">
-        Ponemos a prueba vehículos relevantes y te contamos lo esencial de cada
-        marca en formato video.
+        Cortos editados por nosotros: detalles, ángulos y lo esencial de cada
+        modelo, sin rodeos.
       </p>
     </header>
 
@@ -186,7 +192,7 @@ const first = homePruebas[0];
                     type="button"
                     class="pruebas-rail-btn prev"
                     data-spotlight-prev
-                    aria-label="Prueba anterior"
+                    aria-label="Video anterior"
                   >
                     <i class="fa-solid fa-chevron-left" aria-hidden="true" />
                   </button>
@@ -194,7 +200,7 @@ const first = homePruebas[0];
                     type="button"
                     class="pruebas-rail-btn next"
                     data-spotlight-next
-                    aria-label="Siguiente prueba"
+                    aria-label="Siguiente video"
                   >
                     <i class="fa-solid fa-chevron-right" aria-hidden="true" />
                   </button>
@@ -223,7 +229,7 @@ const first = homePruebas[0];
           <div
             class="pruebas-spotlight__thumbs"
             role="listbox"
-            aria-label="Elegir prueba de manejo"
+            aria-label="Elegir video"
           >
             {homePruebas.map((prueba, index) => (
               <button
@@ -260,4 +266,4 @@ const first = homePruebas[0];
   </div>
 </section>
 
-<script type="module" src="/js/pruebas-channel.js?v=7"></script>
+<script type="module" src="/js/pruebas-channel.js?v=8"></script>

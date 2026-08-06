@@ -25,7 +25,7 @@ interface Props {
 }
 
 const { compact = false, notes: prefetchedNotes } = Astro.props as Props;
-const HOME_VISIBLE_COUNT = 3;
+const HOME_VISIBLE_COUNT = 4;
 
 function normalizeSourceScope(scope?: string) {
   return scope?.toLowerCase() === "internacional"
@@ -104,35 +104,18 @@ function extractFirstImage(html: string | undefined) {
   return match ? match[1] : null;
 }
 
-function buildChips(item: { description?: string; chips?: string[] }) {
-  if (item.chips?.length) return item.chips.slice(0, 3);
-
-  const chips: string[] = [];
-  const text = (item.description || "").toLowerCase();
-
-  if (/f1|fórmula|formula/i.test(text)) chips.push("F1");
-  if (/moto/i.test(text)) chips.push("Motociclismo");
-  if (/automovilismo|pista|carrera/i.test(text)) chips.push("Automovilismo");
-  if (/alto rendimiento|competición|competicion/i.test(text))
-    chips.push("Alto rendimiento");
-  if (/tecnolog/i.test(text)) chips.push("Tecnología");
-
-  if (chips.length === 0) chips.push("Deportes motor");
-  return chips.slice(0, 3);
-}
-
 const staticDeportes: DeporteItem[] = [
   {
     href: "/notas-deportes/nota-deportes-motos",
     img: "/img/img-deportes/deportes-motos-portada1.jpg",
-    alt: "Deportes motorizados",
+    alt: "Autos de alto rendimiento",
     title: "Adrenalina sobre ruedas",
     description:
-      "Cobertura de motociclismo y automovilismo de alto nivel en pista y calle.",
+      "Modelos de alto rendimiento pensados para emoción, diseño y velocidad.",
     fecha: "Publicado: 12-mar",
     editor: "Jhon Aparicio",
     source_scope: "nacional",
-    chips: ["Motociclismo", "Automovilismo", "Pista"],
+    chips: ["Performance", "Diseño", "Velocidad"],
     sortDate: parseDateValue("Publicado: 12-mar"),
   },
   {
@@ -141,7 +124,7 @@ const staticDeportes: DeporteItem[] = [
     alt: "Máquinas de alto rendimiento",
     title: "Máquinas de alto rendimiento",
     description:
-      "Ingeniería extrema aplicada a la velocidad, la pista y la competición.",
+      "Ingeniería extrema aplicada a autos deportivos de calle y pista.",
     fecha: "Publicado: 13-mar",
     editor: "Jhon Aparicio",
     source_scope: "nacional",
@@ -151,14 +134,14 @@ const staticDeportes: DeporteItem[] = [
   {
     href: "/notas-deportes/nota-deportes2",
     img: "/img/img-deportes/deporte-2.webp",
-    alt: "Tecnología en deportes",
+    alt: "Tecnología en autos deportivos",
     title: "Tecnología de última generación",
     description:
-      "Materiales, telemetría y evolución técnica en el automovilismo moderno.",
+      "Materiales, aerodinámica y electrónica en el mundo de los deportivos.",
     fecha: "Publicado: 15-mar",
     editor: "Jhon Aparicio",
     source_scope: "nacional",
-    chips: ["Tecnología", "Telemetría", "Competición"],
+    chips: ["Tecnología", "Aerodinámica", "Performance"],
     sortDate: parseDateValue("Publicado: 15-mar"),
   },
 ];
@@ -177,7 +160,7 @@ try {
           note.image1?.trim() ||
           extractFirstImage(note.content) ||
           "/img/default.jpg",
-        alt: note.title || "Deportes",
+        alt: note.title || "Autos deportivos",
         title: note.title || "Sin título",
         description: note.subtitle || "",
         fecha: formatNotePublishedLabel(note),
@@ -210,87 +193,112 @@ const deduplicatedStaticDeportes = staticDeportes.filter(
 const allDeportes = [...dynamicDeportes, ...deduplicatedStaticDeportes]
   .sort((a, b) => b.sortDate - a.sortDate)
   .slice(0, HOME_VISIBLE_COUNT);
+
+const [leadNota, ...sideNotas] = allDeportes;
 ---
 
-<link rel="stylesheet" href="/css/deportes-section.css?v=4" />
+<link rel="stylesheet" href="/css/deportes-section.css?v=44" />
 
 <section
   id="deportes"
-  class:list={["deportes-section", compact && "deportes-section--compact"]}
+  class="deportes-section"
   aria-labelledby="deportes-heading"
 >
   <div class="deportes-inner">
-    <header class="deportes-head">
-      <p class="deportes-eyebrow">
-        {compact ? "Más del portal" : "Alto rendimiento"}
-      </p>
-      <h2 id="deportes-heading" class="deportes-title">
-        {compact ? "Deportes motor" : "Adrenalina sobre ruedas"}
-      </h2>
-      <p class="deportes-lead">
-        Automovilismo, motociclismo y competición: lo más reciente del mundo
-        deportivo sobre ruedas.
-      </p>
-    </header>
-
     {
-      allDeportes.length > 0 && (
-        <div
-          class:list={[
-            "deportes-grid",
-            !compact && allDeportes.length >= 3 && "deportes-grid--solo",
-          ]}
-        >
-          {allDeportes.map((nota) => {
-            const chips = buildChips(nota);
-            const scope = normalizeSourceScope(nota.source_scope);
-            const fecha = cleanPublishedDate(nota.fecha);
+      leadNota && (
+        <div class="deportes-stack">
+          <div class="deportes-hero">
+            <header class="deportes-head">
+              <p class="deportes-eyebrow">Performance y diseño</p>
+              <div class="deportes-title-block">
+                <h2 id="deportes-heading" class="deportes-title">
+                  <span class="deportes-title__line">Autos</span>
+                  <span class="deportes-title__line">deportivos</span>
+                </h2>
+                <span class="deportes-head__rule" aria-hidden="true"></span>
+              </div>
+              <p class="deportes-lead">
+                Supercarros, GT y máquinas de alto rendimiento: lo más
+                emocionante del mundo automotor.
+              </p>
+              <a href="/deportes" class="deportes-head__link">
+                Ver archivo
+                <i class="fa-solid fa-arrow-right" aria-hidden="true" />
+              </a>
+            </header>
 
-            return (
-              <article class="deporte-card">
-                <a href={nota.href} class="deporte-card__media">
-                  <img
-                    src={nota.img}
-                    alt={nota.alt}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </a>
-                <div class="deporte-card__body">
-                  <div class="deporte-card__meta">
-                    <span class={`deporte-scope deporte-scope--${scope}`}>
-                      {sourceScopeLabel(nota.source_scope)}
+            <article class="deporte-card deporte-card--lead">
+              <a href={leadNota.href} class="deporte-card__media">
+                <img
+                  src={leadNota.img}
+                  alt={leadNota.alt}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+              <div class="deporte-card__body">
+                <div class="deporte-card__meta">
+                  <span
+                    class={`deporte-scope deporte-scope--${normalizeSourceScope(leadNota.source_scope)}`}
+                  >
+                    {sourceScopeLabel(leadNota.source_scope)}
+                  </span>
+                  {cleanPublishedDate(leadNota.fecha) && (
+                    <span class="deporte-card__date">
+                      {cleanPublishedDate(leadNota.fecha)}
                     </span>
-                    {fecha && (
-                      <span class="deporte-card__date">{fecha}</span>
-                    )}
-                  </div>
-                  <h3>
-                    <a href={nota.href}>{nota.title}</a>
-                  </h3>
-                  <div class="deporte-chips">
-                    {chips.map((chip) => (
-                      <span class="deporte-chip">{chip}</span>
-                    ))}
-                  </div>
-                  <p class="deporte-desc">{nota.description}</p>
-                  <div class="deporte-card__actions">
-                    <a href={nota.href} class="deporte-card__cta">
-                      Ver nota
-                    </a>
-                  </div>
+                  )}
                 </div>
-              </article>
-            );
-          })}
+                <h3>
+                  <a href={leadNota.href}>{leadNota.title}</a>
+                </h3>
+              </div>
+            </article>
+          </div>
+
+          {sideNotas.length > 0 && (
+            <div class="deportes-row">
+              {sideNotas.map((nota) => {
+                const scope = normalizeSourceScope(nota.source_scope);
+                const fecha = cleanPublishedDate(nota.fecha);
+
+                return (
+                  <article class="deporte-card deporte-card--row">
+                    <a href={nota.href} class="deporte-card__media">
+                      <img
+                        src={nota.img}
+                        alt={nota.alt}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </a>
+                    <div class="deporte-card__body">
+                      <div class="deporte-card__meta">
+                        <span class={`deporte-scope deporte-scope--${scope}`}>
+                          {sourceScopeLabel(nota.source_scope)}
+                        </span>
+                        {fecha && (
+                          <span class="deporte-card__date">{fecha}</span>
+                        )}
+                      </div>
+                      <h3>
+                        <a href={nota.href}>{nota.title}</a>
+                      </h3>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
         </div>
       )
     }
 
     <footer class="deportes-footer">
       <a href="/deportes" class="deportes-more">
-        Ver más deportes
-        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        Ver más autos deportivos
+        <i class="fa-solid fa-arrow-right" aria-hidden="true" />
       </a>
     </footer>
   </div>

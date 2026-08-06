@@ -26,6 +26,8 @@ let homeNotes = await resolveSiteNotes();
 
     <SectionInfo notes={homeNotes} />
 
+    <Pruebas notes={homeNotes} />
+
     <section
       class="home-mobility"
       aria-label="Movilidad eléctrica e híbrida"
@@ -38,13 +40,12 @@ let homeNotes = await resolveSiteNotes();
 
     <link rel="stylesheet" href="/css/mobility-split.css?v=4" />
 
-    <Noticias notes={homeNotes} />
+    <Deportes notes={homeNotes} />
 
+    <Noticias notes={homeNotes} />
     <!-- Banner marca — oculto temporalmente
     <AdBanner variant="autotech" />
     -->
-
-    <Pruebas notes={homeNotes} />
     <!--
     <AutoMatchPromo
       variant="compact"
@@ -53,16 +54,9 @@ let homeNotes = await resolveSiteNotes();
       showSecondary={false}
     />
     -->
-
-    <section
-      class="home-secondary-content"
-      aria-label="Más contenido editorial"
-    >
-      <Deportes compact notes={homeNotes} />
-    </section>
   </div>
 
-  <link rel="stylesheet" href="/css/home-typography.css?v=40" />
+  <link rel="stylesheet" href="/css/home-typography.css?v=74" />
 </Layout>
 
 <style>
@@ -82,9 +76,9 @@ let homeNotes = await resolveSiteNotes();
     animation: fadeInUp 0.7s ease-out;
   } */
 
-  .home-secondary-content {
+  /* .home-secondary-content {
     opacity: 0.98;
-  }
+  } */
 
   .extra-sections {
     opacity: 1;

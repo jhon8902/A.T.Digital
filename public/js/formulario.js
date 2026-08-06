@@ -236,7 +236,7 @@
     if (specImportClearSpecBtn instanceof HTMLButtonElement) {
       specImportClearSpecBtn.addEventListener("click", function () {
         clearSpecFields();
-        setSpecImportStatus("Ficha técnica vaciada.", "ok");
+        setSpecImportStatus("Resumen técnico vaciado.", "ok");
       });
     }
   }
@@ -359,7 +359,7 @@
       contentField.disabled = false;
       if (automatchMode) {
         contentField.placeholder =
-          "Opcional. Si lo dejas vacío, la ficha muestra hero + ficha técnica + galería. Para bloques con imagen: Titulo: Encabezado | Texto. Separa bloques con línea en blanco.";
+          "Opcional. Si lo dejas vacío, la ficha muestra hero + resumen técnico + galería. Para bloques con imagen: Titulo: Encabezado | Texto. Separa bloques con línea en blanco.";
       } else {
         contentField.placeholder =
           "Escribe el cuerpo de la nota. Separa cada sección con una línea en blanco.";

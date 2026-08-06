@@ -419,7 +419,7 @@ function sectionLabel(category?: string) {
     case "lanzamientos":
       return "Lanzamientos";
     case "deportes":
-      return "Deportes";
+      return "Autos deportivos";
     case "pruebas":
       return "Pruebas";
     case "noticias":
@@ -739,7 +739,7 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
           {
             technicalSpecCards.length > 0 && (
               <section class="ficha-tecnica-profesional">
-                <h2>Ficha Técnica Completa — {getNewsCardTitle(note.title)}</h2>
+                <h2>Resumen técnico — {getNewsCardTitle(note.title)}</h2>
                 <div class="ficha-grid">
                   {technicalSpecCards.map((item) => (
                     <div class={`ficha-item ${item.className || ""}`.trim()}>
@@ -767,7 +767,7 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
                     Más imágenes de {displayTitle}
                   </h2>
                   <p class="noticia-galeria-complementaria__lead">
-                    Vistas adicionales del modelo para complementar la ficha.
+                    Vistas adicionales del modelo para complementar la nota.
                   </p>
                 </header>
 

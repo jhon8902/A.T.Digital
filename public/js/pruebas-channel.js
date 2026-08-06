@@ -1,4 +1,4 @@
-/** Spotlight de videos: stage principal + miniaturas */
+/** Spotlight de videos: stage principal + chips (sin salto al cambiar) */
 
 export function initPruebasChannel(root) {
   if (!(root instanceof HTMLElement)) return;
@@ -35,6 +35,7 @@ export function initPruebasChannel(root) {
   );
 
   let activeIndex = 0;
+  let busy = false;
   let noteLink = actionsEl?.querySelector("[data-spotlight-note]") || null;
 
   const readThumb = (thumb) => ({
@@ -54,46 +55,128 @@ export function initPruebasChannel(root) {
     videoEl.removeAttribute("controls");
   };
 
-  const syncOrientation = () => {
-    let isPortrait = false;
-
-    if (!videoEl.hidden && videoEl.videoWidth > 0 && videoEl.videoHeight > 0) {
-      isPortrait = videoEl.videoHeight > videoEl.videoWidth;
-    } else if (
-      !imageEl.hidden &&
-      imageEl.naturalWidth > 0 &&
-      imageEl.naturalHeight > 0
-    ) {
-      isPortrait = imageEl.naturalHeight > imageEl.naturalWidth;
-    }
-
+  const setPortrait = (isPortrait) => {
     media.classList.toggle("is-portrait", isPortrait);
     spotlight.classList.toggle("is-portrait", isPortrait);
+  };
 
-    const activeThumb = thumbs[activeIndex];
-    if (activeThumb instanceof HTMLElement) {
-      activeThumb.setAttribute(
-        "data-orientation",
-        isPortrait ? "portrait" : "landscape",
-      );
+  const rememberOrientation = (thumb, isPortrait) => {
+    thumb.setAttribute(
+      "data-orientation",
+      isPortrait ? "portrait" : "landscape",
+    );
+  };
+
+  const detectFromVideo = () => {
+    if (videoEl.videoWidth > 0 && videoEl.videoHeight > 0) {
+      return videoEl.videoHeight > videoEl.videoWidth;
     }
+    return null;
+  };
+
+  const detectFromImage = () => {
+    if (imageEl.naturalWidth > 0 && imageEl.naturalHeight > 0) {
+      return imageEl.naturalHeight > imageEl.naturalWidth;
+    }
+    return null;
   };
 
   const applyKnownOrientation = (thumb) => {
     const known = thumb.getAttribute("data-orientation");
-    if (known === "portrait") {
-      media.classList.add("is-portrait");
-      spotlight.classList.add("is-portrait");
-    } else if (known === "landscape") {
-      media.classList.remove("is-portrait");
-      spotlight.classList.remove("is-portrait");
-    }
-    // Si aún no se conoce, se mantiene el layout actual hasta loadedmetadata
+    if (known === "portrait") setPortrait(true);
+    else if (known === "landscape") setPortrait(false);
   };
 
-  videoEl.addEventListener("loadedmetadata", syncOrientation);
-  videoEl.addEventListener("loadeddata", syncOrientation);
-  imageEl.addEventListener("load", syncOrientation);
+  const waitForVideoReady = () =>
+    new Promise((resolve) => {
+      if (videoEl.readyState >= 2) {
+        resolve();
+        return;
+      }
+      const done = () => {
+        videoEl.removeEventListener("loadeddata", done);
+        videoEl.removeEventListener("error", done);
+        resolve();
+      };
+      videoEl.addEventListener("loadeddata", done, { once: true });
+      videoEl.addEventListener("error", done, { once: true });
+      window.setTimeout(done, 500);
+    });
+
+  const waitForImageReady = () =>
+    new Promise((resolve) => {
+      if (imageEl.complete && imageEl.naturalWidth > 0) {
+        resolve();
+        return;
+      }
+      const done = () => {
+        imageEl.removeEventListener("load", done);
+        imageEl.removeEventListener("error", done);
+        resolve();
+      };
+      imageEl.addEventListener("load", done, { once: true });
+      imageEl.addEventListener("error", done, { once: true });
+      window.setTimeout(done, 500);
+    });
+
+  const fadeOut = () =>
+    new Promise((resolve) => {
+      if (prefersReducedMotion.matches) {
+        resolve();
+        return;
+      }
+      media.classList.add("is-fading");
+      window.setTimeout(resolve, 160);
+    });
+
+  const fadeIn = () => {
+    media.classList.remove("is-fading");
+  };
+
+  /** Precarga orientación de todos los clips para no adivinar al hacer next */
+  const probeOrientations = () => {
+    thumbs.forEach((thumb) => {
+      if (thumb.getAttribute("data-orientation")) return;
+      const videoSrc = thumb.getAttribute("data-video") || "";
+      const imageSrc = thumb.getAttribute("data-image") || "";
+
+      if (videoSrc) {
+        const probe = document.createElement("video");
+        probe.preload = "metadata";
+        probe.muted = true;
+        probe.playsInline = true;
+        probe.src = videoSrc;
+        probe.addEventListener(
+          "loadedmetadata",
+          () => {
+            if (probe.videoWidth > 0 && probe.videoHeight > 0) {
+              rememberOrientation(
+                thumb,
+                probe.videoHeight > probe.videoWidth,
+              );
+            }
+            probe.removeAttribute("src");
+            probe.load();
+          },
+          { once: true },
+        );
+        return;
+      }
+
+      if (imageSrc) {
+        const probe = new Image();
+        probe.onload = () => {
+          if (probe.naturalWidth > 0 && probe.naturalHeight > 0) {
+            rememberOrientation(
+              thumb,
+              probe.naturalHeight > probe.naturalWidth,
+            );
+          }
+        };
+        probe.src = imageSrc;
+      }
+    });
+  };
 
   const updateNoteLink = (item) => {
     if (!(actionsEl instanceof HTMLElement)) return;
@@ -113,17 +196,7 @@ export function initPruebasChannel(root) {
     }
   };
 
-  const setActive = (index, { autoplay = false } = {}) => {
-    const next = Math.max(0, Math.min(thumbs.length - 1, index));
-    const thumb = thumbs[next];
-    if (!(thumb instanceof HTMLElement)) return;
-
-    const item = readThumb(thumb);
-    const changed = next !== activeIndex;
-    activeIndex = next;
-
-    stopPlayback();
-
+  const updateChrome = (item) => {
     thumbs.forEach((node, i) => {
       const on = i === activeIndex;
       node.classList.toggle("is-active", on);
@@ -133,7 +206,6 @@ export function initPruebasChannel(root) {
     if (counterEl instanceof HTMLElement) {
       counterEl.textContent = `${activeIndex + 1} / ${thumbs.length}`;
     }
-
     if (titleEl instanceof HTMLElement) titleEl.textContent = item.title;
     if (descEl instanceof HTMLElement) {
       descEl.textContent = item.subtitle;
@@ -143,7 +215,6 @@ export function initPruebasChannel(root) {
       metaLineEl.textContent = item.metaline;
       metaLineEl.hidden = !item.metaline;
     }
-
     updateNoteLink(item);
 
     if (playBtn instanceof HTMLButtonElement) {
@@ -152,48 +223,6 @@ export function initPruebasChannel(root) {
         "aria-label",
         `Reproducir video de ${item.title}`,
       );
-    }
-
-    const empty = media.querySelector("[data-spotlight-empty]");
-    if (empty instanceof HTMLElement) empty.hidden = true;
-
-    applyKnownOrientation(thumb);
-
-    if (changed && !prefersReducedMotion.matches) {
-      media.classList.add("is-fading");
-      spotlight.classList.add("is-switching");
-    }
-
-    if (item.video) {
-      imageEl.hidden = true;
-      imageEl.removeAttribute("src");
-      videoEl.hidden = false;
-      if (videoEl.getAttribute("src") !== item.video) {
-        videoEl.src = item.video;
-        videoEl.load();
-      }
-      requestAnimationFrame(syncOrientation);
-    } else if (item.image) {
-      videoEl.hidden = true;
-      videoEl.removeAttribute("src");
-      videoEl.load();
-      imageEl.hidden = false;
-      imageEl.src = item.image;
-      imageEl.alt = item.title;
-      requestAnimationFrame(syncOrientation);
-    } else {
-      videoEl.hidden = true;
-      imageEl.hidden = true;
-      media.classList.remove("is-portrait");
-      spotlight.classList.remove("is-portrait");
-      if (empty instanceof HTMLElement) empty.hidden = false;
-    }
-
-    if (changed && !prefersReducedMotion.matches) {
-      window.setTimeout(() => {
-        media.classList.remove("is-fading");
-        spotlight.classList.remove("is-switching");
-      }, 180);
     }
 
     if (prevBtn instanceof HTMLButtonElement) {
@@ -206,12 +235,74 @@ export function initPruebasChannel(root) {
       nextBtn.disabled = atEnd;
       nextBtn.classList.toggle("is-disabled", atEnd);
     }
+  };
+
+  const setActive = async (index, { autoplay = false, instant = false } = {}) => {
+    const next = Math.max(0, Math.min(thumbs.length - 1, index));
+    const thumb = thumbs[next];
+    if (!(thumb instanceof HTMLElement)) return;
+    if (busy && !instant) return;
+    if (next === activeIndex && !instant) return;
+
+    busy = true;
+    const item = readThumb(thumb);
+    activeIndex = next;
+    stopPlayback();
+    updateChrome(item);
+
+    const empty = media.querySelector("[data-spotlight-empty]");
+    if (empty instanceof HTMLElement) empty.hidden = true;
+
+    if (!instant) await fadeOut();
+
+    // Layout se aplica YA oculto → no se ve el salto
+    applyKnownOrientation(thumb);
+
+    if (item.video) {
+      imageEl.hidden = true;
+      imageEl.removeAttribute("src");
+      videoEl.hidden = false;
+      if (videoEl.getAttribute("src") !== item.video) {
+        videoEl.src = item.video;
+        videoEl.load();
+      }
+      await waitForVideoReady();
+      const detected = detectFromVideo();
+      if (detected !== null) {
+        setPortrait(detected);
+        rememberOrientation(thumb, detected);
+      }
+    } else if (item.image) {
+      videoEl.hidden = true;
+      videoEl.removeAttribute("src");
+      videoEl.load();
+      imageEl.hidden = false;
+      imageEl.src = item.image;
+      imageEl.alt = item.title;
+      await waitForImageReady();
+      const detected = detectFromImage();
+      if (detected !== null) {
+        setPortrait(detected);
+        rememberOrientation(thumb, detected);
+      }
+    } else {
+      videoEl.hidden = true;
+      imageEl.hidden = true;
+      setPortrait(false);
+      if (empty instanceof HTMLElement) empty.hidden = false;
+    }
+
+    // Un frame con el layout ya estable antes de mostrar
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    fadeIn();
 
     if (autoplay && item.video) {
       media.classList.add("is-playing");
       videoEl.controls = true;
       void videoEl.play();
     }
+
+    busy = false;
   };
 
   if (playBtn instanceof HTMLButtonElement) {
@@ -229,29 +320,36 @@ export function initPruebasChannel(root) {
   });
 
   thumbs.forEach((thumb, index) => {
-    thumb.addEventListener("click", () => setActive(index));
+    thumb.addEventListener("click", () => {
+      void setActive(index);
+    });
   });
 
   if (prevBtn instanceof HTMLButtonElement) {
-    prevBtn.addEventListener("click", () => setActive(activeIndex - 1));
+    prevBtn.addEventListener("click", () => {
+      void setActive(activeIndex - 1);
+    });
   }
   if (nextBtn instanceof HTMLButtonElement) {
-    nextBtn.addEventListener("click", () => setActive(activeIndex + 1));
+    nextBtn.addEventListener("click", () => {
+      void setActive(activeIndex + 1);
+    });
   }
 
   spotlight.addEventListener("keydown", (event) => {
     if (!(event instanceof KeyboardEvent)) return;
     if (event.key === "ArrowRight") {
       event.preventDefault();
-      setActive(activeIndex + 1);
+      void setActive(activeIndex + 1);
     }
     if (event.key === "ArrowLeft") {
       event.preventDefault();
-      setActive(activeIndex - 1);
+      void setActive(activeIndex - 1);
     }
   });
 
-  setActive(0);
+  probeOrientations();
+  void setActive(0, { instant: true });
 }
 
 document.querySelectorAll("[data-pruebas-channel]").forEach((root) => {

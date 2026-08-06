@@ -66,7 +66,7 @@ function categoryLabel(category?: string) {
     lanzamientos: "Lanzamiento",
     electricos: "Eléctricos",
     hibridos: "Híbridos",
-    deportes: "Deportes",
+    deportes: "Autos deportivos",
     pruebas: "Pruebas",
     noticias: "Noticias",
   };
@@ -309,7 +309,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 );
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css?v=70" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=75" />
 
 <section
   id="noticias"
@@ -1156,11 +1156,11 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     background: none;
     border: none;
     cursor: pointer;
-    background-image: linear-gradient(currentColor, currentColor);
+    background-image: none;
     background-repeat: no-repeat;
-    background-size: 0% 1.5px;
+    background-size: auto;
     background-position: left bottom;
-    transition: background-size 0.35s ease;
+    transition: none;
   }
   .ver-mas-noticias-btn::before {
     display: none;
@@ -1171,16 +1171,17 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     margin-left: 8px;
     font-size: 14px;
     letter-spacing: 0;
-    transition: transform 0.25s ease;
+    transition: none;
+    transform: none;
   }
   .ver-mas-noticias-btn:hover {
-    background-size: 100% 1.5px;
+    background-size: auto;
   }
   .ver-mas-noticias-btn:hover::before {
-    width: 56px;
+    width: auto;
   }
   .ver-mas-noticias-btn:hover::after {
-    transform: translateX(6px);
+    transform: none;
   }
 
   @keyframes zoomInFade {

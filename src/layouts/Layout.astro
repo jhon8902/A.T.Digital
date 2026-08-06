@@ -111,7 +111,7 @@ const categoryLabel = (() => {
     case "híbridos":
       return "Híbridos";
     case "deportes":
-      return "Deportes";
+      return "Autos deportivos";
     case "lanzamientos":
       return "Lanzamientos";
     case "noticias":
@@ -120,7 +120,7 @@ const categoryLabel = (() => {
       // Inferir desde URL cuando bodyClass no provee la categoría
       if (pathname.startsWith("/notas-electricos")) return "Eléctricos";
       if (pathname.startsWith("/notas-hibridos")) return "Híbridos";
-      if (pathname.startsWith("/notas-deportes")) return "Deportes";
+      if (pathname.startsWith("/notas-deportes")) return "Autos deportivos";
       if (
         pathname.startsWith("/noticias-nacionales") ||
         pathname.startsWith("/noticias-carrusel")

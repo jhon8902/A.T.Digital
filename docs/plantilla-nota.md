@@ -117,6 +117,18 @@ https://www.youtube.com/watch?v=XXXXXXXXXXX
 
 ---
 
+## CAMPO: Resumen técnico
+
+Los **párrafos** de contenido van en lenguaje claro; el **resumen técnico** concentra los datos para comparar: precio, motor, versiones, autonomía, rivales, pros/contras.
+
+En notas **nacionales** con modelo real en Colombia, el resumen es prácticamente obligatorio. Solo completa lo confirmado; los campos vacíos no se publican.
+
+Puedes pegar el bloque del asistente (`spec_campo: valor`, una línea por campo) en **Importar resumen técnico** del formulario.
+
+Campos principales: segmento, precio estimado, versiones, origen, motorización, potencia, torque, batería/autonomía, carga, 0–100, tracción, seguridad, equipamiento, pros, contras, competidores, precio COP.
+
+---
+
 ## Checklist antes de publicar
 
 - [ ] Título tiene marca, modelo y año
@@ -124,6 +136,7 @@ https://www.youtube.com/watch?v=XXXXXXXXXXX
 - [ ] Contenido: mínimo 4 párrafos separados por línea en blanco
 - [ ] Imagen 1 cargada (es la portada)
 - [ ] Categoría correcta según la tabla
+- [ ] Resumen técnico completo si es nota nacional con modelo real
 - [ ] Revisión ortográfica rápida
 
 ---

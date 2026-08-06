@@ -57,12 +57,12 @@ export const STATIC_SEARCH_ENTRIES: SearchEntry[] = [
     keywords: ["electricos", "bev", "ev"],
   },
   {
-    title: "Deportes",
-    description: "Automovilismo, motociclismo y alto rendimiento.",
+    title: "Autos deportivos",
+    description: "Supercarros, GT y máquinas de alto rendimiento.",
     href: "/deportes",
     category: "deportes",
     type: "seccion",
-    keywords: ["deportes", "motociclismo", "f1"],
+    keywords: ["deportes", "autos deportivos", "supercarro", "gt", "performance"],
   },
   {
     title: "Pruebas",

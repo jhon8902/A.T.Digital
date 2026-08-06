@@ -158,10 +158,12 @@ const cloudinaryFolder =
               </div>
 
               <div class="help-block help-block-full">
-                <h3>Ficha técnica — plantilla rápida</h3>
+                <h3>Resumen técnico — plantilla rápida</h3>
                 <p>
-                  Esta sección es el diferencial de A.T. Digital. Completa solo
-                  lo que tengas confirmado; los campos vacíos no se publican.
+                  Los párrafos van en lenguaje claro; aquí concentras precio, motor,
+                  versiones y datos para comparar. En notas <strong>nacionales</strong>
+                  con modelo real en Colombia, el resumen es prácticamente obligatorio.
+                  Completa solo lo confirmado; los campos vacíos no se publican.
                 </p>
                 <div class="help-template">
                   <p><strong>Segmento:</strong> SUV compacto eléctrico</p>
@@ -316,7 +318,7 @@ const cloudinaryFolder =
                 <select id="categoryField" name="category" required>
                   <option value="electricos">Eléctricos</option>
                   <option value="hibridos">Híbridos</option>
-                  <option value="deportes">Deportes</option>
+                  <option value="deportes">Autos deportivos</option>
                   <option value="noticias">Noticias</option>
                   <option value="pruebas">Pruebas</option>
                   <option value="lanzamientos">Lanzamientos</option>
@@ -333,18 +335,18 @@ const cloudinaryFolder =
                 <span class="field-hint">
                   Cobertura editorial: Nacional = mercado Colombia; Internacional
                   = lanzamiento o nota global. No depende del país en «Origen»
-                  de la ficha técnica.
+                  del resumen técnico.
                 </span>
               </label>
             </div>
 
             <p id="automatchModeHint" class="storage-tip tip-highlight" hidden>
               <strong>Modo AutoMatch.</strong> Con categoría AutoMatch la página
-              aplica sola el diseño de ficha (hero, mini datos clave, ficha
-              técnica, galería y pie). No hace falta escribir párrafos largos:
+              aplica sola el diseño de ficha (hero, mini datos clave, resumen
+              técnico, galería y pie). No hace falta escribir párrafos largos:
               puedes dejar <em>Párrafos de la ficha</em> vacío y cargar casi todo
-              en <em>Ficha técnica</em>. Obligatorio: título, subtítulo, imagen 1,
-              tipo/uso/precio del buscador y los campos de ficha técnica que
+              en <em>Resumen técnico</em>. Obligatorio: título, subtítulo, imagen 1,
+              tipo/uso/precio del buscador y los campos del resumen técnico que
               quieras mostrar (potencia, autonomía, 0–100, etc.).
             </p>
           </div>
@@ -621,16 +623,22 @@ const cloudinaryFolder =
           </fieldset>
 
           <fieldset id="noteSpecGroup" class="group-box note-spec-box">
-            <legend>Ficha técnica (opcional pero recomendada)</legend>
+            <legend>Resumen técnico (recomendado; casi siempre en notas nacionales)</legend>
+
+            <p class="spec-section-lead">
+              Los párrafos cuentan la nota sin tecnicismos; aquí van precio en
+              Colombia, motor, versiones, autonomía, rivales y pros/contras para
+              quien quiere comparar.
+            </p>
 
             <div class="spec-import-panel grid-span-2">
               <p class="spec-import-help">
-                Pega aquí el bloque de ficha que te entrega el asistente (una línea
+                Pega aquí el bloque de resumen que te entrega el asistente (una línea
                 por campo: <code>spec_campo: valor</code>). Pulsa
                 <strong>Rellenar campos</strong> y se completan solos.
               </p>
               <label class="spec-import-label" for="specImportText">
-                Importar ficha técnica
+                Importar resumen técnico
                 <textarea
                   id="specImportText"
                   class="spec-import-textarea"
@@ -659,7 +667,7 @@ spec_precio_cop: $262.900.000`}
                   id="specImportClearSpecBtn"
                   class="btn-secondary spec-import-btn spec-import-btn--muted"
                 >
-                  Vaciar ficha
+                  Vaciar resumen
                 </button>
                 <label class="spec-import-checkbox">
                   <input type="checkbox" id="specImportOverwrite" checked />
@@ -1209,6 +1217,13 @@ spec_precio_cop: $262.900.000`}
           border: 1px dashed rgba(8, 52, 31, 0.22);
           border-radius: 12px;
           background: rgba(240, 248, 244, 0.55);
+        }
+
+        .spec-section-lead {
+          margin: 0 0 16px;
+          font-size: 0.94rem;
+          line-height: 1.55;
+          color: #374151;
         }
 
         .spec-import-help {

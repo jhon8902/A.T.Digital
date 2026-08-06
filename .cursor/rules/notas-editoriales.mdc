@@ -36,9 +36,9 @@ Título: [Encabezado del bloque] |
 
 - **Tope de longitud = nota 174** ([CUPRA Born](https://autotechdigital.com/notas/174)): densa pero digerible; lectura ~3–4 min. **No superar** ese volumen salvo petición explícita del usuario.
 - Cada bloque: **3–4 oraciones** (máx. 5 si el tema lo exige). Una idea principal por bloque.
-- **2–3 datos clave por bloque** en la narrativa; el resto va a ficha. Evitar catálogo en prosa.
+- **2–3 datos clave por bloque** en la narrativa; el resto va al resumen técnico. Evitar catálogo en prosa.
 - Alineación visual con la imagen en `/notas/[id]` se logra con 3–4 oraciones sólidas, no con párrafos enciclopédicos.
-- Si un bloque parece ficha técnica escrita en prosa, recortar y mover specs al formulario de ficha.
+- Si un bloque parece resumen técnico escrito en prosa, recortar y mover specs al formulario de resumen técnico.
 
 **Temas sugeridos por bloque:**
 1. Presentación / contexto / lanzamiento (en archivo: “Desde el archivo…” / retomamos…)
@@ -51,6 +51,45 @@ Título: [Encabezado del bloque] |
 - Tono: editorial A.T. Digital — preciso, con cifras, fluido entre bloques.
 - Categoría habitual: `deportes`, `electricos`, `hibridos`, `noticias`, `lanzamientos` o `pruebas` según el auto.
 
+## Voz editorial — español latinoamericano (referencia: nota GLA 2026)
+
+**Objetivo:** que suene la página como A.T. Digital — claro, vivo, fácil de leer en el celular; no como comunicado de prensa traducido ni como texto de IA.
+
+### Cómo debe leerse
+
+- **Lo importante primero:** qué es, qué cambió, precio o fecha si existen, por qué le importa al lector.
+- **Poco técnico en la narrativa:** potencia, autonomía y versiones sí; el detalle fino va a la ficha del formulario.
+- **Párrafos cortos con ritmo:** 3–4 oraciones por bloque; una idea por bloque; sin catálogos en prosa.
+- **Palabras que se entienden solas:** si un latino promedio dudaría, reformular o explicar en la misma frase.
+
+### Preferir / evitar (léxico)
+
+| Evitar o traducir | Mejor en la nota |
+|-------------------|------------------|
+| Batalla | Más largo entre las ruedas / distancia entre ejes |
+| WLTP (suelto) | De autonomía / alcance en carretera (opcional: “según ciclo europeo”) |
+| Seguridad activa (vago) | Asistencias a la conducción + qué hacen (distancia, carril, frenado, aparcar…) |
+| Compacto premium | SUV compacto de gama alta |
+| Coasting, frunk | Rodar sin empuje del motor / maletero delantero |
+| Híbrido / eléctrico repetido en título | Una sola vez en el titular; en el cuerpo variar (“versión eléctrica”, “con motor de gasolina y apoyo eléctrico”) |
+
+### Frases prohibidas (suenan a IA o concesionario)
+
+- «Se comercializa en red oficial con fichas, cotización y asesoría en concesionario…»
+- «Representa un hito / un antes y un después en el segmento…» sin dato concreto detrás
+- Listas de equipamiento copiadas del PDF en párrafo corrido
+- Frases sueltas o incompletas que no cierran idea
+
+### Dónde van los números
+
+- **En los 5 bloques:** 2–3 datos clave por bloque (precio desde, autonomía, potencia, fecha de lanzamiento).
+- **En el resumen técnico del formulario:** el resto (versiones, rivales, pros/contras, cargas, equipamiento detallado).
+
+### Referencia de tono y longitud
+
+- **Tono y claridad:** nota Mercedes-Benz GLA 2026 (bloques cortos, lenguaje latino, sin aburrir).
+- **Techo de extensión:** nota 174 (CUPRA Born) — no superar salvo petición explícita; **por defecto**, priorizar la brevedad del GLA si el tema lo permite.
+
 ## Ámbito (formulario)
 
 | Ámbito | Cuándo |
@@ -58,18 +97,21 @@ Título: [Encabezado del bloque] |
 | `nacional` | Llegada, precios o contexto Colombia |
 | `internacional` | Lanzamiento global, conceptos, archivo, sin confirmación local |
 
-## Ficha técnica
+## Resumen técnico
 
-| Tipo de nota | ¿Incluir ficha? |
-|--------------|-----------------|
-| Lanzamiento / modelo real con specs | **Sí**, completa |
-| Archivo con datos útiles aunque antiguos | **Sí**, resumida |
+Los **párrafos** narran en lenguaje claro (poco tecnicismo); el **resumen técnico** concentra precio, motor, versiones, autonomía, rivales y pros/contras para quien quiere comparar o decidir.
+
+| Tipo de nota | ¿Incluir resumen? |
+|--------------|-------------------|
+| **Nacional** con modelo real, precios o specs Colombia | **Sí**, completo — es el complemento natural del texto no técnico |
+| Lanzamiento / modelo real con specs (internacional) | **Sí**, completo |
+| Archivo con datos útiles aunque antiguos | **Sí**, resumido |
 | Concepto, gaming, prototipo sin specs oficiales | **No** — indicar en bloque 5; campos del formulario vacíos |
 | Fin de semana / archivo sin números | **Opcional** solo si aporta datos curiosos confirmados |
 
-**Nota vs ficha:** la nota cuenta y contextualiza; la ficha es consulta rápida (comparar, decidir). No repetir párrafos ni listas de equipamiento ya narradas. Repetir **3–4 datos ancla** (precio desde, motor, tracción, un dato de capacidad) es aceptable.
+**Nota vs resumen:** la nota cuenta y contextualiza; el resumen es consulta rápida. No repetir párrafos ni listas de equipamiento ya narradas. Repetir **3–4 datos ancla** (precio desde, motor, tracción, un dato de capacidad) en los bloques es aceptable; el detalle fino va al resumen.
 
-**Formato de entrega de la ficha:** siempre con los **campos del formulario** (`src/pages/formulario.astro`, sección «Ficha técnica»), uno por línea, listos para copiar. Campos que no apliquen (p. ej. batería en diésel): indicar «dejar vacío». Campos del formulario:
+**Formato de entrega:** siempre con los **campos del formulario** (`src/pages/formulario.astro`, sección «Resumen técnico»), uno por línea, listos para copiar. Campos que no apliquen (p. ej. batería en diésel): indicar «dejar vacío». Campos del formulario:
 
 `spec_segmento` · `spec_precio_estimado` · `spec_versiones` · `spec_origen` · `spec_motorizacion` · `spec_potencia_hp` · `spec_torque_nm` · `spec_bateria_autonomia` · `spec_bateria_kwh` · `spec_autonomia_km` · `spec_carga` · `spec_carga_ac_kw` · `spec_carga_dc_kw` · `spec_aceleracion_0_100` · `spec_seguridad` · `spec_equipamiento` · `spec_pros` · `spec_contras` · `spec_competidores` · `spec_traccion` · `spec_precio_cop`
 
@@ -104,10 +146,11 @@ Devolver en este orden:
 4. Categoría sugerida
 5. Ámbito sugerido (`nacional` / `internacional`)
 6. Tabla de alineación imagen ↔ bloque
-7. Ficha técnica — campos del formulario (solo cuando aplique; ver tabla anterior)
+7. Resumen técnico (campos del formulario de ficha; solo cuando aplique; ver tabla anterior)
 
 ## Ejemplo de referencia
 
-- Layout y longitud de párrafos: nota 174 (CUPRA Born) en el sitio.
+- **Tono y longitud preferidos:** nota Mercedes-Benz GLA 2026 (español claro, bloques cortos).
+- Layout máximo de extensión: nota 174 (CUPRA Born) en el sitio.
 - Subtítulo archivo: nota 167 (`Desde el archivo de Auto-Tech-Digital — …`).
 - Campos del formulario: `docs/plantilla-nota.md`.
