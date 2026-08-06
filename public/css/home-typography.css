@@ -97,6 +97,19 @@ body.home-page .pruebas-section--videos .pruebas-inner {
   padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 4.5vw, 3.25rem) !important;
 }
 
+@media (max-width: 860px) {
+  body.home-page .pruebas-section--videos .pruebas-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 1.35rem 0.9rem 1.5rem !important;
+    box-shadow: none !important;
+  }
+
+  body.home-page #pruebas .pruebas-spotlight__thumbs {
+    display: none !important;
+  }
+}
+
 /* Movilidad split — títulos de columna más presentes */
 body.home-page .home-mobility .electricos-title,
 body.home-page .home-mobility h2.electricos-title,
@@ -792,9 +805,45 @@ body.home-page #deportes .deporte-card__body h3 a {
     color: #f3f5f3 !important;
   }
 
+  body.home-page .deportes-section {
+    padding-inline: 0 !important;
+  }
+
   body.home-page .deportes-inner {
     width: 100% !important;
     max-width: 100% !important;
+    padding-inline: 0.7rem !important;
+  }
+
+  body.home-page #deportes .deporte-card--lead .deporte-card__media,
+  body.home-page #deportes .deporte-card--row .deporte-card__media {
+    aspect-ratio: 16 / 10 !important;
+    width: 100% !important;
+    min-height: clamp(14rem, 52vw, 22rem) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  body.home-page .deportes-inner {
+    padding-inline: 0.55rem !important;
+  }
+
+  body.home-page #deportes .deporte-card--lead .deporte-card__media,
+  body.home-page #deportes .deporte-card--row .deporte-card__media {
+    aspect-ratio: 4 / 3 !important;
+    min-height: clamp(15rem, 58vw, 22rem) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  body.home-page .deportes-inner {
+    padding-inline: 0.4rem !important;
+  }
+
+  body.home-page #deportes .deporte-card--lead .deporte-card__media,
+  body.home-page #deportes .deporte-card--row .deporte-card__media {
+    aspect-ratio: 4 / 3 !important;
+    min-height: clamp(14.5rem, 62vw, 20rem) !important;
   }
 }
 

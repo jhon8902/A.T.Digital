@@ -519,12 +519,12 @@
   border-color: #e0b84f;
 }
 
-/* Tablet / móvil: columna única */
+/* Tablet / móvil: columna única, imágenes más grandes */
 @media (max-width: 900px) {
   .deportes-section {
     width: 100%;
     max-width: 100%;
-    padding: 1.5rem 0.75rem;
+    padding: 1.35rem 0 1.75rem;
     overflow-x: clip;
     box-sizing: border-box;
   }
@@ -533,8 +533,10 @@
     width: 100%;
     max-width: 100%;
     margin: 0;
-    padding: 1.35rem 0.85rem 1.5rem;
+    padding: 1.35rem 0.7rem 1.5rem;
     box-sizing: border-box;
+    border-left: none;
+    border-right: none;
   }
 
   .deportes-hero {
@@ -566,7 +568,7 @@
 
   .deportes-row {
     grid-template-columns: 1fr;
-    gap: 1.1rem;
+    gap: 1.25rem;
   }
 
   @media (min-width: 641px) {
@@ -575,8 +577,11 @@
     }
   }
 
-  .deporte-card--lead .deporte-card__media {
-    aspect-ratio: 16 / 9;
+  .deporte-card--lead .deporte-card__media,
+  .deporte-card--row .deporte-card__media {
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    min-height: clamp(14rem, 52vw, 22rem);
   }
 
   .deporte-card--lead .deporte-card__body h3,
@@ -584,18 +589,36 @@
     font-size: clamp(1.1rem, 4vw, 1.28rem);
   }
 
-  .deporte-card--row .deporte-card__media {
-    aspect-ratio: 16 / 10;
-  }
-
   .deporte-card__date {
     display: none;
   }
 }
 
+@media (max-width: 640px) {
+  .deportes-inner {
+    padding: 1.15rem 0.55rem 1.35rem;
+  }
+
+  .deporte-card--lead .deporte-card__media,
+  .deporte-card--row .deporte-card__media {
+    aspect-ratio: 4 / 3;
+    min-height: clamp(15rem, 58vw, 22rem);
+  }
+}
+
 @media (max-width: 480px) {
-  .deporte-card--lead .deporte-card__media {
-    aspect-ratio: 16 / 9;
+  .deportes-section {
+    padding: 1.15rem 0 1.5rem;
+  }
+
+  .deportes-inner {
+    padding: 1.05rem 0.4rem 1.25rem;
+  }
+
+  .deporte-card--lead .deporte-card__media,
+  .deporte-card--row .deporte-card__media {
+    aspect-ratio: 4 / 3;
+    min-height: clamp(14.5rem, 62vw, 20rem);
   }
 }
 

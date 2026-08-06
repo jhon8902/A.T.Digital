@@ -603,18 +603,51 @@
 }
 
 @media (max-width: 860px) {
+  .pruebas-section--videos {
+    padding: 1.35rem 0 1.75rem;
+  }
+
+  .pruebas-section--videos .pruebas-inner {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 1.35rem 0.9rem 1.5rem;
+  }
+
+  .pruebas-spotlight__thumbs {
+    display: none;
+  }
+
   .pruebas-spotlight__stage {
     grid-template-columns: 1fr;
     min-height: 0;
   }
 
+  /* Horizontal: más grande en móvil */
   .pruebas-spotlight__player {
     aspect-ratio: 16 / 9;
     min-height: 0;
     height: auto;
+    width: 100%;
   }
 
-  /* Solo móvil: vertical en marco 9:16 (escritorio no se toca) */
+  .pruebas-spotlight:not(.is-portrait) .pruebas-spotlight__player {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    min-height: clamp(14rem, 56vw, 22rem);
+  }
+
+  .pruebas-spotlight:not(.is-portrait) .pruebas-spotlight__player video,
+  .pruebas-spotlight:not(.is-portrait) .pruebas-spotlight__player img {
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  /* Vertical: se mantiene compacto y centrado */
   .pruebas-spotlight.is-portrait .pruebas-spotlight__stage {
     min-height: 0;
   }
@@ -625,6 +658,7 @@
     max-height: min(72vh, 34rem);
     margin-inline: auto;
     height: auto;
+    min-height: 0;
   }
 
   .pruebas-spotlight.is-portrait .pruebas-spotlight__player video,
@@ -639,6 +673,14 @@
 }
 
 @media (max-width: 640px) {
+  .pruebas-section--videos .pruebas-inner {
+    padding: 1.15rem 0.75rem 1.35rem;
+  }
+
+  .pruebas-spotlight:not(.is-portrait) .pruebas-spotlight__player {
+    min-height: clamp(13.5rem, 58vw, 20rem);
+  }
+
   .pruebas-rail-btn {
     width: 2.65rem;
     height: 2.65rem;
