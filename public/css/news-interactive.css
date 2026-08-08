@@ -1652,9 +1652,47 @@
     padding-right: 12px;
   }
 
+  /* Noticias: imágenes más grandes en móvil (como Deportes), sin recorte agresivo */
+  #noticias .news-showcase .news-carousel {
+    padding-left: 0.55rem;
+    padding-right: 0.55rem;
+  }
+
+  #noticias .news-showcase .news-carousel-card {
+    flex: 0 0 min(94vw, 100%);
+    max-width: none;
+  }
+
+  #noticias .news-showcase .news-carousel-card__image {
+    aspect-ratio: 4 / 3;
+    min-height: clamp(15rem, 58vw, 22rem);
+    width: 100%;
+  }
+
+  #noticias .news-showcase .news-carousel-card__image img {
+    object-fit: cover;
+    object-position: center 45%;
+  }
+
   .sector-radar-preview__inner {
     padding-left: 1.15rem;
     padding-right: 1.15rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #noticias .news-showcase .news-carousel {
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+  }
+
+  #noticias .news-showcase .news-carousel-card {
+    flex: 0 0 min(96vw, 100%);
+  }
+
+  #noticias .news-showcase .news-carousel-card__image {
+    aspect-ratio: 4 / 3;
+    min-height: clamp(14.5rem, 62vw, 20rem);
   }
 }
 

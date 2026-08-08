@@ -119,8 +119,22 @@ body.home-page .pruebas-section--videos .pruebas-inner {
   body.home-page #pruebas .pruebas-spotlight__stage {
     width: 100% !important;
     max-width: 100% !important;
+    border: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  body.home-page #pruebas .pruebas-spotlight__player {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  body.home-page #pruebas .pruebas-spotlight.is-portrait .pruebas-spotlight__player {
+    width: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin-inline: 0 !important;
   }
 
   body.home-page #pruebas .pruebas-spotlight:not(.is-portrait) .pruebas-spotlight__player {
@@ -219,6 +233,32 @@ body.home-page #pruebas .pruebas-spotlight__title {
 
 body.home-page #pruebas .pruebas-spotlight__desc {
   color: #5a6470 !important;
+  max-width: 34rem !important;
+}
+
+body.home-page #pruebas .pruebas-spotlight__stage {
+  background: #0e1311 !important;
+  border-color: rgba(8, 52, 31, 0.18) !important;
+}
+
+body.home-page #pruebas .pruebas-spotlight__player,
+body.home-page #pruebas .pruebas-spotlight__player img,
+body.home-page #pruebas .pruebas-spotlight__player video {
+  background: #0a0f0d !important;
+}
+
+body.home-page #pruebas .pruebas-spotlight__player {
+  box-shadow: none !important;
+}
+
+body.home-page #pruebas .pruebas-spotlight.is-portrait .pruebas-spotlight__player {
+  box-shadow: none !important;
+}
+
+body.home-page #pruebas .pruebas-spotlight__meta {
+  background: #fff !important;
+  max-width: none !important;
+  width: 100% !important;
 }
 
 /* Híbridos — acento de sección */
@@ -963,7 +1003,6 @@ body.home-page #lanzamientos .lanzamiento-item__media,
 body.home-page #lanzamientos .lanzamiento-item__media img,
 body.home-page #deportes .deporte-card__media,
 body.home-page #deportes .deporte-card__media img,
-body.home-page #pruebas .pruebas-spotlight__player,
 body.home-page #pruebas .pruebas-spotlight__player img,
 body.home-page #pruebas .pruebas-spotlight__player video {
   border: none !important;
@@ -979,5 +1018,29 @@ body.home-page #pruebas .pruebas-spotlight__player video {
 
   body.home-page .section-info.section-info--interactive > .container {
     background: #fff !important;
+  }
+
+  body.home-page #noticias .news-showcase .news-carousel-card {
+    flex-basis: min(94vw, 100%) !important;
+  }
+
+  body.home-page #noticias .news-showcase .news-carousel-card__image {
+    aspect-ratio: 4 / 3 !important;
+    min-height: clamp(15rem, 58vw, 22rem) !important;
+  }
+
+  body.home-page #noticias .news-showcase .news-carousel-card__image img {
+    object-fit: cover !important;
+    object-position: center 45% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  body.home-page #noticias .news-showcase .news-carousel-card {
+    flex-basis: min(96vw, 100%) !important;
+  }
+
+  body.home-page #noticias .news-showcase .news-carousel-card__image {
+    min-height: clamp(14.5rem, 62vw, 20rem) !important;
   }
 }

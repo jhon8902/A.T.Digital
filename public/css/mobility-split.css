@@ -100,7 +100,7 @@
   padding: 1rem 0;
   text-decoration: none;
   color: inherit;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.22s ease;
 }
 
 .mobility-row__link:hover {
@@ -115,7 +115,7 @@
   width: 100%;
   aspect-ratio: 16 / 10;
   overflow: hidden;
-  background: #e8ece8;
+  background: #111827;
 }
 
 .mobility-row__media img {
@@ -128,14 +128,14 @@
 }
 
 .mobility-row__link:hover .mobility-row__media img {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 
 .mobility-row__body {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.28rem;
+  gap: 0.4rem;
   padding-inline: 0.15rem;
 }
 
@@ -147,12 +147,12 @@
 }
 
 .mobility-row__title {
-  font-family: "Source Sans 3", sans-serif;
-  font-size: clamp(1.18rem, 3.8vw, 1.35rem);
+  font-family: "Plus Jakarta Sans", "Source Sans 3", sans-serif;
+  font-size: clamp(1.18rem, 3.8vw, 1.4rem);
   font-weight: 700;
   font-synthesis: none;
   letter-spacing: -0.015em;
-  line-height: 1.28;
+  line-height: 1.25;
   color: #062818;
   margin: 0;
   display: -webkit-box;
@@ -164,9 +164,10 @@
 .mobility-row__deck {
   font-family: "Source Sans 3", sans-serif;
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.55;
   color: #4b5563;
   margin: 0;
+  max-width: 36rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -201,9 +202,43 @@
   .home-mobility .hibridos-section--compact {
     border-top: none;
   }
+
+  .mobility-list {
+    gap: 1.25rem;
+  }
+
+  .mobility-row {
+    border-top: none;
+    border-bottom: none;
+  }
+
+  .mobility-row__link {
+    gap: 0;
+    padding: 0;
+  }
+
+  /* Misma imagen que Lanzamientos en móvil */
+  .mobility-row__media {
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    min-height: 0;
+  }
+
+  .mobility-row__media img {
+    min-height: 12rem;
+  }
+
+  .mobility-row__body {
+    padding: 0.9rem 0.15rem 0.35rem;
+  }
+
+  .mobility-row__deck {
+    -webkit-line-clamp: 3;
+    max-width: 36rem;
+  }
 }
 
-/* Desktop: dos columnas + fila horizontal (imagen | texto) */
+/* Desktop: todas las filas con el tamaño grande unificado */
 @media (min-width: 1024px) {
   .home-mobility {
     padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1rem, 3vw, 2rem);
@@ -225,27 +260,44 @@
     border-top: none;
   }
 
+  .mobility-list {
+    gap: 1.25rem;
+  }
+
+  .mobility-row {
+    border-top: none;
+    border-bottom: none;
+  }
+
   .mobility-row__link {
-    grid-template-columns: minmax(12.5rem, 42%) minmax(0, 1fr);
-    gap: 1.05rem 1.25rem;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 1.25rem;
     align-items: center;
-    padding: 1.05rem 0.35rem;
+    padding: 0;
+  }
+
+  .mobility-row__link:hover {
+    background: transparent;
+    transform: translateY(-3px);
   }
 
   .mobility-row__media {
-    aspect-ratio: 16 / 10;
-    min-height: 7.5rem;
+    aspect-ratio: 16 / 9;
+    min-height: 11rem;
   }
 
   .mobility-row__body {
-    padding-inline: 0;
+    padding: 0.2rem 0.2rem 0.2rem 0;
+    max-width: 34rem;
   }
 
   .mobility-row__title {
-    font-size: clamp(1.15rem, 1.25vw, 1.35rem);
+    font-size: clamp(1.22rem, 1.35vw, 1.48rem);
   }
 
   .mobility-row__deck {
     font-size: 1rem;
+    -webkit-line-clamp: 3;
+    max-width: 32rem;
   }
 }

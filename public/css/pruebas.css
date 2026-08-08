@@ -225,10 +225,10 @@
   grid-template-columns: minmax(0, 1.85fr) minmax(18rem, 0.85fr);
   gap: 0;
   align-items: stretch;
-  background: var(--prueba-surface);
-  border: 1.5px solid var(--prueba-border);
-  box-shadow: 0 14px 36px rgba(8, 52, 31, 0.09);
-  overflow: hidden;
+  background: #0e1311;
+  border: 1.5px solid rgba(8, 52, 31, 0.18);
+  box-shadow: 0 14px 36px rgba(8, 52, 31, 0.1);
+  overflow: visible;
   /* Altura estable: evita salto vertical al cambiar formato */
   min-height: clamp(22rem, 38vw, 30rem);
 }
@@ -238,10 +238,11 @@
   min-height: inherit;
   aspect-ratio: auto;
   height: 100%;
-  background: #111827;
+  background: #0a0f0d;
   overflow: hidden;
   transition: opacity 0.18s ease;
   will-change: opacity;
+  box-shadow: none;
 }
 
 .pruebas-spotlight__player video,
@@ -251,7 +252,7 @@
   display: block;
   object-fit: cover;
   object-position: center;
-  background: #111827;
+  background: #0a0f0d;
 }
 
 /* Vertical en escritorio: marco un poco más ancho (misma altura de stage) */
@@ -271,6 +272,7 @@
     min-height: 0;
     justify-self: stretch;
     align-self: center;
+    box-shadow: none;
   }
 
   .pruebas-spotlight.is-portrait .pruebas-spotlight__player video,
@@ -281,6 +283,12 @@
 
   .pruebas-spotlight.is-portrait .pruebas-spotlight__meta {
     padding: clamp(1.25rem, 2vw, 1.75rem) clamp(1.35rem, 2.5vw, 2rem);
+    max-width: none;
+    width: 100%;
+  }
+
+  .pruebas-spotlight.is-portrait .pruebas-spotlight__desc {
+    max-width: 32rem;
   }
 }
 
@@ -298,8 +306,8 @@
   border: none;
   background: linear-gradient(
     180deg,
-    rgba(17, 24, 39, 0.1) 0%,
-    rgba(17, 24, 39, 0.48) 100%
+    rgba(10, 15, 13, 0.12) 0%,
+    rgba(10, 15, 13, 0.52) 100%
   );
   cursor: pointer;
   transition: opacity 0.25s ease, background 0.25s ease;
@@ -346,6 +354,8 @@
   flex-direction: column;
   padding: clamp(1.35rem, 2.5vw, 2rem);
   gap: 0.75rem;
+  background: #fff;
+  min-width: 0;
 }
 
 .pruebas-spotlight__toolbar {
@@ -426,6 +436,7 @@
   line-height: 1.6;
   color: var(--prueba-muted);
   margin: 0;
+  max-width: 34rem;
   display: -webkit-box;
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
@@ -644,11 +655,11 @@
   .pruebas-spotlight__stage {
     grid-template-columns: 1fr;
     min-height: 0;
-    border-left: none;
-    border-right: none;
+    border: none;
     border-radius: 0;
     box-shadow: none;
     width: 100%;
+    background: transparent;
   }
 
   /* Horizontal: full-bleed */
@@ -657,6 +668,8 @@
     min-height: 0;
     height: auto;
     width: 100%;
+    background: transparent;
+    box-shadow: none;
   }
 
   .pruebas-spotlight:not(.is-portrait) .pruebas-spotlight__player {
@@ -671,18 +684,22 @@
     object-position: center center;
   }
 
-  /* Vertical: se mantiene compacto y centrado */
+  /* Vertical: full-bleed, sin márgenes laterales */
   .pruebas-spotlight.is-portrait .pruebas-spotlight__stage {
     min-height: 0;
+    background: transparent;
   }
 
   .pruebas-spotlight.is-portrait .pruebas-spotlight__player {
     aspect-ratio: 9 / 16;
-    width: min(100%, 22rem);
-    max-height: min(72vh, 34rem);
-    margin-inline: auto;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    margin-inline: 0;
     height: auto;
     min-height: 0;
+    background: transparent;
+    box-shadow: none;
   }
 
   .pruebas-spotlight.is-portrait .pruebas-spotlight__player video,
@@ -695,8 +712,25 @@
     padding: 1.15rem 0.9rem 0.35rem;
   }
 
+  /* Prev/next a la izquierda; contador a la derecha (evita el botón flotante) */
+  .pruebas-spotlight__toolbar {
+    justify-content: space-between;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+  }
+
+  .pruebas-spotlight__nav {
+    order: -1;
+  }
+
+  .pruebas-spotlight.is-portrait .pruebas-spotlight__meta {
+    padding-right: 5.5rem;
+    padding-bottom: 0.75rem;
+  }
+
   .pruebas-section--videos .pruebas-footer {
     padding-inline: 0.9rem;
+    padding-bottom: 0.5rem;
   }
 }
 
@@ -706,9 +740,16 @@
   }
 
   .pruebas-section--videos .pruebas-head,
-  .pruebas-spotlight__meta,
   .pruebas-section--videos .pruebas-footer {
     padding-inline: 0.75rem;
+  }
+
+  .pruebas-spotlight__meta {
+    padding-inline: 0.75rem;
+  }
+
+  .pruebas-spotlight.is-portrait .pruebas-spotlight__meta {
+    padding-right: 5.25rem;
   }
 
   .pruebas-spotlight:not(.is-portrait) .pruebas-spotlight__player {
