@@ -195,12 +195,42 @@
 }
 
 @media (max-width: 1023px) {
+  /* Contenedor full-bleed como Lanzamientos */
+  .home-mobility {
+    padding: 1.15rem 0 1.5rem;
+  }
+
   .home-mobility__panel {
+    width: 100%;
+    max-width: 100%;
     gap: 0.85rem;
+  }
+
+  .home-mobility .electricos-section--compact,
+  .home-mobility .hibridos-section--compact {
+    border-left: none;
+    border-right: none;
   }
 
   .home-mobility .hibridos-section--compact {
     border-top: none;
+  }
+
+  .home-mobility .electricos-section--compact .electricos-inner,
+  .home-mobility .hibridos-section--compact .hibridos-inner {
+    padding: 1.25rem 0 1.35rem;
+  }
+
+  .home-mobility .electricos-head,
+  .home-mobility .hibridos-head,
+  .home-mobility .electricos-footer,
+  .home-mobility .hibridos-footer {
+    padding-inline: 0.85rem;
+  }
+
+  .home-mobility .electricos-lead,
+  .home-mobility .hibridos-lead {
+    max-width: none;
   }
 
   .mobility-list {
@@ -217,7 +247,7 @@
     padding: 0;
   }
 
-  /* Misma imagen que Lanzamientos en móvil */
+  /* Imagen a todo el ancho del contenedor (como Lanzamientos) */
   .mobility-row__media {
     aspect-ratio: 16 / 10;
     width: 100%;
@@ -229,12 +259,26 @@
   }
 
   .mobility-row__body {
-    padding: 0.9rem 0.15rem 0.35rem;
+    padding: 0.9rem 0.85rem 0.35rem;
   }
 
   .mobility-row__deck {
     -webkit-line-clamp: 3;
     max-width: 36rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-mobility .electricos-head,
+  .home-mobility .hibridos-head,
+  .home-mobility .electricos-footer,
+  .home-mobility .hibridos-footer,
+  .mobility-row__body {
+    padding-inline: 0.65rem;
+  }
+
+  .mobility-row__media img {
+    min-height: 13rem;
   }
 }
 
