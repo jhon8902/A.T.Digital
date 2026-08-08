@@ -6,26 +6,40 @@
   background-image: var(--home-relief-image);
   background-size: var(--home-relief-size);
   background-repeat: repeat;
-  padding: clamp(1rem, 2.5vw, 2rem) 0;
+  padding: clamp(1.35rem, 3vw, 2.5rem) clamp(0.75rem, 2.5vw, 2rem);
 }
 
 .home-mobility__panel {
   width: min(100%, 1760px);
   margin: 0 auto;
-  background: #fff;
   display: grid;
   grid-template-columns: 1fr;
   gap: 0;
   box-sizing: border-box;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  overflow: hidden;
 }
 
-/* Columnas compactas: sin fondo/padding propio de sección */
+/* Columnas compactas — tinte muy sutil (verde / azul) */
 .home-mobility .electricos-section--compact,
 .home-mobility .hibridos-section--compact {
-  background: transparent;
   background-image: none;
   padding: 0;
   scroll-margin-top: 5.5rem;
+  border: 1px solid transparent;
+  box-shadow: none;
+}
+
+.home-mobility .electricos-section--compact {
+  background: #f3f7f4;
+  border-color: rgba(8, 52, 31, 0.08);
+}
+
+.home-mobility .hibridos-section--compact {
+  background: #f2f7f9;
+  border-color: rgba(13, 110, 140, 0.1);
 }
 
 .home-mobility .electricos-section--compact .electricos-inner,
@@ -71,11 +85,11 @@
 }
 
 .mobility-row {
-  border-top: 1px solid rgba(8, 52, 31, 0.08);
+  border-top: 1px solid rgba(8, 52, 31, 0.1);
 }
 
 .mobility-row:last-child {
-  border-bottom: 1px solid rgba(8, 52, 31, 0.08);
+  border-bottom: 1px solid rgba(8, 52, 31, 0.1);
 }
 
 .mobility-row__link {
@@ -90,7 +104,11 @@
 }
 
 .mobility-row__link:hover {
-  background: rgba(8, 52, 31, 0.03);
+  background: rgba(8, 52, 31, 0.035);
+}
+
+.home-mobility .hibridos-section--compact .mobility-row__link:hover {
+  background: rgba(13, 110, 140, 0.045);
 }
 
 .mobility-row__media {
@@ -176,8 +194,12 @@
 }
 
 @media (max-width: 1023px) {
+  .home-mobility__panel {
+    gap: 0.85rem;
+  }
+
   .home-mobility .hibridos-section--compact {
-    border-top: 1px solid rgba(8, 52, 31, 0.1);
+    border-top: none;
   }
 }
 
@@ -190,6 +212,7 @@
   .home-mobility__panel {
     width: min(96%, 1760px);
     grid-template-columns: 1fr 1fr;
+    gap: 1rem;
   }
 
   .home-mobility .electricos-section--compact .electricos-inner,
@@ -198,7 +221,7 @@
   }
 
   .home-mobility .hibridos-section--compact {
-    border-left: 1px solid rgba(8, 52, 31, 0.1);
+    border-left: none;
     border-top: none;
   }
 

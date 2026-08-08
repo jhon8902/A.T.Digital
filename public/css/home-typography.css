@@ -33,7 +33,7 @@ body.home-page .deportes-title,
 body.home-page .section-info .info-titulo,
 body.home-page .section-info.section-info--interactive .info-header .info-titulo {
   font-size: clamp(2.2rem, 3.15vw, 3.05rem) !important;
-  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif !important;
+  font-family: "Plus Jakarta Sans", "Source Sans 3", sans-serif !important;
   font-weight: 700 !important;
   font-synthesis: weight !important;
   letter-spacing: 0.01em !important;
@@ -58,7 +58,7 @@ body.home-page .pruebas-section--videos .pruebas-head {
 
 body.home-page .pruebas-section--videos .pruebas-title,
 body.home-page .pruebas-section--videos h2.pruebas-title {
-  font-family: "Source Sans 3", sans-serif !important;
+  font-family: "Plus Jakarta Sans", "Source Sans 3", sans-serif !important;
   font-size: clamp(2.35rem, 4vw, 3.1rem) !important;
   font-weight: 800 !important;
   font-synthesis: none !important;
@@ -88,25 +88,54 @@ body.home-page .pruebas-section--videos .pruebas-eyebrow {
 }
 
 body.home-page .pruebas-section--videos .pruebas-lead {
-  margin-top: 0.35rem !important;
+  display: none !important;
 }
 
 body.home-page .pruebas-section--videos .pruebas-inner {
   background: #fff !important;
   width: min(92%, 1680px) !important;
-  padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 4.5vw, 3.25rem) !important;
+  padding: clamp(1.75rem, 3.5vw, 2.65rem) clamp(1.35rem, 4vw, 2.85rem) !important;
+  border: 1px solid rgba(8, 52, 31, 0.1) !important;
+  box-shadow: 0 12px 28px rgba(8, 52, 31, 0.05) !important;
 }
 
 @media (max-width: 860px) {
+  body.home-page .pruebas-section--videos {
+    padding-inline: 0 !important;
+  }
+
   body.home-page .pruebas-section--videos .pruebas-inner {
     width: 100% !important;
     max-width: 100% !important;
-    padding: 1.35rem 0.9rem 1.5rem !important;
+    padding: 1.15rem 0 1.35rem !important;
     box-shadow: none !important;
+    border: none !important;
   }
 
   body.home-page #pruebas .pruebas-spotlight__thumbs {
     display: none !important;
+  }
+
+  body.home-page #pruebas .pruebas-spotlight__stage {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  body.home-page #pruebas .pruebas-spotlight:not(.is-portrait) .pruebas-spotlight__player {
+    width: 100% !important;
+    min-height: clamp(15rem, 58vw, 24rem) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  body.home-page .pruebas-section--videos .pruebas-inner {
+    padding: 1rem 0 1.2rem !important;
+  }
+
+  body.home-page #pruebas .pruebas-spotlight:not(.is-portrait) .pruebas-spotlight__player {
+    min-height: clamp(14.5rem, 62vw, 22rem) !important;
   }
 }
 
@@ -136,7 +165,7 @@ body.home-page .home-mobility .hibridos-title::after {
 }
 
 body.home-page .home-mobility .mobility-row__title {
-  font-family: "Source Sans 3", sans-serif !important;
+  font-family: "Plus Jakarta Sans", "Source Sans 3", sans-serif !important;
   font-size: clamp(1.15rem, 1.35vw, 1.35rem) !important;
   font-weight: 700 !important;
   color: #062818 !important;
@@ -151,8 +180,19 @@ body.home-page .home-mobility .hibridos-lead {
 
 body.home-page .home-mobility .electricos-section,
 body.home-page .home-mobility .hibridos-section {
-  background: transparent !important;
   background-image: none !important;
+}
+
+body.home-page .home-mobility .electricos-section--compact {
+  background: #f3f7f4 !important;
+  border: 1px solid rgba(8, 52, 31, 0.08) !important;
+  box-shadow: none !important;
+}
+
+body.home-page .home-mobility .hibridos-section--compact {
+  background: #f2f7f9 !important;
+  border: 1px solid rgba(13, 110, 140, 0.1) !important;
+  box-shadow: none !important;
 }
 
 body.home-page .home-mobility .electricos-inner,
@@ -160,8 +200,14 @@ body.home-page .home-mobility .hibridos-inner {
   background: transparent !important;
 }
 
+body.home-page .home-mobility__panel {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
 body.home-page #pruebas .pruebas-spotlight__title {
-  font-family: "Source Sans 3", sans-serif !important;
+  font-family: "Plus Jakarta Sans", "Source Sans 3", sans-serif !important;
   font-size: clamp(1.55rem, 2.5vw, 2.05rem) !important;
   font-weight: 700 !important;
   font-synthesis: none !important;
@@ -183,7 +229,7 @@ body.home-page #hibridos .hibridos-eyebrow {
 
 body.home-page #hibridos .hibridos-title,
 body.home-page h2.hibridos-title {
-  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif !important;
+  font-family: "Plus Jakarta Sans", "Source Sans 3", sans-serif !important;
   font-weight: 700 !important;
   font-synthesis: weight !important;
   font-size: clamp(2.3rem, 3.3vw, 3.2rem) !important;
@@ -294,7 +340,7 @@ body.home-page .section-info .news-card:not(.news-card--featured):not(.news-card
   body.home-page h3.news-carousel-card__title,
   body.home-page h4.news-carousel-card__title,
   body.home-page .news-carousel-card__title {
-    font-family: "Source Sans 3", sans-serif !important;
+    font-family: "Plus Jakarta Sans", "Source Sans 3", sans-serif !important;
     font-size: var(--home-card-title) !important;
     font-weight: 700 !important;
     font-synthesis: none !important;
@@ -310,7 +356,7 @@ body.home-page .lanzamiento-item__body h3 a,
 body.home-page .electrico-card__body h3 a,
 body.home-page .hibrido-card__body h3 a,
 body.home-page .deporte-card__body h3 a {
-  font-family: "Source Sans 3", sans-serif !important;
+  font-family: "Plus Jakarta Sans", "Source Sans 3", sans-serif !important;
   font-size: var(--home-card-title) !important;
   font-weight: 700 !important;
   font-synthesis: none !important;
@@ -324,7 +370,7 @@ body.home-page .news-carousel-card__title,
 body.home-page .electrico-card__body h3,
 body.home-page .hibrido-card__body h3,
 body.home-page .deporte-card__body h3 {
-  font-family: "Source Sans 3", sans-serif !important;
+  font-family: "Plus Jakarta Sans", "Source Sans 3", sans-serif !important;
   font-size: var(--home-card-title) !important;
   font-weight: 700 !important;
   font-synthesis: none !important;
@@ -334,7 +380,7 @@ body.home-page .deporte-card__body h3 {
 
 /* Subtítulo de bloque — más suave que el título de nota */
 body.home-page .news-carousel-heading {
-  font-family: "Source Sans 3", sans-serif !important;
+  font-family: "Plus Jakarta Sans", "Source Sans 3", sans-serif !important;
   font-size: clamp(1.15rem, 1.5vw, 1.3rem) !important;
   font-weight: 600 !important;
   font-synthesis: none !important;
@@ -471,14 +517,15 @@ body.home-page #noticias .ver-mas-noticias-btn:hover {
   transition: none !important;
   gap: 10px !important;
   color: #08341f !important;
+  font-family: "Plus Jakarta Sans", "Source Sans 3", sans-serif !important;
 }
 
 body.home-page #noticias .ver-mas-noticias-btn::before {
-  border-color: #d4a742 !important;
+  border-color: #08341f !important;
 }
 
 body.home-page #noticias .ver-mas-noticias-btn:hover::before {
-  border-color: #d4a742 !important;
+  border-color: #08341f !important;
   background: #fff !important;
 }
 
@@ -564,7 +611,7 @@ body.home-page .section-info.section-info--interactive .noticias-eyebrow {
 
 body.home-page .section-info.section-info--interactive .info-header .info-titulo {
   color: #041a10 !important;
-  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif !important;
+  font-family: "Plus Jakarta Sans", "Source Sans 3", sans-serif !important;
   font-weight: 700 !important;
 }
 
@@ -728,7 +775,11 @@ body.home-page #deportes .deporte-card--lead .deporte-card__media {
 body.home-page #deportes .deporte-card--lead .deporte-card__body {
   background: transparent !important;
   position: static !important;
-  padding: 0.9rem 0.15rem 0.15rem !important;
+  padding: 0.9rem 0.35rem 0.15rem 0.85rem !important;
+}
+
+body.home-page #deportes .deporte-card--row .deporte-card__body {
+  padding: 0.85rem 0.25rem 0.2rem 0.75rem !important;
 }
 
 body.home-page #deportes .deporte-card--lead .deporte-card__body h3,

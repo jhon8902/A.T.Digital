@@ -40,7 +40,7 @@
   --color-accent: #e6b410;
   --color-border: #d8e5dc;
   --font-body: "Source Sans 3", "Source Sans Pro", sans-serif;
-  --font-editorial: "Georgia", "Times New Roman", serif;
+  --font-editorial: "Plus Jakarta Sans", "Source Sans 3", sans-serif;
   --font-display: var(--font-editorial);
   --radius-card: 12px;
   --shadow-card: 0 4px 16px rgba(8, 52, 31, 0.08);
