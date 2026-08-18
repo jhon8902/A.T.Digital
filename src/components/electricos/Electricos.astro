@@ -258,7 +258,7 @@ const allElectricos = [...dynamicElectricos, ...deduplicatedStaticElectricos]
   .slice(0, HOME_ELECTRICOS_HOME_LIMIT);
 ---
 
-<link rel="stylesheet" href="/css/electricos-section.css?v=10" />
+<link rel="stylesheet" href="/css/electricos-section.css?v=11" />
 <section
   id="electricos"
   class:list={["electricos-section", compact && "electricos-section--compact"]}
@@ -266,23 +266,7 @@ const allElectricos = [...dynamicElectricos, ...deduplicatedStaticElectricos]
 >
   <div class="electricos-inner">
     <header class="electricos-head">
-      <p class="electricos-eyebrow">Movilidad eléctrica</p>
-      <h2 id="electricos-heading" class="electricos-title">Carros eléctricos</h2>
-      {
-        !compact && (
-          <p class="electricos-lead">
-            Modelos 100% eléctricos: autonomía, carga y fichas técnicas para
-            seguir la movilidad eléctrica a nivel global.
-          </p>
-        )
-      }
-      {
-        compact && (
-          <p class="electricos-lead">
-            Autonomía, carga y fichas de modelos 100% eléctricos.
-          </p>
-        )
-      }
+      <h2 id="electricos-heading" class="electricos-title">Eléctricos</h2>
     </header>
 
     {

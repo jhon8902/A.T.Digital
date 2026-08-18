@@ -8,13 +8,15 @@ Los campos del formulario corresponden exactamente a las secciones de abajo.
 ## CAMPO: Título
 
 ```
-[Marca] [Modelo] [Año]: [frase gancho corta]
+[Marca] [Modelo] [Año]: [gancho que dé ganas de leer]
 ```
+
+El gancho genera **expectativa**, no un catálogo de cifras. El lector tiene que querer entrar al artículo.
 
 **Ejemplo:**
 
 ```
-CUPRA Born 2025: el eléctrico que desafía todos los límites
+Aston Martin Valen 2027: 113 años y jamás había soltado un V12 como este
 ```
 
 ---
@@ -46,37 +48,33 @@ La berlina compacta de CUPRA llega renovada con más autonomía y tecnología de
 
 ## CAMPO: Contenido
 
-El texto se divide en párrafos separados por una **línea en blanco**.
-Cada párrafo se convierte automáticamente en un bloque editorial aparte.
+El texto se divide en **5 bloques** separados por una **línea en blanco**.
+Cada bloque empieza con `Título: … |` y se convierte en un bloque editorial aparte.
 
-### Estructura recomendada (6 párrafos)
+**Modelo de edición (todas las notas nuevas):** Aston Martin Valen 2027 — claro, sin inglés suelto, sin repetir el gancho del titular.
+
+### Estructura (5 bloques)
 
 ```
-[INTRO — Ciudad + presentación del auto]
-El CUPRA Born llegó a Bogotá con una propuesta que pocos esperaban: un eléctrico de carácter deportivo sin sacrificar practicidad. Con hasta 545 km de autonomía real WLTP, esta apuesta europea aterriza en Colombia con una fuerza inédita.
+Título: [Idea que el subtítulo no dijo] |
+[3–4 oraciones. Ampliar: quién lo hace, nombre, precio o contexto. No repetir el gancho del título ni el listado del subtítulo.]
 
-[DISEÑO — Exterior + primera impresión]
-Las líneas del Born hablan por sí solas. Los faros de led en forma de "C" y la firma luminosa trasera le dan una identidad instantáneamente reconocible. La carrocería de 4,32 metros resulta compacta en ciudad pero generosa en el interior.
+Título: [Diseño / carrocería] |
+[Dato concreto. Carrocería, no «piel». Baúl «es de» X litros. Sin metáforas vacías.]
 
-[INTERIOR — Tecnología + confort]
-Al subir, la pantalla flotante de 12 pulgadas domina la cabina. El sistema de sonido beats de 300 W y el head-up display proyectado en el parabrisas elevan la experiencia. Los asientos deportivos con ajuste lumbar de serie son de los mejores en su segmento.
+Título: [Interior / puestos] |
+[Puestos, no filas. Nombres de asientos o modos: español primero, marca entre paréntesis.]
 
-[RENDIMIENTO — Motorización + conducción]
-Bajo el capó, o más exactamente en el eje trasero, el motor eléctrico de 231 CV entrega 310 Nm de par en décimas. El modo CUPRA desbloquea la respuesta máxima: 0 a 100 km/h en 6,6 segundos con un sonido sintético que intensifica la experiencia.
+Título: [Motor / cifras] |
+[hp y km/h. Si la marca no dio 0-100, decir qué midió. «Velocidad máxima», no «techo». «Pesa X kg menos», no «recorta».]
 
-[DESTACADOS — Bullet list con los puntos clave]
-• Autonomía WLTP: hasta 545 km
-• Carga rápida: 130 kW (10–80 % en 35 min)
-• Batería: 82 kWh neta
-• Motor: 231 CV / 310 Nm (tracción trasera)
-• Precio en Colombia: desde COP 189.900.000
-
-[CONCLUSIÓN — Veredicto + llamado a la acción]
-El CUPRA Born 2025 consolida a la marca como un jugador serio en el segmento premium eléctrico. Si buscas emoción de conducción sin la culpa ambiental, este es tu auto. Contáctanos para agendar una prueba de manejo.
+Título: [Cierre que coincida con la última frase] |
+[Hecho confirmado. En deportes: emocional + dato. Si no hay manual, explicar el beneficio de esa caja para la categoría. Si el auto no llega a Colombia, no cerrar con «no hay fecha ni precio aquí».]
 ```
 
-> **Tip:** Los puntos con `•` dentro del bloque de destacados se renderizan tal cual en la nota.  
-> **Tip:** No uses HTML en este campo; solo texto plano y líneas en blanco entre párrafos.
+> **Tip:** Un dato ancla (hp, unidades, «el más…») como mucho **dos veces** en toda la nota.  
+> **Tip:** No uses HTML en este campo; solo texto plano y una línea en blanco entre bloques.  
+> **Tip:** El detalle fino (versiones, rivales, cargas) va al **resumen técnico**, no al párrafo.
 
 ---
 
@@ -131,9 +129,13 @@ Campos principales: segmento, precio estimado, versiones, origen, motorización,
 
 ## Checklist antes de publicar
 
-- [ ] Título tiene marca, modelo y año
-- [ ] Subtítulo ≤ 150 caracteres
-- [ ] Contenido: mínimo 4 párrafos separados por línea en blanco
+- [ ] Título tiene marca, modelo, año y un gancho que da ganas de leer
+- [ ] Subtítulo ≤ 150 caracteres y no se copia entero en el bloque 1
+- [ ] Contenido: 5 bloques `Título: … |` separados por línea en blanco
+- [ ] Sin mph u otro inglés sin traducir; hp, no cv; siglas de taller explicadas la primera vez
+- [ ] El título del bloque 5 coincide con la última frase
+- [ ] Si no llega a Colombia, el cierre es un dato curioso, no la ausencia local
+- [ ] En `deportes`, el cierre es emocional y, si aplica, explica el beneficio de la transmisión
 - [ ] Imagen 1 cargada (es la portada)
 - [ ] Categoría correcta según la tabla
 - [ ] Resumen técnico completo si es nota nacional con modelo real
@@ -141,4 +143,6 @@ Campos principales: segmento, precio estimado, versiones, origen, motorización,
 
 ---
 
-_Plantilla A.T. Digital — actualizada marzo 2026_
+ADN vivo (prompt maestro): `docs/prompt-maestro-editorial.md`.
+
+_Plantilla A.T. Digital — actualizada agosto 2026 (ADN v1, post Valen)_

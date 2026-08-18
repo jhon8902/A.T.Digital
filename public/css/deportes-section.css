@@ -46,7 +46,7 @@
   justify-content: center;
   align-items: center;
   align-self: stretch;
-  gap: 0.7rem;
+  gap: 0.85rem;
   padding: 0 clamp(0.5rem, 1.2vw, 1rem);
   border-left: none;
 }
@@ -70,9 +70,10 @@
 }
 
 .deportes-title {
-  font-family: var(--font-display, "Georgia", serif);
+  font-family: var(--font-display, "Newsreader", Georgia, serif);
   font-size: clamp(2.85rem, 4.2vw, 4.1rem);
-  font-weight: 700;
+  font-weight: 500;
+  font-style: italic;
   color: var(--dep-text);
   letter-spacing: 0.01em;
   margin: 0;

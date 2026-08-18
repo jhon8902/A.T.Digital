@@ -1,16 +1,27 @@
 ---
-description: Formato editorial notas A.T. Digital — longitud nota 174, 5 bloques, ficha con campos del formulario
+description: Formato editorial notas A.T. Digital — ADN v1 (prompt maestro), modelo Valen, 5 bloques, ficha del formulario
 alwaysApply: true
 ---
 
 # Notas editoriales — A.T. Digital
 
-Cuando el usuario pida crear, redactar o sugerir una **nota** para el formulario, usar **siempre** este formato (sin pedir confirmación del formato).
+ADN vivo (ajustar ahí, no de memoria): `docs/prompt-maestro-editorial.md`.
+
+Cuando el usuario pida crear, redactar o sugerir una **nota** para el formulario, usar **siempre** este formato (sin pedir confirmación de la estructura de 5 bloques).
+
+**Antes de entregar:** 2 o 3 dudas que cambien el texto (año, categoría, cierre). Listar supuestos. Si pide «de inmediato» o ya respondió, redactar.
+
+No traducir la fuente: reescribir con narrativa cercana. En `deportes`, el cierre es emocional y se apoya en un dato; si no hay manual (u otra pieza que extrañaría), explicar el **beneficio** para esa categoría.
+
+**Personalidad por nota:** los parámetros no se negocian; el carácter sí. Diagnosticar el tema antes de titular (qué es, qué tiene de raro o útil, qué job tiene el lector). Un Valen no se escribe como un GLA. El menú de alternativas se elige *después* de leer el auto, no por rotación.
 
 ## Título
 ```
-[Marca] [Modelo] [Año]: [frase gancho corta]
+[Marca] [Modelo] [Año]: [gancho que dé ganas de leer — lenguaje claro Colombia]
 ```
+El gancho genera **expectativa**, no un catálogo de hp / unidades / ciudad. Evitar en el titular: cv, «dos filas», tecnicismos o siglas de taller sin explicar. Preferir plazas (cinco/siete) o el dato que entienda el lector.
+
+**Caja de alternativas (una por nota):** rareza, contraste, promesa incompleta, por qué ahora, o vs el hermano. Bloque 1: escena, apuesta, lo que no dijeron, o vs el hermano. Lente: soñar / entender / comparar / decidir. Detalle: `docs/prompt-maestro-editorial.md` §13.
 
 ## Subtítulo
 
@@ -53,32 +64,103 @@ Título: [Encabezado del bloque] |
 
 ## Voz editorial — español latinoamericano (referencia: nota GLA 2026)
 
-**Objetivo:** que suene la página como A.T. Digital — claro, vivo, fácil de leer en el celular; no como comunicado de prensa traducido ni como texto de IA.
+**Regla global:** aplica a **todas** las notas y **todas** las categorías (`deportes`, `electricos`, `hibridos`, `lanzamientos`, `noticias`, `pruebas`, archivo), con ámbito `nacional` o `internacional`. Un superdeportivo o una nota de archivo se escriben con el mismo criterio de claridad.
+
+**Objetivo:** que suene la página como A.T. Digital — claro, vivo, fácil de leer en el celular; no como comunicado de prensa traducido ni como texto de IA. **Audiencia de referencia: lector en Colombia y Latinoamérica**, aunque la nota sea `internacional`.
 
 ### Cómo debe leerse
 
 - **Lo importante primero:** qué es, qué cambió, precio o fecha si existen, por qué le importa al lector.
-- **Poco técnico en la narrativa:** potencia, autonomía y versiones sí; el detalle fino va a la ficha del formulario.
+- **Poco técnico en la narrativa:** potencia, autonomía y versiones sí; el detalle fino va al resumen técnico del formulario.
 - **Párrafos cortos con ritmo:** 3–4 oraciones por bloque; una idea por bloque; sin catálogos en prosa.
-- **Palabras que se entienden solas:** si un latino promedio dudaría, reformular o explicar en la misma frase.
+- **Palabras que se entienden solas:** si un lector colombiano promedio dudaría, reformular o explicar en la misma frase (entre paréntesis, corto).
+
+### Lectura colombiana y latina (obligatorio en toda nota)
+
+Sin excepción por categoría: un Bugatti, un SUV familiar o una prueba de manejo usan el mismo léxico local y las mismas explicaciones breves. La emoción no va en tecnicismos sueltos; va en el dato, la historia y el gancho del titular.
+
+Las notas `internacionales` están bien; el **lenguaje** debe sonar local, no europeo ni de ficha técnica traducida.
+
+| Tema | Regla |
+|------|--------|
+| **Potencia** | Usar **hp**, no cv ni PS sueltos. Ej.: «282 hp», no «186 cv». Si la fuente trae kW, añadir hp entre paréntesis si ayuda. |
+| **Torque** | Preferir **Nm**; si la fuente solo trae lb-pie, convertir o dar ambos: «350 Nm». |
+| **Plazas / filas** | En Colombia **plazas = puestos** (ej. «cinco plazas» / «cinco puestos»). Evitar «dos filas» o «tres filas» solos en título o subtítulo. Si hace falta contrastar: «cinco plazas (sin tercera fila)» o «siete plazas con banqueta trasera». |
+| **Tecnicismos** | Si el término es necesario, **una línea corta entre paréntesis** la primera vez. Ej.: «turbo de geometría variable (el turbo se adapta según la velocidad para responder mejor)». Si se puede decir en español llano, no usar el término. |
+| **Marcas comerciales** | Nombres de sistema (4Motion, DISTRONIC, E-Tech) sí; explicar en palabras simples qué hacen: «tracción integral 4Motion». |
+| **Ámbito internacional** | Igual claridad: «ventas en EE. UU.», «precio en euros», «llegada a Colombia prevista…» — el lector no debe adivinar el mercado. |
 
 ### Preferir / evitar (léxico)
 
 | Evitar o traducir | Mejor en la nota |
 |-------------------|------------------|
+| cv, PS (suelto) | hp (Colombia) |
+| mph (suelto) | km/h; si la marca midió 0-60 millas, decir 0 a 96 km/h y que no es el 0 a 100 |
+| Dos filas / tres filas (sin contexto) | Cinco plazas / siete plazas (o cinco/siete puestos) |
+| Cofre (motor) | Capó |
+| Maletero | Baúl |
+| Geometría variable (suelto) | Turbo que se adapta a la velocidad (geometría variable) — solo si hace falta nombrarlo |
 | Batalla | Más largo entre las ruedas / distancia entre ejes |
-| WLTP (suelto) | De autonomía / alcance en carretera (opcional: “según ciclo europeo”) |
+| WLTP (suelto) | Autonomía en carretera (ciclo europeo WLTP) |
 | Seguridad activa (vago) | Asistencias a la conducción + qué hacen (distancia, carril, frenado, aparcar…) |
 | Compacto premium | SUV compacto de gama alta |
-| Coasting, frunk | Rodar sin empuje del motor / maletero delantero |
-| Híbrido / eléctrico repetido en título | Una sola vez en el titular; en el cuerpo variar (“versión eléctrica”, “con motor de gasolina y apoyo eléctrico”) |
+| Coasting, frunk | Rodar sin empuje del motor / baúl delantero |
+| Híbrido / eléctrico repetido en título | Una sola vez en el titular; en el cuerpo variar («versión eléctrica», «motor de gasolina con apoyo eléctrico») |
+| lb-pie (solo) | Nm (convertir o ambos) |
+
+**Deportivos (`deportes`):** mismo estándar. Ej.: «1.500 hp» no «1.500 cv»; «caja de doble embrague (cambios en fracción de segundo)» en lugar de «PDK» o «DCT» sin contexto; «tracción en las cuatro ruedas» además del nombre comercial si aplica.
 
 ### Frases prohibidas (suenan a IA o concesionario)
 
 - «Se comercializa en red oficial con fichas, cotización y asesoría en concesionario…»
 - «Representa un hito / un antes y un después en el segmento…» sin dato concreto detrás
+- «Una silueta que no perdona» / «que enamora» / «un club de N» — metáfora vacía; decir el dato
 - Listas de equipamiento copiadas del PDF en párrafo corrido
 - Frases sueltas o incompletas que no cierran idea
+- Cerrar una nota internacional con «no hay fecha ni precio para Colombia» cuando el auto no va a llegar: el lector ya lo sabe; usar un **dato curioso confirmado**
+
+## Modelo Valen — filtro de edición (obligatorio)
+
+Referencia de **cómo debe quedar la nota después de editar:** Aston Martin Valen 2027. El GLA 2026 sigue siendo el tono corto; Valen es el filtro anti-eco. Aplicar a **todas** las notas nuevas, no solo deportivos.
+
+Objetivo: que se note la tijera (editada), no el comunicado «bien escrito».
+
+### El subtítulo ya hizo el gancho — el bloque 1 amplía
+
+Si el subtítulo ya dijo lugar, hp, unidades y fecha, el bloque 1 **no lo vuelve a listar en el mismo orden**. Ahí van quién lo hace, el nombre, el precio o el contexto que el subtítulo no dijo.
+
+El gancho del **título de la nota** no se copia en el título del bloque 1 ni en la primera frase.
+
+### Un dato ancla, como mucho dos veces
+
+Potencia, unidades, ciudad de debut o «el más potente»: **máximo dos veces** en título + subtítulo + 5 bloques. La tercera es eco. Preferir puestos (Colombia) cuando se hable de asientos.
+
+### Título del bloque 5 = idea de la última frase
+
+Si el cierre es «no trae caja manual», el encabezado no puede prometer «solo 150 unidades» y luego hablar de otra cosa.
+
+### Inglés: traducir o explicar; no dejarlo suelto
+
+- **mph** → solo km/h. Si la marca midió 0-60 millas (p. ej. 0 a 96 km/h), decirlo en español: «midió esa cifra, no el 0 a 100».
+- Modos o paquetes (Sport, Track, Sports Plus): **español primero**, nombre oficial **una vez** entre paréntesis.
+- Siglas de taller (Q, SVO, PDK, Manufaktur): nunca solas. La primera vez, qué son en español llano (Q = encargos especiales de Aston Martin; guiño a Bond).
+
+### Cierre si no llega a Colombia
+
+No usar como último párrafo la ausencia local. Cerrar con un hecho confirmado (mecánica rara, color, escape, edición vs un hermano de gama).
+
+**Deportivos:** cierre a la altura del auto (emocional, no administrativo). Si no trae caja manual, no lo dejes como recorte: di qué gana esa categoría con esa transmisión (balance, compostura, cambios rápidos, uso real).
+
+### Léxico extra (evitar / mejor)
+
+| Evitar | Mejor |
+|--------|--------|
+| mph | km/h |
+| piel (del auto) | carrocería |
+| el baúl declara | el baúl es de |
+| techo de X km/h | velocidad máxima |
+| recorta X kg | pesa X kg menos que |
+| club de 150 | solo 150 unidades |
 
 ### Dónde van los números
 
@@ -87,7 +169,8 @@ Título: [Encabezado del bloque] |
 
 ### Referencia de tono y longitud
 
-- **Tono y claridad:** nota Mercedes-Benz GLA 2026 (bloques cortos, lenguaje latino, sin aburrir).
+- **Tono y brevedad:** nota Mercedes-Benz GLA 2026 (bloques cortos, lenguaje latino, sin aburrir).
+- **Edición anti-eco (modelo a copiar):** Aston Martin Valen 2027 — sin inglés suelto, sin repetir el gancho, cierre con dato, no con «no llega a Colombia».
 - **Techo de extensión:** nota 174 (CUPRA Born) — no superar salvo petición explícita; **por defecto**, priorizar la brevedad del GLA si el tema lo permite.
 
 ## Ámbito (formulario)
@@ -109,7 +192,7 @@ Los **párrafos** narran en lenguaje claro (poco tecnicismo); el **resumen técn
 | Concepto, gaming, prototipo sin specs oficiales | **No** — indicar en bloque 5; campos del formulario vacíos |
 | Fin de semana / archivo sin números | **Opcional** solo si aporta datos curiosos confirmados |
 
-**Nota vs resumen:** la nota cuenta y contextualiza; el resumen es consulta rápida. No repetir párrafos ni listas de equipamiento ya narradas. Repetir **3–4 datos ancla** (precio desde, motor, tracción, un dato de capacidad) en los bloques es aceptable; el detalle fino va al resumen.
+**Nota vs resumen:** la nota cuenta y contextualiza; el resumen es consulta rápida. No repetir párrafos ni listas de equipamiento ya narradas. **Datos ancla distintos** (precio, motor, tracción, un dato de capacidad) sí pueden aparecer en los bloques; **el mismo gancho** (hp, unidades, «el más…») como máximo **dos veces**. El detalle fino va al resumen.
 
 **Formato de entrega:** siempre con los **campos del formulario** (`src/pages/formulario.astro`, sección «Resumen técnico»), uno por línea, listos para copiar. Campos que no apliquen (p. ej. batería en diésel): indicar «dejar vacío». Campos del formulario:
 
@@ -150,7 +233,9 @@ Devolver en este orden:
 
 ## Ejemplo de referencia
 
-- **Tono y longitud preferidos:** nota Mercedes-Benz GLA 2026 (español claro, bloques cortos).
+- **Tono y brevedad:** nota Mercedes-Benz GLA 2026.
+- **Modelo de edición (todas las notas nuevas):** Aston Martin Valen 2027.
 - Layout máximo de extensión: nota 174 (CUPRA Born) en el sitio.
 - Subtítulo archivo: nota 167 (`Desde el archivo de Auto-Tech-Digital — …`).
 - Campos del formulario: `docs/plantilla-nota.md`.
+- Prompt maestro (ADN vivo): `docs/prompt-maestro-editorial.md`.

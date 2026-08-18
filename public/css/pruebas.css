@@ -555,7 +555,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  font-family: "Plus Jakarta Sans", "Source Sans 3", sans-serif;
+  font-family: var(--font-display, "Newsreader", Georgia, serif);
   font-size: var(--home-section-cta);
   font-weight: 600;
   color: #08341f;

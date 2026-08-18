@@ -267,7 +267,7 @@ const allHibridos = [...dynamicHibridos, ...deduplicatedStaticHibridos]
   .slice(0, HOME_HIBRIDOS_HOME_LIMIT);
 ---
 
-<link rel="stylesheet" href="/css/hibridos-section.css?v=10" />
+<link rel="stylesheet" href="/css/hibridos-section.css?v=11" />
 <section
   id="hibridos"
   class:list={["hibridos-section", compact && "hibridos-section--compact"]}
@@ -275,23 +275,7 @@ const allHibridos = [...dynamicHibridos, ...deduplicatedStaticHibridos]
 >
   <div class="hibridos-inner">
     <header class="hibridos-head">
-      <p class="hibridos-eyebrow">Electrificación intermedia</p>
-      <h2 id="hibridos-heading" class="hibridos-title">Carros híbridos</h2>
-      {
-        !compact && (
-          <p class="hibridos-lead">
-            HEV, PHEV y e-Power: consumo, tipo de híbrido y fichas para entender
-            la electrificación intermedia en el mercado global.
-          </p>
-        )
-      }
-      {
-        compact && (
-          <p class="hibridos-lead">
-            HEV, PHEV y e-Power: consumo y fichas para comparar.
-          </p>
-        )
-      }
+      <h2 id="hibridos-heading" class="hibridos-title">Híbridos</h2>
     </header>
 
     {

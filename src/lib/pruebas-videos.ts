@@ -18,7 +18,13 @@ export type PruebaVideoItem = {
 };
 
 export function isDirectVideoFile(url: string) {
-  return /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url.trim());
+  const value = url.trim();
+  if (!value) return false;
+  // Rutas locales o URLs con extensión de video
+  if (/\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(value)) return true;
+  // Cloudinary video delivery (a veces sin extensión explícita)
+  if (/res\.cloudinary\.com\/[^/]+\/video\/upload\//i.test(value)) return true;
+  return false;
 }
 
 export function mapNoteToPruebaVideo(

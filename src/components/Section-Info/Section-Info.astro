@@ -309,7 +309,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 );
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css?v=77" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=80" />
 
 <section
   id="noticias"
@@ -318,12 +318,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
   data-carousel-limit={HOME_NEWS_CAROUSEL_LIMIT}
 >
   <header class="info-header">
-    <p class="noticias-eyebrow">Noticias</p>
-    <h2 id="noticias-heading" class="info-titulo">Sector automotor</h2>
-    <p class="noticias-home-lead">
-      Cobertura diaria del sector: lanzamientos, fichas técnicas y noticias
-      nacionales e internacionales en un solo lugar.
-    </p>
+    <h2 id="noticias-heading" class="info-titulo">Mundo automotor</h2>
   </header>
 
   <div class="container mx-auto px-2">
@@ -537,18 +532,6 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     color: #08341f !important;
   }
 
-  .section-info--interactive .info-header .noticias-home-lead {
-    color: #5a6470 !important;
-  }
-
-  .section-info--interactive .info-header .info-titulo::before {
-    background: linear-gradient(90deg, #000, #d4a742);
-  }
-
-  .section-info--interactive .info-header .info-titulo::after {
-    background: linear-gradient(90deg, #d4a742, #000);
-  }
-
   .section-info {
     width: 100%;
     margin: 0 auto;
@@ -571,15 +554,15 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 
   .info-header {
     background: transparent;
-    padding: clamp(2.5rem, 5vw, 3.75rem) clamp(0.5rem, 1.25vw, 1rem)
-      clamp(1.5rem, 3vw, 2.25rem);
+    padding: clamp(2rem, 4vw, 3rem) clamp(0.85rem, 3vw, 2.15rem)
+      clamp(1rem, 2vw, 1.45rem);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.55rem;
-    width: min(94%, 1700px);
-    max-width: 1700px;
+    align-items: flex-start;
+    text-align: left;
+    gap: 0;
+    width: min(96%, 1760px);
+    max-width: 1760px;
     margin: 0 auto;
   }
 
@@ -606,52 +589,24 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
   .info-titulo {
     color: #041a10;
     font-size: var(--home-section-title, clamp(2.1rem, 3.2vw, 2.95rem));
-    letter-spacing: 0.01em;
-    font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    letter-spacing: -0.03em;
+    font-family: var(--font-display, "Newsreader", Georgia, serif);
+    font-style: italic;
     text-transform: none;
-    font-weight: 700;
-    line-height: 1.08;
+    font-weight: 500;
+    line-height: 1.12;
     text-shadow: none;
-    opacity: 1;
-    transform: translateY(0);
-    transition: none;
-    background: none;
-    margin: 0 0 0.35rem;
+    margin: 0;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 28px;
-    width: 100%;
-    min-height: 40px;
-    max-width: 1480px;
+    display: block;
+    width: auto;
     padding: 0;
   }
 
-  .info-titulo::before {
-    content: "";
-    flex: 1;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #000 18%, #d4a742);
-    min-width: 2.5rem;
-    max-width: 650px;
-    opacity: 1;
-    transform: none;
-    transform-origin: right center;
-    animation: none;
-  }
-
+  .info-titulo::before,
   .info-titulo::after {
-    content: "";
-    flex: 1;
-    height: 2px;
-    background: linear-gradient(90deg, #d4a742, #000 82%, transparent);
-    min-width: 2.5rem;
-    max-width: 650px;
-    opacity: 1;
-    transform: none;
-    transform-origin: left center;
-    animation: none;
+    display: none;
+    content: none;
   }
 
   @keyframes infoTituloLineIn {
@@ -685,19 +640,18 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 
   @media (max-width: 1024px) {
     .info-header {
-      align-items: center;
-      text-align: center;
-      padding: 32px clamp(0.5rem, 2vw, 1rem) 24px;
+      align-items: flex-start;
+      text-align: left;
+      padding: 32px clamp(0.85rem, 3vw, 2rem) 20px;
     }
 
     .info-titulo {
-      display: flex;
-      justify-content: center;
-      text-align: center;
-      gap: clamp(1rem, 2.2vw, 1.85rem);
-      font-size: clamp(2rem, 3.8vw, 2.5rem);
-      letter-spacing: 0.02em;
-      font-weight: 700;
+      display: block;
+      justify-content: flex-start;
+      text-align: left;
+      font-size: clamp(1.85rem, 5.5vw, 2.45rem);
+      letter-spacing: -0.03em;
+      font-weight: 500;
     }
 
     .info-descripcion {
@@ -710,14 +664,14 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
       padding: 20px 0 1.5rem;
       background: transparent;
       border-bottom: none;
-      align-items: center;
-      text-align: center;
+      align-items: flex-start;
+      text-align: left;
     }
 
     .section-info--interactive .info-header {
-      padding: clamp(2rem, 5vw, 3rem) 20px 1.5rem !important;
-      align-items: center !important;
-      text-align: center !important;
+      padding: clamp(1.65rem, 4.5vw, 2.35rem) 20px 1.15rem !important;
+      align-items: flex-start !important;
+      text-align: left !important;
     }
 
     .noticias-home-lead {
@@ -728,14 +682,12 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
       margin-bottom: 10px;
     }
     .info-titulo {
-      font-size: clamp(1.9rem, 7vw, 2.2rem);
-      margin-bottom: 8px;
-      text-align: center;
+      font-size: clamp(1.28rem, 6.2vw, 1.65rem);
+      margin-bottom: 0;
+      text-align: left;
       padding: 0;
-      justify-content: center;
-      gap: 0;
-      text-transform: none;
-      letter-spacing: 0.02em;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
     }
 
     .info-titulo::before,
@@ -1225,9 +1177,9 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
       width: 100%;
       max-width: none;
       margin: 0;
-      padding: clamp(2rem, 5vw, 3rem) 20px 1.75rem !important;
-      align-items: center !important;
-      text-align: center !important;
+      padding: clamp(1.65rem, 4.5vw, 2.35rem) 20px 1.15rem !important;
+      align-items: flex-start !important;
+      text-align: left !important;
       background: transparent !important;
       box-sizing: border-box;
     }
@@ -1333,19 +1285,17 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 
   @media (min-width: 1024px) {
     .info-header {
-      padding: 60px 80px 30px 80px;
-      align-items: center;
-      text-align: center;
-      width: min(90%, 1700px);
-      max-width: 1700px;
+      padding: 52px 80px 28px 80px;
+      align-items: flex-start;
+      text-align: left;
+      width: min(96%, 1760px);
+      max-width: 1760px;
     }
 
     .info-titulo {
-      font-size: 2.6rem;
-      letter-spacing: 0.02em;
-      justify-content: center;
-      gap: 25px;
-      width: min(100%, 90%);
+      font-size: 2.75rem;
+      letter-spacing: -0.03em;
+      width: auto;
       max-width: none;
       padding: 0;
     }
@@ -1625,26 +1575,25 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     }
 
     .section-info--interactive .info-header {
-      align-items: center !important;
-      text-align: center !important;
+      align-items: flex-start !important;
+      text-align: left !important;
       padding-left: 20px !important;
       padding-right: 20px !important;
     }
 
     .section-info--interactive .info-header .info-titulo {
-      text-align: center !important;
-      width: 100%;
+      text-align: left !important;
+      width: auto;
     }
 
     .info-titulo {
       display: block;
-      font-size: 2.1rem;
-      text-align: start;
+      font-size: clamp(1.28rem, 6.2vw, 1.65rem);
+      text-align: left;
       padding-left: 0;
-      letter-spacing: 0.02em;
-      font-weight: 700;
-      justify-content: flex-start;
-      gap: 0;
+      letter-spacing: -0.03em;
+      font-weight: 500;
+      white-space: nowrap;
     }
 
     .info-titulo::before,

@@ -19,6 +19,20 @@
   const cloudinaryQueue = document.getElementById("cloudinaryQueue");
   const cloudinaryStartSlot = document.getElementById("cloudinaryStartSlot");
   const cloudinaryFillEmptyOnly = document.getElementById("cloudinaryFillEmptyOnly");
+  const cloudinaryVideoFilesInput = document.getElementById("cloudinaryVideoFiles");
+  const uploadCloudinaryVideoBtn = document.getElementById("uploadCloudinaryVideoBtn");
+  const cloudinaryVideoQueue = document.getElementById("cloudinaryVideoQueue");
+  const cloudinaryVideoStartSlot = document.getElementById("cloudinaryVideoStartSlot");
+  const cloudinaryVideoFillEmptyOnly = document.getElementById(
+    "cloudinaryVideoFillEmptyOnly"
+  );
+  const cloudinaryVideoProgressWrap = document.getElementById(
+    "cloudinaryVideoProgressWrap"
+  );
+  const cloudinaryVideoProgress = document.getElementById("cloudinaryVideoProgress");
+  const cloudinaryVideoProgressLabel = document.getElementById(
+    "cloudinaryVideoProgressLabel"
+  );
   const imagePreviewStrip = document.getElementById("imagePreviewStrip");
   const publishMode = document.getElementById("publishMode");
   const scheduledAtGroup = document.getElementById("scheduledAtGroup");
@@ -31,8 +45,25 @@
 
   let editingNoteId = "";
   let selectedCloudinaryFiles = [];
+  let selectedCloudinaryVideos = [];
   let isPopulatingForm = false;
   let loadedScheduledAt = "";
+
+  const MAX_VIDEO_BYTES = 100 * 1024 * 1024;
+  const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
+  // Cloudinary solo exige chunks por encima de 100 MB; debajo subimos en una sola petición.
+  const VIDEO_SIMPLE_UPLOAD_MAX = 95 * 1024 * 1024;
+  const VIDEO_CHUNK_BYTES = 20 * 1024 * 1024;
+  const VIDEO_FIELD_NAMES = [
+    "video1",
+    "video2",
+    "video3",
+    "video4",
+    "video5",
+    "video6",
+    "video7",
+  ];
+  const VIDEO_ACCEPT_RE = /\.(mp4|webm|mov)$/i;
 
   const editableFields = [
     "editor",
@@ -126,6 +157,215 @@
     return "";
   }
 
+  const DRAFT_STORAGE_KEY = "atd.formulario.draft.v1";
+  const DRAFT_TTL_MS = 60 * 60 * 1000;
+  const DRAFT_MAX_BYTES = 400 * 1024;
+  const DRAFT_SAVE_DEBOUNCE_MS = 400;
+  const DRAFT_CONTENT_MAX = 120000;
+  const DRAFT_FIELD_MAX = 20000;
+  let draftSaveTimer = null;
+
+  function sanitizeDraftString(value, maxLen) {
+    if (typeof value !== "string") return "";
+    if (value.length > maxLen) return value.slice(0, maxLen);
+    return value;
+  }
+
+  function draftHasContent(fields, noteId) {
+    if (noteId && /^\d+$/.test(String(noteId))) return true;
+    if (!fields || typeof fields !== "object") return false;
+
+    return editableFields.some(function (name) {
+      if (name === "editor" || name === "source_scope" || name === "category") {
+        return false;
+      }
+      return String(fields[name] || "").trim() !== "";
+    });
+  }
+
+  function collectDraft() {
+    const fields = {};
+    editableFields.forEach(function (name) {
+      fields[name] = getFieldValue(name);
+    });
+
+    return {
+      v: 1,
+      savedAt: Date.now(),
+      editingNoteId: editingNoteId || "",
+      publishMode:
+        publishMode instanceof HTMLSelectElement ? publishMode.value : "now",
+      scheduledAt:
+        scheduledAtInput instanceof HTMLInputElement ? scheduledAtInput.value : "",
+      loadedScheduledAt: loadedScheduledAt || "",
+      pruebasSoloVideo: isPruebasSoloVideoMode(),
+      fields: fields,
+    };
+  }
+
+  function clearDraft() {
+    try {
+      window.localStorage.removeItem(DRAFT_STORAGE_KEY);
+    } catch (_error) {
+      /* modo privado u origen restringido */
+    }
+  }
+
+  function saveDraftNow() {
+    if (isPopulatingForm) return;
+
+    const draft = collectDraft();
+    if (!draftHasContent(draft.fields, draft.editingNoteId)) {
+      clearDraft();
+      return;
+    }
+
+    try {
+      const serialized = JSON.stringify(draft);
+      if (serialized.length > DRAFT_MAX_BYTES) return;
+      window.localStorage.setItem(DRAFT_STORAGE_KEY, serialized);
+    } catch (_error) {
+      /* cuota llena o storage bloqueado */
+    }
+  }
+
+  function scheduleDraftSave() {
+    if (isPopulatingForm) return;
+    if (draftSaveTimer) window.clearTimeout(draftSaveTimer);
+    draftSaveTimer = window.setTimeout(saveDraftNow, DRAFT_SAVE_DEBOUNCE_MS);
+  }
+
+  function readDraft() {
+    let raw = "";
+    try {
+      raw = window.localStorage.getItem(DRAFT_STORAGE_KEY) || "";
+    } catch (_error) {
+      return null;
+    }
+
+    if (!raw) return null;
+
+    try {
+      const draft = JSON.parse(raw);
+      if (!draft || draft.v !== 1 || typeof draft !== "object") {
+        clearDraft();
+        return null;
+      }
+
+      const savedAt = Number(draft.savedAt);
+      if (!Number.isFinite(savedAt) || Date.now() - savedAt > DRAFT_TTL_MS) {
+        clearDraft();
+        return null;
+      }
+
+      if (!draftHasContent(draft.fields, draft.editingNoteId)) {
+        clearDraft();
+        return null;
+      }
+
+      return draft;
+    } catch (_error) {
+      clearDraft();
+      return null;
+    }
+  }
+
+  function restoreDraft(draft) {
+    if (!draft || !draft.fields || typeof draft.fields !== "object") return false;
+
+    isPopulatingForm = true;
+    try {
+      editableFields.forEach(function (name) {
+        if (!Object.prototype.hasOwnProperty.call(draft.fields, name)) return;
+        const maxLen = name === "content" ? DRAFT_CONTENT_MAX : DRAFT_FIELD_MAX;
+        setFieldValue(name, sanitizeDraftString(draft.fields[name], maxLen));
+      });
+
+      if (pruebasSoloVideoField instanceof HTMLInputElement) {
+        pruebasSoloVideoField.checked = Boolean(draft.pruebasSoloVideo);
+      }
+
+      if (
+        publishMode instanceof HTMLSelectElement &&
+        (draft.publishMode === "schedule" || draft.publishMode === "now")
+      ) {
+        publishMode.value = draft.publishMode;
+      }
+
+      if (
+        scheduledAtInput instanceof HTMLInputElement &&
+        typeof draft.scheduledAt === "string"
+      ) {
+        scheduledAtInput.value = sanitizeDraftString(draft.scheduledAt, 40);
+      }
+
+      loadedScheduledAt =
+        typeof draft.loadedScheduledAt === "string" ? draft.loadedScheduledAt : "";
+
+      const noteId = String(draft.editingNoteId || "").trim();
+      if (/^\d+$/.test(noteId)) {
+        if (editNoteIdInput instanceof HTMLInputElement) {
+          editNoteIdInput.value = noteId;
+        }
+        setMode(true, noteId);
+      } else {
+        setMode(false, "");
+      }
+
+      applyCategoryMode({ preserveContent: true });
+      applyPublishMode();
+      renderImagePreviews();
+      return true;
+    } finally {
+      isPopulatingForm = false;
+    }
+  }
+
+  function formatDraftAge(savedAt) {
+    const minutes = Math.max(1, Math.round((Date.now() - savedAt) / 60000));
+    if (minutes < 2) return "hace un momento";
+    return "hace " + String(minutes) + " min";
+  }
+
+  function initDraftPersistence() {
+    const urlId = new URLSearchParams(window.location.search).get("id");
+    const draft = readDraft();
+    const draftId = draft ? String(draft.editingNoteId || "").trim() : "";
+    let restored = false;
+
+    if (urlId && /^\d+$/.test(urlId)) {
+      if (editNoteIdInput instanceof HTMLInputElement) {
+        editNoteIdInput.value = urlId;
+      }
+
+      if (draft && draftId === String(urlId) && restoreDraft(draft)) {
+        restored = true;
+      } else {
+        loadNoteForEdit();
+      }
+    } else if (draft && restoreDraft(draft)) {
+      restored = true;
+    }
+
+    if (restored) {
+      setMessage(
+        "Recuperamos tu borrador (" +
+          formatDraftAge(draft.savedAt) +
+          "). Se guarda solo en este navegador durante 1 hora.",
+        "#334155"
+      );
+      saveDraftNow();
+    }
+
+    form.addEventListener("input", scheduleDraftSave);
+    form.addEventListener("change", scheduleDraftSave);
+
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") saveDraftNow();
+    });
+    window.addEventListener("pagehide", saveDraftNow);
+  }
+
   function normalizeSpecImportValue(raw) {
     const value = String(raw == null ? "" : raw).trim();
     if (!value) return "";
@@ -215,6 +455,7 @@
       setFieldValue(key, parsed[key]);
       applied += 1;
     });
+    saveDraftNow();
 
     let message =
       applied === 1
@@ -237,6 +478,7 @@
       specImportClearSpecBtn.addEventListener("click", function () {
         clearSpecFields();
         setSpecImportStatus("Resumen técnico vaciado.", "ok");
+        saveDraftNow();
       });
     }
   }
@@ -690,19 +932,6 @@
     return String(content || "").replace(/<!--AUTOMATCH_META:[^>]*-->/gi, "").trim();
   }
 
-  function readFileAsDataUrl(file) {
-    return new Promise(function (resolve, reject) {
-      const reader = new FileReader();
-      reader.onload = function () {
-        resolve(reader.result);
-      };
-      reader.onerror = function () {
-        reject(new Error("No se pudo leer la imagen seleccionada"));
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-
   async function uploadFileToCloudinary(file, cloudName, uploadPreset, folder) {
     if (!cloudName || !uploadPreset) {
       throw new Error(
@@ -710,35 +939,42 @@
       );
     }
 
-    const dataUrl = await readFileAsDataUrl(file);
-    const response = await fetch("/api/upload-cloudinary", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "same-origin",
-      body: JSON.stringify({
-        file: dataUrl,
-        filename: file.name || "nota.jpg",
-        folder: folder || undefined,
-      }),
+    if (!file.type.startsWith("image/")) {
+      throw new Error("Solo se permiten archivos de imagen");
+    }
+
+    if (file.size > MAX_IMAGE_BYTES) {
+      throw new Error(
+        "La imagen supera 8 MB (" +
+          formatBytes(file.size) +
+          "). Comprímela o súbela en Media Library y pega la URL.",
+      );
+    }
+
+    const endpoint =
+      "https://api.cloudinary.com/v1_1/" +
+      encodeURIComponent(cloudName) +
+      "/image/upload";
+    const formData = new FormData();
+    formData.append("file", file, file.name || "nota.jpg");
+    formData.append("upload_preset", uploadPreset);
+
+    const targetFolder = String(folder || "").trim();
+    if (targetFolder) {
+      formData.append("folder", targetFolder);
+    }
+
+    const payload = await xhrPostFormData(endpoint, formData, null, null, {
+      allowPartial: false,
     });
-
-    let payload = {};
-    try {
-      payload = await response.json();
-    } catch (_parseError) {
-      payload = {};
+    const url = resolveCloudinaryMediaUrl(payload, cloudName);
+    if (!url) {
+      throw new Error(
+        "Cloudinary respondió sin URL. Revisa que el preset unsigned permita imágenes.",
+      );
     }
 
-    if (!response.ok || !payload.secure_url) {
-      const detail =
-        (payload && payload.error) ||
-        (response.status === 401
-          ? "Sesión de administrador expirada. Recarga /formulario e inicia sesión de nuevo."
-          : "No se pudo subir la imagen al servidor");
-      throw new Error(detail);
-    }
-
-    return payload.secure_url;
+    return url;
   }
 
   async function uploadSelectedImages() {
@@ -781,6 +1017,7 @@
         targetField.value = secureUrl;
         uploadedCount += 1;
         renderImagePreviews();
+        saveDraftNow();
         setMessage(
           "Subidas " + String(uploadedCount) + " de " + String(selectedCloudinaryFiles.length),
           "#334155"
@@ -811,6 +1048,458 @@
       if (uploadCloudinaryBtn instanceof HTMLButtonElement) {
         uploadCloudinaryBtn.disabled = false;
         uploadCloudinaryBtn.textContent = "Subir a Cloudinary y completar campos";
+      }
+    }
+  }
+
+  function clearSelectedCloudinaryVideos() {
+    selectedCloudinaryVideos = [];
+  }
+
+  function formatBytes(bytes) {
+    if (!Number.isFinite(bytes) || bytes <= 0) return "0 B";
+    const units = ["B", "KB", "MB", "GB"];
+    let value = bytes;
+    let unit = 0;
+    while (value >= 1024 && unit < units.length - 1) {
+      value /= 1024;
+      unit += 1;
+    }
+    return value.toFixed(unit === 0 ? 0 : 1) + " " + units[unit];
+  }
+
+  function isAcceptedVideoFile(file) {
+    if (!(file instanceof File)) return false;
+    if (file.type && file.type.startsWith("video/")) return true;
+    return VIDEO_ACCEPT_RE.test(file.name || "");
+  }
+
+  function renderCloudinaryVideoQueue() {
+    if (!(cloudinaryVideoQueue instanceof HTMLElement)) return;
+
+    cloudinaryVideoQueue.innerHTML = "";
+
+    if (selectedCloudinaryVideos.length === 0) {
+      cloudinaryVideoQueue.hidden = true;
+      return;
+    }
+
+    cloudinaryVideoQueue.hidden = false;
+
+    selectedCloudinaryVideos.forEach(function (file, index) {
+      const item = document.createElement("div");
+      item.className = "cloudinary-queue-item";
+
+      const position = document.createElement("span");
+      position.className = "cloudinary-queue-position";
+      position.textContent = String(index + 1);
+
+      const name = document.createElement("span");
+      name.className = "cloudinary-queue-name";
+      name.textContent =
+        (file.name || "video") + " · " + formatBytes(file.size || 0);
+
+      const actions = document.createElement("div");
+      actions.className = "cloudinary-queue-actions";
+
+      const upButton = document.createElement("button");
+      upButton.type = "button";
+      upButton.className = "cloudinary-queue-btn btn-light";
+      upButton.textContent = "↑";
+      upButton.disabled = index === 0;
+      upButton.addEventListener("click", function () {
+        if (index === 0) return;
+        const swap = selectedCloudinaryVideos[index - 1];
+        selectedCloudinaryVideos[index - 1] = selectedCloudinaryVideos[index];
+        selectedCloudinaryVideos[index] = swap;
+        renderCloudinaryVideoQueue();
+      });
+
+      const downButton = document.createElement("button");
+      downButton.type = "button";
+      downButton.className = "cloudinary-queue-btn btn-light";
+      downButton.textContent = "↓";
+      downButton.disabled = index === selectedCloudinaryVideos.length - 1;
+      downButton.addEventListener("click", function () {
+        if (index >= selectedCloudinaryVideos.length - 1) return;
+        const swap = selectedCloudinaryVideos[index + 1];
+        selectedCloudinaryVideos[index + 1] = selectedCloudinaryVideos[index];
+        selectedCloudinaryVideos[index] = swap;
+        renderCloudinaryVideoQueue();
+      });
+
+      const removeButton = document.createElement("button");
+      removeButton.type = "button";
+      removeButton.className = "cloudinary-queue-btn btn-danger";
+      removeButton.textContent = "Quitar";
+      removeButton.addEventListener("click", function () {
+        selectedCloudinaryVideos.splice(index, 1);
+        renderCloudinaryVideoQueue();
+      });
+
+      actions.appendChild(upButton);
+      actions.appendChild(downButton);
+      actions.appendChild(removeButton);
+      item.appendChild(position);
+      item.appendChild(name);
+      item.appendChild(actions);
+      cloudinaryVideoQueue.appendChild(item);
+    });
+  }
+
+  function getVideoUploadTargetForFile(fileIndex) {
+    const startIndex =
+      cloudinaryVideoStartSlot instanceof HTMLSelectElement
+        ? Number.parseInt(cloudinaryVideoStartSlot.value, 10) - 1
+        : 0;
+    const fillEmptyOnly =
+      cloudinaryVideoFillEmptyOnly instanceof HTMLInputElement &&
+      cloudinaryVideoFillEmptyOnly.checked;
+
+    let slotsSeen = 0;
+    for (let i = Math.max(0, startIndex); i < VIDEO_FIELD_NAMES.length; i += 1) {
+      const field = byName(VIDEO_FIELD_NAMES[i]);
+      if (!(field instanceof HTMLInputElement)) continue;
+
+      const empty = !String(field.value || "").trim();
+      if (fillEmptyOnly && !empty) continue;
+
+      if (slotsSeen === fileIndex) return field;
+      slotsSeen += 1;
+    }
+
+    return null;
+  }
+
+  function setVideoUploadProgress(percent, label) {
+    const safe = Math.max(0, Math.min(100, Math.round(percent)));
+    if (cloudinaryVideoProgressWrap instanceof HTMLElement) {
+      cloudinaryVideoProgressWrap.hidden = false;
+    }
+    if (cloudinaryVideoProgress instanceof HTMLProgressElement) {
+      cloudinaryVideoProgress.value = safe;
+    }
+    if (cloudinaryVideoProgressLabel instanceof HTMLElement) {
+      cloudinaryVideoProgressLabel.textContent = label || safe + "%";
+    }
+  }
+
+  function hideVideoUploadProgress() {
+    if (cloudinaryVideoProgressWrap instanceof HTMLElement) {
+      cloudinaryVideoProgressWrap.hidden = true;
+    }
+    if (cloudinaryVideoProgress instanceof HTMLProgressElement) {
+      cloudinaryVideoProgress.value = 0;
+    }
+  }
+
+  function createVideoUploadId() {
+    return (
+      "atd" +
+      String(Date.now()) +
+      Math.random().toString(16).slice(2, 10)
+    ).replace(/[^a-zA-Z0-9]/g, "");
+  }
+
+  function xhrPostFormData(url, formData, headers, onProgress, options) {
+    const allowPartial = !!(options && options.allowPartial);
+
+    return new Promise(function (resolve, reject) {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", url);
+
+      if (headers && typeof headers === "object") {
+        Object.keys(headers).forEach(function (key) {
+          xhr.setRequestHeader(key, headers[key]);
+        });
+      }
+
+      xhr.upload.onprogress = function (event) {
+        if (!event.lengthComputable || typeof onProgress !== "function") return;
+        onProgress(event.loaded, event.total);
+      };
+
+      xhr.onload = function () {
+        let payload = {};
+        const raw = String(xhr.responseText || "").trim();
+        try {
+          payload = raw ? JSON.parse(raw) : {};
+        } catch (_error) {
+          payload = {};
+        }
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+          if (payload.secure_url || payload.url) {
+            resolve(payload);
+            return;
+          }
+
+          // Chunk intermedio de Cloudinary: { done: false } sin URL todavía
+          if (allowPartial && payload.done === false) {
+            resolve(payload);
+            return;
+          }
+
+          if (allowPartial && !payload.error) {
+            resolve(payload);
+            return;
+          }
+        }
+
+        const detail =
+          (payload && payload.error && payload.error.message) ||
+          (typeof payload.error === "string" ? payload.error : "") ||
+          (raw
+            ? "Respuesta Cloudinary: " + raw.slice(0, 180)
+            : "Cloudinary rechazó el video (HTTP " + String(xhr.status) + ")");
+        reject(new Error(String(detail)));
+      };
+
+      xhr.onerror = function () {
+        reject(
+          new Error(
+            "No se pudo contactar Cloudinary. Revisa la red o sube el video en Media Library y pega la URL."
+          )
+        );
+      };
+
+      xhr.send(formData);
+    });
+  }
+
+  function resolveCloudinaryMediaUrl(payload, cloudName) {
+    if (!payload || typeof payload !== "object") return "";
+    if (payload.secure_url) return String(payload.secure_url);
+    if (payload.url) return String(payload.url).replace(/^http:\/\//i, "https://");
+
+    const publicId = payload.public_id ? String(payload.public_id) : "";
+    const format = payload.format ? String(payload.format) : "mp4";
+    const version = payload.version ? "v" + String(payload.version) + "/" : "";
+    if (publicId && cloudName) {
+      return (
+        "https://res.cloudinary.com/" +
+        encodeURIComponent(cloudName) +
+        "/video/upload/" +
+        version +
+        publicId +
+        "." +
+        format
+      );
+    }
+
+    return "";
+  }
+
+  async function uploadVideoFileToCloudinary(file, cloudName, uploadPreset, folder, onProgress) {
+    if (!cloudName || !uploadPreset) {
+      throw new Error(
+        "Falta configurar PUBLIC_CLOUDINARY_CLOUD_NAME y PUBLIC_CLOUDINARY_UPLOAD_PRESET"
+      );
+    }
+
+    if (!isAcceptedVideoFile(file)) {
+      throw new Error("Solo se permiten videos mp4, webm o mov");
+    }
+
+    if (file.size > MAX_VIDEO_BYTES) {
+      throw new Error(
+        "El video supera 100 MB (" +
+          formatBytes(file.size) +
+          "). Comprime en CapCut o súbelo más liviano."
+      );
+    }
+
+    const endpoint =
+      "https://api.cloudinary.com/v1_1/" +
+      encodeURIComponent(cloudName) +
+      "/video/upload";
+    const targetFolder = String(folder || "").trim();
+    const totalBytes = file.size || 0;
+
+    function reportProgress(loaded) {
+      if (typeof onProgress !== "function" || !totalBytes) return;
+      onProgress(Math.min(loaded, totalBytes) / totalBytes);
+    }
+
+    function appendUploadFields(formData) {
+      formData.append("upload_preset", uploadPreset);
+      if (targetFolder) formData.append("folder", targetFolder);
+    }
+
+    // Archivos bajo ~95 MB: una sola petición (evita respuestas parciales de chunks)
+    if (totalBytes <= VIDEO_SIMPLE_UPLOAD_MAX) {
+      const formData = new FormData();
+      formData.append("file", file, file.name || "video.mp4");
+      appendUploadFields(formData);
+
+      const payload = await xhrPostFormData(
+        endpoint,
+        formData,
+        null,
+        function (loaded) {
+          reportProgress(loaded);
+        },
+        { allowPartial: false }
+      );
+      reportProgress(totalBytes);
+
+      const url = resolveCloudinaryMediaUrl(payload, cloudName);
+      if (!url) {
+        throw new Error(
+          "Cloudinary respondió sin URL. Revisa que el preset unsigned permita videos (resource type Auto o Video)."
+        );
+      }
+      return url;
+    }
+
+    const uploadId = createVideoUploadId();
+    let offset = 0;
+    let lastPayload = null;
+
+    while (offset < totalBytes) {
+      const end = Math.min(offset + VIDEO_CHUNK_BYTES, totalBytes);
+      const chunk = file.slice(offset, end);
+      const formData = new FormData();
+      formData.append("file", chunk, file.name || "video.mp4");
+      appendUploadFields(formData);
+
+      const isLast = end >= totalBytes;
+      lastPayload = await xhrPostFormData(
+        endpoint,
+        formData,
+        {
+          "X-Unique-Upload-Id": uploadId,
+          "Content-Range":
+            "bytes " + String(offset) + "-" + String(end - 1) + "/" + String(totalBytes),
+        },
+        function (loaded) {
+          reportProgress(offset + loaded);
+        },
+        { allowPartial: !isLast }
+      );
+
+      offset = end;
+      reportProgress(offset);
+    }
+
+    const url = resolveCloudinaryMediaUrl(lastPayload, cloudName);
+    if (!url) {
+      throw new Error(
+        "Cloudinary terminó la subida por partes sin devolver URL. Prueba un video más liviano o súbelo en Media Library."
+      );
+    }
+
+    return url;
+  }
+
+  async function uploadSelectedVideos() {
+    if (selectedCloudinaryVideos.length === 0) {
+      setMessage("Selecciona al menos un video para subir", "red");
+      return;
+    }
+
+    const cloudName = (form.dataset.cloudinaryCloudName || "").trim();
+    const uploadPreset = (form.dataset.cloudinaryUploadPreset || "").trim();
+    const videoFolder =
+      (form.dataset.cloudinaryVideoFolder || "").trim() ||
+      (form.dataset.cloudinaryFolder || "").trim();
+
+    if (!cloudName || !uploadPreset) {
+      setMessage(
+        "Falta configurar Cloudinary: PUBLIC_CLOUDINARY_CLOUD_NAME y PUBLIC_CLOUDINARY_UPLOAD_PRESET",
+        "red"
+      );
+      return;
+    }
+
+    if (uploadCloudinaryVideoBtn instanceof HTMLButtonElement) {
+      uploadCloudinaryVideoBtn.disabled = true;
+      uploadCloudinaryVideoBtn.textContent = "Subiendo video...";
+    }
+
+    let uploadedCount = 0;
+    const filledFields = [];
+
+    try {
+      for (let i = 0; i < selectedCloudinaryVideos.length; i += 1) {
+        const targetField = getVideoUploadTargetForFile(i);
+        if (!targetField) break;
+
+        const file = selectedCloudinaryVideos[i];
+        setVideoUploadProgress(
+          0,
+          "Subiendo " +
+            String(i + 1) +
+            "/" +
+            String(selectedCloudinaryVideos.length) +
+            ": " +
+            (file.name || "video")
+        );
+
+        const secureUrl = await uploadVideoFileToCloudinary(
+          file,
+          cloudName,
+          uploadPreset,
+          videoFolder,
+          function (ratio) {
+            const overall =
+              ((i + ratio) / selectedCloudinaryVideos.length) * 100;
+            setVideoUploadProgress(
+              overall,
+              "Subiendo " +
+                String(i + 1) +
+                "/" +
+                String(selectedCloudinaryVideos.length) +
+                " · " +
+                String(Math.round(ratio * 100)) +
+                "%"
+            );
+          }
+        );
+
+        targetField.value = secureUrl;
+        filledFields.push(targetField.name || "video");
+        uploadedCount += 1;
+        saveDraftNow();
+        setMessage(
+          "Videos subidos: " +
+            String(uploadedCount) +
+            " de " +
+            String(selectedCloudinaryVideos.length) +
+            " → " +
+            filledFields.join(", "),
+          "#334155"
+        );
+      }
+
+      if (uploadedCount === 0) {
+        setMessage(
+          "No se pudo pegar el video: el campo ya tiene URL. Desmarca “solo vacíos” para reemplazar Video 1, o limpia el campo a mano.",
+          "#b45309"
+        );
+        return;
+      }
+
+      setMessage(
+        "Video en Cloudinary listo (" +
+          filledFields.join(", ") +
+          "). Ahora pulsa Actualizar Nota para publicarlo.",
+        "green"
+      );
+      if (cloudinaryVideoFilesInput instanceof HTMLInputElement) {
+        cloudinaryVideoFilesInput.value = "";
+      }
+      clearSelectedCloudinaryVideos();
+      renderCloudinaryVideoQueue();
+      hideVideoUploadProgress();
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : "Error desconocido";
+      setMessage("Error al subir video a Cloudinary: " + detail, "red");
+    } finally {
+      if (uploadCloudinaryVideoBtn instanceof HTMLButtonElement) {
+        uploadCloudinaryVideoBtn.disabled = false;
+        uploadCloudinaryVideoBtn.textContent =
+          "Subir a Cloudinary y completar campos";
       }
     }
   }
@@ -963,6 +1652,7 @@
     applyCategoryMode({ preserveContent: true });
     renderImagePreviews();
     isPopulatingForm = false;
+    saveDraftNow();
   }
 
   function resetDefaults() {
@@ -1016,11 +1706,18 @@
     if (cloudinaryFilesInput instanceof HTMLInputElement) {
       cloudinaryFilesInput.value = "";
     }
+    if (cloudinaryVideoFilesInput instanceof HTMLInputElement) {
+      cloudinaryVideoFilesInput.value = "";
+    }
     clearSelectedCloudinaryFiles();
+    clearSelectedCloudinaryVideos();
     renderCloudinaryQueue();
+    renderCloudinaryVideoQueue();
+    hideVideoUploadProgress();
     setMode(false, "");
     loadedScheduledAt = "";
     applyPublishMode();
+    clearDraft();
     if (!keepMessage) {
       setMessage("Modo edicion cerrado", "#334155");
     }
@@ -1116,6 +1813,31 @@
     uploadCloudinaryBtn.addEventListener("click", uploadSelectedImages);
   }
 
+  if (cloudinaryVideoFilesInput instanceof HTMLInputElement) {
+    cloudinaryVideoFilesInput.addEventListener("change", function () {
+      const files = Array.from(cloudinaryVideoFilesInput.files || []).filter(
+        isAcceptedVideoFile
+      );
+      clearSelectedCloudinaryVideos();
+      selectedCloudinaryVideos = files.slice(0, 7);
+      renderCloudinaryVideoQueue();
+
+      if (
+        cloudinaryVideoFilesInput.files &&
+        cloudinaryVideoFilesInput.files.length > files.length
+      ) {
+        setMessage(
+          "Algunos archivos no son video (mp4/webm/mov) y se omitieron",
+          "#b45309"
+        );
+      }
+    });
+  }
+
+  if (uploadCloudinaryVideoBtn) {
+    uploadCloudinaryVideoBtn.addEventListener("click", uploadSelectedVideos);
+  }
+
   if (categoryField instanceof HTMLSelectElement) {
     categoryField.addEventListener("change", function () {
       applyCategoryMode();
@@ -1142,14 +1864,7 @@
   initSpecImport();
   bindImagePreviewListeners();
   renderImagePreviews();
-
-  if (editNoteIdInput instanceof HTMLInputElement) {
-    const initialId = new URLSearchParams(window.location.search).get("id");
-    if (initialId && /^\d+$/.test(initialId)) {
-      editNoteIdInput.value = initialId;
-      loadNoteForEdit();
-    }
-  }
+  initDraftPersistence();
 
   form.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -1361,10 +2076,12 @@
               : "Nota actualizada con exito (ID: " + effectiveEditId + ")";
           setMessage(scheduledMessage, "green");
           updateScheduleStatus();
+          saveDraftNow();
           return;
         }
 
         if (result && result.id) {
+          clearDraft();
           if (data.scheduled_at && isScheduledForFuture(data.scheduled_at)) {
             setMessage(
               "Nota programada con exito (ID: " + String(result.id) + "). Sera visible en la fecha indicada.",
@@ -1384,6 +2101,7 @@
 
         form.reset();
         resetDefaults();
+        clearDraft();
         setMessage("Nota guardada con exito", "green");
         setTimeout(function () {
           if (msg) msg.textContent = "";
@@ -1400,7 +2118,7 @@
       const timeoutHint =
         /timed out after|TimeoutError/i.test(String(raw)) ||
         /timed out after|TimeoutError/i.test(baseError)
-          ? " Reinicia el servidor de desarrollo (npm run dev) e intenta de nuevo."
+          ? " Reinicia el servidor (Ctrl+C y npm run dev). Si persiste, revisa DATABASE_URL en .env."
           : "";
       setMessage(
         detailText
@@ -1412,7 +2130,7 @@
       console.error("Error fetch al guardar nota:", error);
       const message =
         error instanceof Error && /timed out|TimeoutError/i.test(error.message)
-          ? "La operación tardó demasiado en desarrollo local. Reinicia npm run dev e intenta de nuevo."
+          ? "La operación tardó demasiado. Reinicia npm run dev y verifica DATABASE_URL en .env."
           : "Error de conexion con el servidor";
       setMessage(message, "red");
     }

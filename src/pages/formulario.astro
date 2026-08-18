@@ -4,6 +4,8 @@ const cloudinaryUploadPreset =
   import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET || "";
 const cloudinaryFolder =
   import.meta.env.PUBLIC_CLOUDINARY_FOLDER || "atdigital/notas";
+const cloudinaryVideoFolder =
+  import.meta.env.PUBLIC_CLOUDINARY_VIDEO_FOLDER || "atdigital/pruebas";
 ---
 
 <html lang="es">
@@ -26,7 +28,8 @@ const cloudinaryFolder =
           <h1>Crear Nota</h1>
           <p class="form-lead">
             Completa los campos para publicar una nueva nota y ubicarla en la
-            categoría correcta.
+            categoría correcta. El borrador se guarda solo en este navegador
+            durante 1 hora, por si tardas con las fotos.
           </p>
           <div class="header-tags">
             <span>Editor</span>
@@ -111,48 +114,38 @@ const cloudinaryFolder =
 
               <!-- CONTENIDO -->
               <div class="help-block help-block-full">
-                <h3>Contenido — estructura recomendada</h3>
+                <h3>Contenido — 5 bloques (modelo Valen)</h3>
                 <p>
-                  Escribe en <strong>texto plano</strong>. Separa cada sección
-                  con una <strong>línea en blanco</strong>. Cada párrafo se
-                  convierte en un bloque editorial aparte.
+                  Escribe en <strong>texto plano</strong>. Separa cada bloque
+                  con una <strong>línea en blanco</strong>. Empieza cada uno con
+                  <code>Título: … |</code>. El subtítulo ya dijo el gancho: el
+                  bloque 1 amplía, no lo repite. Sin mph ni cv; hp y km/h.
                 </p>
                 <div class="help-template">
                   <p>
-                    <strong>① INTRO</strong> — Ciudad + presentación del auto<br
+                    <strong>① PRESENTACIÓN</strong> — Quién lo hace, nombre, precio<br
                     />
-                    El CUPRA Born llegó a Bogotá con una propuesta que pocos esperaban:
-                    un eléctrico de carácter deportivo sin sacrificar practicidad.
+                    Título: Sale del taller Q, con nombre de “fuerte” |
                   </p>
                   <p>
-                    <strong>② DISEÑO</strong> — Exterior + primera impresión<br
+                    <strong>② DISEÑO</strong> — Carrocería (no «piel»); baúl «es de» X litros<br
                     />
-                    Las líneas del Born hablan por sí solas. Los faros LED en forma
-                    de "C" le dan una identidad instantáneamente reconocible.
+                    Título: Carrocería de carbono y una silueta que se nota de lejos |
                   </p>
                   <p>
-                    <strong>③ INTERIOR</strong> — Tecnología + confort<br />
-                    Al subir, la pantalla flotante de 12" domina la cabina. El sistema
-                    de sonido beats de 300 W eleva la experiencia.
+                    <strong>③ INTERIOR</strong> — Puestos; nombres en español y luego entre paréntesis<br
+                    />
+                    Título: Cabina de dos puestos, pensada para el conductor |
                   </p>
                   <p>
-                    <strong>④ RENDIMIENTO</strong> — Motorización + conducción<br
+                    <strong>④ MOTOR</strong> — hp, km/h; si no hay 0-100, decirlo<br
                     />
-                    El motor de 231 CV entrega 310 Nm de par en décimas. 0–100 km/h
-                    en 6,6 s.
+                    Título: 838 hp, tracción trasera y 110 kg menos |
                   </p>
                   <p>
-                    <strong>⑤ DESTACADOS</strong> — Bullet list de specs clave<br
+                    <strong>⑤ CIERRE</strong> — El encabezado = la última frase. Dato curioso; no «no llega a Colombia»<br
                     />
-                    • Autonomía: 545 km WLTP<br />
-                    • Carga rápida: 130 kW (10–80 % en 35 min)<br />
-                    • Precio desde: COP 189.900.000
-                  </p>
-                  <p>
-                    <strong>⑥ CONCLUSIÓN</strong> — Veredicto + llamado a la acción<br
-                    />
-                    El CUPRA Born consolida a la marca como un jugador serio. Contáctanos
-                    para agendar una prueba de manejo.
+                    Título: Tres modos de manejo, llantas con sensores y sin palanca manual |
                   </p>
                 </div>
               </div>
@@ -284,6 +277,7 @@ const cloudinaryFolder =
           data-cloudinary-cloud-name={cloudinaryCloudName}
           data-cloudinary-upload-preset={cloudinaryUploadPreset}
           data-cloudinary-folder={cloudinaryFolder}
+          data-cloudinary-video-folder={cloudinaryVideoFolder}
         >
           <div class="form-section">
             <h2 class="form-section-title">
@@ -560,19 +554,83 @@ const cloudinaryFolder =
           <fieldset class="group-box full-note-only">
             <legend>Videos (opcional)</legend>
             <div class="grid-2">
+              <div class="cloudinary-uploader cloudinary-uploader--video grid-span-2">
+                <label for="cloudinaryVideoStartSlot">
+                  Colocar videos en orden desde
+                  <select id="cloudinaryVideoStartSlot">
+                    <option value="1" selected>Video 1 (principal / Pruebas)</option>
+                    <option value="2">Video 2</option>
+                    <option value="3">Video 3</option>
+                    <option value="4">Video 4</option>
+                    <option value="5">Video 5</option>
+                    <option value="6">Video 6</option>
+                    <option value="7">Video 7</option>
+                  </select>
+                </label>
+                <label class="cloudinary-checkbox">
+                  <input type="checkbox" id="cloudinaryVideoFillEmptyOnly" />
+                  Solo rellenar campos vacíos (no sobrescribir URLs existentes)
+                </label>
+                <label for="cloudinaryVideoFiles"
+                  >Subir video(s) desde tu computador (mp4, webm, mov)</label
+                >
+                <input
+                  type="file"
+                  id="cloudinaryVideoFiles"
+                  accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov"
+                  multiple
+                />
+                <div id="cloudinaryVideoQueue" class="cloudinary-queue" hidden></div>
+                <div
+                  id="cloudinaryVideoProgressWrap"
+                  class="cloudinary-video-progress-wrap"
+                  hidden
+                >
+                  <progress
+                    id="cloudinaryVideoProgress"
+                    class="cloudinary-video-progress"
+                    max="100"
+                    value="0"
+                  ></progress>
+                  <p id="cloudinaryVideoProgressLabel" class="storage-tip">0%</p>
+                </div>
+                <button
+                  type="button"
+                  id="uploadCloudinaryVideoBtn"
+                  class="btn-secondary"
+                >
+                  Subir a Cloudinary y completar campos
+                </button>
+                <p class="storage-tip cloudinary-tip">
+                  Subida directa a Cloudinary (carpeta
+                  <code>{cloudinaryVideoFolder}</code>), hasta ~100&nbsp;MB por
+                  archivo. La URL queda en <code>video1</code>–<code>video7</code>.
+                  No hace falta copiar a <code>public/</code>.
+                </p>
+                <p class="storage-tip cloudinary-tip">
+                  Para <strong>reemplazar</strong> un video ya publicado: deja
+                  desmarcada la casilla de “solo vacíos”, elige Video 1, sube y
+                  luego pulsa <strong>Actualizar Nota</strong>.
+                </p>
+                <p class="storage-tip cloudinary-tip">
+                  Si la subida falla por red, sube el archivo en Media Library de
+                  Cloudinary y pega la URL <code>.mp4</code> en el campo de abajo.
+                </p>
+              </div>
+
               <label for="video1">
                 Video principal (destacado)
                 <input
                   type="text"
                   id="video1"
                   name="video1"
-                  placeholder="/img/videos-pruebas/mi-video.mp4"
+                  placeholder="https://res.cloudinary.com/.../video/upload/.../mi-video.mp4"
                 />
               </label>
               <p class="storage-tip grid-span-2">
                 Si la nota ya existe en otra sección (híbridos, eléctricos, etc.),
-                edítala y solo agrega aquí la ruta del <code>.mp4</code>. Aparecerá en
-                Pruebas de manejo con botón <strong>Ver nota</strong>.
+                edítala y sube el video aquí. Aparecerá en Pruebas de manejo con
+                botón <strong>Ver nota</strong>.
               </p>
 
               <label class="grid-span-2 pruebas-solo-checkbox">
@@ -1665,15 +1723,36 @@ spec_precio_cop: $262.900.000`}
           margin: 0;
         }
 
+        .cloudinary-uploader--video {
+          margin-top: 0;
+          margin-bottom: 4px;
+        }
+
+        .cloudinary-video-progress-wrap {
+          display: grid;
+          gap: 6px;
+        }
+
+        .cloudinary-video-progress {
+          width: 100%;
+          height: 10px;
+          border-radius: 999px;
+          overflow: hidden;
+          accent-color: var(--color-brand, #08341f);
+        }
+
         .image-preview-strip {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-          gap: 12px;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 14px;
           margin-top: 14px;
         }
 
         .image-preview-item {
           margin: 0;
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
           border: 1px solid var(--color-border);
           border-radius: 12px;
           overflow: hidden;
@@ -1683,8 +1762,11 @@ spec_precio_cop: $262.900.000`}
         .image-preview-item img {
           display: block;
           width: 100%;
-          aspect-ratio: 4 / 3;
-          object-fit: cover;
+          max-width: 100%;
+          height: 160px;
+          object-fit: contain;
+          object-position: center;
+          background: #f3f4f6;
         }
 
         .image-preview-item figcaption {
@@ -1692,6 +1774,24 @@ spec_precio_cop: $262.900.000`}
           font-size: var(--text-small);
           color: var(--color-muted);
           text-align: center;
+          border-top: 1px solid var(--color-border);
+          background: #fafafa;
+        }
+
+        @media (max-width: 900px) {
+          .image-preview-strip {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+
+        @media (max-width: 520px) {
+          .image-preview-strip {
+            grid-template-columns: minmax(0, 1fr);
+          }
+
+          .image-preview-item img {
+            height: 180px;
+          }
         }
 
         .cloudinary-queue {
@@ -1799,7 +1899,7 @@ spec_precio_cop: $262.900.000`}
         }
       </style>
 
-      <script src="/js/formulario.js?v=2" defer></script>
+      <script src="/js/formulario.js?v=6" defer></script>
     </main>
   </body>
 </html>

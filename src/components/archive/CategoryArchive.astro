@@ -23,7 +23,7 @@ interface Props {
   category: string;
   categories?: string[];
   title: string;
-  description: string;
+  description?: string;
   staticNotes?: NoteItem[];
   itemsPerPage?: number;
   skipFirst?: number;
@@ -248,13 +248,13 @@ function pageHref(page: number) {
 }
 ---
 
-<link rel="stylesheet" href="/css/archive-section.css" />
+<link rel="stylesheet" href="/css/archive-section.css?v=2" />
 
 <section class="archivo-notas">
   <div class="archivo-header">
     <p class="archivo-eyebrow">Archivo</p>
     <h1>{title}</h1>
-    <p>{description}</p>
+    {description && <p>{description}</p>}
   </div>
 
   <div class="archivo-grid">

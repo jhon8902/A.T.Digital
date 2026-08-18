@@ -1,0 +1,34 @@
+---
+description: Desarrollo local — formulario, timeout 3s lambda-local, plugin dev-admin-api. Usar al tocar astro.config, APIs admin o netlify.toml.
+globs: astro.config.mjs,scripts/dev-admin-api.mjs,netlify.toml,public/js/formulario.js,src/pages/api/**,netlify/functions/**
+alwaysApply: false
+---
+
+# Desarrollo local — no romper el formulario
+
+## Problema conocido
+
+`npm run dev` + adaptador `@astrojs/netlify` emula serverless con **lambda-local (timeout 3 s)**. Guardar notas conecta a Postgres remoto y suele superar ese límite → `TimeoutError`.
+
+## Solución obligatoria en el repo
+
+- **`scripts/dev-admin-api.mjs`** — atiende en dev las APIs de admin sin lambda-local.
+- **`astro.config.mjs`** debe incluir `vite.plugins: [devAdminApi()]`.
+
+**No eliminar** `devAdminApi()` sin alternativa equivalente.
+
+## Si añades API de admin nueva
+
+1. Proteger ruta en `src/lib/admin-auth.ts` (`PROTECTED_PATHS`).
+2. Registrar método + ruta en `ADMIN_API_ROUTES` de `scripts/dev-admin-api.mjs`.
+3. Documentar en `docs/desarrollo-local.md` si aplica.
+
+## Imágenes Cloudinary
+
+Subida desde el **navegador** directo a Cloudinary (`public/js/formulario.js`). No depender del proxy `/api/upload-cloudinary` en flujo normal.
+
+## Producción
+
+`netlify.toml`: timeout 26 s en `save-note`, `update-note`. El plugin `dev-admin-api` **solo corre en `astro dev`** (`apply: "serve"`).
+
+Guía completa: `docs/desarrollo-local.md`.

@@ -59,12 +59,15 @@ Por cada nota:
 
 ## 5. Videos de pruebas
 
-Archivos en `public/img/videos-pruebas/` y referencias en `pruebas.astro` / `pruebas.astro` (componente).
+Archivos antiguos en `public/img/videos-pruebas/` y referencias en `pruebas.astro`.
 
-1. [ ] Subir video a Cloudinary (folder `atdigital/pruebas` recomendado).
-2. [ ] Actualizar URL en la nota de categoría `pruebas` (formulario) o en el array estático.
+**Flujo actual (recomendado):** desde `/formulario`, sección Videos → subir a Cloudinary
+(`PUBLIC_CLOUDINARY_VIDEO_FOLDER`, por defecto `atdigital/pruebas`). La URL queda en `video1`.
+
+1. [ ] Subir video desde el formulario (o Media Library si falla la red).
+2. [ ] Confirmar que `video1` es URL `https://res.cloudinary.com/.../video/upload/...`.
 3. [ ] Probar reproducción en home y en `/pruebas`.
-4. [ ] Borrar el `.mp4` local del repo.
+4. [ ] Borrar el `.mp4` local del repo si ya no se usa.
 
 ---
 
@@ -125,14 +128,18 @@ En `.env` / Netlify:
 PUBLIC_CLOUDINARY_CLOUD_NAME=tu_cloud_name
 PUBLIC_CLOUDINARY_UPLOAD_PRESET=tu_upload_preset_unsigned
 PUBLIC_CLOUDINARY_FOLDER=atdigital/notas
+PUBLIC_CLOUDINARY_VIDEO_FOLDER=atdigital/pruebas
 ```
 
 Sin esto, el formulario no sube; las carpetas locales seguirían siendo necesarias.
+
+Los videos se suben **directo desde el navegador** a Cloudinary (no pasan por el proxy de imágenes de 8 MB).
 
 ---
 
 ## Referencia rápida
 
 - Plantilla editorial: `docs/plantilla-nota.md`
-- Subida API: `src/pages/api/upload-cloudinary.ts`
+- Subida API (imágenes): `src/pages/api/upload-cloudinary.ts`
+- Videos: uploader en `/formulario` → `public/js/formulario.js`
 - Archivos de categoría (tarjetas unificadas): `public/css/archive-section.css`
