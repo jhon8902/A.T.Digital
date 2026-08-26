@@ -74,7 +74,7 @@ export function inferFuelTypeFromCatalog(
   if (normalized.includes("híbrido") || normalized.includes("hibrido")) {
     return "hibrido";
   }
-  if (normalized.includes("diesel")) {
+  if (normalized.includes("diesel") || normalized.includes("diésel")) {
     return "diesel";
   }
   return "gasolina";
@@ -233,4 +233,85 @@ export function formatCop(value: number): string {
     currency: "COP",
     maximumFractionDigits: 0,
   }).format(value);
+}
+
+export interface TcoPreview {
+  mensual: number;
+  total: number;
+  anios: number;
+  kmAnuales: number;
+}
+
+export function annualKmFromUso(uso = ""): number {
+  const value = uso.toLowerCase();
+  if (value.includes("trabajo")) return 25_000;
+  if (value.includes("familiar")) return 18_000;
+  if (value.includes("deport")) return 10_000;
+  if (value.includes("urbano") || value.includes("ciudad")) return 12_000;
+  return 15_000;
+}
+
+function firstNumber(raw: unknown): number | undefined {
+  if (typeof raw === "number" && Number.isFinite(raw) && raw > 0) return raw;
+  const match = String(raw || "")
+    .replace(",", ".")
+    .match(/(\d+(?:\.\d+)?)/);
+  if (!match) return undefined;
+  const n = Number(match[1]);
+  return Number.isFinite(n) && n > 0 ? n : undefined;
+}
+
+export function parseConsumoFromSpecs(specs: Record<string, unknown> = {}): {
+  litros?: number;
+  kwh?: number;
+} {
+  const haystack = [
+    specs.consumo,
+    specs.consumo_real,
+    specs.consumo_hibrido,
+    specs.consumo_electrico,
+    specs.consumo_kwh,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const normalized = haystack.toLowerCase();
+  const number = firstNumber(haystack);
+  const looksKwh = /kwh|kw\/h/.test(normalized);
+
+  if (looksKwh) {
+    return {
+      kwh: number,
+      litros: firstNumber(specs.consumo_hibrido),
+    };
+  }
+
+  return {
+    litros: number,
+    kwh: firstNumber(specs.consumo_electrico || specs.consumo_kwh),
+  };
+}
+
+export function estimateTcoPreview(
+  vehicle: { precio: number; tipo: string; uso?: string },
+  specs: Record<string, unknown> = {},
+  usoOverride?: string,
+): TcoPreview {
+  const anios = 5;
+  const kmAnuales = annualKmFromUso(usoOverride || vehicle.uso || "");
+  const consumo = parseConsumoFromSpecs(specs);
+  const result = calculateTco({
+    precioVehiculo: vehicle.precio,
+    tipoCombustible: inferFuelTypeFromCatalog(vehicle.tipo),
+    kmAnuales,
+    añosPropiedad: anios,
+    consumoLitros100km: consumo.litros,
+    consumoKwh100km: consumo.kwh,
+  });
+
+  return {
+    mensual: result.costoMensualPromedio,
+    total: result.totalCostoPropiedad,
+    anios,
+    kmAnuales,
+  };
 }

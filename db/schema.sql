@@ -196,4 +196,23 @@ CREATE INDEX IF NOT EXISTS idx_dealer_vehicles_auto_id ON dealer_vehicles(auto_i
 CREATE INDEX IF NOT EXISTS idx_dealer_vehicles_note_id ON dealer_vehicles(note_id);
 CREATE INDEX IF NOT EXISTS idx_dealer_vehicles_dealer_id ON dealer_vehicles(dealer_id);
 
+CREATE TABLE IF NOT EXISTS automatch_events (
+  id SERIAL PRIMARY KEY,
+  event TEXT NOT NULL,
+  auto_id TEXT,
+  note_id INTEGER,
+  dealer_id INTEGER,
+  tipo TEXT,
+  uso TEXT,
+  ciudad TEXT,
+  presupuesto TEXT,
+  score INTEGER,
+  source TEXT,
+  path TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_automatch_events_event ON automatch_events(event);
+CREATE INDEX IF NOT EXISTS idx_automatch_events_created_at ON automatch_events(created_at DESC);
+
 COMMIT;

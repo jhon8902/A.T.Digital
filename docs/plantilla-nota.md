@@ -68,7 +68,7 @@ Título: [Interior / puestos] |
 Título: [Motor / cifras] |
 [hp y km/h. Si la marca no dio 0-100, decir qué midió. «Velocidad máxima», no «techo». «Pesa X kg menos», no «recorta».]
 
-Título: [Cierre que coincida con la última frase] |
+Título: [Cierre: misma idea que la última frase, no la misma oración] |
 [Hecho confirmado. En deportes: emocional + dato. Si no hay manual, explicar el beneficio de esa caja para la categoría. Si el auto no llega a Colombia, no cerrar con «no hay fecha ni precio aquí».]
 ```
 
@@ -133,7 +133,7 @@ Campos principales: segmento, precio estimado, versiones, origen, motorización,
 - [ ] Subtítulo ≤ 150 caracteres y no se copia entero en el bloque 1
 - [ ] Contenido: 5 bloques `Título: … |` separados por línea en blanco
 - [ ] Sin mph u otro inglés sin traducir; hp, no cv; siglas de taller explicadas la primera vez
-- [ ] El título del bloque 5 coincide con la última frase
+- [ ] El título del bloque 5 es la idea del cierre, no una copia de la última frase
 - [ ] Si no llega a Colombia, el cierre es un dato curioso, no la ausencia local
 - [ ] En `deportes`, el cierre es emocional y, si aplica, explica el beneficio de la transmisión
 - [ ] Imagen 1 cargada (es la portada)

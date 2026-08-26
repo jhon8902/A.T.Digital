@@ -13,8 +13,9 @@ import AutoMatchBanner from "../components/automatch/AutoMatchBanner.astro";
         Encuentra tu auto ideal con <span>AutoMatch</span>
       </h1>
       <p class="automatch-find-hero__lead">
-        Cuatro preguntas esenciales y te mostramos el mejor match. Luego puedes
-        contactar al concesionario o ver cómo llegar.
+        Cuatro preguntas y te mostramos el mejor match, con veredicto A.T.
+        y un costo de uso estimado a 5 años. Después contactas al concesionario
+        o abres la ficha.
       </p>
       <p class="automatch-find-hero__time">
         <i class="fa-regular fa-clock" aria-hidden="true"></i>
@@ -44,55 +45,68 @@ import AutoMatchBanner from "../components/automatch/AutoMatchBanner.astro";
         <div class="form-step" id="form-step-essential">
           <h2 class="form-section__title">Paso 1 — Lo esencial</h2>
 
-          <label for="presupuesto">Presupuesto (millones COP)</label>
-          <select id="presupuesto" required>
-            <option value="">Seleccionar...</option>
-            <option value="40-70">$40 – $70 millones</option>
-            <option value="70-100">$70 – $100 millones</option>
-            <option value="100-130">$100 – $130 millones</option>
-            <option value="130-180">$130 – $180 millones</option>
-            <option value="180-280">$180 – $280 millones</option>
-            <option value="280+">Más de $280 millones</option>
-          </select>
+          <div class="form-fields">
+            <div class="form-field">
+              <label for="presupuesto">Presupuesto (millones COP)</label>
+              <select id="presupuesto" required>
+                <option value="">Seleccionar...</option>
+                <option value="40-70">$40 – $70 millones</option>
+                <option value="70-100">$70 – $100 millones</option>
+                <option value="100-130">$100 – $130 millones</option>
+                <option value="130-180">$130 – $180 millones</option>
+                <option value="180-280">$180 – $280 millones</option>
+                <option value="280+">Más de $280 millones</option>
+              </select>
+            </div>
 
-          <label for="uso">¿Para qué lo usarás?</label>
-          <select id="uso" required>
-            <option value="">Seleccionar...</option>
-            <option value="urbano">Ciudad / diario</option>
-            <option value="familiar">Familia / viajes</option>
-            <option value="trabajo">Trabajo / carga</option>
-            <option value="deportivo">Deportivo / placer</option>
-          </select>
+            <div class="form-field">
+              <label for="uso">¿Para qué lo usarás?</label>
+              <select id="uso" required>
+                <option value="">Seleccionar...</option>
+                <option value="urbano">Ciudad / diario</option>
+                <option value="familiar">Familia / viajes</option>
+                <option value="trabajo">Trabajo / carga</option>
+                <option value="deportivo">Deportivo / placer</option>
+              </select>
+            </div>
 
-          <label for="tipo">Tipo de motor</label>
-          <select id="tipo" required>
-            <option value="">Seleccionar...</option>
-            <option value="gasolina">Gasolina</option>
-            <option value="híbrido">Híbrido</option>
-            <option value="eléctrico">Eléctrico</option>
-          </select>
+            <div class="form-field">
+              <label for="tipo">Tipo de motor</label>
+              <select id="tipo" required>
+                <option value="">Seleccionar...</option>
+                <option value="gasolina">Gasolina</option>
+                <option value="diésel">Diésel</option>
+                <option value="híbrido">Híbrido</option>
+                <option value="eléctrico">Eléctrico</option>
+              </select>
+            </div>
 
-          <label for="condicion">Condición</label>
-          <select id="condicion" required>
-            <option value="">Seleccionar...</option>
-            <option value="nuevo">Nuevo (0 km)</option>
-            <option value="seminuevo">Seminuevo (1–3 años)</option>
-            <option value="usado">Usado (+3 años)</option>
-            <option value="ambos">Nuevo o usado</option>
-          </select>
+            <div class="form-field">
+              <label for="condicion">Condición</label>
+              <select id="condicion" required>
+                <option value="">Seleccionar...</option>
+                <option value="nuevo">Nuevo (0 km)</option>
+                <option value="seminuevo">Seminuevo (1–3 años)</option>
+                <option value="usado">Usado (+3 años)</option>
+                <option value="ambos">Nuevo o usado</option>
+              </select>
+            </div>
 
-          <label for="ciudad">Ciudad</label>
-          <select id="ciudad" required>
-            <option value="">Seleccionar...</option>
-            <option value="bogotá">Bogotá</option>
-            <option value="medellín">Medellín</option>
-            <option value="cali">Cali</option>
-            <option value="barranquilla">Barranquilla</option>
-            <option value="bucaramanga">Bucaramanga</option>
-            <option value="cartagena">Cartagena</option>
-            <option value="pereira">Pereira</option>
-            <option value="manizales">Manizales</option>
-          </select>
+            <div class="form-field">
+              <label for="ciudad">Ciudad</label>
+              <select id="ciudad" required>
+                <option value="">Seleccionar...</option>
+                <option value="bogotá">Bogotá</option>
+                <option value="medellín">Medellín</option>
+                <option value="cali">Cali</option>
+                <option value="barranquilla">Barranquilla</option>
+                <option value="bucaramanga">Bucaramanga</option>
+                <option value="cartagena">Cartagena</option>
+                <option value="pereira">Pereira</option>
+                <option value="manizales">Manizales</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         <div class="form-step form-step--used" id="form-step-used" hidden>
@@ -101,30 +115,39 @@ import AutoMatchBanner from "../components/automatch/AutoMatchBanner.astro";
             Solo si buscas seminuevo o usado. Puedes dejarlos en “cualquiera”.
           </p>
 
-          <label for="placa">Placa (pico y placa)</label>
-          <select id="placa">
-            <option value="ambos">Me da igual</option>
-            <option value="par">Solo placa par</option>
-            <option value="impar">Solo placa impar</option>
-          </select>
+          <div class="form-fields">
+            <div class="form-field">
+              <label for="placa">Placa (pico y placa)</label>
+              <select id="placa">
+                <option value="ambos">Me da igual</option>
+                <option value="par">Solo placa par</option>
+                <option value="impar">Solo placa impar</option>
+              </select>
+            </div>
 
-          <label for="kilometraje">Kilometraje</label>
-          <select id="kilometraje">
-            <option value="cualquiera">Cualquier kilometraje</option>
-            <option value="0-30000">Menos de 30.000 km</option>
-            <option value="30000-60000">30.000 – 60.000 km</option>
-            <option value="60000-90000">60.000 – 90.000 km</option>
-            <option value="90000+">Más de 90.000 km</option>
-          </select>
+            <div class="form-field">
+              <label for="kilometraje">Kilometraje</label>
+              <select id="kilometraje">
+                <option value="cualquiera">Cualquier kilometraje</option>
+                <option value="0-30000">Menos de 30.000 km</option>
+                <option value="30000-60000">30.000 – 60.000 km</option>
+                <option value="60000-90000">60.000 – 90.000 km</option>
+                <option value="90000+">Más de 90.000 km</option>
+              </select>
+            </div>
 
-          <label for="carroceria">Carrocería</label>
-          <select id="carroceria">
-            <option value="">Todas</option>
-            <option value="suv">SUV / camioneta</option>
-            <option value="sedán">Sedán</option>
-            <option value="hatchback">Hatchback</option>
-            <option value="pickup">Pickup</option>
-          </select>
+            <div class="form-field">
+              <label for="carroceria">Carrocería</label>
+              <select id="carroceria">
+                <option value="">Todas</option>
+                <option value="suv">SUV / camioneta</option>
+                <option value="sedán">Sedán</option>
+                <option value="hatchback">Hatchback</option>
+                <option value="pickup">Pickup</option>
+                <option value="van">Van</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         <div class="button-group">
@@ -152,18 +175,26 @@ import AutoMatchBanner from "../components/automatch/AutoMatchBanner.astro";
         <p class="user-profile-form__hint">
           Guardamos nombre y ciudad en tu navegador para futuras búsquedas.
         </p>
-        <div id="user-profile-form">
-          <label for="user-name">Nombre / alias</label>
-          <input type="text" id="user-name" placeholder="Tu nombre" />
+        <div id="user-profile-form" class="form-fields form-fields--profile">
+          <div class="form-field">
+            <label for="user-name">Nombre / alias</label>
+            <input type="text" id="user-name" placeholder="Tu nombre" />
+          </div>
 
-          <label for="user-city">Ciudad habitual</label>
-          <select id="user-city">
-            <option value="">Seleccionar...</option>
-            <option value="bogotá">Bogotá</option>
-            <option value="medellín">Medellín</option>
-            <option value="cali">Cali</option>
-            <option value="barranquilla">Barranquilla</option>
-          </select>
+          <div class="form-field">
+            <label for="user-city">Ciudad habitual</label>
+            <select id="user-city">
+              <option value="">Seleccionar...</option>
+              <option value="bogotá">Bogotá</option>
+              <option value="medellín">Medellín</option>
+              <option value="cali">Cali</option>
+              <option value="barranquilla">Barranquilla</option>
+              <option value="bucaramanga">Bucaramanga</option>
+              <option value="cartagena">Cartagena</option>
+              <option value="pereira">Pereira</option>
+              <option value="manizales">Manizales</option>
+            </select>
+          </div>
         </div>
       </details>
     </div>

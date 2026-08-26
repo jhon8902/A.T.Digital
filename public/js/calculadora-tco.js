@@ -211,6 +211,109 @@
     }
   });
 
+  function inferFuel(tipo) {
+    const value = String(tipo || "").toLowerCase();
+    if (value.includes("electr")) return "electrico";
+    if (value.includes("hibrid") || value.includes("híbrid")) return "hibrido";
+    if (value.includes("diesel") || value.includes("diésel")) return "diesel";
+    return "gasolina";
+  }
+
+  function firstNumber(value) {
+    const match = String(value || "").match(/(\d+(?:[.,]\d+)?)/);
+    return match ? match[1].replace(",", ".") : "";
+  }
+
+  function consumoFromSpecs(specs = {}, fuel) {
+    const litros = firstNumber(
+      specs.consumo_real ||
+        specs.consumo_hibrido ||
+        (fuel !== "electrico" ? specs.consumo : ""),
+    );
+    const kwh = firstNumber(
+      specs.consumo_electrico ||
+        specs.consumo_kwh ||
+        (fuel === "electrico" ? specs.consumo : ""),
+    );
+    return { litros, kwh };
+  }
+
+  function fillVehicleOptions(autos, specs) {
+    vehicleSelect.innerHTML = "";
+    const empty = document.createElement("option");
+    empty.value = "";
+    empty.textContent = "Personalizar manualmente";
+    vehicleSelect.appendChild(empty);
+
+    for (const auto of autos) {
+      const spec = specs[auto.especificaciones_id] || {};
+      const fuel = inferFuel(auto.tipo);
+      const consumo = consumoFromSpecs(spec, fuel);
+      const option = document.createElement("option");
+      option.value = String(auto.catalogId ?? auto.id ?? "");
+      option.textContent = auto.año ? `${auto.nombre} (${auto.año})` : auto.nombre;
+      option.dataset.precio = auto.precio > 0 ? String(auto.precio) : "";
+      option.dataset.fuel = fuel;
+      option.dataset.litros = consumo.litros;
+      option.dataset.kwh = consumo.kwh;
+      option.dataset.nombre = auto.nombre || "";
+      if (auto.noteId) option.dataset.noteId = String(auto.noteId);
+      vehicleSelect.appendChild(option);
+    }
+  }
+
+  async function loadCatalogIntoSelect() {
+    try {
+      const response = await fetch("/api/automatch-catalog");
+      if (!response.ok) return;
+      const data = await response.json();
+      if (!Array.isArray(data.autos) || data.autos.length === 0) return;
+      fillVehicleOptions(data.autos, data.specs || {});
+    } catch {
+      // Se queda el listado estático (iCAR) si la API no responde.
+    }
+  }
+
+  function applyVehicleFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const autoId = params.get("auto");
+    const nombre = params.get("nombre");
+    const precio = params.get("precio");
+
+    if (autoId) {
+      const byId = Array.from(vehicleSelect.options).find(
+        (option) =>
+          option.value === autoId ||
+          option.dataset.noteId === autoId ||
+          `note-${option.dataset.noteId}` === autoId,
+      );
+      if (byId) {
+        vehicleSelect.value = byId.value;
+        vehicleSelect.dispatchEvent(new Event("change"));
+        return;
+      }
+    }
+
+    if (nombre) {
+      const needle = nombre.trim().toLowerCase();
+      const byName = Array.from(vehicleSelect.options).find((option) => {
+        const label = option.dataset.nombre || option.textContent || "";
+        return label.trim().toLowerCase().includes(needle);
+      });
+      if (byName) {
+        vehicleSelect.value = byName.value;
+        vehicleSelect.dispatchEvent(new Event("change"));
+        return;
+      }
+    }
+
+    if (precio && Number(precio) > 0) {
+      precioInput.value = precio;
+    }
+  }
+
+  loadCatalogIntoSelect().then(applyVehicleFromUrl);
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 

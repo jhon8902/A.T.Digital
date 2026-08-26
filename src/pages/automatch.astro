@@ -31,6 +31,8 @@ try {
       }));
 
     autos = buildAutomatchCarousel(automatchNotes, { skipEditorialCover: true });
+  } else {
+    autos = buildAutomatchCarousel([], { skipEditorialCover: true });
   }
 } catch (err) {
   console.error("Error cargando autos en archivo AutoMatch:", err);

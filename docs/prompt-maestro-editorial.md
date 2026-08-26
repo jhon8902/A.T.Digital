@@ -1,6 +1,6 @@
 # Prompt maestro editorial — A.T. Digital
 
-**Versión:** 1.2 (agosto 2026 — personalidad por nota, dentro del ADN)  
+**Versión:** 1.3 (agosto 2026 — léxico colombiano GV90, cierre del bloque 5 sin eco)  
 **Uso:** pegar este documento al pedir una nota, o decir «sigue el prompt maestro».  
 **Naturaleza:** ADN vivo. Cada nota que ajuste el criterio se anota al final, en **Registro de ajustes**. No reescribir el ADN de memoria: actualizar este archivo.
 
@@ -107,7 +107,7 @@ Línea en blanco entre bloques. **2–3 datos clave** por bloque; el resto va al
 | 2 | Diseño / exterior | Carrocería (no «piel»). Baúl «es de» X litros. Sin metáforas vacías |
 | 3 | Interior / puestos | Puestos, no filas. Español primero, nombre de fábrica una vez entre paréntesis |
 | 4 | Motor / rendimiento | hp, km/h, «velocidad máxima», «pesa X kg menos». El detalle fino, al resumen |
-| 5 | Cierre | El encabezado **es la idea de la última frase**. Hecho confirmado. Ver §7 |
+| 5 | Cierre | El encabezado es **la idea** del cierre, no la misma frase. La última oración no copia el título del bloque. Hecho confirmado. Ver §7 |
 
 ---
 
@@ -131,19 +131,37 @@ Techo de extensión: nota 174, CUPRA Born.
 | lb-pie solo | Nm (convertir o ambos) |
 | recorta X kg | pesa X kg menos que |
 | techo de X km/h | velocidad máxima |
-| el baúl declara | el baúl es de |
+| el baúl declara / la marca declara | el baúl es de / según la marca / pasa de X a Y |
 | club de N unidades | solo N unidades |
 | compacto premium | SUV compacto de gama alta |
+| buque insignia / flagship | el más grande / el tope de la gama / el SUV más lujoso de la marca |
+| zaga | la parte de atrás |
+| dos recetas (para versiones) | dos versiones |
+| salón (cabina o lounge) | interior o sala |
+| ocupante despedido | salga volando |
+| sigla de plataforma (eMP, E-GMP) suelta | base eléctrica hecha para este modelo; el código va al resumen técnico |
 
 **Tecnicismos y marcas comerciales:** si el lector colombiano dudaría, una línea corta entre paréntesis la primera vez. «Tracción integral 4Motion». «Caja de doble embrague (cambios en fracción de segundo)» — no PDK/DCT sueltos.
 
 ### Siglas de taller y departamentos (lección Valen)
 
-Nunca dejes **Q, SVO, Manufaktur, Individual, M, AMG** (como taller) sin explicar. La primera vez: qué es, en español llano.
+Nunca dejes **Q, SVO, Manufaktur, Individual, M, AMG** (como taller) ni **códigos de plataforma** (eMP, E-GMP) sin explicar. La primera vez: qué es, en español llano. Si el nombre de fábrica no aporta, no entra al párrafo: va al resumen técnico.
 
 Ejemplo: «el departamento de encargos especiales de Aston Martin, conocido como Q —como el de James Bond, el que arma los autos de 007—».
 
 Después puedes repetir el nombre corto. Si el usuario pregunta qué significa, respóndele en claro y corrige la nota para que el lector no tenga la misma duda.
+
+### Primera lectura (lección Pathfinder)
+
+El editor no tiene que descifrar la nota. Si una frase pide explicación aparte, no está lista.
+
+- **Inglés de fábrica:** Latch and Glide, Qi2, Invisible Hood View, Neolun Arch Gate y similares no entran si el lector colombiano no los usa. Di qué hace el sistema en español. El nombre oficial, solo si aporta; y la frase tiene que entenderse si lo borras.
+- **Periodismo que no se usa en Colombia:** buque insignia, zaga, recetas (por versiones), salón (por interior), la marca declara. Si el editor pregunta qué significa, la palabra no pasa. Ver tabla de léxico.
+- **Metáfora rara:** «que el teléfono no se cueza» suena a cocina, no a nota. El celular se calienta; el auto no enamora ni cuece. Verbo literal.
+- **Jerga de redacción:** «recorte de salón», «el dato que importa a las 6:30», «el detalle que no puede copiar» son guiños internos. En la página va el hecho: para qué sirve, en esta camioneta, en esta ciudad.
+- **Cierre del bloque 5:** la última oración se lee sola, sin haber escrito el artículo. El encabezado y el cierre son **la misma idea**, no la misma frase. Si el título del bloque ya dijo «si el carro se volca…», el final no lo vuelve a copiar: paga con otro hecho confirmado.
+
+Prueba: leer los 5 bloques en voz alta. Si el editor se detiene en una palabra, reescribir esa frase antes de entregar.
 
 ### Frases prohibidas
 
@@ -162,7 +180,7 @@ No cerrar con la ausencia local. Cerrar con un **hecho confirmado** (mecánica r
 
 **Deportivos (`deportes`):** el cierre va a la altura del auto — emocional, no administrativo — pero la emoción se apoya en un dato, no en poesía vacía.
 
-Si el auto **no trae caja manual** (u otra pieza que el lector extrañaría): no lo dejes como recorte. Explica **qué gana** un auto de esa categoría con esa transmisión (balance, compostura con el torque atrás, cambios de corte carrera, uso real en calle y circuito). El encabezado del bloque 5 tiene que coincidir con esa idea.
+Si el auto **no trae caja manual** (u otra pieza que el lector extrañaría): no lo dejes como recorte. Explica **qué gana** un auto de esa categoría con esa transmisión (balance, compostura con el torque atrás, cambios de corte carrera, uso real en calle y circuito). El encabezado del bloque 5 tiene que coincidir con esa **idea**, no copiar la última frase palabra por palabra.
 
 ---
 
@@ -173,6 +191,7 @@ Objetivo: que se note la tijera, no el comunicado «bien escrito».
 - Un dato ancla (hp, unidades, ciudad, «el más…»): **máximo dos veces** en título + subtítulo + 5 bloques. La tercera es eco.
 - Inglés: traducir o explicar; no dejarlo suelto. Modos y paquetes: español primero, nombre oficial una vez entre paréntesis.
 - El bloque 1 no relista el subtítulo.
+- El cierre del bloque 5 no copia el título del bloque. Una palabra ancla del cierre (`vuelco`, `volca`) no se repite en título, medio y final.
 
 ---
 
@@ -242,7 +261,8 @@ Si las fotos son de versión internacional y el texto habla de Colombia: aclarar
 - [ ] hp, no cv; km/h, no mph suelto
 - [ ] Siglas de taller explicadas la primera vez
 - [ ] Dato ancla ≤ 2 veces
-- [ ] Bloque 5: encabezado = última frase; cierre con hecho (en `deportes`, emocional + beneficio concreto)
+- [ ] Bloque 5: encabezado y cierre = misma idea, no la misma frase; la última oración no copia el título del bloque; cierre con hecho (en `deportes`, emocional + beneficio concreto); se entiende sola
+- [ ] Primera lectura: sin inglés de taller suelto, sin metáfora rara, sin jerga de redacción («recorte de salón», «no puede copiar»), sin periodismo que en Colombia no se usa (buque insignia, zaga, recetas, salón, declara)
 - [ ] No cierra con «no llega a Colombia»
 - [ ] Categoría y ámbito coherentes
 - [ ] `spec_*` listos para pegar; vacíos marcados
@@ -300,7 +320,7 @@ Cada nota elige **un** trabajo. El resto va al resumen técnico.
 ### D. Recursos de ritmo (dentro de los 5 bloques)
 
 - **Dato para llevar:** el subtítulo ya es el recorte de 3 segundos (Google, WhatsApp). No agregues un TL;DR que lo copie.
-- **Puente, no catálogo:** la última oración de un bloque puede dejar el tema del siguiente (sonido → escape; zaga → baúl), sin spoilers baratos.
+- **Puente, no catálogo:** la última oración de un bloque puede dejar el tema del siguiente (sonido → escape; parte de atrás → baúl), sin spoilers baratos.
 - **Una rareza por nota:** el dato que el lector va a repetir (cuatro salidas de titanio, 170 litros, sin palanca). Ese es el cierre o el gancho; no los dos a la vez si es el mismo número.
 - **Transparencia:** «Aston no puso precio ni peso final en el dossier» construye más que inventar un rango.
 - **Recirculación:** al entregar, sugerir 1 nota hermana (archivo, rival, prueba) para «Notas relacionadas» — no un listado SEO.
@@ -326,5 +346,7 @@ Añadir una línea cada vez que una nota cambie el criterio. No borrar versiones
 | 2026-08 | Aston Martin Valen 2027 | Titular de expectativa, no de catálogo. Preguntar dudas antes. Categoría `deportes` en desvelo mundial de supercar. Explicar Q en la primera mención. Cierre deportivo emocional. Si no hay manual, explicar el beneficio de la automática para esa categoría. | §§0, 3, 6 (siglas), 7, 9 |
 | 2026-08 | Caja de alternativas | Una fórmula de titular + una apertura + una lente por nota. Lente Colombia sin robar el cierre. Tipos de nota según el tema. | §13 |
 | 2026-08 | Personalidad por nota | Cada tema se analiza; cada artículo tiene carácter propio. Los parámetros no se negocian; el menú no se aplica por rotación. | intro, §0, §13 |
+| 2026-08 | Nissan Pathfinder 2026 (Colombia) | El editor se detuvo en Latch and Glide, «cueza», «recorte de salón» y un cierre que no se entendía solo. Inglés de fábrica, metáfora rara y jerga de redacción no pasan a la página. Primera lectura en voz alta antes de entregar. | §6 (primera lectura), §12 |
+| 2026-08 | Genesis GV90 2027 | El editor se detuvo en buque insignia, eMP, recetas, zaga, salón (por interior) y declara. «Despedido» → «salga volando». El cierre del bloque 5 no copia el título del bloque: misma idea, no la misma frase. Códigos de plataforma al resumen, no al párrafo. | §§5–8, 12 (léxico Colombia, anti-eco del cierre) |
 
 _Próximo ajuste: copiar la fila, no reescribir el prompt entero salvo que el ADN cambie de raíz._

@@ -1,6 +1,8 @@
 import catalogData from "../data/automatch/autos.json";
 import specsData from "../data/automatch/specs.json";
 import { resolveAutomatchFichaHref } from "./automatch-fichas";
+import { buildVeredicto, type AutomatchVeredicto } from "./automatch-veredicto";
+import { estimateTcoPreview, type TcoPreview } from "./tco-calculator";
 
 export interface AutomatchDbNote {
   id: number | string;
@@ -27,6 +29,7 @@ export interface AutomatchCarouselItem {
   especificacionesId?: string;
   condicion?: string;
   precio?: number;
+  carroceria?: string;
   href: string;
   toolHref: string;
   ctaLabel: string;
@@ -105,6 +108,8 @@ export interface AutomatchCatalogVehicle {
   catalogId?: number;
   source: "catalog" | "note" | "merged";
   fichaHref?: string | null;
+  veredicto?: AutomatchVeredicto;
+  tco?: TcoPreview;
   concesionario: AutomatchConcesionario;
 }
 
@@ -150,6 +155,72 @@ export function normalizeAutomatchText(input = "") {
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
+}
+
+export type AutomatchCarroceria =
+  | "sedan"
+  | "hatchback"
+  | "suv"
+  | "pickup"
+  | "van";
+
+export function normalizeCarroceria(
+  value = "",
+): AutomatchCarroceria | "" {
+  const s = normalizeAutomatchText(value).replace(/-/g, " ");
+  if (!s) return "";
+  if (/\b(pick\s?up|pickup|lobo|f\s?150)\b/.test(s)) return "pickup";
+  if (/\b(van|minivan|mpv)\b/.test(s)) return "van";
+  if (/\b(hatch|hatchback)\b/.test(s)) return "hatchback";
+  if (/\b(sedan)\b/.test(s)) return "sedan";
+  if (/\b(suv|camioneta|crossover)\b/.test(s)) return "suv";
+  return "";
+}
+
+export function inferCarroceria(
+  ...parts: Array<string | null | undefined>
+): AutomatchCarroceria | "" {
+  const explicit = parts
+    .map((part) => normalizeCarroceria(part || ""))
+    .find(Boolean);
+  if (explicit) return explicit;
+
+  const haystack = normalizeAutomatchText(parts.filter(Boolean).join(" "));
+  if (!haystack) return "";
+
+  if (
+    /\b(f\s?150|lobo|hilux|ranger|amarok|frontier|montana|pickup|pick up)\b/.test(
+      haystack,
+    )
+  ) {
+    return "pickup";
+  }
+  if (
+    /\b(van|minivan|carnival|staria|alphard|mpv|kombis?)\b/.test(haystack)
+  ) {
+    return "van";
+  }
+  if (
+    /\b(onix|cooper|hatch|polo|golf|i20|fabia)\b/.test(haystack)
+  ) {
+    return "hatchback";
+  }
+  if (
+    /\b(versa|330e|megane|ez\s?6|corolla|civic|jetta|sentra|sedan)\b/.test(
+      haystack,
+    )
+  ) {
+    return "sedan";
+  }
+  if (
+    /\b(suv|prado|x.trail|bronco|escape|forester|blazer|kona|avenger|ex90|xc90|ev9|q7|e.tron|e.3008|sealion|icar|s05|2008|cx.5|seres|e5|smart|#5|camioneta|crossover)\b/.test(
+      haystack,
+    )
+  ) {
+    return "suv";
+  }
+
+  return "";
 }
 
 function normalizeImageUrl(url?: string | null): string | null {
@@ -328,6 +399,10 @@ export interface AutomatchMetaCatalog {
   condicion?: string;
   ciudad?: string;
   precio_cop?: string | number;
+  carroceria?: string;
+  veredicto_si?: string;
+  veredicto_no?: string;
+  veredicto_dato?: string;
 }
 
 export interface AutomatchNoteMeta {
@@ -366,6 +441,10 @@ function resolveCatalogFromNote(note: AutomatchDbNoteFull): AutomatchMetaCatalog
       note.spec_precio_cop ||
       note.spec_precio_estimado ||
       undefined,
+    carroceria: catalog.carroceria || undefined,
+    veredicto_si: catalog.veredicto_si || undefined,
+    veredicto_no: catalog.veredicto_no || undefined,
+    veredicto_dato: catalog.veredicto_dato || undefined,
   };
 }
 
@@ -389,6 +468,27 @@ function applyCatalogFields(
       ? normalizeAutomatchText(catalog.ciudad)
       : vehicle.ciudad,
     precio: precio > 0 ? precio : vehicle.precio,
+    carroceria: catalog.carroceria || vehicle.carroceria,
+  };
+}
+
+function attachMatchInsights(
+  vehicle: AutomatchCatalogVehicle,
+  specs: AutomatchSpecsMap,
+  catalog: AutomatchMetaCatalog = {},
+): AutomatchCatalogVehicle {
+  const spec = specs[vehicle.especificaciones_id] || {};
+  const fichaHref = vehicle.fichaHref || null;
+
+  return {
+    ...vehicle,
+    fichaHref,
+    veredicto: buildVeredicto(vehicle, spec, {
+      si: catalog.veredicto_si,
+      no: catalog.veredicto_no,
+      dato: catalog.veredicto_dato,
+    }),
+    tco: estimateTcoPreview(vehicle, spec),
   };
 }
 
@@ -441,9 +541,16 @@ export function buildAutomatchCarousel(
       especificacionesId: auto.especificaciones_id,
       condicion: auto.condicion || "nuevo",
       precio,
+      carroceria:
+        inferCarroceria(
+          auto.carroceria,
+          auto.nombre,
+          auto.descripcion,
+          (matchedNote as AutomatchDbNoteFull | undefined)?.spec_segmento,
+        ) || undefined,
       href: resolveCarouselFichaHref(auto.especificaciones_id, noteId),
       toolHref: "/automatch-find",
-      ctaLabel: "Ver modelo",
+      ctaLabel: "Infórmate antes de comprar",
       toolCtaLabel: "Usar AutoMatch",
       source: matchedNote ? "merged" : "catalog",
     });
@@ -482,9 +589,16 @@ export function buildAutomatchCarousel(
       noteId: Number(note.id),
       condicion: catalogMeta.condicion || "nuevo",
       precio: precio > 0 ? precio : undefined,
+      carroceria:
+        inferCarroceria(
+          note.title,
+          note.subtitle,
+          (note as AutomatchDbNoteFull).spec_segmento,
+          plain,
+        ) || undefined,
       href: `/notas/${note.id}`,
       toolHref: "/automatch-find",
-      ctaLabel: "Ver modelo",
+      ctaLabel: "Infórmate antes de comprar",
       toolCtaLabel: "Usar AutoMatch",
       source: "note",
     });
@@ -513,8 +627,8 @@ export function inferTipoFromMotorizacion(motorizacion = ""): string {
   if (m.includes("electr")) return "eléctrico";
   if (m.includes("hibrid") || m.includes("hybrid") || m.includes("enchuf"))
     return "híbrido";
-  if (m.includes("gasolina") || m.includes("diesel") || m.includes("combust"))
-    return "gasolina";
+  if (m.includes("diesel") || m.includes("diésel")) return "diésel";
+  if (m.includes("gasolina") || m.includes("combust")) return "gasolina";
   return "";
 }
 
@@ -623,7 +737,13 @@ function catalogAutoToVehicle(
     kilometraje: auto.kilometraje,
     placa: auto.placa,
     placa_ultimo_digito: auto.placa_ultimo_digito,
-    carroceria: auto.carroceria,
+    carroceria:
+      inferCarroceria(
+        auto.carroceria,
+        auto.nombre,
+        auto.descripcion,
+        matchedNote?.spec_segmento,
+      ) || auto.carroceria,
     transmision: auto.transmision,
     demo: auto.demo,
     imagen_principal: auto.imagen_principal,
@@ -690,6 +810,13 @@ function noteToVehicle(
       note.subtitle?.trim() ||
       stripHtml(note.content || "").slice(0, 220) ||
       note.title,
+    carroceria:
+      inferCarroceria(
+        note.title,
+        note.subtitle,
+        note.spec_segmento,
+        note.content,
+      ) || undefined,
     especificaciones_id: `note-${noteId}`,
     source: "note",
     concesionario: {
@@ -762,5 +889,13 @@ export function buildAutomatchCatalog(
     autos.push(vehicle);
   }
 
-  return { autos: sortCatalogVehicles(autos, dbNotes), specs };
+  const sorted = sortCatalogVehicles(autos, dbNotes).map((vehicle) => {
+    const note = dbNotes.find(
+      (entry) => vehicle.noteId && Number(entry.id) === Number(vehicle.noteId),
+    );
+    const catalog = note ? resolveCatalogFromNote(note) : {};
+    return attachMatchInsights(vehicle, specs, catalog);
+  });
+
+  return { autos: sorted, specs };
 }

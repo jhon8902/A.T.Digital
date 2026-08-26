@@ -1,0 +1,466 @@
+---
+const { auto, startHidden = false } = Astro.props;
+const imagenes = Array.isArray(auto?.imagenes) ? auto.imagenes : [];
+const imageCount = imagenes.length;
+---
+
+<article
+  class:list={["auto-card", { "is-hidden": startHidden }]}
+  data-id={auto.id}
+  data-condicion={auto.condicion || "nuevo"}
+  data-carroceria={auto.carroceria || ""}
+  data-precio={auto.precio != null ? String(auto.precio) : ""}
+  hidden={startHidden}
+>
+  <div class="auto-carousel-shell" data-count={String(imageCount)}>
+    <a
+      href={auto.href}
+      class="auto-card-cover"
+      tabindex="-1"
+      aria-hidden="true"
+    ></a>
+
+    <div class="auto-carousel">
+      {
+        imagenes.map((img: string, index: number) => (
+          <img
+            src={img}
+            alt={`${auto.nombre} — imagen ${index + 1}`}
+            class={`auto-img ${index === 0 ? "visible" : "hidden"}`}
+            loading="eager"
+            decoding="async"
+            fetchpriority={index === 0 ? "high" : "auto"}
+          />
+        ))
+      }
+    </div>
+
+    <button type="button" class="carousel-nav prev" aria-label="Imagen anterior">
+      <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="carousel-nav next" aria-label="Imagen siguiente">
+      <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+    </button>
+
+    <div class="carousel-meta-bar">
+      <div class="carousel-dots" aria-label="Navegacion de imagenes">
+        {
+          imagenes.map((_: string, index: number) => (
+            <button
+              type="button"
+              class={`carousel-dot ${index === 0 ? "active" : ""}`}
+              data-index={String(index)}
+              aria-label={`Ir a la imagen ${index + 1}`}
+            />
+          ))
+        }
+      </div>
+      <span class="carousel-counter">1 / {imageCount}</span>
+    </div>
+
+    <div class="auto-card-copy">
+      <p class="auto-card-kicker">{auto.condicionLabel}</p>
+      <h3>
+        <a href={auto.href} class="auto-card-heading">
+          {auto.nombre}
+        </a>
+      </h3>
+      <p class="auto-card-price">
+        {
+          auto.precioLabel ? (
+            <>
+              <span class="auto-card-price__label">Desde</span>
+              <span class="auto-card-price__value">{auto.precioLabel}</span>
+            </>
+          ) : null
+        }
+      </p>
+      <span class="auto-card-cta">
+        {auto.ctaLabel}
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </span>
+    </div>
+  </div>
+</article>
+
+<style>
+  .auto-card {
+    display: block;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    position: relative;
+    isolation: isolate;
+  }
+
+  .auto-card[hidden],
+  .auto-card.is-hidden {
+    display: none !important;
+  }
+
+  .auto-card:hover {
+    transform: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .auto-carousel-shell {
+    position: relative;
+    border-radius: 2px;
+    overflow: hidden;
+    background: #0c1611;
+    margin: 0;
+  }
+
+  .auto-carousel-shell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    height: auto;
+    background: linear-gradient(
+      to top,
+      rgba(6, 16, 12, 0.96) 0%,
+      rgba(6, 16, 12, 0.78) 28%,
+      rgba(6, 16, 12, 0.28) 52%,
+      transparent 74%
+    );
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .auto-card-cover {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+  }
+
+  .auto-card-cover:focus-visible {
+    outline: 2px solid #e6b410;
+    outline-offset: -2px;
+  }
+
+  .auto-carousel {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(90deg, #1a2420 25%, #24302b 50%, #1a2420 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+  }
+
+  @keyframes skeleton-loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  .auto-carousel.loaded {
+    background: none;
+    animation: none;
+  }
+
+  .auto-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    object-fit: cover;
+    object-position: center 55%;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(1);
+    transition:
+      opacity 0.45s ease,
+      visibility 0.45s ease,
+      transform 0.7s ease;
+  }
+
+  .auto-card:hover .auto-img.visible {
+    transform: scale(1.045);
+  }
+
+  .auto-img.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    z-index: 1;
+  }
+
+  .auto-img.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .auto-img.entering {
+    animation: autoImageIn 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes autoImageIn {
+    0% {
+      opacity: 0.25;
+      transform: scale(1.03);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .auto-card-copy {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 4;
+    padding: 1.2rem 1.1rem 1.05rem;
+    pointer-events: none;
+    text-align: left;
+  }
+
+  .auto-card-copy::before {
+    content: "";
+    display: block;
+    width: 2.1rem;
+    height: 1px;
+    background: #e6b410;
+    margin-bottom: 0.7rem;
+  }
+
+  .auto-card-kicker {
+    margin: 0 0 0.32rem;
+    font-family: var(--font-body, "Source Sans 3", sans-serif);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #f0c14a;
+  }
+
+  .auto-card-copy h3 {
+    margin: 0 0 0.38rem;
+    max-width: none;
+    font-family: var(--font-display, "Newsreader", Georgia, serif);
+    font-size: clamp(1.22rem, 1.9vw, 1.48rem);
+    font-weight: 600;
+    line-height: 1.18;
+    letter-spacing: -0.025em;
+    text-transform: none;
+    color: #fff;
+  }
+
+  .auto-card-heading {
+    color: inherit;
+    text-decoration: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    pointer-events: auto;
+  }
+
+  .auto-card-heading:focus-visible {
+    outline: 2px solid #e6b410;
+    outline-offset: 3px;
+  }
+
+  .auto-card-price {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 0.4rem;
+    margin: 0 0 0.7rem;
+    padding: 0;
+    min-height: 1.15rem;
+    text-align: left;
+  }
+
+  .auto-card-price__label {
+    font-family: var(--font-body, "Source Sans 3", sans-serif);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.58);
+  }
+
+  .auto-card-price__value {
+    font-family: var(--font-body, "Source Sans 3", sans-serif);
+    font-size: 0.98rem;
+    font-weight: 600;
+    line-height: 1.15;
+    color: #fff;
+    letter-spacing: 0;
+  }
+
+  .auto-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+    padding: 0;
+    border-radius: 0;
+    font-family: var(--font-body, "Source Sans 3", sans-serif);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: #f0c14a;
+    background: none;
+    text-decoration: none;
+  }
+
+  .auto-card-cta i {
+    font-size: 0.68rem;
+    transition: transform 0.2s ease;
+  }
+
+  .auto-card:hover .auto-card-cta i {
+    transform: translateX(4px);
+  }
+
+  .carousel-nav {
+    position: absolute;
+    top: 38%;
+    transform: translateY(-50%);
+    z-index: 5;
+    flex: none;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    border-radius: 50%;
+    padding: 0;
+    cursor: pointer;
+    color: #fff;
+    background: rgba(8, 20, 14, 0.38);
+    box-shadow: none;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    transition:
+      opacity 0.2s ease,
+      background 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .carousel-nav.prev {
+    left: 0.65rem;
+  }
+
+  .carousel-nav.next {
+    right: 0.65rem;
+  }
+
+  .carousel-nav i {
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .carousel-nav:hover {
+    background: rgba(8, 20, 14, 0.7);
+    color: #fff;
+    border-color: rgba(240, 193, 74, 0.7);
+    transform: translateY(-50%);
+    box-shadow: none;
+  }
+
+  .carousel-nav:active {
+    transform: translateY(-50%) scale(0.96);
+  }
+
+  .auto-card:hover .carousel-nav,
+  .auto-card:focus-within .carousel-nav {
+    opacity: 1;
+  }
+
+  .carousel-meta-bar {
+    position: absolute;
+    top: 0.7rem;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0 0.8rem;
+    pointer-events: none;
+  }
+
+  .carousel-dots {
+    display: flex;
+    align-items: center;
+    gap: 0.38rem;
+    pointer-events: auto;
+  }
+
+  .carousel-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    border: none;
+    background: rgba(255, 255, 255, 0.42);
+    cursor: pointer;
+    transition:
+      width 0.2s ease,
+      background-color 0.2s ease;
+    padding: 0;
+  }
+
+  .carousel-dot:hover {
+    background: rgba(255, 255, 255, 0.75);
+  }
+
+  .carousel-dot.active {
+    width: 16px;
+    background: #e6b410;
+    opacity: 1;
+  }
+
+  .carousel-counter {
+    font-family: var(--font-body, "Source Sans 3", sans-serif);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.82);
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    white-space: nowrap;
+    backdrop-filter: none;
+    pointer-events: none;
+  }
+
+  .auto-carousel-shell[data-count="1"] .carousel-nav,
+  .auto-carousel-shell[data-count="1"] .carousel-meta-bar {
+    display: none;
+  }
+
+  @media (hover: none) {
+    .carousel-nav {
+      opacity: 0.88;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .auto-img,
+    .auto-img.entering,
+    .auto-card:hover .auto-img.visible {
+      animation: none;
+      transition: none;
+      transform: none;
+    }
+  }
+</style>

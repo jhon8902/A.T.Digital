@@ -239,12 +239,54 @@ export function rankVehicles(vehicles, prefs, options = {}) {
   };
 }
 
-export function buildMatchSummary(breakdown, prefs) {
+export function buildMatchReasons(breakdown, prefs) {
+  const reasons = [];
+  const tipoItem = breakdown.find((item) => item.label === "Tipo de motor");
+  const precioItem = breakdown.find((item) => item.label === "Presupuesto");
   const usoItem = breakdown.find((item) => item.label === "Tipo de uso");
-  if (usoItem && !usoItem.ok) {
-    return `No hay ${prefs.tipo} ${prefs.uso} en catálogo. Te mostramos el ${prefs.tipo} más cercano a tu perfil.`;
+  const ciudadItem = breakdown.find((item) => item.label === "Ciudad");
+  const placaItem = breakdown.find((item) => item.label === "Placa");
+  const kmItem = breakdown.find((item) => item.label === "Kilometraje");
+
+  if (tipoItem?.ok) {
+    reasons.push(`Pediste ${prefs.tipo} y este modelo entra en esa categoría.`);
   }
-  return "Tu mejor coincidencia según tu perfil";
+
+  if (precioItem?.ok) {
+    reasons.push("El precio queda dentro de tu presupuesto.");
+  } else if (precioItem) {
+    reasons.push("El precio se sale un poco de tu rango, pero es la mejor opción del tipo que pediste.");
+  }
+
+  if (usoItem?.ok) {
+    reasons.push(`Encaja con el uso que marcaste: ${prefs.uso}.`);
+  } else if (usoItem) {
+    reasons.push(
+      `No hay ${prefs.tipo} para ${prefs.uso} en el catálogo. Te mostramos el ${prefs.tipo} más cercano a tu perfil.`,
+    );
+  }
+
+  if (ciudadItem?.ok) {
+    reasons.push(`Hay referencia de disponibilidad en ${prefs.ciudad}.`);
+  }
+
+  if (placaItem?.ok && placaItem.detail) {
+    reasons.push(placaItem.detail);
+  }
+
+  if (kmItem?.ok && kmItem.detail) {
+    reasons.push(`Kilometraje ${kmItem.detail}.`);
+  }
+
+  return reasons.slice(0, 4);
+}
+
+export function buildMatchSummary(breakdown, prefs) {
+  const reasons = buildMatchReasons(breakdown, prefs);
+  if (reasons.length === 0) {
+    return "Tu mejor coincidencia según tu perfil.";
+  }
+  return reasons[0];
 }
 
 export function relaxSearchFilters(prefs) {

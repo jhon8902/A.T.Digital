@@ -647,12 +647,30 @@ body.home-page .automatch-promo__copy p:last-child {
   font-size: var(--home-card-body);
 }
 
-/* AutoMatch en home — fichas con relieve editorial (preview) */
+/* AutoMatch en home — un solo bloque (hero + destacados) */
 body.home-page #automatch {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
   overflow: visible;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(230, 180, 16, 0.18), transparent),
+    linear-gradient(165deg, #062818 0%, #08341f 45%, #0a4228 100%);
+  padding-bottom: clamp(1.5rem, 3vw, 2.25rem);
 }
 
-body.home-page #automatch .automatch-section--cards {
+body.home-page #automatch .automatch-home {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: none;
+  background: transparent;
+}
+
+body.home-page #automatch .automatch-section.automatch-section--cards {
+  width: min(96%, 1760px) !important;
+  margin: 0 auto !important;
+  padding-top: clamp(1.1rem, 2vw, 1.45rem) !important;
   background-color: var(--home-section-bg) !important;
   background-image: var(--home-relief-image) !important;
   background-size: var(--home-relief-size) !important;

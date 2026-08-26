@@ -29,7 +29,9 @@ const cloudinaryVideoFolder =
           <p class="form-lead">
             Completa los campos para publicar una nueva nota y ubicarla en la
             categoría correcta. El borrador se guarda solo en este navegador
-            durante 1 hora, por si tardas con las fotos.
+            durante 24 horas, por si tardas con las fotos. Para otra nota,
+            pulsa <strong>Nueva nota</strong>: no se borra lo ya publicado o
+            programado.
           </p>
           <div class="header-tags">
             <span>Editor</span>
@@ -253,6 +255,9 @@ const cloudinaryVideoFolder =
               <button type="button" id="loadNoteBtn" class="btn-secondary">
                 Cargar Nota
               </button>
+              <button type="button" id="newNoteBtn" class="btn-light">
+                Nueva nota
+              </button>
               <button
                 type="button"
                 id="deleteNoteBtn"
@@ -340,8 +345,8 @@ const cloudinaryVideoFolder =
               técnico, galería y pie). No hace falta escribir párrafos largos:
               puedes dejar <em>Párrafos de la ficha</em> vacío y cargar casi todo
               en <em>Resumen técnico</em>. Obligatorio: título, subtítulo, imagen 1,
-              tipo/uso/precio del buscador y los campos del resumen técnico que
-              quieras mostrar (potencia, autonomía, 0–100, etc.).
+              tipo/uso/precio del buscador, el veredicto A.T. y los campos del
+              resumen técnico que quieras mostrar (potencia, autonomía, 0–100, etc.).
             </p>
           </div>
 
@@ -359,6 +364,15 @@ const cloudinaryVideoFolder =
                 required
               ></textarea>
             </label>
+            <div id="automatchTemplateRow" class="automatch-template-row" hidden>
+              <button type="button" id="automatchTemplateBtn" class="btn-secondary">
+                Insertar plantilla de ficha
+              </button>
+              <p class="storage-tip">
+                Cinco bloques para decidir, no para vender. No inventa cifras:
+                las escribes tú o van al resumen técnico.
+              </p>
+            </div>
           </div>
 
           <div class="form-section">
@@ -436,13 +450,8 @@ const cloudinaryVideoFolder =
             <legend>Datos para el buscador AutoMatch</legend>
             <p class="storage-tip">
               Estos campos alimentan <strong>/automatch-find</strong>. Tipo, uso,
-              condición, ciudad y precio definen el match. Si el título coincide
-              con un modelo del catálogo base, estos valores tienen prioridad.
-            </p>
-            <p class="storage-tip">
-              Tras cambios en el catálogo base (JSON), ejecuta
-              <code>npm run catalog:seed-dealers</code> para sincronizar
-              concesionarios y leads en la base de datos.
+              condición, ciudad, precio y carrocería definen el match. Cada nota
+              AutoMatch es un auto en el catálogo; no hace falta duplicarla en JSON.
             </p>
             <div class="grid-2">
               <label>
@@ -452,6 +461,7 @@ const cloudinaryVideoFolder =
                   <option value="eléctrico">Eléctrico</option>
                   <option value="híbrido">Híbrido</option>
                   <option value="gasolina">Gasolina</option>
+                  <option value="diésel">Diésel</option>
                 </select>
               </label>
 
@@ -494,7 +504,50 @@ const cloudinaryVideoFolder =
                   required
                 />
               </label>
+
+              <label>
+                Carrocería
+                <select name="automatch_carroceria">
+                  <option value="">Sin especificar</option>
+                  <option value="suv">SUV / camioneta</option>
+                  <option value="sedan">Sedán</option>
+                  <option value="hatchback">Hatchback</option>
+                  <option value="pickup">Pick-up</option>
+                  <option value="van">Van</option>
+                </select>
+              </label>
+
+              <label class="grid-span-2">
+                Veredicto A.T. — para quién sí
+                <textarea
+                  name="automatch_veredicto_si"
+                  rows="2"
+                  placeholder="Ej: Para quien se mueve en Bogotá y puede cargar en casa."
+                ></textarea>
+              </label>
+
+              <label class="grid-span-2">
+                Veredicto A.T. — para quién no
+                <textarea
+                  name="automatch_veredicto_no"
+                  rows="2"
+                  placeholder="Ej: No es para quien viaja cada semana por carretera sin red de carga."
+                ></textarea>
+              </label>
+
+              <label class="grid-span-2">
+                Veredicto A.T. — dato que la ficha no dice
+                <textarea
+                  name="automatch_veredicto_dato"
+                  rows="2"
+                  placeholder="Ej: El baúl pierde litros por la batería; en ciudad igual rinde."
+                ></textarea>
+              </label>
             </div>
+            <p class="storage-tip">
+              El concesionario se vincula después en el panel de dealers, no en
+              este formulario.
+            </p>
           </fieldset>
 
           <fieldset id="automatchTextGroup" class="group-box" hidden>
@@ -1137,6 +1190,7 @@ spec_precio_cop: $262.900.000`}
 
         .edit-actions {
           display: flex;
+          flex-wrap: wrap;
           gap: 8px;
           align-items: stretch;
         }
@@ -1267,6 +1321,16 @@ spec_precio_cop: $262.900.000`}
 
         .grid-span-2 {
           grid-column: 1 / -1;
+        }
+
+        .automatch-template-row {
+          margin: 10px 0 0;
+          display: grid;
+          gap: 6px;
+        }
+
+        .automatch-template-row .btn-secondary {
+          width: fit-content;
         }
 
         .spec-import-panel {
@@ -1899,7 +1963,7 @@ spec_precio_cop: $262.900.000`}
         }
       </style>
 
-      <script src="/js/formulario.js?v=6" defer></script>
+      <script src="/js/formulario.js?v=7" defer></script>
     </main>
   </body>
 </html>

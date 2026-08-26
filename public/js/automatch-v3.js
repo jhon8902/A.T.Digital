@@ -2,45 +2,45 @@ import { submitTestDrive } from "./test-drive-submit.js";
 import {
   rankVehicles,
   buildMatchSummary,
+  buildMatchReasons,
   formatVehicleMeta,
   relaxSearchFilters,
 } from "./automatch-match.js";
+import { trackAutomatchEvent } from "./automatch-funnel.js";
+import {
+  buildVeredicto,
+  estimateTcoPreview,
+  renderVeredictoHtml,
+  renderTcoHtml,
+  withFromParam,
+  formatCopCompact,
+} from "./automatch-insights.js";
 console.log("AutoMatch v3 cargado.");
-
-const FICHA_HREFS = {
-  "renault-megane": "/notas-electricos/nota-renault-megane",
-  "bmw-330e": "/noticias-carrusel/noticia-bmw",
-  "mini-cooper-se": "/notas-electricos/nota-mini-cooper",
-  "toyota-prado": "/noticias-nacionales/noticia-toyota-prado",
-  "volvo-ex90": "/notas-electricos/nota-volvo-ex90",
-  "nissan-xtrail": "/notas-hibridos/nota-nissan",
-  "ford-bronco": "/noticias-carrusel/noticia-ford",
-  "peugeot-e3008": "/notas-electricos/nota-peugeot-e3008",
-  "byd-sealion7": "/notas-electricos/nota-byd-sealion7",
-  "hyundai-kona-hibrida": "/notas-hibridos/nota-kona",
-  "kia-ev9": "/noticias-nacionales/noticia-kia-ev9",
-  "jeep-avenger": "/noticias-nacionales/noticia-jeep-avenger",
-  "mazda-ez6": "/noticias-nacionales/noticia-mazda-ez6",
-  "audi-q7-hibrida": "/notas-hibridos/nota-audi-q7",
-  "subaru-forester-hibrida": "/notas-hibridos/nota-subaru",
-  "volvo-xc90-hibrida": "/notas-hibridos/nota-volvo-cx90",
-  "ford-escape-hibrida": "/notas-hibridos/nota-scape",
-  "dfsk-seres-e5": "/noticias-carrusel/noticia-dfsk",
-  "audi-etron": "/noticias-carrusel/noticia-audi",
-  "ford-f150": "/noticias-nacionales/noticia-ford-f150",
-  "smart-5-electrico": "/notas-electricos/nota-smart-5",
-  "chery-e5": "/notas-electricos/nota-chery-e5",
-  "deepal-s05": "/notas-electricos/nota-deepal-s05",
-};
 
 function resolveFichaHref(auto) {
   if (auto?.fichaHref) return auto.fichaHref;
-  const staticHref = auto?.especificaciones_id
-    ? FICHA_HREFS[auto.especificaciones_id]
-    : null;
-  if (staticHref) return staticHref;
   if (auto?.noteId) return `/notas/${auto.noteId}`;
+  if (auto?.especificaciones_id) {
+    return `/automatch/ficha/${auto.especificaciones_id}`;
+  }
   return null;
+}
+
+function isEditorialNoteHref(href, auto) {
+  if (auto?.noteId) return true;
+  return Boolean(href && (href.includes("/notas") || href.includes("/noticia")));
+}
+
+function tcoHrefForAuto(auto) {
+  const id = auto?.catalogId || auto?.id;
+  const params = new URLSearchParams();
+  if (id != null && id !== "") params.set("auto", String(id));
+  if (auto?.nombre) params.set("nombre", auto.nombre);
+  if (typeof auto?.precio === "number" && auto.precio > 0) {
+    params.set("precio", String(auto.precio));
+  }
+  const query = params.toString();
+  return query ? `/calculadora-tco?${query}` : "/calculadora-tco";
 }
 
 function buildMapsUrl(concesionario = {}) {
@@ -323,8 +323,22 @@ async function runSearch(prefs, { scrollToResults = true } = {}) {
   if (best) {
     const mejorAuto = best.vehicle;
     const matchPercentage = best.match.score;
-    const specs = specsData[mejorAuto.especificaciones_id] || {};
+    const specs =
+      specsData[mejorAuto.especificaciones_id] ||
+      specsData[mejorAuto.especificaciones_id] ||
+      {};
     const matchSummary = buildMatchSummary(best.match.breakdown, prefs);
+
+    trackAutomatchEvent("match_view", {
+      auto_id: mejorAuto.catalogId || mejorAuto.id,
+      note_id: mejorAuto.noteId,
+      dealer_id: mejorAuto.concesionario?.id,
+      tipo: prefs.tipo,
+      uso: prefs.uso,
+      ciudad: prefs.ciudad,
+      presupuesto: prefs.presupuesto,
+      score: matchPercentage,
+    });
 
     userProfile.addLike(mejorAuto.id, mejorAuto);
     mostrarResultado(
@@ -336,10 +350,7 @@ async function runSearch(prefs, { scrollToResults = true } = {}) {
     );
 
     if (alternativas.length > 0) {
-      mostrarAlternativas(
-        alternativas.map((item) => item.vehicle),
-        specsData,
-      );
+      mostrarAlternativas(alternativas, specsData, prefs);
     }
 
     if (btnNuevaBusqueda) btnNuevaBusqueda.hidden = false;
@@ -357,6 +368,13 @@ async function runSearch(prefs, { scrollToResults = true } = {}) {
     tipoCount === 0
       ? `No hay vehículos ${prefs.tipo} en el catálogo todavía.`
       : `Hay ${tipoCount} ${prefs.tipo}(s), pero ninguno cumple condición, placa, kilometraje, presupuesto u otros filtros.`;
+
+  trackAutomatchEvent("match_empty", {
+    tipo: prefs.tipo,
+    uso: prefs.uso,
+    ciudad: prefs.ciudad,
+    presupuesto: prefs.presupuesto,
+  });
 
   resultado.innerHTML = `
     <div class="auto-card auto-card--empty">
@@ -397,6 +415,12 @@ if (form) {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const prefs = getPrefsFromForm();
+    trackAutomatchEvent("search", {
+      tipo: prefs.tipo,
+      uso: prefs.uso,
+      ciudad: prefs.ciudad,
+      presupuesto: prefs.presupuesto,
+    });
     await runSearch(prefs);
   });
 }
@@ -406,6 +430,27 @@ function mostrarResultado(auto, specs, matchPercentage, breakdown = [], matchSum
                          auto.condicion === "seminuevo" ? "Seminuevo" : "Usado certificado";
   const galleryImages = buildGalleryImages(auto);
   const fichaHref = resolveFichaHref(auto);
+  const editorialNote = isEditorialNoteHref(fichaHref, auto);
+  const fichaLabel = editorialNote ? "Leer la nota completa" : "Ver ficha del modelo";
+  const tcoHref = tcoHrefForAuto(auto);
+  const fichaHrefTracked = fichaHref ? withFromParam(fichaHref) : "";
+  const veredicto = buildVeredicto(auto, specs, lastPrefs || {});
+  const tco = estimateTcoPreview(auto, specs, lastPrefs?.uso);
+  const veredictoHTML = renderVeredictoHtml(veredicto);
+  const tcoHTML = renderTcoHtml(tco, tcoHref, auto);
+  const autoTrackId = auto.catalogId || auto.id || "";
+  const reasons = lastPrefs
+    ? buildMatchReasons(breakdown, lastPrefs)
+    : [];
+  const reasonsHTML = reasons.length
+    ? `
+    <div class="match-why">
+      <h4>Por qué te lo recomendamos</h4>
+      <ul>
+        ${reasons.map((reason) => `<li>${reason}</li>`).join("")}
+      </ul>
+    </div>`
+    : "";
   const metaChips = formatVehicleMeta(auto);
   const metaHTML = metaChips.length
     ? `<div class="auto-meta-chips" aria-label="Datos del vehículo">${metaChips
@@ -446,8 +491,6 @@ function mostrarResultado(auto, specs, matchPercentage, breakdown = [], matchSum
     </div>
   `     : "";
 
-  const summaryText =
-    matchSummary || "Tu mejor coincidencia según tu perfil";
   const mapsUrl = buildMapsUrl(auto.concesionario);
   const sedeLine = auto.concesionario.sede
     ? `<p class="concesionario-sede"><i class="fa-solid fa-building" aria-hidden="true"></i> ${auto.concesionario.sede}</p>`
@@ -502,7 +545,22 @@ function mostrarResultado(auto, specs, matchPercentage, breakdown = [], matchSum
         <div class="match-percentage" style="opacity: 0;">
           ${Math.round(matchPercentage)}% compatibilidad
         </div>
-        <p class="match-text">${summaryText}</p>
+        ${reasonsHTML}
+        ${veredictoHTML}
+        ${tcoHTML}
+
+        <div class="result-next">
+          <p class="result-next__label">Siguiente paso</p>
+          <div class="result-next__actions">
+            ${fichaHrefTracked ? `
+            <a href="${fichaHrefTracked}" class="btn-contact btn-ficha btn-contact--primary" data-automatch-track="ficha_click" data-auto-id="${autoTrackId}">
+              <i class="fa-solid fa-file-lines" aria-hidden="true"></i> ${fichaLabel}
+            </a>` : ""}
+            <a href="${tcoHref}" class="btn-contact btn-tco" data-automatch-track="tco_click" data-auto-id="${autoTrackId}">
+              <i class="fa-solid fa-calculator" aria-hidden="true"></i> Calcular costo de uso
+            </a>
+          </div>
+        </div>
 
         <div class="concesionario-info">
           <h4><i class="fa-solid fa-store" aria-hidden="true"></i> ${auto.concesionario.nombre}</h4>
@@ -513,7 +571,8 @@ function mostrarResultado(auto, specs, matchPercentage, breakdown = [], matchSum
 
           <div class="botones-contacto botones-contacto--primary">
             <a href="https://wa.me/${auto.concesionario.whatsapp}?text=Hola,%20me%20interesa%20el%20${encodeURIComponent(auto.nombre)}"
-               class="btn-contact whatsapp btn-contact--primary" target="_blank" rel="noopener">
+               class="btn-contact whatsapp btn-contact--primary" target="_blank" rel="noopener"
+               data-automatch-track="whatsapp_click" data-auto-id="${autoTrackId}">
               <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp
             </a>
             ${mapsUrl ? `
@@ -523,10 +582,6 @@ function mostrarResultado(auto, specs, matchPercentage, breakdown = [], matchSum
           </div>
 
           <div class="botones-contacto botones-contacto--secondary">
-            ${fichaHref ? `
-            <a href="${fichaHref}" class="btn-contact btn-ficha">
-              <i class="fa-solid fa-file-lines" aria-hidden="true"></i> Ver modelo
-            </a>` : ""}
             <a href="mailto:${auto.concesionario.email}?subject=Consulta%20sobre%20${encodeURIComponent(auto.nombre)}"
                class="btn-contact email">
               <i class="fa-regular fa-envelope" aria-hidden="true"></i> Email
@@ -590,32 +645,50 @@ function mostrarResultado(auto, specs, matchPercentage, breakdown = [], matchSum
 }
 
 // ========== MOSTRAR ALTERNATIVAS ==========
-function mostrarAlternativas(alternativas, specs) {
+function mostrarAlternativas(alternativas, specs, prefs) {
   const contenedor = document.createElement("div");
   contenedor.classList.add("alternativas-section");
   contenedor.innerHTML = `
     <h3><i class="fa-solid fa-car-rear" aria-hidden="true"></i> Otras opciones que también te pueden interesar</h3>
     <div class="alternativas-grid">
-      ${alternativas.map(auto => {
+      ${alternativas.map((item) => {
+        const auto = item.vehicle || item;
+        const match = item.match;
         const fichaHref = resolveFichaHref(auto);
+        const editorialNote = isEditorialNoteHref(fichaHref, auto);
+        const fichaLabel = editorialNote ? "Leer la nota" : "Ver ficha";
+        const tcoHref = tcoHrefForAuto(auto);
+        const tco = estimateTcoPreview(auto, specs[auto.especificaciones_id] || specs[auto.especificaciones_id] || {}, prefs?.uso);
+        const fichaHrefTracked = fichaHref ? withFromParam(fichaHref) : "";
+        const autoTrackId = auto.catalogId || auto.id || "";
         const imagen = encodeImgSrc(auto.imagen_principal);
         const meta = formatVehicleMeta(auto).slice(0, 3).join(" · ");
+        const why = prefs && match?.breakdown
+          ? buildMatchReasons(match.breakdown, prefs)[0]
+          : "";
+        const score = match?.score != null ? `${Math.round(match.score)}%` : "";
         return `
         <div class="auto-alternativa">
-          ${fichaHref ? `<a href="${fichaHref}" class="auto-alternativa__media">` : '<div class="auto-alternativa__media">'}
+          ${fichaHrefTracked ? `<a href="${fichaHrefTracked}" class="auto-alternativa__media" data-automatch-track="ficha_click" data-auto-id="${autoTrackId}">` : '<div class="auto-alternativa__media">'}
             <img src="${imagen}" alt="${auto.nombre}" loading="lazy">
-          ${fichaHref ? "</a>" : "</div>"}
+          ${fichaHrefTracked ? "</a>" : "</div>"}
           <div class="auto-alternativa__body">
             <h4>${auto.nombre}</h4>
             <p class="tipo-uso">${auto.tipo} | ${auto.uso}${meta ? ` · ${meta}` : ""}</p>
             <p class="precio">$${auto.precio.toLocaleString()} COP</p>
+            ${score ? `<p class="auto-alternativa__score">${score} de compatibilidad</p>` : ""}
+            ${tco?.mensual ? `<p class="auto-alternativa__tco">~${formatCopCompact(tco.mensual)} / mes de uso</p>` : ""}
+            ${why ? `<p class="auto-alternativa__why">${why}</p>` : ""}
             <p class="auto-alternativa__desc">${auto.descripcion}</p>
             <div class="auto-alternativa__actions">
-              ${fichaHref ? `<a href="${fichaHref}" class="btn-ficha-small">Ver modelo completo</a>` : ""}
+              ${fichaHrefTracked ? `<a href="${fichaHrefTracked}" class="btn-ficha-small" data-automatch-track="ficha_click" data-auto-id="${autoTrackId}">${fichaLabel}</a>` : ""}
+              <a href="${tcoHref}" class="btn-ficha-small btn-ficha-small--ghost" data-automatch-track="tco_click" data-auto-id="${autoTrackId}">Costo de uso</a>
+              ${auto.concesionario?.whatsapp ? `
               <a href="https://wa.me/${auto.concesionario.whatsapp}?text=Hola,%20me%20interesa%20el%20${encodeURIComponent(auto.nombre)}" 
-                 class="btn-contact-small whatsapp" target="_blank" rel="noopener">
+                 class="btn-contact-small whatsapp" target="_blank" rel="noopener"
+                 data-automatch-track="whatsapp_click" data-auto-id="${autoTrackId}">
                 Contactar
-              </a>
+              </a>` : ""}
             </div>
           </div>
         </div>`;
@@ -698,6 +771,13 @@ function setupTestDrive(auto) {
           feedback.className = "test-drive-feedback is-success";
         }
         form.reset();
+        trackAutomatchEvent("test_drive", {
+          auto_id: auto.catalogId || auto.id,
+          note_id: auto.noteId,
+          dealer_id: auto.concesionario?.id,
+          ciudad: payload.ciudad,
+          source: "automatch",
+        });
       } else if (feedback) {
         feedback.textContent = result.error || "Error al enviar. Intenta después.";
         feedback.className = "test-drive-feedback is-error";

@@ -1,6 +1,14 @@
 ---
-const { autos: incomingAutos = [], mode = "home" } = Astro.props;
+import AutoMatchCard from "./AutoMatchCard.astro";
+
+const {
+  autos: incomingAutos = [],
+  mode = "home",
+  /** En el home del sitio: h2 + copy más suave (producto en evolución). */
+  embedded = false,
+} = Astro.props;
 const HOME_VISIBLE_COUNT = 3;
+const TitleTag = embedded ? "h2" : "h1";
 
 function stripHtml(input = "") {
   return String(input)
@@ -18,6 +26,13 @@ function formatCardPrecio(value?: number) {
   }).format(value);
 }
 
+function formatCondicionLabel(value?: string) {
+  const key = String(value || "nuevo").toLowerCase();
+  if (key === "seminuevo") return "Seminuevo";
+  if (key === "usado") return "Usado";
+  return "Nuevo";
+}
+
 const normalizedIncoming = Array.isArray(incomingAutos)
   ? incomingAutos
       .map((auto, index) => {
@@ -33,11 +48,17 @@ const normalizedIncoming = Array.isArray(incomingAutos)
           imagenes: images.length > 0 ? images : ["/img/default.jpg"],
           href: String(auto?.href || "/automatch-find"),
           toolHref: String(auto?.toolHref || "/automatch-find"),
-          ctaLabel: String(auto?.ctaLabel || "Ver modelo"),
+          ctaLabel: String(auto?.ctaLabel || "Infórmate antes de comprar"),
           toolCtaLabel: String(auto?.toolCtaLabel || "Usar AutoMatch"),
           catalogId: auto?.catalogId,
           noteId: auto?.noteId,
           condicion: String(auto?.condicion || "nuevo"),
+          condicionLabel: formatCondicionLabel(auto?.condicion),
+          carroceria: String(auto?.carroceria || ""),
+          precio:
+            typeof auto?.precio === "number" && auto.precio > 0
+              ? auto.precio
+              : 0,
           precioLabel: formatCardPrecio(
             typeof auto?.precio === "number" ? auto.precio : undefined,
           ),
@@ -48,8 +69,7 @@ const normalizedIncoming = Array.isArray(incomingAutos)
 
 const mergedAutos = normalizedIncoming;
 
-const autosToRender =
-  mode === "archive" ? mergedAutos : mergedAutos.slice(0, HOME_VISIBLE_COUNT);
+const autosToRender = mergedAutos;
 
 const catalogFilters = [
   { id: "todos", label: "Todos" },
@@ -58,20 +78,43 @@ const catalogFilters = [
   { id: "usado", label: "Usados" },
 ];
 
+const bodyFilters = [
+  { id: "todos", label: "Todas" },
+  { id: "sedan", label: "Sedán" },
+  { id: "hatchback", label: "Hatchback" },
+  { id: "suv", label: "SUV" },
+  { id: "pickup", label: "Pick-up" },
+  { id: "van", label: "Van" },
+];
+
+const priceFilters = [
+  { id: "todos", label: "Todos" },
+  { id: "50-90", label: "$50 – $90 mill." },
+  { id: "91-149", label: "$91 – $149 mill." },
+  { id: "hasta-150", label: "Hasta $150 mill." },
+  { id: "150-250", label: "$150 – $250 mill." },
+  { id: "mas-250", label: "Más de $250 mill." },
+];
+
 const searchCtaLabel = "Buscar auto para comprar";
 ---
 
 {
   mode === "home" ? (
-    <div class="automatch-home">
+    <div class:list={["automatch-home", embedded && "automatch-home--embedded"]}>
       <header class="automatch-hero">
-        <p class="automatch-hero__eyebrow">Herramienta inteligente · Colombia</p>
-        <h1 class="automatch-hero__title">
+        <p class="automatch-hero__eyebrow">
+          {embedded
+            ? "Herramienta en evolución · Colombia"
+            : "Herramienta inteligente · Colombia"}
+        </p>
+        <TitleTag class="automatch-hero__title">
           Encuentra tu auto ideal con <span>AutoMatch</span>
-        </h1>
+        </TitleTag>
         <p class="automatch-hero__lead">
-          Compara autos nuevos, seminuevos y usados en Colombia. Elige cómo quieres
-          empezar:
+          {embedded
+            ? "Compara modelos, mira fichas y pide test drive. El catálogo sigue creciendo con datos de concesionarios."
+            : "Compara autos nuevos, seminuevos y usados en Colombia. Elige cómo quieres empezar:"}
         </p>
 
         <div class="automatch-hero__paths">
@@ -80,28 +123,33 @@ const searchCtaLabel = "Buscar auto para comprar";
             <p class="automatch-hero__path-desc">
               Explora el catálogo con fotos, precios y datos de cada modelo.
             </p>
-            <a
-              href="#automatch-destacados"
-              class="btn-automatch btn-automatch--ghost btn-automatch--path"
-            >
-              <i class="fa-solid fa-car-side" aria-hidden="true"></i>
-              Explorar catálogo
-            </a>
+            <div class="automatch-hero__path-cta">
+              <a
+                href="#automatch-destacados"
+                class="btn-automatch btn-automatch--primary btn-automatch--path"
+              >
+                <i class="fa-solid fa-car-side" aria-hidden="true"></i>
+                Explorar catálogo
+              </a>
+              <p class="automatch-hero__path-note automatch-hero__path-note--spacer" aria-hidden="true"></p>
+            </div>
           </div>
 
-          <div class="automatch-hero__path automatch-hero__path--accent">
+          <div class="automatch-hero__path">
             <p class="automatch-hero__path-label">¿Aún no?</p>
             <p class="automatch-hero__path-desc">
               Responde unas preguntas y te sugerimos opciones según tu perfil.
             </p>
-            <a
-              href="/automatch-find"
-              class="btn-automatch btn-automatch--primary btn-automatch--hero btn-automatch--path"
-            >
-              <i class="fa-solid fa-sliders" aria-hidden="true"></i>
-              {searchCtaLabel}
-            </a>
-            <p class="automatch-hero__path-note">Gratis · menos de 1 minuto</p>
+            <div class="automatch-hero__path-cta">
+              <a
+                href="/automatch-find"
+                class="btn-automatch btn-automatch--primary btn-automatch--path"
+              >
+                <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+                {searchCtaLabel}
+              </a>
+              <p class="automatch-hero__path-note">Gratis · menos de 1 minuto</p>
+            </div>
           </div>
         </div>
 
@@ -110,80 +158,80 @@ const searchCtaLabel = "Buscar auto para comprar";
       <section
         class="automatch-section automatch-section--cards"
         id="automatch-destacados"
+        data-filter-limit={String(HOME_VISIBLE_COUNT)}
       >
-        <h2 class="titulo titulo--cards">
-          <i class="fas fa-car titulo-icon" aria-hidden="true"></i>
-          Autos destacados
-        </h2>
-        <p class="subtitulo">
-          Empieza por aquí si ya tienes una idea. Luego filtra por nuevo, seminuevo
-          o usado en el catálogo completo.
+        <div class="automatch-cards-intro">
+          <p class="automatch-cards-kicker">Catálogo</p>
+          {embedded ? (
+            <h3 class="automatch-cards-heading">Autos destacados</h3>
+          ) : (
+            <h2 class="automatch-cards-heading">Autos destacados</h2>
+          )}
+          <p class="automatch-cards-lead">
+            Filtra por carrocería y precio. Entra a la ficha si ya sabes el modelo.
+          </p>
+        </div>
+
+        <div class="catalog-filters-stack">
+          <div class="catalog-filter-group">
+            <p class="catalog-filter-label">Categoría</p>
+            <div
+              class="catalog-filters"
+              data-filter-type="carroceria"
+              role="tablist"
+              aria-label="Filtrar por carrocería"
+            >
+              {
+                bodyFilters.map((filter, index) => (
+                  <button
+                    type="button"
+                    class={`catalog-filter ${index === 0 ? "is-active" : ""}`}
+                    data-filter={filter.id}
+                    role="tab"
+                    aria-selected={index === 0 ? "true" : "false"}
+                  >
+                    {filter.label}
+                  </button>
+                ))
+              }
+            </div>
+          </div>
+          <div class="catalog-filter-group">
+            <p class="catalog-filter-label">Precio</p>
+            <div
+              class="catalog-filters"
+              data-filter-type="precio"
+              role="tablist"
+              aria-label="Filtrar por precio"
+            >
+              {
+                priceFilters.map((filter, index) => (
+                  <button
+                    type="button"
+                    class={`catalog-filter ${index === 0 ? "is-active" : ""}`}
+                    data-filter={filter.id}
+                    role="tab"
+                    aria-selected={index === 0 ? "true" : "false"}
+                  >
+                    {filter.label}
+                  </button>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        <p class="catalog-empty" hidden>
+          No hay modelos en esta combinación por ahora.
         </p>
 
         <div class="cards">
           {
-            autosToRender.map((auto: any) => (
-              <article
-              class="auto-card"
-              data-id={auto.id}
-              data-condicion={auto.condicion || "nuevo"}
-            >
-                <div class="auto-carousel-shell">
-                  <div class="auto-carousel">
-                    {(auto.imagenes as string[]).map((img, index) => (
-                      <img
-                        src={img}
-                        alt={`${auto.nombre} — imagen ${index + 1}`}
-                        class={`auto-img ${index === 0 ? "visible" : "hidden"}`}
-                        loading="eager"
-                        decoding="async"
-                        fetchpriority={index === 0 ? "high" : "auto"}
-                      />
-                    ))}
-                  </div>
-                  <div class="carousel-meta-bar">
-                    <div class="carousel-dots" aria-label="Navegacion de imagenes">
-                      {(auto.imagenes as string[]).map((_, index) => (
-                        <button
-                          type="button"
-                          class={`carousel-dot ${index === 0 ? "active" : ""}`}
-                          data-index={String(index)}
-                          aria-label={`Ir a la imagen ${index + 1}`}
-                        />
-                      ))}
-                    </div>
-                    <span class="carousel-counter">
-                      1 / {(auto.imagenes as string[]).length}
-                    </span>
-                  </div>
-                </div>
-
-                <div class="auto-card-titlebar">
-                  <button type="button" class="carousel-nav prev" aria-label="Imagen anterior">
-                    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-                  </button>
-                  <h3>{auto.nombre}</h3>
-                  <button type="button" class="carousel-nav next" aria-label="Imagen siguiente">
-                    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-                  </button>
-                </div>
-
-                {
-                  auto.precioLabel && (
-                    <p class="auto-card-price">
-                      <span class="auto-card-price__label">Desde</span>
-                      <span class="auto-card-price__value">{auto.precioLabel}</span>
-                    </p>
-                  )
-                }
-
-                <div class="auto-card-actions">
-                  <a href={auto.href} class="auto-card-cta auto-card-cta--primary">
-                    <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
-                    {auto.ctaLabel}
-                  </a>
-                </div>
-              </article>
+            autosToRender.map((auto: any, index: number) => (
+              <AutoMatchCard
+                auto={auto}
+                startHidden={index >= HOME_VISIBLE_COUNT}
+              />
             ))
           }
         </div>
@@ -207,93 +255,86 @@ const searchCtaLabel = "Buscar auto para comprar";
         Catálogo de modelos
       </h2>
       <p class="subtitulo">
-        Explora todos los autos disponibles en AutoMatch, filtrados por condición.
+        Filtra por condición, carrocería y precio para encontrar el modelo que
+        quieres consultar.
       </p>
 
-      <div class="catalog-filters" role="tablist" aria-label="Filtrar por condición">
-        {
-          catalogFilters.map((filter, index) => (
-            <button
-              type="button"
-              class={`catalog-filter ${index === 0 ? "is-active" : ""}`}
-              data-filter={filter.id}
-              role="tab"
-              aria-selected={index === 0 ? "true" : "false"}
-            >
-              {filter.label}
-            </button>
-          ))
-        }
+      <div class="catalog-filters-stack">
+        <div class="catalog-filter-group">
+          <p class="catalog-filter-label">Condición</p>
+          <div
+            class="catalog-filters"
+            data-filter-type="condicion"
+            role="tablist"
+            aria-label="Filtrar por condición"
+          >
+            {
+              catalogFilters.map((filter, index) => (
+                <button
+                  type="button"
+                  class={`catalog-filter ${index === 0 ? "is-active" : ""}`}
+                  data-filter={filter.id}
+                  role="tab"
+                  aria-selected={index === 0 ? "true" : "false"}
+                >
+                  {filter.label}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+        <div class="catalog-filter-group">
+          <p class="catalog-filter-label">Categoría</p>
+          <div
+            class="catalog-filters"
+            data-filter-type="carroceria"
+            role="tablist"
+            aria-label="Filtrar por carrocería"
+          >
+            {
+              bodyFilters.map((filter, index) => (
+                <button
+                  type="button"
+                  class={`catalog-filter ${index === 0 ? "is-active" : ""}`}
+                  data-filter={filter.id}
+                  role="tab"
+                  aria-selected={index === 0 ? "true" : "false"}
+                >
+                  {filter.label}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+        <div class="catalog-filter-group">
+          <p class="catalog-filter-label">Precio</p>
+          <div
+            class="catalog-filters"
+            data-filter-type="precio"
+            role="tablist"
+            aria-label="Filtrar por precio"
+          >
+            {
+              priceFilters.map((filter, index) => (
+                <button
+                  type="button"
+                  class={`catalog-filter ${index === 0 ? "is-active" : ""}`}
+                  data-filter={filter.id}
+                  role="tab"
+                  aria-selected={index === 0 ? "true" : "false"}
+                >
+                  {filter.label}
+                </button>
+              ))
+            }
+          </div>
+        </div>
       </div>
 
-      <p class="catalog-empty" hidden>No hay modelos en esta categoría por ahora.</p>
+      <p class="catalog-empty" hidden>No hay modelos en esta combinación por ahora.</p>
 
       <div class="cards">
-        {
-          autosToRender.map((auto: any) => (
-            <article
-              class="auto-card"
-              data-id={auto.id}
-              data-condicion={auto.condicion || "nuevo"}
-            >
-              <div class="auto-carousel-shell">
-                <div class="auto-carousel">
-                  {(auto.imagenes as string[]).map((img, index) => (
-                    <img
-                      src={img}
-                      alt={`${auto.nombre} — imagen ${index + 1}`}
-                      class={`auto-img ${index === 0 ? "visible" : "hidden"}`}
-                      loading="eager"
-                      decoding="async"
-                      fetchpriority={index === 0 ? "high" : "auto"}
-                    />
-                  ))}
-                </div>
-                <div class="carousel-meta-bar">
-                  <div class="carousel-dots" aria-label="Navegacion de imagenes">
-                    {(auto.imagenes as string[]).map((_, index) => (
-                      <button
-                        type="button"
-                        class={`carousel-dot ${index === 0 ? "active" : ""}`}
-                        data-index={String(index)}
-                        aria-label={`Ir a la imagen ${index + 1}`}
-                      />
-                    ))}
-                  </div>
-                  <span class="carousel-counter">
-                    1 / {(auto.imagenes as string[]).length}
-                  </span>
-                </div>
-              </div>
-
-              <div class="auto-card-titlebar">
-                <button type="button" class="carousel-nav prev" aria-label="Imagen anterior">
-                  <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-                </button>
-                <h3>{auto.nombre}</h3>
-                <button type="button" class="carousel-nav next" aria-label="Imagen siguiente">
-                  <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-                </button>
-              </div>
-
-              {
-                auto.precioLabel && (
-                  <p class="auto-card-price">
-                    <span class="auto-card-price__label">Desde</span>
-                    <span class="auto-card-price__value">{auto.precioLabel}</span>
-                  </p>
-                )
-              }
-
-              <div class="auto-card-actions">
-                <a href={auto.href} class="auto-card-cta auto-card-cta--primary">
-                  <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
-                  {auto.ctaLabel}
-                </a>
-              </div>
-            </article>
-          ))
-        }
+        {autosToRender.map((auto: any) => <AutoMatchCard auto={auto} />)}
       </div>
 
       {
@@ -320,17 +361,20 @@ const searchCtaLabel = "Buscar auto para comprar";
   /* ========== HERO HOME ========== */
   .automatch-home {
     width: 100%;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(230, 180, 16, 0.18), transparent),
+      linear-gradient(165deg, #062818 0%, #08341f 45%, #0a4228 100%);
   }
 
   .automatch-hero {
     text-align: center;
+    width: min(96%, 1760px);
+    margin-inline: auto;
     padding: clamp(2.25rem, 4.5vw, 3.5rem) clamp(1rem, 4vw, 2rem)
       clamp(2.5rem, 4vw, 3rem);
     color: #fff;
     position: relative;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(230, 180, 16, 0.18), transparent),
-      linear-gradient(165deg, #062818 0%, #08341f 45%, #0a4228 100%);
+    background: transparent;
     border-bottom: none;
   }
 
@@ -359,6 +403,20 @@ const searchCtaLabel = "Buscar auto para comprar";
     color: #f0c14a !important;
   }
 
+  .automatch-home--embedded .automatch-hero {
+    padding-top: clamp(1.75rem, 3.5vw, 2.75rem);
+    padding-bottom: clamp(1.35rem, 2.5vw, 1.75rem);
+  }
+
+  .automatch-home--embedded .automatch-hero__title {
+    font-size: clamp(1.85rem, 3.8vw, 2.75rem);
+    max-width: 22ch;
+  }
+
+  .automatch-home--embedded .automatch-hero__lead {
+    margin-bottom: 1.25rem;
+  }
+
   .automatch-hero__lead {
     font-family: var(--font-body, "Source Sans 3", sans-serif);
     font-size: clamp(1.05rem, 1.5vw, 1.2rem);
@@ -383,12 +441,7 @@ const searchCtaLabel = "Buscar auto para comprar";
     gap: 0.55rem;
     padding: 1.15rem 1.2rem 1.25rem;
     border-radius: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    background: rgba(255, 255, 255, 0.06);
-  }
-
-  .automatch-hero__path--accent {
-    border-color: rgba(240, 193, 74, 0.45);
+    border: 1px solid rgba(240, 193, 74, 0.42);
     background: rgba(240, 193, 74, 0.08);
   }
 
@@ -408,16 +461,26 @@ const searchCtaLabel = "Buscar auto para comprar";
     flex: 1;
   }
 
+  .automatch-hero__path-cta {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+  }
+
   .automatch-hero__path-note {
     margin: 0.15rem 0 0;
+    min-height: 1.25em;
     font-size: 0.82rem;
+    line-height: 1.25;
     color: rgba(255, 255, 255, 0.65);
   }
 
   .btn-automatch--path {
     width: 100%;
+    min-height: 3.15rem;
     justify-content: center;
-    margin-top: auto;
+    margin-top: 0;
+    box-sizing: border-box;
   }
 
   .automatch-hero__actions {
@@ -464,25 +527,69 @@ const searchCtaLabel = "Buscar auto para comprar";
   }
 
   .btn-automatch--ghost.btn-automatch--path {
-    margin-top: auto;
+    margin-top: 0;
   }
 
   #automatch-destacados {
     scroll-margin-top: 6rem;
   }
 
-  .automatch-section--cards {
-    margin: 0;
-    border-radius: 0;
-    box-shadow: none;
-    background: transparent;
-    padding-top: clamp(2rem, 4vw, 2.75rem);
-    padding-bottom: clamp(2rem, 4vw, 3rem);
-    animation: none;
-  }
-
   .titulo--cards {
     font-size: clamp(1.65rem, 2.5vw, 2.1rem);
+  }
+
+  /* Intro y filtros centrados; la grilla de fichas queda centrada en la página */
+  .automatch-cards-intro {
+    width: min(68rem, 100%);
+    max-width: 68rem;
+    margin: 0 auto 1.15rem;
+    text-align: center;
+    padding: 0 0.15rem;
+  }
+
+  .automatch-cards-kicker {
+    margin: 0 0 0.4rem !important;
+    font-family: var(--font-body, "Source Sans 3", sans-serif) !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    color: #6b7a70 !important;
+  }
+
+  .automatch-cards-heading {
+    margin: 0 0 0.45rem !important;
+    font-family: var(--font-body, "Source Sans 3", sans-serif) !important;
+    font-size: clamp(1.45rem, 2.1vw, 1.75rem) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
+    line-height: 1.22 !important;
+    color: #062818 !important;
+    display: block !important;
+    gap: 0 !important;
+    text-align: center !important;
+  }
+
+  .automatch-cards-heading::before,
+  .automatch-cards-heading::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .automatch-cards-lead {
+    margin: 0 !important;
+    font-family: var(--font-body, "Source Sans 3", sans-serif) !important;
+    font-size: clamp(1.02rem, 1.35vw, 1.12rem) !important;
+    line-height: 1.55 !important;
+    color: #5a6470 !important;
+    text-align: center !important;
+    max-width: 42rem;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .automatch-home--embedded .automatch-cards-intro {
+    margin-bottom: 0.9rem;
   }
 
   /* ========== SECCIÓN AUTOMATCH PRINCIPAL ========== */
@@ -496,6 +603,25 @@ const searchCtaLabel = "Buscar auto para comprar";
     font-size: 1.4rem;
     box-shadow: 0 8px 32px rgba(225, 163, 7, 0.1);
     animation: slideInSection 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Home: pegado al hero (debe ir después de .automatch-section) */
+  .automatch-section.automatch-section--cards {
+    width: min(96%, 1760px);
+    margin: 0 auto !important;
+    border-radius: 0;
+    box-shadow: none;
+    background-color: var(--home-section-bg, #f0f3f0);
+    background-image: var(--home-relief-image);
+    background-size: var(--home-relief-size);
+    background-repeat: repeat;
+    padding: clamp(1.35rem, 2.5vw, 1.85rem) 1rem clamp(2rem, 4vw, 2.75rem);
+    animation: none;
+    text-align: left;
+  }
+
+  .automatch-home--embedded .automatch-section.automatch-section--cards {
+    padding-top: clamp(1.1rem, 2vw, 1.45rem);
   }
 
   @keyframes slideInSection {
@@ -559,332 +685,11 @@ const searchCtaLabel = "Buscar auto para comprar";
   .cards {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2rem;
-    font-size: 1.1rem;
+    gap: 1.35rem 1.2rem;
+    max-width: 68rem;
+    margin: 0 auto 1.5rem;
+    font-size: 1rem;
     text-align: start;
-    margin-bottom: 2rem;
-  }
-
-  .auto-card {
-    background: transparent;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    transition:
-      transform 0.35s,
-      box-shadow 0.35s;
-    border: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    position: relative;
-    isolation: isolate;
-  }
-
-  .auto-card::before {
-    content: none;
-  }
-
-  .auto-card-titlebar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.65rem;
-    margin: 0.15rem 0 0.45rem;
-    padding: 0 0.35rem;
-  }
-
-  .auto-card-titlebar h3 {
-    margin: 0;
-    color: #111;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 1.1rem;
-    line-height: 1.22;
-    text-align: center;
-    letter-spacing: 0.03em;
-    flex: 0 1 auto;
-    max-width: calc(100% - 5.75rem);
-  }
-
-  .auto-card-price {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.1rem;
-    margin: 0 0 0.55rem;
-    padding: 0 0.5rem;
-    text-align: center;
-  }
-
-  .auto-card-price__label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #5c6b62;
-  }
-
-  .auto-card-price__value {
-    font-size: clamp(1.15rem, 2.2vw, 1.45rem);
-    font-weight: 800;
-    line-height: 1.15;
-    color: #08341f;
-    letter-spacing: -0.02em;
-  }
-
-  @media (min-width: 900px) {
-    .auto-card-titlebar {
-      gap: 0.8rem;
-      margin: 0.2rem 0 0.5rem;
-    }
-
-    .auto-card-titlebar h3 {
-      font-size: 1.28rem;
-      max-width: none;
-    }
-  }
-
-  .auto-card-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
-    margin-top: 0;
-  }
-
-  .auto-card-cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.45rem;
-    padding: 0.62rem 1rem;
-    border-radius: 999px;
-    font-size: 0.92rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
-  }
-
-  .auto-card-cta--primary {
-    background: #08341f;
-    color: #fff;
-  }
-
-  .auto-card-cta--primary:hover {
-    background: #0a4228;
-    transform: translateY(-1px);
-  }
-
-  .auto-card-cta--secondary {
-    background: transparent;
-    color: #08341f;
-    border: 1.5px solid #08341f;
-  }
-
-  .auto-card-cta--secondary:hover {
-    background: rgba(8, 52, 31, 0.06);
-    transform: translateY(-1px);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .auto-img.entering {
-      animation: none;
-    }
-  }
-
-  .auto-card:hover {
-    transform: translateY(-10px) scale(1.01);
-    box-shadow: none;
-    background: transparent;
-  }
-
-  /* ========== CARRUSEL DE IMÁGENES ========== */
-  .auto-carousel-shell {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #0f1f17;
-    margin-bottom: 0.75rem;
-  }
-
-  .auto-carousel-shell::after {
-    content: "";
-    position: absolute;
-    inset: auto 0 0;
-    height: 3.5rem;
-    background: linear-gradient(to top, rgba(8, 20, 14, 0.62), transparent);
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .auto-carousel {
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 3 / 2;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: skeleton-loading 1.5s infinite;
-  }
-
-  @keyframes skeleton-loading {
-    0% {
-      background-position: 200% 0;
-    }
-    100% {
-      background-position: -200% 0;
-    }
-  }
-
-  .auto-carousel.loaded {
-    background: none;
-    animation: none;
-  }
-
-  .auto-img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    object-fit: cover;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
-  }
-
-  .auto-img.visible {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    z-index: 1;
-  }
-
-  .auto-img.hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .auto-img.entering {
-    animation: autoImageIn 0.52s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  @keyframes autoImageIn {
-    0% {
-      opacity: 0.25;
-      transform: translateY(6px) scale(1.03);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  .carousel-nav {
-    position: static;
-    flex: 0 0 auto;
-    width: 40px;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1.5px solid #3d6b57;
-    border-radius: 50%;
-    padding: 0;
-    cursor: pointer;
-    color: #3d6b57;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(42, 92, 69, 0.12);
-    transform: none;
-    transition:
-      transform 0.2s ease,
-      background 0.2s ease,
-      box-shadow 0.2s ease,
-      color 0.2s ease,
-      border-color 0.2s ease;
-  }
-
-  .carousel-nav i {
-    font-size: 0.9rem;
-    font-weight: 700;
-  }
-
-  .carousel-nav:hover {
-    background: linear-gradient(135deg, #3d6b57 0%, #2f5f4c 100%);
-    color: #fff;
-    border-color: #3d6b57;
-    transform: scale(1.06);
-    box-shadow: 0 4px 14px rgba(42, 92, 69, 0.24);
-  }
-
-  .carousel-nav:active {
-    transform: scale(0.96);
-  }
-
-  .carousel-meta-bar {
-    position: absolute;
-    bottom: 0.55rem;
-    left: 0;
-    right: 0;
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    margin-bottom: 0;
-    padding: 0 0.65rem;
-    pointer-events: none;
-  }
-
-  .carousel-dots {
-    display: flex;
-    align-items: center;
-    gap: 0.42rem;
-    pointer-events: auto;
-  }
-
-  .carousel-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    border: none;
-    background: rgba(255, 255, 255, 0.45);
-    cursor: pointer;
-    transition:
-      width 0.2s ease,
-      background-color 0.2s ease,
-      opacity 0.2s ease;
-    opacity: 0.95;
-    padding: 0;
-  }
-
-  .carousel-dot:hover {
-    background: rgba(255, 255, 255, 0.72);
-  }
-
-  .carousel-dot.active {
-    width: 22px;
-    background: #e6b410;
-    opacity: 1;
-  }
-
-  .carousel-counter {
-    font-family: var(--font-body, "Source Sans 3", sans-serif);
-    font-size: 0.76rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: #fff;
-    background: rgba(8, 52, 31, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 999px;
-    padding: 0.28rem 0.62rem;
-    white-space: nowrap;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    pointer-events: auto;
   }
 
   /* ========== BOTÓN AUTOMATCH ========== */
@@ -933,42 +738,96 @@ const searchCtaLabel = "Buscar auto para comprar";
     padding-top: clamp(2rem, 4vw, 2.75rem);
   }
 
+  .catalog-filters-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0 auto 1.35rem;
+    max-width: 68rem;
+    width: min(68rem, 100%);
+    align-items: center;
+  }
+
+  .catalog-filter-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .catalog-filter-label {
+    margin: 0;
+    font-family: var(--font-body, "Source Sans 3", sans-serif);
+    font-size: 0.88rem !important;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #5c6b62 !important;
+  }
+
+  .automatch-section .catalog-filter-label {
+    margin-bottom: 0;
+  }
+
+  /* Filtros editoriales: texto + / (sin pastillas) */
   .catalog-filters {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.55rem;
-    margin: 0 auto 1.5rem;
-    max-width: 40rem;
+    align-items: center;
+    gap: 0;
+    margin: 0;
+    max-width: none;
   }
 
   .catalog-filter {
-    border: 1px solid #c9d4cc;
-    background: #fff;
-    color: #08341f;
-    border-radius: 999px;
-    padding: 0.55rem 1rem;
-    font-size: 0.92rem;
+    border: none;
+    background: transparent;
+    color: #3d4a42;
+    border-radius: 0;
+    padding: 0.32rem 0;
+    font-size: clamp(1.18rem, 1.65vw, 1.38rem);
     font-weight: 700;
     cursor: pointer;
-    font-family: inherit;
-    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    font-family: var(--font-body, "Source Sans 3", sans-serif);
+    transition: color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.4;
+  }
+
+  .catalog-filter:not(:last-child)::after {
+    content: "/";
+    margin: 0 0.72rem;
+    color: #6d7c74;
+    font-weight: 800;
+    font-size: 1.05em;
+    pointer-events: none;
   }
 
   .catalog-filter:hover {
-    border-color: #08341f;
+    color: #08341f;
   }
 
   .catalog-filter.is-active {
-    background: #08341f;
-    border-color: #08341f;
-    color: #fff;
+    background: transparent;
+    border: none;
+    color: #08341f;
+    font-weight: 700;
+    box-shadow: inset 0 -2px 0 #e6b410;
   }
 
   .catalog-empty {
     text-align: center;
     color: #5a6470;
-    margin: 0 0 1rem;
+    margin: 0 auto 1rem;
+    max-width: 68rem;
+    width: min(68rem, 100%);
+    font-size: 1rem !important;
+  }
+
+  .catalog-empty[hidden] {
+    display: none !important;
   }
 
   .btn-automatch--ver-mas {
@@ -1051,10 +910,23 @@ const searchCtaLabel = "Buscar auto para comprar";
     color: #ffffff;
   }
 
-  .automatch-hero .btn-automatch.btn-automatch--hero {
+  .automatch-hero .btn-automatch.btn-automatch--primary {
     margin-top: 0;
     text-transform: none;
     letter-spacing: 0.02em;
+    background: #1b5e3f;
+    color: #ffffff;
+    border-color: #1b5e3f;
+  }
+
+  .automatch-hero .btn-automatch.btn-automatch--primary:hover {
+    background: #154c33;
+    border-color: #154c33;
+    color: #ffffff;
+  }
+
+  .automatch-hero .btn-automatch.btn-automatch--primary i {
+    color: #ffffff;
   }
 
   .btn-automatch i {
@@ -1145,7 +1017,8 @@ const searchCtaLabel = "Buscar auto para comprar";
   @media (max-width: 1024px) {
     .cards {
       grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
+      gap: 1.15rem;
+      max-width: 44rem;
     }
 
     .titulo {
@@ -1215,23 +1088,9 @@ const searchCtaLabel = "Buscar auto para comprar";
 
     .cards {
       grid-template-columns: 1fr;
-      gap: 1.5rem;
+      gap: 1.35rem;
       margin-bottom: 1.5rem;
-    }
-
-    .auto-card {
-      padding: 0;
-    }
-
-    .auto-card-titlebar h3 {
-      margin: 0;
-      font-size: 1.14rem;
-      letter-spacing: 0.025em;
-    }
-
-    .carousel-nav {
-      width: 36px;
-      height: 36px;
+      max-width: 24rem;
     }
 
     .btn-automatch {
@@ -1272,29 +1131,8 @@ const searchCtaLabel = "Buscar auto para comprar";
     }
 
     .cards {
-      gap: 1rem;
-    }
-
-    .auto-card {
-      padding: 0;
-      border-radius: 0;
-    }
-
-    .auto-carousel {
-      aspect-ratio: 16 / 10;
-    }
-
-    .auto-card-titlebar h3 {
-      font-size: 1.02rem;
-    }
-
-    .carousel-nav {
-      width: 34px;
-      height: 34px;
-    }
-
-    .carousel-counter {
-      font-size: 0.72rem;
+      gap: 1.2rem;
+      max-width: 22rem;
     }
 
     .ver-mas-automatch-container {
@@ -1435,39 +1273,103 @@ const searchCtaLabel = "Buscar auto para comprar";
     });
 
     const catalogSection = document.querySelector(".automatch-section--catalog");
-    if (catalogSection) {
-      const filterButtons = catalogSection.querySelectorAll(".catalog-filter");
-      const cards = catalogSection.querySelectorAll(".auto-card");
-      const emptyState = catalogSection.querySelector(".catalog-empty");
+    const homeSection = document.querySelector(".automatch-section--cards");
 
-      const applyCatalogFilter = (filterId) => {
+    function precioMatches(precioValue: string, band: string) {
+      if (band === "todos") return true;
+      const precio = Number(precioValue) || 0;
+      if (!precio) return false;
+      if (band === "50-90") return precio >= 50_000_000 && precio < 91_000_000;
+      if (band === "91-149") return precio >= 91_000_000 && precio < 150_000_000;
+      if (band === "hasta-150") return precio < 150_000_000;
+      if (band === "150-250") return precio >= 150_000_000 && precio < 250_000_000;
+      if (band === "mas-250") return precio >= 250_000_000;
+      return true;
+    }
+
+    function setupCardFilters(section: Element | null) {
+      if (!(section instanceof HTMLElement)) return;
+
+      const cards = section.querySelectorAll(".auto-card");
+      const emptyState = section.querySelector(".catalog-empty");
+      const limit = Number(section.dataset.filterLimit) || 0;
+      const state: Record<string, string> = {
+        condicion: "todos",
+        carroceria: "todos",
+        precio: "todos",
+      };
+
+      const params = new URLSearchParams(window.location.search);
+      ["condicion", "carroceria", "precio"].forEach((key) => {
+        const value = params.get(key);
+        if (
+          value &&
+          section.querySelector(
+            `[data-filter-type="${key}"] [data-filter="${value}"]`,
+          )
+        ) {
+          state[key] = value;
+        }
+      });
+
+      function activateGroup(type: string, id: string) {
+        const group = section.querySelector(`[data-filter-type="${type}"]`);
+        if (!group) return;
+        group.querySelectorAll(".catalog-filter").forEach((button) => {
+          const isActive = button.getAttribute("data-filter") === id;
+          button.classList.toggle("is-active", isActive);
+          button.setAttribute("aria-selected", isActive ? "true" : "false");
+        });
+      }
+
+      function applyFilters() {
+        const filtersActive =
+          state.condicion !== "todos" ||
+          state.carroceria !== "todos" ||
+          state.precio !== "todos";
+        const cap = !filtersActive && limit > 0 ? limit : Number.POSITIVE_INFINITY;
         let visibleCount = 0;
 
         cards.forEach((card) => {
+          if (!(card instanceof HTMLElement)) return;
           const condicion = card.getAttribute("data-condicion") || "nuevo";
-          const show = filterId === "todos" || condicion === filterId;
-          card.hidden = !show;
+          const carroceria = card.getAttribute("data-carroceria") || "";
+          const precio = card.getAttribute("data-precio") || "";
+          const match =
+            (state.condicion === "todos" || condicion === state.condicion) &&
+            (state.carroceria === "todos" || carroceria === state.carroceria) &&
+            precioMatches(precio, state.precio);
+          const show = match && visibleCount < cap;
           if (show) visibleCount += 1;
+          card.hidden = !show;
+          card.classList.toggle("is-hidden", !show);
         });
 
         if (emptyState instanceof HTMLElement) {
           emptyState.hidden = visibleCount > 0;
         }
-      };
+      }
 
-      filterButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          const filterId = button.getAttribute("data-filter") || "todos";
+      section.querySelectorAll("[data-filter-type]").forEach((group) => {
+        const type = group.getAttribute("data-filter-type") || "";
+        if (!type || !(type in state)) return;
 
-          filterButtons.forEach((item) => {
-            const isActive = item === button;
-            item.classList.toggle("is-active", isActive);
-            item.setAttribute("aria-selected", isActive ? "true" : "false");
+        activateGroup(type, state[type]);
+
+        group.querySelectorAll(".catalog-filter").forEach((button) => {
+          button.addEventListener("click", () => {
+            const filterId = button.getAttribute("data-filter") || "todos";
+            state[type] = filterId;
+            activateGroup(type, filterId);
+            applyFilters();
           });
-
-          applyCatalogFilter(filterId);
         });
       });
+
+      applyFilters();
     }
+
+    setupCardFilters(homeSection);
+    setupCardFilters(catalogSection);
   });
 </script>

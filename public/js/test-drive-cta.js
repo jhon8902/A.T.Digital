@@ -1,4 +1,5 @@
 import { submitTestDrive } from "./test-drive-submit.js";
+import { trackAutomatchEvent } from "./automatch-funnel.js";
 
 function setMessage(form, type, text) {
   const box = form.querySelector(".test-drive-cta__message");
@@ -48,6 +49,13 @@ function bindTestDriveForm(form) {
         "Solicitud enviada. Un asesor te contactará en menos de 24 horas.",
       );
       form.reset();
+      trackAutomatchEvent("test_drive", {
+        auto_id: payload.autoId,
+        note_id: payload.noteId,
+        dealer_id: payload.dealerId,
+        ciudad: payload.ciudad,
+        source: payload.source || "nota",
+      });
     } else {
       setMessage(
         form,

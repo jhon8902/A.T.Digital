@@ -5,11 +5,14 @@
   const loadNoteBtn = document.getElementById("loadNoteBtn");
   const deleteNoteBtn = document.getElementById("deleteNoteBtn");
   const exitEditBtn = document.getElementById("exitEditBtn");
+  const newNoteBtn = document.getElementById("newNoteBtn");
   const editModeLabel = document.getElementById("editModeLabel");
   const submitNoteBtn = document.getElementById("submitNoteBtn");
   const formHeaderTitle = document.querySelector(".form-header h1");
   const categoryField = document.getElementById("categoryField");
   const automatchModeHint = document.getElementById("automatchModeHint");
+  const automatchTemplateRow = document.getElementById("automatchTemplateRow");
+  const automatchTemplateBtn = document.getElementById("automatchTemplateBtn");
   const contentFieldGroup = document.getElementById("contentFieldGroup");
   const automatchTextGroup = document.getElementById("automatchTextGroup");
   const automatchCatalogGroup = document.getElementById("automatchCatalogGroup");
@@ -111,6 +114,10 @@
     "automatch_condicion",
     "automatch_ciudad",
     "automatch_precio_cop",
+    "automatch_carroceria",
+    "automatch_veredicto_si",
+    "automatch_veredicto_no",
+    "automatch_veredicto_dato",
     "texto_img2_linea1",
     "texto_img3_linea1",
     "texto_img4_linea1",
@@ -158,7 +165,7 @@
   }
 
   const DRAFT_STORAGE_KEY = "atd.formulario.draft.v1";
-  const DRAFT_TTL_MS = 60 * 60 * 1000;
+  const DRAFT_TTL_MS = 24 * 60 * 60 * 1000;
   const DRAFT_MAX_BYTES = 400 * 1024;
   const DRAFT_SAVE_DEBOUNCE_MS = 400;
   const DRAFT_CONTENT_MAX = 120000;
@@ -203,7 +210,15 @@
     };
   }
 
+  function cancelDraftSave() {
+    if (draftSaveTimer) {
+      window.clearTimeout(draftSaveTimer);
+      draftSaveTimer = null;
+    }
+  }
+
   function clearDraft() {
+    cancelDraftSave();
     try {
       window.localStorage.removeItem(DRAFT_STORAGE_KEY);
     } catch (_error) {
@@ -328,12 +343,20 @@
   }
 
   function initDraftPersistence() {
-    const urlId = new URLSearchParams(window.location.search).get("id");
-    const draft = readDraft();
+    const params = new URLSearchParams(window.location.search);
+    const urlId = params.get("id");
+    const wantsNewNote = params.get("nueva") === "1";
+
+    if (wantsNewNote) {
+      clearDraft();
+      stripNoteIdFromUrl();
+    }
+
+    const draft = wantsNewNote ? null : readDraft();
     const draftId = draft ? String(draft.editingNoteId || "").trim() : "";
     let restored = false;
 
-    if (urlId && /^\d+$/.test(urlId)) {
+    if (!wantsNewNote && urlId && /^\d+$/.test(urlId)) {
       if (editNoteIdInput instanceof HTMLInputElement) {
         editNoteIdInput.value = urlId;
       }
@@ -351,7 +374,7 @@
       setMessage(
         "Recuperamos tu borrador (" +
           formatDraftAge(draft.savedAt) +
-          "). Se guarda solo en este navegador durante 1 hora.",
+          "). Se guarda 24 horas en este navegador. Para otra nota, pulsa Nueva nota: no se borra lo ya publicado o programado.",
         "#334155"
       );
       saveDraftNow();
@@ -631,6 +654,10 @@
     if (automatchCatalogGroup instanceof HTMLElement) {
       automatchCatalogGroup.hidden = !automatchMode;
       setBlockEnabled(automatchCatalogGroup, automatchMode);
+    }
+
+    if (automatchTemplateRow instanceof HTMLElement) {
+      automatchTemplateRow.hidden = !automatchMode;
     }
 
     setFieldRequired("automatch_tipo", automatchMode);
@@ -1613,6 +1640,10 @@
             "automatch_precio_cop",
             catalog.precio_cop ? String(catalog.precio_cop) : ""
           );
+          setFieldValue("automatch_carroceria", catalog.carroceria || "");
+          setFieldValue("automatch_veredicto_si", catalog.veredicto_si || "");
+          setFieldValue("automatch_veredicto_no", catalog.veredicto_no || "");
+          setFieldValue("automatch_veredicto_dato", catalog.veredicto_dato || "");
         } catch (_error) {
           for (let i = 2; i <= 6; i += 1) {
             setFieldValue("texto_img" + String(i) + "_linea1", "");
@@ -1626,7 +1657,9 @@
           setFieldValue("automatch_tipo", "eléctrico");
         } else if (motor.includes("hibrid") || motor.includes("hybrid")) {
           setFieldValue("automatch_tipo", "híbrido");
-        } else if (motor.includes("gasolina") || motor.includes("diesel")) {
+        } else if (motor.includes("diesel") || motor.includes("diésel")) {
+          setFieldValue("automatch_tipo", "diésel");
+        } else if (motor.includes("gasolina")) {
           setFieldValue("automatch_tipo", "gasolina");
         }
       }
@@ -1697,30 +1730,82 @@
     }
   }
 
+  function stripNoteIdFromUrl() {
+    try {
+      const url = new URL(window.location.href);
+      if (!url.searchParams.has("id") && !url.searchParams.has("nueva")) return;
+      url.searchParams.delete("id");
+      url.searchParams.delete("nueva");
+      const qs = url.searchParams.toString();
+      window.history.replaceState(
+        {},
+        "",
+        url.pathname + (qs ? "?" + qs : "") + url.hash
+      );
+    } catch (_error) {
+      /* ignore */
+    }
+  }
+
+  function formHasDraftableContent() {
+    return draftHasContent(collectDraft().fields, editingNoteId);
+  }
+
   function exitEditMode(keepMessage) {
-    form.reset();
-    if (pruebasSoloVideoField instanceof HTMLInputElement) {
-      pruebasSoloVideoField.checked = false;
+    isPopulatingForm = true;
+    try {
+      form.reset();
+      if (pruebasSoloVideoField instanceof HTMLInputElement) {
+        pruebasSoloVideoField.checked = false;
+      }
+      resetDefaults();
+      if (cloudinaryFilesInput instanceof HTMLInputElement) {
+        cloudinaryFilesInput.value = "";
+      }
+      if (cloudinaryVideoFilesInput instanceof HTMLInputElement) {
+        cloudinaryVideoFilesInput.value = "";
+      }
+      clearSelectedCloudinaryFiles();
+      clearSelectedCloudinaryVideos();
+      renderCloudinaryQueue();
+      renderCloudinaryVideoQueue();
+      hideVideoUploadProgress();
+      setMode(false, "");
+      loadedScheduledAt = "";
+      applyPublishMode();
+    } finally {
+      isPopulatingForm = false;
     }
-    resetDefaults();
-    if (cloudinaryFilesInput instanceof HTMLInputElement) {
-      cloudinaryFilesInput.value = "";
-    }
-    if (cloudinaryVideoFilesInput instanceof HTMLInputElement) {
-      cloudinaryVideoFilesInput.value = "";
-    }
-    clearSelectedCloudinaryFiles();
-    clearSelectedCloudinaryVideos();
-    renderCloudinaryQueue();
-    renderCloudinaryVideoQueue();
-    hideVideoUploadProgress();
-    setMode(false, "");
-    loadedScheduledAt = "";
-    applyPublishMode();
     clearDraft();
+    stripNoteIdFromUrl();
     if (!keepMessage) {
       setMessage("Modo edicion cerrado", "#334155");
     }
+  }
+
+  function startNewNote(options) {
+    const opts = options || {};
+    const skipConfirm = Boolean(opts.skipConfirm);
+    const keepMessage = Boolean(opts.keepMessage);
+
+    if (!skipConfirm && formHasDraftableContent()) {
+      const ok = window.confirm(
+        "Vas a vaciar el formulario para empezar otra nota.\n\n" +
+          "Se descarta solo el borrador de este navegador.\n" +
+          "No se elimina ninguna nota ya publicada o programada.\n\n" +
+          "Deseas continuar?"
+      );
+      if (!ok) return false;
+    }
+
+    exitEditMode(true);
+    if (!keepMessage) {
+      setMessage(
+        "Formulario listo para una nota nueva. El borrador anterior se descarto en este navegador. Las notas ya publicadas o programadas no se tocan.",
+        "#334155"
+      );
+    }
+    return true;
   }
 
   async function deleteCurrentNote() {
@@ -1786,6 +1871,41 @@
     exitEditMode(true);
   }
 
+  const AUTOMATCH_FICHA_TEMPLATE = `Titulo: Qué es y a quién le sirve |
+[Qué auto es y para qué uso en Colombia. Precio solo si el subtítulo no lo dijo. Sin “llegó”, “ya está en concesionarios” ni tono de comercial. 3–4 oraciones. Una idea.]
+
+Titulo: Cómo se ve y qué tamaño tiene |
+[Un dato concreto: largo, luces, platón o baúl. Sin “imponente” ni “rompe el molde”.]
+
+Titulo: Interior y el día a día |
+[Puestos, espacio, cómo se vive entre semana. No listas de equipamiento.]
+
+Titulo: Motor y lo que cuesta usarlo |
+[Potencia en hp, autonomía o consumo. El resto de cifras va al resumen técnico.]
+
+Titulo: Para quién sí y para quién no |
+[Veredicto. Un contra honesto. Un dato que el comercial no dice. No cierres con cotiza o red oficial.]`;
+
+  function insertAutomatchTemplate() {
+    const contentField = byName("content");
+    if (!(contentField instanceof HTMLTextAreaElement)) return;
+
+    const existing = stripAutomatchMetaFromContent(contentField.value).trim();
+    if (existing) {
+      const ok = window.confirm(
+        "El contenido no está vacío. ¿Reemplazarlo por la plantilla de ficha?"
+      );
+      if (!ok) return;
+    }
+
+    contentField.value = AUTOMATCH_FICHA_TEMPLATE;
+    contentField.focus();
+  }
+
+  if (automatchTemplateBtn) {
+    automatchTemplateBtn.addEventListener("click", insertAutomatchTemplate);
+  }
+
   if (loadNoteBtn) {
     loadNoteBtn.addEventListener("click", loadNoteForEdit);
   }
@@ -1797,6 +1917,12 @@
   if (exitEditBtn) {
     exitEditBtn.addEventListener("click", function () {
       exitEditMode(false);
+    });
+  }
+
+  if (newNoteBtn) {
+    newNoteBtn.addEventListener("click", function () {
+      startNewNote();
     });
   }
 
@@ -1987,6 +2113,10 @@
         condicion: String(data.automatch_condicion || "nuevo").trim(),
         ciudad: String(data.automatch_ciudad || "").trim(),
         precio_cop: catalogPrecio,
+        carroceria: String(data.automatch_carroceria || "").trim(),
+        veredicto_si: String(data.automatch_veredicto_si || "").trim(),
+        veredicto_no: String(data.automatch_veredicto_no || "").trim(),
+        veredicto_dato: String(data.automatch_veredicto_dato || "").trim(),
       };
 
       const encodedMeta = encodeURIComponent(
@@ -2081,15 +2211,21 @@
         }
 
         if (result && result.id) {
-          clearDraft();
-          if (data.scheduled_at && isScheduledForFuture(data.scheduled_at)) {
+          const scheduled =
+            data.scheduled_at && isScheduledForFuture(data.scheduled_at);
+
+          if (scheduled) {
+            startNewNote({ skipConfirm: true, keepMessage: true });
             setMessage(
-              "Nota programada con exito (ID: " + String(result.id) + "). Sera visible en la fecha indicada.",
+              "Nota programada con exito (ID: " +
+                String(result.id) +
+                "). Sera visible en la fecha indicada. El formulario quedo vacio para la siguiente nota.",
               "green"
             );
             return;
           }
 
+          clearDraft();
           if (pruebasSolo) {
             window.location.href = "/pruebas#pruebas";
             return;

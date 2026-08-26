@@ -43,6 +43,16 @@ const resolvedDealerNombre = dealerNombre || dealer?.nombre;
 const whatsappHref = dealer?.whatsapp
   ? `https://wa.me/${String(dealer.whatsapp).replace(/\D/g, "")}`
   : null;
+
+const tcoQuery = new URLSearchParams();
+if (catalogId != null) tcoQuery.set("auto", String(catalogId));
+if (nombre) tcoQuery.set("nombre", nombre);
+if (typeof vehicle?.precio === "number" && vehicle.precio > 0) {
+  tcoQuery.set("precio", String(vehicle.precio));
+}
+const tcoHref = tcoQuery.toString()
+  ? `/calculadora-tco?${tcoQuery.toString()}`
+  : "/calculadora-tco";
 ---
 
 <section class="automatch-ficha-footer" aria-label="Acciones AutoMatch">
@@ -82,6 +92,8 @@ const whatsappHref = dealer?.whatsapp
                 class="dealer-link dealer-link--whatsapp"
                 target="_blank"
                 rel="noreferrer"
+                data-automatch-track="whatsapp_click"
+                data-auto-id={String(catalogId || "")}
               >
                 <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
                 WhatsApp
@@ -121,6 +133,10 @@ const whatsappHref = dealer?.whatsapp
     <a href="/automatch" class="portal-nav-btn">
       <i class="fa-solid fa-car-side" aria-hidden="true"></i>
       Volver a autos destacados
+    </a>
+    <a href={tcoHref} class="portal-nav-btn" data-automatch-track="tco_click" data-auto-id={String(catalogId || "")}>
+      <i class="fa-solid fa-calculator" aria-hidden="true"></i>
+      Calcular costo de uso
     </a>
     <a href={portalHref} class="portal-nav-btn portal-nav-btn--ghost">
       <i class="fa-solid fa-newspaper" aria-hidden="true"></i>
@@ -228,3 +244,5 @@ const whatsappHref = dealer?.whatsapp
     color: #475569;
   }
 </style>
+
+<script type="module" src="/js/automatch-funnel.js"></script>

@@ -10,7 +10,7 @@ const headerSearchData = encodeURIComponent(
   <!-- Identidad editorial (se desplaza al hacer scroll) -->
   <div class="brand-identity">
     <div class="brand-mark">
-      <div class="brand-logo-frame">
+      <a href="/" class="brand-logo-frame" aria-label="Ir al inicio">
         <img
           src="/img/autlogo2.png"
           alt="AutoTech Digital"
@@ -18,7 +18,7 @@ const headerSearchData = encodeURIComponent(
           loading="eager"
           decoding="async"
         />
-      </div>
+      </a>
       <p class="brand-tagline brand-tagline--mobile">
         <span class="brand-tagline-mobile-text">
           El automóvil, con criterio editorial.
@@ -79,6 +79,9 @@ const headerSearchData = encodeURIComponent(
             <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
           </button>
           <ul class="nav-dropdown-menu">
+            <li>
+              <a href="/automatch">AutoMatch</a>
+            </li>
             <li>
               <a href="/automatch/archivo">Catálogo de modelos</a>
             </li>
@@ -199,6 +202,9 @@ const headerSearchData = encodeURIComponent(
       </div>
       <ul>
         <li class="menu-mobile-group-label">Producto</li>
+        <li>
+          <a href="/automatch">AutoMatch</a>
+        </li>
         <li>
           <a href="/automatch/archivo">Catálogo de modelos</a>
         </li>
@@ -1410,7 +1416,20 @@ const headerSearchData = encodeURIComponent(
     display: flex;
     align-items: center;
     justify-content: center;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
     animation: brandLogoIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .brand-logo-frame:hover {
+    opacity: 0.92;
+  }
+
+  .brand-logo-frame:focus-visible {
+    outline: 2px solid var(--color-accent, #e6b410);
+    outline-offset: 3px;
   }
 
   .brand-tagline {
