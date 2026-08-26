@@ -189,14 +189,14 @@ export function inferCarroceria(
   if (!haystack) return "";
 
   if (
-    /\b(f\s?150|lobo|hilux|ranger|amarok|frontier|montana|pickup|pick up)\b/.test(
+    /\b(tasman|f\s?150|lobo|hilux|ranger|amarok|frontier|montana|d.max|triton|pickup|pick up)\b/.test(
       haystack,
     )
   ) {
     return "pickup";
   }
   if (
-    /\b(van|minivan|carnival|staria|alphard|mpv|kombis?)\b/.test(haystack)
+    /\b(minivan|carnival|staria|alphard|mpv|kombis?)\b/.test(haystack)
   ) {
     return "van";
   }
@@ -591,6 +591,7 @@ export function buildAutomatchCarousel(
       precio: precio > 0 ? precio : undefined,
       carroceria:
         inferCarroceria(
+          catalogMeta.carroceria,
           note.title,
           note.subtitle,
           (note as AutomatchDbNoteFull).spec_segmento,
