@@ -309,7 +309,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 );
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css?v=80" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=84" />
 
 <section
   id="noticias"
@@ -591,9 +591,9 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     font-size: var(--home-section-title, clamp(2.1rem, 3.2vw, 2.95rem));
     letter-spacing: -0.03em;
     font-family: var(--font-display, "Newsreader", Georgia, serif);
-    font-style: italic;
+    font-style: normal;
     text-transform: none;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1.12;
     text-shadow: none;
     margin: 0;
@@ -603,10 +603,18 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
     padding: 0;
   }
 
-  .info-titulo::before,
-  .info-titulo::after {
+  .info-titulo::before {
     display: none;
     content: none;
+  }
+
+  .info-titulo::after {
+    display: block;
+    content: "";
+    width: 3.35rem;
+    height: 3px;
+    margin-top: 0.55rem;
+    background: #e6b410;
   }
 
   @keyframes infoTituloLineIn {
@@ -690,8 +698,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
       white-space: nowrap;
     }
 
-    .info-titulo::before,
-    .info-titulo::after {
+    .info-titulo::before {
       display: none !important;
       content: none !important;
     }
@@ -1298,6 +1305,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
       width: auto;
       max-width: none;
       padding: 0;
+      font-weight: 600;
     }
 
     .news-grid {
@@ -1592,12 +1600,11 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
       text-align: left;
       padding-left: 0;
       letter-spacing: -0.03em;
-      font-weight: 500;
+      font-weight: 600;
       white-space: nowrap;
     }
 
-    .info-titulo::before,
-    .info-titulo::after {
+    .info-titulo::before {
       display: none;
     }
 

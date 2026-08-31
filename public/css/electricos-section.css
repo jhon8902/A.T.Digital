@@ -140,7 +140,7 @@
 .electrico-card__date {
   font-family: var(--font-body, "Source Sans 3", sans-serif);
   font-size: var(--home-card-meta);
-  color: #8b939e;
+  color: #4a5560;
 }
 
 .electrico-card__body h3 {
@@ -395,16 +395,13 @@
   border: 1.5px solid transparent;
 }
 
-#electricos .electricos-home-grid .scope-tag--national {
-  color: #5a6470;
+#electricos .electricos-home-grid .scope-tag--national,
+#electricos .electricos-home-grid .scope-tag--international {
+  color: #fff;
 }
 
-#electricos .electricos-home-grid .scope-tag--national::before {
-  background: transparent;
-  border-color: rgba(8, 52, 31, 0.14);
-}
-
+#electricos .electricos-home-grid .scope-tag--national::before,
 #electricos .electricos-home-grid .scope-tag--international::before {
-  background: transparent;
-  border-color: rgba(8, 52, 31, 0.14);
+  background: #08341f;
+  border-color: #08341f;
 }

@@ -72,8 +72,8 @@
 .deportes-title {
   font-family: var(--font-display, "Newsreader", Georgia, serif);
   font-size: clamp(2.85rem, 4.2vw, 4.1rem);
-  font-weight: 500;
-  font-style: italic;
+  font-weight: 600;
+  font-style: normal;
   color: var(--dep-text);
   letter-spacing: 0.01em;
   margin: 0;
@@ -115,16 +115,19 @@
   margin-top: 0.25rem;
   font-family: var(--font-body, "Source Sans 3", sans-serif);
   font-size: 0.88rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.02em;
-  color: var(--dep-accent);
+  color: #10161f;
   text-decoration: none;
-  transition: color 0.2s ease, transform 0.2s ease;
+  padding: 0.4rem 0.75rem;
+  background: #e6b410;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .deportes-head__link:hover {
-  color: #e0b84f;
-  transform: translateX(2px);
+  color: #10161f;
+  background: #c49a12;
+  transform: translateY(-1px);
 }
 
 /* Stack: hero 30/70 + fila de 3 */
@@ -389,19 +392,19 @@
 
 .deporte-scope--nacional,
 .deporte-scope--internacional {
-  color: #f3f5f3;
+  color: #fff;
 }
 
 .deporte-scope--nacional::before,
 .deporte-scope--internacional::before {
-  background: transparent;
-  border-color: #d4a742;
+  background: #08341f;
+  border-color: #08341f;
 }
 
 .deporte-card__date {
   font-family: var(--font-body, "Source Sans 3", sans-serif);
   font-size: var(--home-card-meta);
-  color: #8b939e;
+  color: #cfd6d1;
 }
 
 .deporte-card__body h3 {
@@ -430,18 +433,19 @@
 .deporte-chip {
   font-family: var(--font-body, "Source Sans 3", sans-serif);
   font-size: var(--home-card-chip);
-  font-weight: 600;
-  color: #9a3412;
-  background: var(--dep-chip);
+  font-weight: 700;
+  color: #10161f;
+  background: #e6b410;
   padding: 0.22rem 0.55rem;
-  border-radius: 999px;
+  border-radius: 2px;
+  border: 1px solid #e6b410;
 }
 
 .deporte-desc {
   font-family: var(--font-body, "Source Sans 3", sans-serif);
   font-size: var(--home-card-body);
   line-height: 1.55;
-  color: var(--dep-muted);
+  color: #e4e8e4;
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -487,7 +491,7 @@
   font-family: var(--font-body, "Source Sans 3", sans-serif);
   font-size: var(--home-section-cta);
   font-weight: 600;
-  color: #f3f5f3;
+  color: #10161f;
   text-decoration: none;
   padding: 0.62rem 1.25rem;
   border: none;
@@ -505,8 +509,8 @@
   inset: 0;
   transform: none;
   z-index: -1;
-  background: transparent;
-  border: 1.5px solid #d4a742;
+  background: #e6b410;
+  border: 1.5px solid #e6b410;
   border-radius: 0;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
@@ -516,8 +520,8 @@
 }
 
 .deportes-more:hover::before {
-  background: rgba(212, 167, 66, 0.12);
-  border-color: #e0b84f;
+  background: #c49a12;
+  border-color: #c49a12;
 }
 
 /* Tablet / móvil: columna única, imágenes más grandes */

@@ -34,8 +34,8 @@ body.home-page .section-info .info-titulo,
 body.home-page .section-info.section-info--interactive .info-header .info-titulo {
   font-size: clamp(2.2rem, 3.15vw, 3.05rem) !important;
   font-family: var(--font-display, "Newsreader", Georgia, serif) !important;
-  font-style: italic;
-  font-weight: 500 !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
   font-synthesis: none !important;
   letter-spacing: -0.03em !important;
   line-height: 1.08 !important;
@@ -61,8 +61,8 @@ body.home-page .pruebas-section--videos .pruebas-title,
 body.home-page .pruebas-section--videos h2.pruebas-title {
   font-family: var(--font-display, "Newsreader", Georgia, serif) !important;
   font-size: clamp(2.35rem, 4vw, 3.1rem) !important;
-  font-weight: 500 !important;
-  font-style: italic;
+  font-weight: 600 !important;
+  font-style: normal !important;
   font-synthesis: none !important;
   letter-spacing: -0.03em !important;
   text-transform: none;
@@ -162,8 +162,8 @@ body.home-page .home-mobility .hibridos-title,
 body.home-page .home-mobility h2.hibridos-title,
 body.home-page .home-mobility #hibridos .hibridos-title {
   font-size: clamp(2.15rem, 2.9vw, 2.7rem) !important;
-  font-weight: 500 !important;
-  font-style: italic;
+  font-weight: 600 !important;
+  font-style: normal !important;
   justify-content: flex-start !important;
   text-align: left !important;
   gap: 0 !important;
@@ -191,7 +191,7 @@ body.home-page .home-mobility .mobility-row__title {
 body.home-page .home-mobility .mobility-row__deck,
 body.home-page .home-mobility .electricos-lead,
 body.home-page .home-mobility .hibridos-lead {
-  color: #4b5563 !important;
+  color: #2f3840 !important;
   font-size: clamp(1rem, 1.15vw, 1.12rem) !important;
 }
 
@@ -275,7 +275,7 @@ body.home-page #pruebas .pruebas-spotlight__title {
 }
 
 body.home-page #pruebas .pruebas-spotlight__desc {
-  color: #5a6470 !important;
+  color: #2f3840 !important;
   max-width: 34rem !important;
 }
 
@@ -313,8 +313,8 @@ body.home-page #hibridos .hibridos-eyebrow {
 body.home-page #hibridos .hibridos-title,
 body.home-page h2.hibridos-title {
   font-family: var(--font-display, "Newsreader", Georgia, serif) !important;
-  font-style: italic;
-  font-weight: 500 !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
   font-synthesis: none !important;
   font-size: clamp(2.3rem, 3.3vw, 3.2rem) !important;
   color: #041a10 !important;
@@ -396,8 +396,7 @@ body.home-page .pruebas-title::after {
   body.home-page .deportes-title::after,
   body.home-page .pruebas-title::before,
   body.home-page .pruebas-title::after,
-  body.home-page .section-info .info-titulo::before,
-  body.home-page .section-info .info-titulo::after {
+  body.home-page .section-info .info-titulo::before {
     display: none;
   }
 }
@@ -426,11 +425,12 @@ body.home-page .section-info .news-card:not(.news-card--featured):not(.news-card
   body.home-page .news-carousel-card__title {
     font-family: var(--font-display, "Newsreader", Georgia, serif) !important;
     font-size: var(--home-card-title) !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
+    font-style: normal !important;
     font-synthesis: none !important;
     line-height: 1.22 !important;
     letter-spacing: -0.02em;
-    color: #062818 !important;
+    color: #041a10 !important;
   }
 }
 
@@ -442,10 +442,11 @@ body.home-page .hibrido-card__body h3 a,
 body.home-page .deporte-card__body h3 a {
   font-family: var(--font-display, "Newsreader", Georgia, serif) !important;
   font-size: var(--home-card-title) !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
   font-synthesis: none !important;
   letter-spacing: -0.02em;
-  color: #062818 !important;
+  color: #041a10 !important;
 }
 
 body.home-page h3.news-carousel-card__title,
@@ -456,10 +457,11 @@ body.home-page .hibrido-card__body h3,
 body.home-page .deporte-card__body h3 {
   font-family: var(--font-display, "Newsreader", Georgia, serif) !important;
   font-size: var(--home-card-title) !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
   font-synthesis: none !important;
   letter-spacing: -0.02em;
-  color: #062818 !important;
+  color: #041a10 !important;
 }
 
 /* Etiqueta de bloque — sans, no compite con el titular de la nota */
@@ -470,18 +472,20 @@ body.home-page .news-carousel-heading {
   font-synthesis: none !important;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #3d4a44 !important;
+  color: #08341f !important;
 }
 
 body.home-page .news-carousel-card__deck {
-  color: #4b5563 !important;
+  color: #2f3840 !important;
   font-size: var(--home-card-body) !important;
+  font-weight: 500 !important;
 }
 
 body.home-page .section-info .news-date,
 body.home-page .news-carousel-card .news-date {
-  font-size: 0.75rem !important;
-  color: #8a939e !important;
+  font-size: 0.8rem !important;
+  color: #4a5560 !important;
+  font-weight: 600 !important;
 }
 
 /* Destacado de Noticias — más grande, solo esa tarjeta (desktop) */
@@ -518,13 +522,21 @@ body.home-page .section-info .scope-tag,
 body.home-page .section-info .news-tag,
 body.home-page .news-carousel-card .scope-tag,
 body.home-page .news-carousel-card .news-tag {
-  font-size: var(--home-card-scope) !important;
+  font-size: 0.72rem !important;
   font-family: var(--font-body, "Source Sans 3", sans-serif);
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   font-synthesis: none !important;
-  color: #5a6470 !important;
   letter-spacing: 0.04em;
-  padding: 3px 8px !important;
+  padding: 5px 11px !important;
+}
+
+body.home-page #noticias .news-carousel-card .news-tag {
+  color: #10161f !important;
+}
+
+body.home-page #noticias .news-carousel-card .scope-tag--national,
+body.home-page #noticias .news-carousel-card .scope-tag--international {
+  color: #fff !important;
 }
 
 /* Scope sobre imagen — texto blanco legible (no heredar gris de meta) */
@@ -541,20 +553,33 @@ body.home-page #lanzamientos .lanzamiento-scope--overlay.lanzamiento-scope--inte
 }
 
 body.home-page .electrico-chip,
-body.home-page .hibrido-chip,
-body.home-page .deporte-chip {
+body.home-page .hibrido-chip {
   font-size: var(--home-card-scope) !important;
-  font-weight: 600 !important;
-  color: #5a6470 !important;
-  background: transparent !important;
-  border: 1px solid rgba(8, 52, 31, 0.14) !important;
+  font-weight: 700 !important;
+  color: #08341f !important;
+  background: rgba(230, 180, 16, 0.22) !important;
+  border: 1px solid rgba(196, 154, 18, 0.55) !important;
   border-radius: 2px !important;
-  padding: 3px 8px !important;
+  padding: 4px 9px !important;
+}
+
+body.home-page #deportes .deporte-chip {
+  font-size: var(--home-card-scope) !important;
+  font-weight: 700 !important;
+  color: #10161f !important;
+  background: #e6b410 !important;
+  border: 1px solid #e6b410 !important;
+  border-radius: 2px !important;
+  padding: 4px 9px !important;
+}
+
+body.home-page #deportes .deporte-desc {
+  color: #e4e8e4 !important;
 }
 
 body.home-page .electrico-desc,
 body.home-page .hibrido-desc {
-  color: #4b5563 !important;
+  color: #2f3840 !important;
 }
 
 body.home-page .electrico-card__cta,
@@ -586,32 +611,49 @@ body.home-page .section-info .ver-mas-noticias-btn {
   border-radius: 0 !important;
 }
 
+body.home-page .electricos-more,
+body.home-page .hibridos-more,
+body.home-page .lanzamientos-more,
+body.home-page .pruebas-more {
+  color: #10161f !important;
+}
+
 body.home-page .electricos-more::before,
 body.home-page .hibridos-more::before,
-body.home-page .deportes-more::before,
 body.home-page .lanzamientos-more::before,
-body.home-page #noticias .ver-mas-noticias-btn::before {
+body.home-page .pruebas-more::before {
   transform: none !important;
   border-radius: 0 !important;
+  background: #e6b410 !important;
+  border-color: #e6b410 !important;
+}
+
+body.home-page .electricos-more:hover::before,
+body.home-page .hibridos-more:hover::before,
+body.home-page .lanzamientos-more:hover::before,
+body.home-page .pruebas-more:hover::before {
+  background: #c49a12 !important;
+  border-color: #c49a12 !important;
 }
 
 body.home-page #noticias .ver-mas-noticias-btn,
 body.home-page #noticias .ver-mas-noticias-btn:hover {
   background-image: none !important;
   background-size: auto !important;
-  transition: none !important;
+  transition: background 0.2s ease, color 0.2s ease !important;
   gap: 10px !important;
-  color: #08341f !important;
+  color: #10161f !important;
   font-family: var(--font-display, "Newsreader", Georgia, serif) !important;
 }
 
 body.home-page #noticias .ver-mas-noticias-btn::before {
-  border-color: #08341f !important;
+  border-color: #e6b410 !important;
+  background: #e6b410 !important;
 }
 
 body.home-page #noticias .ver-mas-noticias-btn:hover::before {
-  border-color: #08341f !important;
-  background: #fff !important;
+  border-color: #c49a12 !important;
+  background: #c49a12 !important;
 }
 
 body.home-page #noticias .ver-mas-noticias-btn::after,
@@ -622,6 +664,33 @@ body.home-page #noticias .ver-mas-noticias-btn:hover::after {
 
 body.home-page #automatch .ver-mas-automatch-container .btn-automatch--ver-mas {
   font-size: clamp(1.02rem, 1.35vw, 1.18rem);
+}
+
+body.home-page #automatch .btn-automatch,
+body.home-page #automatch .catalog-filter,
+body.home-page .automatch-promo__btn {
+  border-radius: 0 !important;
+}
+
+body.home-page #automatch .automatch-hero__path {
+  border: none !important;
+  background: #0f4d32 !important;
+}
+
+body.home-page #automatch .catalog-filter {
+  background: #ffffff !important;
+  border-color: rgba(8, 52, 31, 0.16) !important;
+}
+
+body.home-page #automatch .catalog-filter:hover {
+  background: #f3f5f3 !important;
+}
+
+body.home-page #automatch .catalog-filter.is-active,
+body.home-page #automatch .catalog-filter.is-active:hover {
+  background: #e6b410 !important;
+  border-color: #e6b410 !important;
+  color: #10161f !important;
 }
 
 body.home-page #automatch .automatch-hero .btn-automatch--ghost {
@@ -648,15 +717,24 @@ body.home-page .automatch-promo__copy p:last-child {
 }
 
 /* AutoMatch en home — un solo bloque (hero + destacados) */
+body.home-page .extra-sections {
+  background-color: var(--home-section-bg) !important;
+  background-image: var(--home-relief-image) !important;
+  background-size: var(--home-relief-size) !important;
+  background-repeat: repeat !important;
+}
+
 body.home-page #automatch {
-  width: 100%;
-  max-width: none;
-  margin-inline: 0;
+  width: min(92%, 1680px);
+  max-width: 1680px;
+  margin-inline: auto;
   overflow: visible;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(230, 180, 16, 0.18), transparent),
+  background-color: #08341f;
+  background-image: var(--home-relief-image-dark),
     linear-gradient(165deg, #062818 0%, #08341f 45%, #0a4228 100%);
-  padding-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  background-size: var(--home-relief-size), auto;
+  background-repeat: repeat, no-repeat;
+  padding-bottom: 0;
 }
 
 body.home-page #automatch .automatch-home {
@@ -667,14 +745,27 @@ body.home-page #automatch .automatch-home {
   background: transparent;
 }
 
+body.home-page #automatch .automatch-hero {
+  width: 100%;
+}
+
 body.home-page #automatch .automatch-section.automatch-section--cards {
-  width: min(96%, 1760px) !important;
+  width: 100% !important;
   margin: 0 auto !important;
   padding-top: clamp(1.1rem, 2vw, 1.45rem) !important;
-  background-color: var(--home-section-bg) !important;
-  background-image: var(--home-relief-image) !important;
-  background-size: var(--home-relief-size) !important;
-  background-repeat: repeat !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+body.home-page #automatch .automatch-cards-kicker {
+  color: #f0c14a !important;
+  font-size: 1.08rem !important;
+}
+
+@media (max-width: 768px) {
+  body.home-page #automatch .automatch-cards-kicker {
+    font-size: 0.95rem !important;
+  }
 }
 
 /* Carrusel hero — etiquetas sutiles sobre imagen */
@@ -730,8 +821,8 @@ body.home-page .section-info.section-info--interactive .info-header .info-titulo
   justify-content: flex-start !important;
   color: #041a10 !important;
   font-family: var(--font-display, "Newsreader", Georgia, serif) !important;
-  font-style: italic;
-  font-weight: 500 !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
   font-synthesis: none !important;
   letter-spacing: -0.03em !important;
   line-height: 1.12 !important;
@@ -739,10 +830,23 @@ body.home-page .section-info.section-info--interactive .info-header .info-titulo
   text-shadow: none !important;
 }
 
-body.home-page .section-info.section-info--interactive .info-header .info-titulo::before,
-body.home-page .section-info.section-info--interactive .info-header .info-titulo::after {
+body.home-page .section-info.section-info--interactive .info-header .info-titulo::before {
   display: none !important;
   content: none !important;
+}
+
+body.home-page .section-info.section-info--interactive .info-header .info-titulo::after {
+  display: block !important;
+  content: "" !important;
+  width: 3.35rem;
+  max-width: 3.35rem;
+  min-width: 0;
+  flex: none;
+  height: 3px;
+  margin-top: 0.55rem;
+  background: #e6b410;
+  opacity: 1;
+  transform: none;
 }
 
 body.home-page .section-info.section-info--interactive > .container {
@@ -772,17 +876,15 @@ body.home-page .deportes-inner {
   box-shadow: 0 18px 40px rgba(8, 52, 31, 0.1) !important;
 }
 
-body.home-page #deportes .deporte-scope,
 body.home-page #deportes .deporte-scope--nacional,
 body.home-page #deportes .deporte-scope--internacional {
-  color: #f3f5f3 !important;
+  color: #fff !important;
 }
 
-body.home-page #deportes .deporte-scope::before,
 body.home-page #deportes .deporte-scope--nacional::before,
 body.home-page #deportes .deporte-scope--internacional::before {
-  background: transparent !important;
-  border-color: #d4a742 !important;
+  background: #08341f !important;
+  border-color: #08341f !important;
 }
 
 body.home-page h2.deportes-title,
@@ -819,14 +921,15 @@ body.home-page .deportes-head {
 }
 
 body.home-page .deportes-lead {
-  color: #b7bfb9 !important;
+  color: #d7ddd8 !important;
   margin: 0 !important;
   max-width: 16.5rem !important;
   text-align: center !important;
 }
 
 body.home-page .deportes-head__link {
-  color: #d4a742 !important;
+  color: #10161f !important;
+  background: #e6b410 !important;
 }
 
 body.home-page .deportes-head__rule {
@@ -840,17 +943,17 @@ body.home-page .deportes-eyebrow {
 }
 
 body.home-page .deportes-more {
-  color: #f3f5f3 !important;
+  color: #10161f !important;
 }
 
 body.home-page .deportes-more::before {
-  border-color: #d4a742 !important;
-  background: transparent !important;
+  border-color: #e6b410 !important;
+  background: #e6b410 !important;
 }
 
 body.home-page .deportes-more:hover::before {
-  background: rgba(212, 167, 66, 0.12) !important;
-  border-color: #e0b84f !important;
+  background: #c49a12 !important;
+  border-color: #c49a12 !important;
 }
 
 /* Tarjetas planas — Lanzamientos (incluye aro dorado del destacado) */
@@ -923,7 +1026,7 @@ body.home-page #deportes .deporte-card--row .deporte-card__body h3 a {
 }
 
 body.home-page #deportes .deporte-card--lead .deporte-desc {
-  color: rgba(255, 255, 255, 0.88) !important;
+  color: #e8ece8 !important;
 }
 
 body.home-page #deportes .deporte-card__cta {
@@ -1127,6 +1230,26 @@ body.home-page #pruebas .pruebas-spotlight__player video {
   body.home-page #noticias .news-showcase .news-carousel-card__image img {
     object-fit: cover !important;
     object-position: center 45% !important;
+  }
+
+  body.home-page #noticias .news-carousel-wrap,
+  body.home-page #noticias .news-home-carousel {
+    margin-bottom: 4px !important;
+  }
+
+  body.home-page #noticias .news-carousel {
+    padding-bottom: 0 !important;
+  }
+
+  body.home-page #noticias .news-showcase .news-carousel-card__body {
+    padding-bottom: 8px !important;
+    padding-top: 14px !important;
+  }
+
+  body.home-page #noticias .ver-mas-noticias-section,
+  body.home-page #noticias .ver-mas-noticias-section--above-radar {
+    margin: 0 auto 10px !important;
+    padding: 4px 16px 8px !important;
   }
 }
 

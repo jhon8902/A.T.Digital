@@ -289,7 +289,7 @@ const headerSearchData = encodeURIComponent(
     border-top: 0;
     box-shadow: none;
     margin: 0;
-    border-bottom: 1px solid rgba(8, 52, 31, 0.1);
+    border-bottom: 2px solid #e6b410;
     transition:
       box-shadow 0.25s ease,
       border-color 0.25s ease;
@@ -302,7 +302,7 @@ const headerSearchData = encodeURIComponent(
     right: 0;
     width: 100%;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-    border-bottom-color: rgba(8, 52, 31, 0.14);
+    border-bottom-color: #e6b410;
   }
 
   /* Empuja menú + acciones a la derecha */
@@ -336,10 +336,10 @@ const headerSearchData = encodeURIComponent(
 
   .menu-escritorio ul li a {
     position: relative;
-    color: #1a1a1a;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
+    color: #08341f;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     padding: 0.5rem 0.62rem;
     border-radius: 0;
@@ -361,7 +361,7 @@ const headerSearchData = encodeURIComponent(
     left: 0.62rem;
     right: 0.62rem;
     bottom: 0.12rem;
-    height: 1px;
+    height: 2px;
     background: var(--color-accent, #e6b410);
     transform: scaleX(0);
     transform-origin: center;
@@ -373,8 +373,8 @@ const headerSearchData = encodeURIComponent(
   }
 
   .menu-escritorio .nav-home {
-    color: #1a1a1a;
-    font-weight: 600;
+    color: #08341f;
+    font-weight: 700;
   }
 
   .menu-escritorio .nav-home:hover {
@@ -383,8 +383,8 @@ const headerSearchData = encodeURIComponent(
   }
 
   .menu-escritorio .nav-primary {
-    color: #1a1a1a;
-    font-weight: 600;
+    color: #08341f;
+    font-weight: 700;
   }
 
   .menu-escritorio .nav-cta {
@@ -415,10 +415,10 @@ const headerSearchData = encodeURIComponent(
     gap: 0.3rem;
     border: none;
     background: transparent;
-    color: #1a1a1a;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
+    color: #08341f;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     padding: 0.5rem 0.62rem;
     border-radius: 0;
@@ -439,7 +439,7 @@ const headerSearchData = encodeURIComponent(
     left: 0.62rem;
     right: 0.62rem;
     bottom: 0.12rem;
-    height: 1px;
+    height: 2px;
     background: var(--color-accent, #e6b410);
     transform: scaleX(0);
     transform-origin: center;
@@ -502,7 +502,7 @@ const headerSearchData = encodeURIComponent(
     letter-spacing: 0 !important;
     text-transform: none !important;
     white-space: nowrap;
-    color: #1a1a1a !important;
+    color: #08341f !important;
   }
 
   .nav-dropdown-menu a::after {
@@ -595,9 +595,9 @@ const headerSearchData = encodeURIComponent(
   /* Botón hamburguesa */
 
   .boton-hamburguesa {
-    color: #08341f;
+    color: #10161f;
     font-size: 16px;
-    border: 1px solid rgba(8, 52, 31, 0.16);
+    border: 1.5px solid #e6b410;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -605,7 +605,7 @@ const headerSearchData = encodeURIComponent(
     z-index: 3;
     padding: 0;
     flex-shrink: 0;
-    background: #fff;
+    background: #e6b410;
     border-radius: 0;
     transition: border-color 0.2s ease, background 0.2s ease;
     box-shadow: none;
@@ -615,8 +615,8 @@ const headerSearchData = encodeURIComponent(
 
   .boton-hamburguesa:hover,
   .boton-hamburguesa:active {
-    background: #fff;
-    border-color: rgba(8, 52, 31, 0.35);
+    background: #c49a12;
+    border-color: #c49a12;
     transform: none;
     box-shadow: none;
   }
@@ -721,8 +721,8 @@ const headerSearchData = encodeURIComponent(
   .menu-drawer-kicker {
     margin: 0;
     font-family: var(--font-display, "Newsreader", Georgia, serif);
-    font-style: italic;
-    font-weight: 500;
+    font-style: normal;
+    font-weight: 600;
     font-size: 1.05rem;
     letter-spacing: -0.02em;
     color: rgba(232, 236, 233, 0.92);
@@ -751,9 +751,9 @@ const headerSearchData = encodeURIComponent(
 
   .menu-action-btn,
   .menu-action-link {
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: transparent;
-    color: rgba(232, 236, 233, 0.92);
+    border: 1.5px solid #e6b410;
+    background: #e6b410;
+    color: #10161f;
     border-radius: 0;
     padding: 10px 12px;
     font-size: 0.78rem;
@@ -771,21 +771,21 @@ const headerSearchData = encodeURIComponent(
 
   .menu-action-btn:hover,
   .menu-action-link:hover {
-    background: transparent;
-    border-color: #e6b410;
-    color: #e6b410;
+    background: #c49a12;
+    border-color: #c49a12;
+    color: #10161f;
   }
 
   .menu-action-link {
-    background: #08341f;
-    border-color: #08341f;
-    color: #fff;
+    background: #e6b410;
+    border-color: #e6b410;
+    color: #10161f;
   }
 
   .menu-action-link:hover {
-    background: #0a4a2b;
-    border-color: #0a4a2b;
-    color: #fff;
+    background: #c49a12;
+    border-color: #c49a12;
+    color: #10161f;
   }
 
   .menu-content ul {
@@ -821,13 +821,13 @@ const headerSearchData = encodeURIComponent(
     color: #e6b410;
     transform: none;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .menu-hamburguesa,
     .boton-hamburguesa {
       display: none !important;
     }
   }
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     .menu-hamburguesa {
       display: block;
     }
@@ -870,7 +870,7 @@ const headerSearchData = encodeURIComponent(
     }
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     /* Ocultar el menú de navegación en móvil */
     .top-bar .menu-hamburguesa {
       display: none;
@@ -950,9 +950,9 @@ const headerSearchData = encodeURIComponent(
       min-width: 44px;
       min-height: 44px;
       border-radius: 0;
-      border: 1px solid rgba(8, 52, 31, 0.16);
-      background: #fff;
-      color: #08341f;
+      border: 1.5px solid #e6b410;
+      background: #e6b410;
+      color: #10161f;
       box-shadow: none;
     }
 
@@ -1036,7 +1036,7 @@ const headerSearchData = encodeURIComponent(
     width: 36px;
     height: 36px;
     background-color: transparent;
-    color: #1a1a1a;
+    color: #08341f;
     padding: 0;
     border-radius: 8px;
     cursor: pointer;
@@ -1131,7 +1131,7 @@ const headerSearchData = encodeURIComponent(
     display: flex;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .menu-escritorio {
       display: block;
       margin-top: 0;
@@ -1147,10 +1147,10 @@ const headerSearchData = encodeURIComponent(
       margin: 0;
     }
     .menu-escritorio ul li a {
-      color: #1a1a1a;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
+      color: #08341f;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
       padding: 0.5rem 0.62rem;
       border-radius: 0;
       text-decoration: none;
@@ -1161,9 +1161,9 @@ const headerSearchData = encodeURIComponent(
     }
 
     .nav-dropdown-toggle {
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
       padding: 0.5rem 0.62rem;
     }
 
@@ -1209,8 +1209,8 @@ const headerSearchData = encodeURIComponent(
     }
 
     .menu-escritorio ul li a.nav-primary {
-      color: #1a1a1a !important;
-      font-weight: 600;
+      color: #08341f !important;
+      font-weight: 700;
     }
 
     .menu-escritorio ul li a.nav-primary:hover {
@@ -1246,7 +1246,7 @@ const headerSearchData = encodeURIComponent(
       font-size: 0.78rem;
     }
   }
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     .menu-escritorio {
       display: none;
     }
@@ -1436,7 +1436,7 @@ const headerSearchData = encodeURIComponent(
     margin: 0;
     font-size: clamp(1.02rem, 1.45vw, 1.28rem);
     font-weight: 500;
-    font-style: italic;
+    font-style: normal;
     max-width: none;
     color: #e8ece9;
     position: relative;
@@ -1577,9 +1577,9 @@ const headerSearchData = encodeURIComponent(
       display: block;
       flex: 0 1 auto;
       font-family: var(--font-display, "Newsreader", Georgia, serif);
-      font-style: italic;
+      font-style: normal;
       font-size: clamp(0.68rem, 3.4vw, 0.84rem);
-      font-weight: 500;
+      font-weight: 600;
       letter-spacing: -0.02em;
       text-align: center;
       line-height: 1.2;
@@ -1620,7 +1620,7 @@ const headerSearchData = encodeURIComponent(
     .top-bar {
       border-bottom: 0 !important;
       box-shadow: none !important;
-      border-bottom: 2px solid rgba(59, 43, 1, 0.16) !important;
+      border-bottom: 2px solid #e6b410 !important;
       padding-top: 12px;
     }
   }

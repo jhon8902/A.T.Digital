@@ -62,7 +62,7 @@ const automatchAutos = buildAutomatchCarousel(automatchNotes, {
       </div>
     </section>
 
-    <link rel="stylesheet" href="/css/mobility-split.css?v=12" />
+    <link rel="stylesheet" href="/css/mobility-split.css?v=13" />
 
     <Deportes notes={homeNotes} />
 
@@ -79,7 +79,7 @@ const automatchAutos = buildAutomatchCarousel(automatchNotes, {
     -->
   </div>
 
-  <link rel="stylesheet" href="/css/home-typography.css?v=102" />
+  <link rel="stylesheet" href="/css/home-typography.css?v=115" />
 </Layout>
 
 <style>
@@ -95,9 +95,9 @@ const automatchAutos = buildAutomatchCarousel(automatchNotes, {
   }
 
   .automatch-destacado {
-    width: 100%;
-    max-width: none;
-    margin-inline: 0;
+    width: min(92%, 1680px);
+    max-width: 1680px;
+    margin-inline: auto;
     margin-bottom: 0;
     animation: fadeInUp 0.7s ease-out;
   }
@@ -107,7 +107,10 @@ const automatchAutos = buildAutomatchCarousel(automatchNotes, {
     transform: translateY(0);
     max-height: none;
     overflow: visible;
-    background: white;
+    background-color: var(--home-section-bg, #f0f3f0);
+    background-image: var(--home-relief-image);
+    background-size: var(--home-relief-size);
+    background-repeat: repeat;
   }
 
   .extra-sections > * {
