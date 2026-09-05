@@ -19,7 +19,7 @@ No traducir la fuente: reescribir con narrativa cercana. En `deportes`, el cierr
 ```
 [Marca] [Modelo] [Año]: [gancho que dé ganas de leer — lenguaje claro Colombia]
 ```
-El gancho genera **expectativa**, no un catálogo de hp / unidades / ciudad. Evitar en el titular: cv, «dos filas», tecnicismos o siglas de taller sin explicar. Preferir plazas (cinco/siete) o el dato que entienda el lector.
+El gancho genera **expectativa**, no un catálogo de hp / unidades / ciudad. Evitar en el titular: cv, «dos filas», tecnicismos o siglas de taller sin explicar. Preferir puestos (cinco/siete) o el dato que entienda el lector. Si el editor se detendría («sedán alto», «el de diario»), el gancho no está listo.
 
 **Caja de alternativas (una por nota):** rareza, contraste, promesa incompleta, por qué ahora, o vs el hermano. Bloque 1: escena, apuesta, lo que no dijeron, o vs el hermano. Lente: soñar / entender / comparar / decidir. Detalle: `docs/prompt-maestro-editorial.md` §13.
 
@@ -47,6 +47,7 @@ Título: [Encabezado del bloque] |
 
 - **Tope de longitud = nota 174** ([CUPRA Born](https://autotechdigital.com/notas/174)): densa pero digerible; lectura ~3–4 min. **No superar** ese volumen salvo petición explícita del usuario.
 - Cada bloque: **3–4 oraciones** (máx. 5 si el tema lo exige). Una idea principal por bloque.
+- Encabezados de bloque: se entienden solos (lección Crown). Nada de «el de diario», «sedán alto» ni «el Platinum» suelto: **la versión** + nombre. Asientos: **puestos**, no plazas.
 - **2–3 datos clave por bloque** en la narrativa; el resto va al resumen técnico. Evitar catálogo en prosa.
 - Alineación visual con la imagen en `/notas/[id]` se logra con 3–4 oraciones sólidas, no con párrafos enciclopédicos.
 - Si un bloque parece resumen técnico escrito en prosa, recortar y mover specs al formulario de resumen técnico.
@@ -83,9 +84,9 @@ Las notas `internacionales` están bien; el **lenguaje** debe sonar local, no eu
 
 | Tema | Regla |
 |------|--------|
-| **Potencia** | Usar **hp**, no cv ni PS sueltos. Ej.: «282 hp», no «186 cv». Si la fuente trae kW, añadir hp entre paréntesis si ayuda. |
-| **Torque** | Preferir **Nm**; si la fuente solo trae lb-pie, convertir o dar ambos: «350 Nm». |
-| **Plazas / filas** | En Colombia **plazas = puestos** (ej. «cinco plazas» / «cinco puestos»). Evitar «dos filas» o «tres filas» solos en título o subtítulo. Si hace falta contrastar: «cinco plazas (sin tercera fila)» o «siete plazas con banqueta trasera». |
+| **Potencia** | Usar **hp de potencia**, no cv ni PS sueltos ni el número solo. Ej.: «282 hp de potencia», no «186 cv» ni «282 hp» suelto. Si la fuente trae kW, añadir hp de potencia entre paréntesis si ayuda. |
+| **Torque** | **Nm de torque**. Si la fuente solo trae lb-pie, convertir o dar ambos: «350 Nm de torque». Nunca «350 Nm» suelto. |
+| **Puestos / filas** | En Colombia son **puestos**, no plazas. Ej.: «cinco puestos» / «siete puestos». Evitar «dos filas» o «tres filas» solos en título o subtítulo. Si hace falta contrastar: «cinco puestos (sin asientos atrás del todo)» o «siete puestos con banqueta trasera». |
 | **Tecnicismos** | Si el término es necesario, **una línea corta entre paréntesis** la primera vez. Ej.: «turbo de geometría variable (el turbo se adapta según la velocidad para responder mejor)». Si se puede decir en español llano, no usar el término. |
 | **Marcas comerciales** | Nombres de sistema (4Motion, DISTRONIC, E-Tech) sí; explicar en palabras simples qué hacen: «tracción integral 4Motion». |
 | **Ámbito internacional** | Igual claridad: «ventas en EE. UU.», «precio en euros», «llegada a Colombia prevista…» — el lector no debe adivinar el mercado. |
@@ -96,7 +97,8 @@ Las notas `internacionales` están bien; el **lenguaje** debe sonar local, no eu
 |-------------------|------------------|
 | cv, PS (suelto) | hp (Colombia) |
 | mph (suelto) | km/h; si la marca midió 0-60 millas, decir 0 a 96 km/h y que no es el 0 a 100 |
-| Dos filas / tres filas (sin contexto) | Cinco plazas / siete plazas (o cinco/siete puestos) |
+| Dos filas / tres filas (sin contexto); plazas | Cinco puestos / siete puestos |
+| el Platinum / el XLE / el de diario | la versión Platinum / la versión XLE |
 | Cofre (motor) | Capó |
 | Maletero | Baúl |
 | Geometría variable (suelto) | Turbo que se adapta a la velocidad (geometría variable) — solo si hace falta nombrarlo |
@@ -223,6 +225,8 @@ Incluir siempre esta tabla al sugerir imágenes:
 El usuario sube sus propias imágenes; sugerir **qué tipo de foto** va en cada slot, no URLs inventadas.
 
 ## Entrega al usuario
+
+Antes de pegar: los 6 encabezados (título + 5 bloques) se entienden solos; puestos; **la versión** + nombre. Ver `.cursor/rules/voz-colombia-titulos.mdc`.
 
 Devolver en este orden:
 1. Título

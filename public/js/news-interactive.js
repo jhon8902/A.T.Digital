@@ -50,6 +50,7 @@
   const showcase = section.querySelector(".news-showcase");
   const filterButtons = section.querySelectorAll(".news-filter-btn");
   const homeCarouselWrap = section.querySelector("[data-home-carousel-root]");
+  const newsMosaic = section.querySelector("[data-news-mosaic]");
   const scopeCarouselWrap = section.querySelector("[data-scope-carousel-root]");
   const scopeCarouselCards = scopeCarouselWrap
     ? scopeCarouselWrap.querySelectorAll(".news-carousel-card")
@@ -94,6 +95,11 @@
     const isAll = normalized === "all";
     const isScopeFilter = SCOPE_FILTERS.has(normalized);
     let visibleCount = 0;
+
+    if (newsMosaic) {
+      newsMosaic.hidden = !isAll;
+      if (isAll) visibleCount += 1;
+    }
 
     if (homeCarouselWrap) {
       homeCarouselWrap.hidden = !isAll;

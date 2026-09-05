@@ -1,3 +1,13 @@
+/** Categorías de Mundo automotor (mosaico + carrusel). Incluye lanzamientos. */
+export const HOME_NEWS_CATEGORIES: Set<string> = new Set([
+  "noticias",
+  "lanzamientos",
+  "hibridos",
+  "electricos",
+  "deportes",
+  "pruebas",
+]);
+
 /** Máximo de tarjetas por carrusel en el home (noticias, filtros, pruebas). */
 export const HOME_CAROUSEL_LIMIT = 6;
 

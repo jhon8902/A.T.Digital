@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CategoryArchive from "../components/archive/CategoryArchive.astro";
+import { resolveSiteNotes } from "../lib/api";
+import { pickHomeLanzamientoHrefs } from "../lib/home-lanzamientos";
 
 const staticNotes = [
   {
@@ -52,12 +54,15 @@ const staticNotes = [
     source_scope: "nacional",
   },
 ];
+
+const homeNotes = await resolveSiteNotes();
+const skipHomeLanzamientos = pickHomeLanzamientoHrefs(homeNotes);
 ---
 
 <Layout title="Lanzamientos | Auto-Tech-Digital">
   <CategoryArchive
     category="lanzamientos"
-    skipFirst={5}
+    skipHrefs={skipHomeLanzamientos}
     title="Más lanzamientos"
     staticNotes={staticNotes}
     itemsPerPage={6}

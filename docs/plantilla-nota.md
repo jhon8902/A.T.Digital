@@ -52,6 +52,7 @@ El texto se divide en **5 bloques** separados por una **línea en blanco**.
 Cada bloque empieza con `Título: … |` y se convierte en un bloque editorial aparte.
 
 **Modelo de edición (todas las notas nuevas):** Aston Martin Valen 2027 — claro, sin inglés suelto, sin repetir el gancho del titular.
+**Títulos de bloque (lección Crown 2027):** se entienden solos. Puestos, no plazas. **La versión** Platinum, no «el Platinum». Nada de «el de diario» ni «sedán alto».
 
 ### Estructura (5 bloques)
 
@@ -133,6 +134,7 @@ Campos principales: segmento, precio estimado, versiones, origen, motorización,
 - [ ] Subtítulo ≤ 150 caracteres y no se copia entero en el bloque 1
 - [ ] Contenido: 5 bloques `Título: … |` separados por línea en blanco
 - [ ] Sin mph u otro inglés sin traducir; hp, no cv; siglas de taller explicadas la primera vez
+- [ ] Títulos de nota y bloques se entienden solos (puestos, no plazas; la versión X, no «el Platinum»; nada de «sedán alto» ni «el de diario»)
 - [ ] El título del bloque 5 es la idea del cierre, no una copia de la última frase
 - [ ] Si no llega a Colombia, el cierre es un dato curioso, no la ausencia local
 - [ ] En `deportes`, el cierre es emocional y, si aplica, explica el beneficio de la transmisión
@@ -145,4 +147,4 @@ Campos principales: segmento, precio estimado, versiones, origen, motorización,
 
 ADN vivo (prompt maestro): `docs/prompt-maestro-editorial.md`.
 
-_Plantilla A.T. Digital — actualizada agosto 2026 (ADN v1, post Valen)_
+_Plantilla A.T. Digital — actualizada septiembre 2026 (ADN v1.4, post Crown)._

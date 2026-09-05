@@ -552,6 +552,19 @@ body.home-page #lanzamientos .lanzamiento-scope--overlay.lanzamiento-scope--inte
   padding: 4px 10px !important;
 }
 
+body.home-page #lanzamientos .lanzamiento-hero__title,
+body.home-page #lanzamientos .lanzamiento-hero__title a,
+body.home-page #lanzamientos .lanzamiento-tile__title {
+  color: #041a10 !important;
+  font-family: var(--font-display, "Newsreader", Georgia, serif) !important;
+  font-weight: 600 !important;
+}
+
+body.home-page #lanzamientos .lanzamiento-hero__automatch {
+  font-size: var(--home-card-link);
+  color: #9a7200 !important;
+}
+
 body.home-page .electrico-chip,
 body.home-page .hibrido-chip {
   font-size: var(--home-card-scope) !important;
@@ -970,10 +983,12 @@ body.home-page #lanzamientos .lanzamiento-item__media img {
   box-shadow: none !important;
 }
 
-body.home-page #lanzamientos .lanzamiento-item__media {
+body.home-page #lanzamientos .lanzamiento-item__media,
+body.home-page #lanzamientos .lanzamiento-hero__media,
+body.home-page #lanzamientos .lanzamiento-tile__media {
   border-radius: 0 !important;
   overflow: hidden;
-  background: #111827 !important;
+  background: #10161f !important;
 }
 
 /* Autos deportivos — hero 30/70 + fila de 3 (tema oscuro) */
@@ -1189,6 +1204,10 @@ body.home-page #electricos .electricos-home-grid .news-carousel-card__image,
 body.home-page #electricos .electricos-home-grid .news-carousel-card__image img,
 body.home-page #hibridos .hibridos-home-grid .news-carousel-card__image,
 body.home-page #hibridos .hibridos-home-grid .news-carousel-card__image img,
+body.home-page #lanzamientos .lanzamiento-hero__media,
+body.home-page #lanzamientos .lanzamiento-hero__media img,
+body.home-page #lanzamientos .lanzamiento-tile__media,
+body.home-page #lanzamientos .lanzamiento-tile__media img,
 body.home-page #lanzamientos .lanzamiento-item__media,
 body.home-page #lanzamientos .lanzamiento-item__media img,
 body.home-page #deportes .deporte-card__media,

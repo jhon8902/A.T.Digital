@@ -10,7 +10,9 @@ Guía para que el panel `/formulario` funcione en tu PC sin timeouts ni sorpresa
 npm run dev
 ```
 
-Abre **http://localhost:4321/formulario** (puerto por defecto de Astro).
+Abre **http://localhost:4321/** (puerto por defecto de Astro).
+
+`npm run dev` usa `scripts/astro-dev.mjs` para **no** emular Netlify Dev. Si el adaptador llama a `api.netlify.com` y no hay red, `astro dev` a secas se cae (`Failed retrieving site data / extensions`).
 
 No hace falta `netlify dev` para editar notas en local; `npm run dev` es el flujo habitual.
 

@@ -1,0 +1,33 @@
+---
+description: Títulos y léxico Colombia — puestos, la versión X, sin atajos de experto (lección Crown 2027)
+alwaysApply: true
+---
+
+# Primera lectura — el editor no descifra
+
+Aplica a **todas** las notas. Si una palabra pide explicación aparte, no está lista. Lección Crown 2027 (el editor se detuvo): no se vuelve a entregar así.
+
+## Títulos (nota y 5 bloques)
+
+Se entienden **solos**, sin ser experto. Un hecho, en colombiano. Nada de atajos de taller ni de redacción.
+
+| No | Sí |
+|----|-----|
+| el sedán alto / más levantado que un Camry | un sedán de cinco puestos, cuatro puertas y baúl (si la altura no cierra, se corta) |
+| a mitad de camino entre sedán y camioneta | un sedán de cinco puestos, con baúl |
+| 236 hp en el de diario, 340 hp en el tope | 236 hp de potencia en tres versiones; 340 hp de potencia en la versión Platinum |
+| el Platinum / el XLE / el Limited | la versión Platinum / la versión XLE / la versión Limited |
+
+Acabados: siempre **la versión** + el nombre. Nunca el nombre de fábrica como si fuera el auto.
+
+## Léxico Colombia (no negociable)
+
+- Asientos: **puestos**, nunca plazas.
+- Potencia y torque: nunca el número suelto. Escribir **236 hp de potencia** y **480 Nm de torque**, no «236 hp» ni «480 Nm» solos.
+- Altura del carro (del piso al techo) y hueco debajo (altura libre) no son lo mismo. Si salen las dos, decirlo con esas palabras; si confunde, dejar solo una.
+- Si el lector colombiano dudaría, reformular o una línea corta entre paréntesis. No dejar la palabra suelta.
+- Una idea, una vez. Si el carro es más alto y uno se sienta más arriba, dilo en dos oraciones cortas. No trenzar «se entra / se sienta / más arriba / más alto / sedán normal» en la misma frase (lección Crown).
+- Si una comparación no le cierra al editor (p. ej. Crown vs Camry: «va más alto, así que uno se sienta más arriba»), **se corta**. No es lo mismo dicho dos veces ni «se siente más alto».
+- Prueba: leer título + 5 encabezados en voz alta. Si el editor se detiene, reescribir **antes** de entregar.
+
+Detalle y registro: `docs/prompt-maestro-editorial.md` (v1.4, Crown 2027).

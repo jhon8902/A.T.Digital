@@ -9,10 +9,12 @@ import { inferSourceScope } from "../../lib/notes-query";
 import { isPublicEditorialNote } from "../../lib/pruebas-solo";
 import {
   HOME_NEWS_CAROUSEL_LIMIT,
+  HOME_NEWS_CATEGORIES,
   HOME_NEWS_HERO_COUNT,
   HOME_NEWS_POOL_SIZE,
 } from "../../lib/home-news-config";
 import { sectorRadarEditionMeta, sectorRadarPreview } from "../../lib/sector-radar";
+import EnPortada from "./EnPortada.astro";
 import NewsCarouselCard from "./NewsCarouselCard.astro";
 
 interface Props {
@@ -23,14 +25,6 @@ const { notes: prefetchedNotes } = Astro.props;
 // --- CARGA Y FILTRO DE NOTAS RECIENTES PARA PORTADA ---
 
 let dynamicNotes: any[] = [];
-const HOME_NEWS_CATEGORIES = new Set([
-  "noticias",
-  "lanzamientos",
-  "hibridos",
-  "electricos",
-  "deportes",
-  "pruebas",
-]);
 
 function normalizeCategory(value?: string) {
   return (value || "")
@@ -178,7 +172,7 @@ try {
   const data = await resolveSiteNotes(prefetchedNotes);
 
   if (data.length > 0) {
-    // 2️⃣ Mostramos en portada lo más reciente de categorías editoriales
+    // 2️⃣ Notas recientes de categorías editoriales para Mundo automotor
     const filtered = data.filter((note: any) =>
       HOME_NEWS_CATEGORIES.has(normalizeCategory(note.category)) &&
       isPublicEditorialNote(note),
@@ -275,10 +269,25 @@ const allCandidates = [...dynamicNotes, ...deduplicatedStaticNotes].sort(
   (a, b) => b.sortDate - a.sortDate,
 );
 const allNotes = allCandidates.slice(0, HOME_NEWS_POOL_SIZE);
-const homeCarouselNotes = allNotes.slice(
+const HOME_NEWS_MOSAIC_COUNT = 3;
+const homeFeaturedNotes = allNotes.slice(
   0,
   HOME_NEWS_HERO_COUNT + HOME_NEWS_CAROUSEL_LIMIT,
 );
+const mosaicNotes = homeFeaturedNotes
+  .filter((note) => note.img && note.img !== "/img/default.jpg")
+  .slice(0, HOME_NEWS_MOSAIC_COUNT);
+const mosaicHrefs = new Set(mosaicNotes.map((note) => note.href));
+const homeCarouselNotes = homeFeaturedNotes.filter(
+  (note) => !mosaicHrefs.has(note.href),
+);
+const coverNotes = mosaicNotes.map((note) => ({
+  href: note.href,
+  img: note.img,
+  alt: note.alt || note.caption,
+  caption: note.caption,
+  categoryLabel: categoryLabel(note.category),
+}));
 
 function buildScopeCarouselNotes(
   candidates: typeof allCandidates,
@@ -307,9 +316,10 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
   allCandidates,
   HOME_NEWS_CAROUSEL_LIMIT,
 );
+
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css?v=84" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=88" />
 
 <section
   id="noticias"
@@ -357,6 +367,8 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
         </button>
       </div>
 
+      {coverNotes.length > 0 && <EnPortada notes={coverNotes} />}
+
       {
         homeCarouselNotes.length > 0 && (
           <div
@@ -364,7 +376,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
             data-home-carousel-root
           >
             <div class="news-carousel-header">
-              <h3 class="news-carousel-heading">Lo más reciente</h3>
+              <h3 class="news-carousel-heading">Más noticias</h3>
               <div class="news-carousel-nav">
                 <button
                   type="button"
@@ -460,7 +472,13 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
         <a href="/noticias" class="ver-mas-noticias-btn">Ver más noticias</a>
       </div>
 
-      <article class="sector-radar-preview" aria-labelledby="sector-radar-heading">
+      <article
+        class:list={[
+          "sector-radar-preview",
+          sectorRadarPreview.image && "sector-radar-preview--with-visual",
+        ]}
+        aria-labelledby="sector-radar-heading"
+      >
         <div class="sector-radar-preview__inner">
           <header class="sector-radar-preview__header">
             <span class="sector-radar-preview__eyebrow">Radar del sector</span>
@@ -492,6 +510,21 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
             Explorar tendencias
           </a>
         </div>
+        {
+          sectorRadarPreview.image && (
+            <figure class="sector-radar-preview__visual">
+              <img
+                src={sectorRadarPreview.image}
+                alt={sectorRadarPreview.imageAlt ?? ""}
+                width="480"
+                height="480"
+              />
+              <span class="sector-radar-preview__radar" aria-hidden="true">
+                <span class="sector-radar-preview__blip"></span>
+              </span>
+            </figure>
+          )
+        }
       </article>
     </div>
   </div>
@@ -1759,4 +1792,4 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
   }
 </style>
 
-<script src="/js/news-interactive.js?v=10" defer></script>
+<script src="/js/news-interactive.js?v=11" defer></script>

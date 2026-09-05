@@ -1,0 +1,82 @@
+---
+import { getNewsCardTitle, getNewsTitleHook } from "../../lib/editorial";
+
+export type EnPortadaNote = {
+  href: string;
+  img: string;
+  alt?: string;
+  caption: string;
+  categoryLabel: string;
+};
+
+interface Props {
+  notes: EnPortadaNote[];
+}
+
+const { notes } = Astro.props;
+const [lead, ...rest] = notes;
+const sides = rest.slice(0, 2);
+---
+
+{
+  lead && (
+    <div
+      class="en-portada"
+      data-news-mosaic
+      aria-label="Las noticias más recientes"
+    >
+      <div
+        class:list={[
+          "en-portada__grid",
+          sides.length === 0 && "en-portada__grid--solo",
+        ]}
+      >
+        <a class="en-portada__card en-portada__card--lead" href={lead.href}>
+          <img
+            src={lead.img}
+            alt={lead.alt || lead.caption}
+            width="960"
+            height="640"
+            loading="eager"
+            decoding="async"
+          />
+          <div class="en-portada__caption">
+            <span class="en-portada__kicker">{lead.categoryLabel}</span>
+            <h3 class="en-portada__headline">
+              {getNewsCardTitle(lead.caption)}
+            </h3>
+            {
+              getNewsTitleHook(lead.caption) && (
+                <p class="en-portada__hook">{getNewsTitleHook(lead.caption)}</p>
+              )
+            }
+          </div>
+        </a>
+        {
+          sides.length > 0 && (
+            <div class="en-portada__stack">
+              {sides.map((note) => (
+                <a class="en-portada__card en-portada__card--side" href={note.href}>
+                  <img
+                    src={note.img}
+                    alt={note.alt || note.caption}
+                    width="640"
+                    height="400"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="en-portada__caption">
+                    <span class="en-portada__kicker">{note.categoryLabel}</span>
+                    <h3 class="en-portada__headline">
+                      {getNewsCardTitle(note.caption)}
+                    </h3>
+                  </div>
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </div>
+    </div>
+  )
+}

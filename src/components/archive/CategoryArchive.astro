@@ -27,6 +27,7 @@ interface Props {
   staticNotes?: NoteItem[];
   itemsPerPage?: number;
   skipFirst?: number;
+  skipHrefs?: string[];
 }
 
 const {
@@ -37,6 +38,7 @@ const {
   staticNotes = [],
   itemsPerPage = 12,
   skipFirst = 0,
+  skipHrefs = [],
 } = Astro.props as Props;
 
 function extractFirstImage(html: string | undefined) {
@@ -218,15 +220,20 @@ const allNotes = [...dynamicNotes, ...deduplicatedStatic].sort(
   (a, b) => b.sortDate - a.sortDate,
 );
 
-// Omitir las primeras N notas que ya están visibles en la página principal
-let archiveNotes = skipFirst > 0 ? allNotes.slice(skipFirst) : allNotes;
+const skipHrefSet = new Set(skipHrefs.filter(Boolean));
+let archiveNotes =
+  skipHrefSet.size > 0
+    ? allNotes.filter((note) => !skipHrefSet.has(note.href))
+    : skipFirst > 0
+      ? allNotes.slice(skipFirst)
+      : allNotes;
 
 // Si no cargaron dinámicas, no ocultar todo el archivo con skipFirst
 if (
   archiveNotes.length === 0 &&
   allNotes.length > 0 &&
   dynamicNotes.length === 0 &&
-  skipFirst > 0
+  (skipFirst > 0 || skipHrefSet.size > 0)
 ) {
   archiveNotes = allNotes;
 }

@@ -19,6 +19,9 @@ export type SectorRadarEdition = {
     title: string;
     summary: string;
     metrics: ReadonlyArray<{ value: string; label: string }>;
+    /** Recorte del home; si falta, queda el aro CSS. */
+    image?: string;
+    imageAlt?: string;
   };
   hero: {
     description: string;
@@ -50,6 +53,8 @@ const active: SectorRadarEdition = {
       { value: "213.377", label: "matrículas" },
       { value: "50,6%", label: "híbridos + eléctricos en agosto" },
     ],
+    image: "/img/radar/tesla-model-y.png",
+    imageAlt: "Tesla Model Y, el carro más vendido en Colombia entre enero y agosto de 2026",
   },
   hero: {
     description:

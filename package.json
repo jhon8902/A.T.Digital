@@ -6,8 +6,8 @@
     "node": ">=18.17.1"
   },
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
+    "dev": "node ./scripts/astro-dev.mjs",
+    "start": "node ./scripts/astro-dev.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",

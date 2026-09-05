@@ -1,6 +1,6 @@
 # Prompt maestro editorial — A.T. Digital
 
-**Versión:** 1.3 (agosto 2026 — léxico colombiano GV90, cierre del bloque 5 sin eco)  
+**Versión:** 1.4 (septiembre 2026 — títulos que se entienden solos, puestos no plazas, la versión + nombre)  
 **Uso:** pegar este documento al pedir una nota, o decir «sigue el prompt maestro».  
 **Naturaleza:** ADN vivo. Cada nota que ajuste el criterio se anota al final, en **Registro de ajustes**. No reescribir el ADN de memoria: actualizar este archivo.
 
@@ -69,7 +69,7 @@ El gancho **genera expectativa**: el lector siente que le falta algo y entra al 
 | Evitar en el titular | Preferir |
 |----------------------|----------|
 | Catálogo: «850 hp, 150 unidades y 345 km/h» | Una promesa o una rareza: «113 años y jamás había soltado un V12 como este» |
-| cv, PS, mph, «dos filas», siglas de taller sueltas | hp, plazas/puestos, palabras que se entienden solas |
+| cv, PS, mph, «dos filas», siglas de taller sueltas | hp, puestos, palabras que se entienden solas |
 | «híbrido» / «eléctrico» más de una vez | Una sola vez, si es el dato |
 
 El gancho del título **no se copia** en el título del bloque 1 ni en la primera frase.
@@ -99,6 +99,8 @@ Título: [Encabezado del bloque] |
 [3–4 oraciones. Máx. 5 si el tema lo exige. Una idea principal.]
 ```
 
+El encabezado se entiende **sin ser experto**: un hecho, en colombiano. No atajos («el de diario», «sedán alto», «a mitad de camino»). Acabados: «la versión Platinum», no «el Platinum». Asientos: puestos, no plazas.
+
 Línea en blanco entre bloques. **2–3 datos clave** por bloque; el resto va al resumen técnico. Si un bloque parece ficha en prosa, recortar.
 
 | # | Tema | Qué va |
@@ -121,14 +123,17 @@ Techo de extensión: nota 174, CUPRA Born.
 
 | Evitar | Usar |
 |--------|------|
-| cv, PS suelto | hp |
+| cv, PS suelto | hp de potencia (nunca el número + hp solo) |
+| Nm suelto | Nm de torque (nunca el número + Nm solo) |
 | mph suelto | km/h (si midieron 0-60 millas: 0 a 96 km/h, y no es el 0 a 100) |
-| dos/tres filas solos | cinco/siete plazas o puestos |
+| dos/tres filas solos | cinco/siete puestos (no «plazas») |
+| el Platinum / el XLE / el de diario (suelto) | la versión Platinum / la versión XLE |
+| sedán alto, a mitad de camino (suelto) | se entra más alto que en un Camry; sigue siendo sedán |
 | cofre (motor) | capó |
 | maletero | baúl |
 | batalla | más largo entre las ruedas / distancia entre ejes |
 | WLTP suelto | autonomía en carretera (ciclo europeo WLTP) |
-| lb-pie solo | Nm (convertir o ambos) |
+| lb-pie solo | Nm de torque (convertir o ambos) |
 | recorta X kg | pesa X kg menos que |
 | techo de X km/h | velocidad máxima |
 | el baúl declara / la marca declara | el baúl es de / según la marca / pasa de X a Y |
@@ -156,7 +161,9 @@ Después puedes repetir el nombre corto. Si el usuario pregunta qué significa, 
 El editor no tiene que descifrar la nota. Si una frase pide explicación aparte, no está lista.
 
 - **Inglés de fábrica:** Latch and Glide, Qi2, Invisible Hood View, Neolun Arch Gate y similares no entran si el lector colombiano no los usa. Di qué hace el sistema en español. El nombre oficial, solo si aporta; y la frase tiene que entenderse si lo borras.
-- **Periodismo que no se usa en Colombia:** buque insignia, zaga, recetas (por versiones), salón (por interior), la marca declara. Si el editor pregunta qué significa, la palabra no pasa. Ver tabla de léxico.
+- **Periodismo que no se usa en Colombia:** buque insignia, zaga, recetas (por versiones), salón (por interior), la marca declara, plazas (aquí son puestos). Si el editor pregunta qué significa, la palabra no pasa. Ver tabla de léxico.
+- **Títulos de bloque:** se entienden solos, sin ser experto. Nada de atajos de taller («el de diario», «sedán alto», «a mitad de camino») que piden una nota al pie. El encabezado dice el hecho en colombiano: puestos, versión + nombre, hp con quién los tiene.
+- **Una idea, una vez:** si el carro es más alto y uno se sienta más arriba, dos oraciones cortas. No trenzar «se entra / se sienta / más arriba / más alto» en la misma frase.
 - **Metáfora rara:** «que el teléfono no se cueza» suena a cocina, no a nota. El celular se calienta; el auto no enamora ni cuece. Verbo literal.
 - **Jerga de redacción:** «recorte de salón», «el dato que importa a las 6:30», «el detalle que no puede copiar» son guiños internos. En la página va el hecho: para qué sirve, en esta camioneta, en esta ciudad.
 - **Cierre del bloque 5:** la última oración se lee sola, sin haber escrito el artículo. El encabezado y el cierre son **la misma idea**, no la misma frase. Si el título del bloque ya dijo «si el carro se volca…», el final no lo vuelve a copiar: paga con otro hecho confirmado.
@@ -262,7 +269,9 @@ Si las fotos son de versión internacional y el texto habla de Colombia: aclarar
 - [ ] Siglas de taller explicadas la primera vez
 - [ ] Dato ancla ≤ 2 veces
 - [ ] Bloque 5: encabezado y cierre = misma idea, no la misma frase; la última oración no copia el título del bloque; cierre con hecho (en `deportes`, emocional + beneficio concreto); se entiende sola
-- [ ] Primera lectura: sin inglés de taller suelto, sin metáfora rara, sin jerga de redacción («recorte de salón», «no puede copiar»), sin periodismo que en Colombia no se usa (buque insignia, zaga, recetas, salón, declara)
+- [ ] Primera lectura: sin inglés de taller suelto, sin metáfora rara, sin jerga de redacción («recorte de salón», «no puede copiar»), sin periodismo que en Colombia no se usa (buque insignia, zaga, recetas, salón, declara, plazas)
+- [ ] Títulos de la nota y de los 5 bloques se entienden solos (lección Crown): no «sedán alto», no «el de diario», no «a mitad de camino»; acabados = **la versión** + nombre
+- [ ] Asientos: puestos, no plazas
 - [ ] No cierra con «no llega a Colombia»
 - [ ] Categoría y ámbito coherentes
 - [ ] `spec_*` listos para pegar; vacíos marcados
@@ -348,5 +357,7 @@ Añadir una línea cada vez que una nota cambie el criterio. No borrar versiones
 | 2026-08 | Personalidad por nota | Cada tema se analiza; cada artículo tiene carácter propio. Los parámetros no se negocian; el menú no se aplica por rotación. | intro, §0, §13 |
 | 2026-08 | Nissan Pathfinder 2026 (Colombia) | El editor se detuvo en Latch and Glide, «cueza», «recorte de salón» y un cierre que no se entendía solo. Inglés de fábrica, metáfora rara y jerga de redacción no pasan a la página. Primera lectura en voz alta antes de entregar. | §6 (primera lectura), §12 |
 | 2026-08 | Genesis GV90 2027 | El editor se detuvo en buque insignia, eMP, recetas, zaga, salón (por interior) y declara. «Despedido» → «salga volando». El cierre del bloque 5 no copia el título del bloque: misma idea, no la misma frase. Códigos de plataforma al resumen, no al párrafo. | §§5–8, 12 (léxico Colombia, anti-eco del cierre) |
+| 2026-09 | Toyota Crown 2027 | El editor se detuvo en «sedán alto», «a mitad de camino», «el de diario» y en «plazas». Los títulos (nota y bloques) se leen sin ser experto. Asientos = puestos. Acabados = la versión + nombre, nunca «el Platinum» suelto. Criterio fijado en regla siempre activa `.cursor/rules/voz-colombia-titulos.mdc`. | §§5–6, 12; regla voz-colombia-titulos |
+| 2026-09 | Toyota Crown 2027 (altura) | «Va más alto que un Camry, así que uno se sienta más arriba» es la misma idea dos veces y no le cerró al editor. Si la comparación no se entiende, se corta; no se explica en círculo. | §6 (una idea, una vez) |
 
 _Próximo ajuste: copiar la fila, no reescribir el prompt entero salvo que el ADN cambie de raíz._
