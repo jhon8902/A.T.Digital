@@ -1221,6 +1221,10 @@ body.home-page #pruebas .pruebas-spotlight__player video {
 }
 
 @media (max-width: 768px) {
+  body.home-page {
+    overflow-x: clip;
+  }
+
   body.home-page .section-info.section-info--interactive .info-header {
     background: transparent !important;
   }

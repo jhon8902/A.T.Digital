@@ -79,7 +79,7 @@ const automatchAutos = buildAutomatchCarousel(automatchNotes, {
     -->
   </div>
 
-  <link rel="stylesheet" href="/css/home-typography.css?v=117" />
+  <link rel="stylesheet" href="/css/home-typography.css?v=118" />
 </Layout>
 
 <style>
@@ -106,7 +106,8 @@ const automatchAutos = buildAutomatchCarousel(automatchNotes, {
     opacity: 1;
     transform: translateY(0);
     max-height: none;
-    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
     background-color: var(--home-section-bg, #f0f3f0);
     background-image: var(--home-relief-image);
     background-size: var(--home-relief-size);
