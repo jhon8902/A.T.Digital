@@ -8,7 +8,7 @@ import { getNotePublishTimestamp } from "./note-scheduling";
 import { isPublicEditorialNote } from "./pruebas-solo";
 
 /** Lanzamientos visibles en el home, debajo de Mundo automotor. */
-export const HOME_LANZAMIENTOS_COUNT = 5;
+export const HOME_LANZAMIENTOS_COUNT = 4;
 
 /** Hrefs del mosaico + carrusel de Mundo automotor (vista Todas). */
 export function openingMundoAutomotorHrefs(notes: SiteNote[]): Set<string> {

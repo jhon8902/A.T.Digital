@@ -1272,8 +1272,28 @@
 }
 
 /* —— Radar del sector (preview home) —— */
+.home-radar {
+  width: 100%;
+  padding: clamp(0.35rem, 1.4vw, 1rem) 0 clamp(1.15rem, 2.4vw, 1.85rem);
+  scroll-margin-top: 5.5rem;
+}
+
+.home-radar__inner {
+  width: min(100%, 1760px);
+  margin: 0 auto;
+  padding-inline: clamp(0.75rem, 2.5vw, 2rem);
+  box-sizing: border-box;
+}
+
+@media (max-width: 860px) {
+  .home-radar__inner {
+    width: 100%;
+    padding-inline: 0.7rem;
+  }
+}
+
 .sector-radar-preview {
-  margin: 8px 0 4px;
+  margin: 0;
   border: 1.5px solid rgba(8, 52, 31, 0.22);
   background:
     radial-gradient(

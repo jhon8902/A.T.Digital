@@ -101,19 +101,21 @@ const searchCtaLabel = "Buscar auto para comprar";
   mode === "home" ? (
     <div class:list={["automatch-home", embedded && "automatch-home--embedded"]}>
       <header class="automatch-hero">
-        <p class="automatch-hero__eyebrow">
-          {embedded
-            ? "Herramienta en evolución · Colombia"
-            : "Herramienta inteligente · Colombia"}
-        </p>
-        <TitleTag class="automatch-hero__title">
-          Encuentra tu auto ideal con <span>AutoMatch</span>
-        </TitleTag>
-        <p class="automatch-hero__lead">
-          {embedded
-            ? "Compara modelos, mira fichas y pide test drive. El catálogo sigue creciendo con datos de concesionarios."
-            : "Compara autos nuevos, seminuevos y usados en Colombia. Elige cómo quieres empezar:"}
-        </p>
+        <div class="automatch-hero__copy">
+          <p class="automatch-hero__eyebrow">
+            {embedded
+              ? "Herramienta en evolución · Colombia"
+              : "Herramienta inteligente · Colombia"}
+          </p>
+          <TitleTag class="automatch-hero__title">
+            Encuentra tu auto ideal con <span>AutoMatch</span>
+          </TitleTag>
+          <p class="automatch-hero__lead">
+            {embedded
+              ? "Compara modelos, mira fichas y pide test drive. El catálogo sigue creciendo con datos de concesionarios."
+              : "Compara autos nuevos, seminuevos y usados en Colombia. Elige cómo quieres empezar:"}
+          </p>
+        </div>
 
         <div class="automatch-hero__paths">
           <div class="automatch-hero__path">
@@ -376,7 +378,11 @@ const searchCtaLabel = "Buscar auto para comprar";
   }
 
   .automatch-hero {
-    text-align: center;
+    display: grid;
+    grid-template-columns: minmax(16rem, 0.9fr) minmax(22rem, 1.2fr);
+    align-items: center;
+    gap: clamp(1.5rem, 3.5vw, 2.75rem);
+    text-align: left;
     width: min(96%, 1760px);
     margin-inline: auto;
     padding: clamp(2.25rem, 4.5vw, 3.5rem) clamp(1rem, 4vw, 2rem)
@@ -385,6 +391,10 @@ const searchCtaLabel = "Buscar auto para comprar";
     position: relative;
     background: transparent;
     border-bottom: none;
+  }
+
+  .automatch-hero__copy {
+    max-width: 34rem;
   }
 
   .automatch-hero__eyebrow {
@@ -402,8 +412,8 @@ const searchCtaLabel = "Buscar auto para comprar";
     font-size: clamp(2rem, 4.5vw, 3.35rem);
     font-weight: 700;
     line-height: 1.12;
-    margin: 0 auto 1rem;
-    max-width: 18ch;
+    margin: 0 0 1rem;
+    max-width: 16ch;
     letter-spacing: 0.01em;
     color: #ffffff !important;
   }
@@ -419,11 +429,7 @@ const searchCtaLabel = "Buscar auto para comprar";
 
   .automatch-home--embedded .automatch-hero__title {
     font-size: clamp(1.85rem, 3.8vw, 2.75rem);
-    max-width: 22ch;
-  }
-
-  .automatch-home--embedded .automatch-hero__lead {
-    margin-bottom: 1.25rem;
+    max-width: 18ch;
   }
 
   .automatch-hero__lead {
@@ -431,16 +437,17 @@ const searchCtaLabel = "Buscar auto para comprar";
     font-size: clamp(1.05rem, 1.5vw, 1.2rem);
     line-height: 1.65;
     color: rgba(255, 255, 255, 0.88);
-    max-width: 42rem;
-    margin: 0 auto 1.75rem;
+    max-width: 36rem;
+    margin: 0;
   }
 
   .automatch-hero__paths {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
-    max-width: 52rem;
-    margin: 0 auto;
+    width: 100%;
+    max-width: none;
+    margin: 0;
     text-align: left;
   }
 
@@ -1145,6 +1152,12 @@ const searchCtaLabel = "Buscar auto para comprar";
   }
 
   /* ========== RESPONSIVE ========== */
+  @media (max-width: 1100px) {
+    .automatch-hero__paths {
+      grid-template-columns: 1fr;
+    }
+  }
+
   @media (max-width: 1024px) {
     .cards {
       grid-template-columns: repeat(2, 1fr);
@@ -1154,6 +1167,32 @@ const searchCtaLabel = "Buscar auto para comprar";
 
     .titulo {
       font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .automatch-hero {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 1.5rem;
+    }
+
+    .automatch-hero__copy {
+      max-width: 42rem;
+      margin-inline: auto;
+    }
+
+    .automatch-hero__title {
+      margin-inline: auto;
+    }
+
+    .automatch-hero__lead {
+      margin-inline: auto;
+    }
+
+    .automatch-hero__paths {
+      max-width: 52rem;
+      margin-inline: auto;
     }
   }
 

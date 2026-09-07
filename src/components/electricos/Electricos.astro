@@ -7,6 +7,7 @@ import {
 } from "../../lib/note-scheduling";
 import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
 import { HOME_ELECTRICOS_HOME_LIMIT } from "../../lib/home-news-config";
+import SectionMoreArrow from "../home/SectionMoreArrow.astro";
 
 interface Props {
   notes?: SiteNote[];
@@ -264,14 +265,31 @@ const allElectricos = [...dynamicElectricos, ...deduplicatedStaticElectricos]
   class:list={["electricos-section", compact && "electricos-section--compact"]}
   aria-labelledby="electricos-heading"
 >
+  {
+    compact && (
+      <header class="electricos-head">
+        <h2 id="electricos-heading" class="electricos-title">
+          <a href="/electricos" class="section-heading-link">
+            Eléctricos
+            <span class="section-archive-hint" aria-hidden="true">Ver el archivo</span>
+          </a>
+        </h2>
+      </header>
+    )
+  }
   <div class="electricos-inner">
-    <header class="electricos-head">
-      <h2 id="electricos-heading" class="electricos-title">Eléctricos</h2>
-    </header>
+    {
+      !compact && (
+        <header class="electricos-head">
+          <h2 id="electricos-heading" class="electricos-title">Eléctricos</h2>
+        </header>
+      )
+    }
 
     {
       allElectricos.length > 0 &&
         (compact ? (
+          <>
           <div class="mobility-list" role="list">
             {allElectricos.map((nota, index) => {
               const chips = buildChips(nota);
@@ -308,24 +326,33 @@ const allElectricos = [...dynamicElectricos, ...deduplicatedStaticElectricos]
                       {nota.description && (
                         <p class="mobility-row__deck">{nota.description}</p>
                       )}
-                      {chips.length > 0 && (
-                        <div class="mobility-row__chips">
-                          {chips.map((chip) => (
-                            <span class="electrico-chip">{chip}</span>
-                          ))}
-                        </div>
-                      )}
-                      {fecha && (
-                        <p class="news-date">
-                          <span>{fecha}</span>
-                        </p>
-                      )}
+                      <div class="mobility-row__foot">
+                        {chips.length > 0 && (
+                          <div class="mobility-row__chips">
+                            {chips.map((chip) => (
+                              <span class="electrico-chip">{chip}</span>
+                            ))}
+                          </div>
+                        )}
+                        {fecha && (
+                          <p class="news-date">
+                            <span>{fecha}</span>
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </a>
                 </article>
               );
             })}
           </div>
+          <div class="section-more-row">
+            <SectionMoreArrow
+              href="/electricos"
+              label="Ver el archivo de Eléctricos"
+            />
+          </div>
+          </>
         ) : (
           <div class="electricos-grid electricos-home-grid">
             {allElectricos.map((nota, index) => {
@@ -389,11 +416,5 @@ const allElectricos = [...dynamicElectricos, ...deduplicatedStaticElectricos]
         ))
     }
 
-    <footer class="electricos-footer">
-      <a href="/electricos" class="electricos-more">
-        Ver más modelos
-        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-      </a>
-    </footer>
   </div>
 </section>

@@ -22,7 +22,7 @@
   overflow: hidden;
 }
 
-/* Columnas compactas — tinte muy sutil (verde / azul) */
+/* Columnas compactas — mismo tinte verde */
 .home-mobility .electricos-section--compact,
 .home-mobility .hibridos-section--compact {
   background-image: none;
@@ -30,16 +30,15 @@
   scroll-margin-top: 5.5rem;
   border: 1px solid transparent;
   box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.home-mobility .electricos-section--compact {
+.home-mobility .electricos-section--compact,
+.home-mobility .hibridos-section--compact {
   background: #f3f7f4;
   border-color: rgba(8, 52, 31, 0.08);
-}
-
-.home-mobility .hibridos-section--compact {
-  background: #f2f7f9;
-  border-color: rgba(13, 110, 140, 0.1);
 }
 
 .home-mobility .electricos-section--compact .electricos-inner,
@@ -48,14 +47,43 @@
   max-width: none;
   margin: 0;
   background: transparent;
-  padding: clamp(1.35rem, 3vw, 2.25rem) clamp(0.85rem, 3vw, 1.85rem);
+  padding: 1.15rem clamp(0.85rem, 3vw, 1.85rem)
+    clamp(1.35rem, 3vw, 2.25rem);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.home-mobility .mobility-list {
+  flex: 1;
 }
 
 .home-mobility .electricos-head,
 .home-mobility .hibridos-head {
   text-align: left;
-  margin-bottom: 1.15rem;
-  padding-inline: 0.15rem;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+  background: #08341f;
+  transition: background 0.18s ease;
+}
+
+.home-mobility .electricos-title,
+.home-mobility .hibridos-title {
+  margin: 0;
+  width: 100%;
+}
+
+.home-mobility .section-heading-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.72rem clamp(0.85rem, 3vw, 1.85rem);
+  color: inherit;
+  text-decoration: none;
 }
 
 .home-mobility .electricos-lead,
@@ -70,7 +98,8 @@
 .home-mobility .electricos-footer,
 .home-mobility .hibridos-footer {
   justify-content: flex-start;
-  margin-top: 1.25rem;
+  margin-top: auto;
+  padding-top: 1.25rem;
   padding-inline: 0.15rem;
 }
 
@@ -100,35 +129,27 @@
   padding: 1rem 0;
   text-decoration: none;
   color: inherit;
-  transition: background 0.2s ease, transform 0.22s ease;
+  transition: background 0.2s ease;
 }
 
 .mobility-row__link:hover {
   background: rgba(8, 52, 31, 0.035);
 }
 
-.home-mobility .hibridos-section--compact .mobility-row__link:hover {
-  background: rgba(13, 110, 140, 0.045);
-}
-
 .mobility-row__media {
   width: 100%;
   aspect-ratio: 16 / 10;
   overflow: hidden;
-  background: #111827;
+  background: #e8ece9;
 }
 
 .mobility-row__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center 42%;
   display: block;
-  transition: transform 0.35s ease;
-}
-
-.mobility-row__link:hover .mobility-row__media img {
-  transform: scale(1.03);
+  transform: none;
 }
 
 .mobility-row__body {
@@ -137,6 +158,7 @@
   flex-direction: column;
   gap: 0.4rem;
   padding-inline: 0.15rem;
+  height: 100%;
 }
 
 .mobility-row__meta {
@@ -144,6 +166,21 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 0.35rem 0.5rem;
+}
+
+.mobility-row .scope-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+
+.home-mobility .electricos-section--compact .scope-tag,
+.home-mobility .hibridos-section--compact .scope-tag {
+  color: #1b5e3f;
 }
 
 .mobility-row__title {
@@ -177,15 +214,33 @@
 .mobility-row__chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3rem;
-  margin-top: 0.1rem;
+  gap: 0.4rem;
 }
 
-.mobility-row .scope-tag,
+.mobility-row__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+  margin-top: auto;
+  padding-top: 0.55rem;
+  border-top: 1px solid rgba(8, 52, 31, 0.1);
+}
+
 .mobility-row .electrico-chip,
 .mobility-row .hibrido-chip {
-  font-size: 0.65rem;
-  padding: 2px 7px;
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
+  font-size: 0.68rem;
+  font-weight: 650;
+  font-synthesis: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  padding: 0.32rem 0.58rem;
+  border-radius: 0;
+  color: #08341f;
+  background: rgba(8, 52, 31, 0.07);
+  border: 1px solid rgba(8, 52, 31, 0.16);
 }
 
 .mobility-row .news-date {
@@ -222,9 +277,11 @@
   }
 
   .home-mobility .electricos-head,
-  .home-mobility .hibridos-head,
-  .home-mobility .electricos-footer,
-  .home-mobility .hibridos-footer {
+  .home-mobility .hibridos-head {
+    padding-inline: 0;
+  }
+
+  .home-mobility .section-heading-link {
     padding-inline: 0.85rem;
   }
 
@@ -270,9 +327,11 @@
 
 @media (max-width: 480px) {
   .home-mobility .electricos-head,
-  .home-mobility .hibridos-head,
-  .home-mobility .electricos-footer,
-  .home-mobility .hibridos-footer,
+  .home-mobility .hibridos-head {
+    padding-inline: 0;
+  }
+
+  .home-mobility .section-heading-link,
   .mobility-row__body {
     padding-inline: 0.65rem;
   }
@@ -291,12 +350,18 @@
   .home-mobility__panel {
     width: min(96%, 1760px);
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 1.35rem;
   }
 
   .home-mobility .electricos-section--compact .electricos-inner,
   .home-mobility .hibridos-section--compact .hibridos-inner {
-    padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.15rem, 2.5vw, 1.85rem);
+    padding: 1.25rem clamp(1.15rem, 2.5vw, 1.85rem)
+      clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .home-mobility .electricos-head,
+  .home-mobility .hibridos-head {
+    padding: 0.78rem clamp(1.15rem, 2.5vw, 1.85rem);
   }
 
   .home-mobility .hibridos-section--compact {
@@ -314,20 +379,20 @@
   }
 
   .mobility-row__link {
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.95fr);
     gap: 1.25rem;
-    align-items: center;
+    align-items: stretch;
     padding: 0;
   }
 
   .mobility-row__link:hover {
     background: transparent;
-    transform: translateY(-3px);
+    transform: none;
   }
 
   .mobility-row__media {
-    aspect-ratio: 16 / 9;
-    min-height: 11rem;
+    aspect-ratio: 16 / 10;
+    min-height: 12.5rem;
   }
 
   .mobility-row__body {

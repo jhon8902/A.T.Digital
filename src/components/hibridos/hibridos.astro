@@ -7,6 +7,7 @@ import {
 import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
 import { HOME_HIBRIDOS_HOME_LIMIT } from "../../lib/home-news-config";
 import { normalizeNoteCategory } from "../../lib/notes-query";
+import SectionMoreArrow from "../home/SectionMoreArrow.astro";
 
 interface Props {
   notes?: SiteNote[];
@@ -273,14 +274,31 @@ const allHibridos = [...dynamicHibridos, ...deduplicatedStaticHibridos]
   class:list={["hibridos-section", compact && "hibridos-section--compact"]}
   aria-labelledby="hibridos-heading"
 >
+  {
+    compact && (
+      <header class="hibridos-head">
+        <h2 id="hibridos-heading" class="hibridos-title">
+          <a href="/hibridos" class="section-heading-link">
+            Híbridos
+            <span class="section-archive-hint" aria-hidden="true">Ver el archivo</span>
+          </a>
+        </h2>
+      </header>
+    )
+  }
   <div class="hibridos-inner">
-    <header class="hibridos-head">
-      <h2 id="hibridos-heading" class="hibridos-title">Híbridos</h2>
-    </header>
+    {
+      !compact && (
+        <header class="hibridos-head">
+          <h2 id="hibridos-heading" class="hibridos-title">Híbridos</h2>
+        </header>
+      )
+    }
 
     {
       allHibridos.length > 0 &&
         (compact ? (
+          <>
           <div class="mobility-list" role="list">
             {allHibridos.map((nota, index) => {
               const chips = buildChips(nota);
@@ -317,24 +335,33 @@ const allHibridos = [...dynamicHibridos, ...deduplicatedStaticHibridos]
                       {nota.description && (
                         <p class="mobility-row__deck">{nota.description}</p>
                       )}
-                      {chips.length > 0 && (
-                        <div class="mobility-row__chips">
-                          {chips.map((chip) => (
-                            <span class="hibrido-chip">{chip}</span>
-                          ))}
-                        </div>
-                      )}
-                      {fecha && (
-                        <p class="news-date">
-                          <span>{fecha}</span>
-                        </p>
-                      )}
+                      <div class="mobility-row__foot">
+                        {chips.length > 0 && (
+                          <div class="mobility-row__chips">
+                            {chips.map((chip) => (
+                              <span class="hibrido-chip">{chip}</span>
+                            ))}
+                          </div>
+                        )}
+                        {fecha && (
+                          <p class="news-date">
+                            <span>{fecha}</span>
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </a>
                 </article>
               );
             })}
           </div>
+          <div class="section-more-row">
+            <SectionMoreArrow
+              href="/hibridos"
+              label="Ver el archivo de Híbridos"
+            />
+          </div>
+          </>
         ) : (
           <div class="hibridos-grid hibridos-home-grid">
             {allHibridos.map((nota, index) => {
@@ -398,11 +425,5 @@ const allHibridos = [...dynamicHibridos, ...deduplicatedStaticHibridos]
         ))
     }
 
-    <footer class="hibridos-footer">
-      <a href="/hibridos" class="hibridos-more">
-        Ver más modelos
-        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-      </a>
-    </footer>
   </div>
 </section>

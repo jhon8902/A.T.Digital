@@ -1,0 +1,70 @@
+---
+import {
+  sectorRadarEditionMeta,
+  sectorRadarPreview,
+} from "../../lib/sector-radar";
+---
+
+<link rel="stylesheet" href="/css/news-interactive.css?v=91" />
+
+<section
+  id="radar"
+  class="home-radar"
+  aria-labelledby="sector-radar-heading"
+>
+  <div class="home-radar__inner">
+    <article
+      class:list={[
+        "sector-radar-preview",
+        sectorRadarPreview.image && "sector-radar-preview--with-visual",
+      ]}
+    >
+      <div class="sector-radar-preview__inner">
+        <header class="sector-radar-preview__header">
+          <span class="sector-radar-preview__eyebrow">Radar del sector</span>
+          <p class="sector-radar-preview__edition">
+            {sectorRadarEditionMeta.label} · {sectorRadarEditionMeta.period}
+          </p>
+        </header>
+        <h3 id="sector-radar-heading" class="sector-radar-preview__title">
+          {sectorRadarPreview.title}
+        </h3>
+        <p class="sector-radar-preview__summary">
+          {sectorRadarPreview.summary}
+        </p>
+        <dl class="sector-radar-preview__metrics">
+          {
+            sectorRadarPreview.metrics.map((metric) => (
+              <div class="sector-radar-preview__metric">
+                <dt class="sector-radar-preview__metric-value">
+                  {metric.value}
+                </dt>
+                <dd class="sector-radar-preview__metric-label">
+                  {metric.label}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+        <a class="sector-radar-preview__cta" href="/tendencias-del-sector">
+          Explorar tendencias
+        </a>
+      </div>
+      {
+        sectorRadarPreview.image && (
+          <figure class="sector-radar-preview__visual">
+            <img
+              src={sectorRadarPreview.image}
+              alt={sectorRadarPreview.imageAlt ?? ""}
+              width="480"
+              height="480"
+            />
+            <span class="sector-radar-preview__radar" aria-hidden="true">
+              <span class="sector-radar-preview__blip"></span>
+            </span>
+          </figure>
+        )
+      }
+    </article>
+  </div>
+</section>

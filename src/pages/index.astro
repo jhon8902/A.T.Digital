@@ -9,6 +9,7 @@ import Deportes from "../components/deportes/deportes.astro";
 import Pruebas from "../components/pruebas/pruebas.astro";
 import AutoMatch from "../components/automatch/automatch.astro";
 import AutoMatchPromo from "../components/automatch/AutoMatchPromo.astro";
+import SectorRadarPreview from "../components/sector-radar/SectorRadarPreview.astro";
 import {
   buildAutomatchCarousel,
   type AutomatchDbNote,
@@ -52,6 +53,8 @@ const automatchAutos = buildAutomatchCarousel(automatchNotes, {
 
     <Pruebas notes={homeNotes} />
 
+    <SectorRadarPreview />
+
     <section
       class="home-mobility"
       aria-label="Movilidad eléctrica e híbrida"
@@ -62,7 +65,7 @@ const automatchAutos = buildAutomatchCarousel(automatchNotes, {
       </div>
     </section>
 
-    <link rel="stylesheet" href="/css/mobility-split.css?v=13" />
+    <link rel="stylesheet" href="/css/mobility-split.css?v=21" />
 
     <Deportes notes={homeNotes} />
 
@@ -79,7 +82,7 @@ const automatchAutos = buildAutomatchCarousel(automatchNotes, {
     -->
   </div>
 
-  <link rel="stylesheet" href="/css/home-typography.css?v=118" />
+  <link rel="stylesheet" href="/css/home-typography.css?v=146" />
 </Layout>
 
 <style>
@@ -95,9 +98,10 @@ const automatchAutos = buildAutomatchCarousel(automatchNotes, {
   }
 
   .automatch-destacado {
-    width: min(92%, 1680px);
-    max-width: 1680px;
+    width: min(96%, 1760px);
+    max-width: 1760px;
     margin-inline: auto;
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
     margin-bottom: 0;
     animation: fadeInUp 0.7s ease-out;
   }

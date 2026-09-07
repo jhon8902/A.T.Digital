@@ -1,0 +1,13 @@
+---
+interface Props {
+  href: string;
+  label: string;
+}
+
+const { href, label } = Astro.props;
+---
+
+<a href={href} class="section-more-arrow" aria-label={label}>
+  <span class="section-more-arrow__mark" aria-hidden="true">→</span>
+  <span class="section-archive-hint" aria-hidden="true">Ver el archivo</span>
+</a>

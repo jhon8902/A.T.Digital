@@ -13,8 +13,8 @@ import {
   HOME_NEWS_HERO_COUNT,
   HOME_NEWS_POOL_SIZE,
 } from "../../lib/home-news-config";
-import { sectorRadarEditionMeta, sectorRadarPreview } from "../../lib/sector-radar";
 import EnPortada from "./EnPortada.astro";
+import SectionMoreArrow from "../home/SectionMoreArrow.astro";
 import NewsCarouselCard from "./NewsCarouselCard.astro";
 
 interface Props {
@@ -319,7 +319,7 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
 
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css?v=90" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=94" />
 
 <section
   id="noticias"
@@ -328,7 +328,12 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
   data-carousel-limit={HOME_NEWS_CAROUSEL_LIMIT}
 >
   <header class="info-header">
-    <h2 id="noticias-heading" class="info-titulo">Mundo automotor</h2>
+    <h2 id="noticias-heading" class="info-titulo">
+      <a href="/noticias" class="section-heading-link">
+        Mundo automotor
+        <span class="section-archive-hint" aria-hidden="true">Ver el archivo</span>
+      </a>
+    </h2>
   </header>
 
   <div class="container mx-auto px-2">
@@ -468,64 +473,12 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
         No hay noticias en este alcance por ahora.
       </p>
 
-      <div class="ver-mas-noticias-section ver-mas-noticias-section--above-radar">
-        <a href="/noticias" class="ver-mas-noticias-btn">Ver más noticias</a>
+      <div class="section-more-row">
+        <SectionMoreArrow
+          href="/noticias"
+          label="Ver el archivo de noticias"
+        />
       </div>
-
-      <article
-        class:list={[
-          "sector-radar-preview",
-          sectorRadarPreview.image && "sector-radar-preview--with-visual",
-        ]}
-        aria-labelledby="sector-radar-heading"
-      >
-        <div class="sector-radar-preview__inner">
-          <header class="sector-radar-preview__header">
-            <span class="sector-radar-preview__eyebrow">Radar del sector</span>
-            <p class="sector-radar-preview__edition">
-              {sectorRadarEditionMeta.label} · {sectorRadarEditionMeta.period}
-            </p>
-          </header>
-          <h3 id="sector-radar-heading" class="sector-radar-preview__title">
-            {sectorRadarPreview.title}
-          </h3>
-          <p class="sector-radar-preview__summary">
-            {sectorRadarPreview.summary}
-          </p>
-          <dl class="sector-radar-preview__metrics">
-            {
-              sectorRadarPreview.metrics.map((metric) => (
-                <div class="sector-radar-preview__metric">
-                  <dt class="sector-radar-preview__metric-value">
-                    {metric.value}
-                  </dt>
-                  <dd class="sector-radar-preview__metric-label">
-                    {metric.label}
-                  </dd>
-                </div>
-              ))
-            }
-          </dl>
-          <a class="sector-radar-preview__cta" href="/tendencias-del-sector">
-            Explorar tendencias
-          </a>
-        </div>
-        {
-          sectorRadarPreview.image && (
-            <figure class="sector-radar-preview__visual">
-              <img
-                src={sectorRadarPreview.image}
-                alt={sectorRadarPreview.imageAlt ?? ""}
-                width="480"
-                height="480"
-              />
-              <span class="sector-radar-preview__radar" aria-hidden="true">
-                <span class="sector-radar-preview__blip"></span>
-              </span>
-            </figure>
-          )
-        }
-      </article>
     </div>
   </div>
 </section>

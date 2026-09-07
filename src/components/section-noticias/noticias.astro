@@ -9,11 +9,8 @@ import {
   HOME_LANZAMIENTOS_COUNT,
   openingMundoAutomotorHrefs,
 } from "../../lib/home-lanzamientos";
-import {
-  getNewsCardDeck,
-  getNewsCardTitle,
-  getNewsTitleHook,
-} from "../../lib/editorial";
+import { getNewsCardDeck, getNewsCardTitle } from "../../lib/editorial";
+import SectionMoreArrow from "../home/SectionMoreArrow.astro";
 
 interface Props {
   notes?: SiteNote[];
@@ -120,6 +117,10 @@ function normalizeImg(src: string) {
 
 function normalizeHref(href: string) {
   return href.replace(/^\.\//, "/");
+}
+
+function cleanPublishedDate(value?: string) {
+  return (value || "").replace(/^Publicado:\s*/i, "").trim();
 }
 
 try {
@@ -232,16 +233,9 @@ const homeLanzamientos = [
   .sort((a, b) => b.sortDate - a.sortDate)
   .filter((note) => !openingNewsHrefs.has(note.href))
   .slice(0, HOME_LANZAMIENTOS_COUNT);
-
-const [featuredLanzamiento, ...stripLanzamientos] = homeLanzamientos;
-const featuredHook =
-  featuredLanzamiento &&
-  (featuredLanzamiento.description ||
-    getNewsTitleHook(featuredLanzamiento.title) ||
-    "");
 ---
 
-<link rel="stylesheet" href="/css/lanzamientos-section.css?v=18" />
+<link rel="stylesheet" href="/css/lanzamientos-section.css?v=22" />
 
 <section
   id="lanzamientos"
@@ -250,84 +244,56 @@ const featuredHook =
 >
   <div class="lanzamientos-inner">
     <header class="lanzamientos-head">
-      <h2 id="lanzamientos-heading" class="lanzamientos-title">Lanzamientos</h2>
+      <h2 id="lanzamientos-heading" class="lanzamientos-title">
+        <a href="/lanzamientos" class="section-heading-link">
+          Lanzamientos
+          <span class="section-archive-hint" aria-hidden="true">Ver el archivo</span>
+        </a>
+      </h2>
     </header>
 
     {
-      featuredLanzamiento && (
-        <div class="lanzamientos-vitrina">
-          <article class="lanzamiento-hero">
-            <a
-              href={featuredLanzamiento.href}
-              class="lanzamiento-hero__media"
-            >
-              <img
-                src={featuredLanzamiento.img}
-                alt={featuredLanzamiento.alt}
-                width="1600"
-                height="740"
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
-              />
-            </a>
-            <div class="lanzamiento-hero__body">
-              <span
-                class={`lanzamiento-kicker lanzamiento-kicker--${normalizeSourceScope(featuredLanzamiento.source_scope)}`}
-              >
-                {sourceScopeLabel(featuredLanzamiento.source_scope)}
-              </span>
-              <h3 class="lanzamiento-hero__title">
-                <a href={featuredLanzamiento.href}>
-                  {getNewsCardTitle(featuredLanzamiento.title)}
-                </a>
-              </h3>
-              {featuredHook && (
-                <p class="lanzamiento-hero__hook">{featuredHook}</p>
-              )}
-              <a href="/automatch-find" class="lanzamiento-hero__automatch">
-                Comparar en AutoMatch
+      homeLanzamientos.length > 0 && (
+        <div class="lanzamientos-strip">
+          {homeLanzamientos.map((nota, index) => {
+            const scope = normalizeSourceScope(nota.source_scope);
+            const fecha = cleanPublishedDate(nota.fecha);
+
+            return (
+              <a href={nota.href} class="lanzamiento-tile">
+                <div class="lanzamiento-tile__media">
+                  <img
+                    src={nota.img}
+                    alt={nota.alt}
+                    width="640"
+                    height="400"
+                    loading={index === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                  />
+                </div>
+                <div class="lanzamiento-tile__meta">
+                  <span class={`lanzamiento-kicker lanzamiento-kicker--${scope}`}>
+                    {sourceScopeLabel(nota.source_scope)}
+                  </span>
+                  {fecha && (
+                    <span class="lanzamiento-tile__date">{fecha}</span>
+                  )}
+                </div>
+                <h3 class="lanzamiento-tile__title">
+                  {getNewsCardTitle(nota.title)}
+                </h3>
               </a>
-            </div>
-          </article>
-
-          {stripLanzamientos.length > 0 && (
-            <div class="lanzamientos-strip">
-              {stripLanzamientos.map((nota) => {
-                const scope = normalizeSourceScope(nota.source_scope);
-
-                return (
-                  <a href={nota.href} class="lanzamiento-tile">
-                    <div class="lanzamiento-tile__media">
-                      <img
-                        src={nota.img}
-                        alt={nota.alt}
-                        width="640"
-                        height="400"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </div>
-                    <span class={`lanzamiento-kicker lanzamiento-kicker--${scope}`}>
-                      {sourceScopeLabel(nota.source_scope)}
-                    </span>
-                    <h3 class="lanzamiento-tile__title">
-                      {getNewsCardTitle(nota.title)}
-                    </h3>
-                  </a>
-                );
-              })}
-            </div>
-          )}
+            );
+          })}
+        </div>
+        <div class="section-more-row">
+          <SectionMoreArrow
+            href="/lanzamientos"
+            label="Ver el archivo de Lanzamientos"
+          />
         </div>
       )
     }
 
-    <footer class="lanzamientos-footer">
-      <a href="/lanzamientos" class="lanzamientos-more">
-        Ver más lanzamientos
-        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-      </a>
-    </footer>
   </div>
 </section>
