@@ -39,6 +39,9 @@ interface Note {
   image4?: string;
   image5?: string;
   image6?: string;
+  image7?: string;
+  image8?: string;
+  image9?: string;
   video1?: string;
   video2?: string;
   video3?: string;
@@ -174,7 +177,7 @@ const contentParagraphs = isAutomatchNote
       .map((block) => block.trim())
       .filter(Boolean);
 
-const galleryImages = [
+const blockImages = [
   note?.image2,
   note?.image3,
   note?.image4,
@@ -183,6 +186,12 @@ const galleryImages = [
 ]
   .map((img) => normalizeMediaUrl(img))
   .filter((img): img is string => Boolean(img));
+
+const extraGalleryImages = [note?.image7, note?.image8, note?.image9]
+  .map((img) => normalizeMediaUrl(img))
+  .filter((img): img is string => Boolean(img));
+
+const galleryImages = blockImages;
 
 const galleryVideos = [
   note?.video1,
@@ -398,10 +407,11 @@ const heroSpecs = [
   },
 ].filter((item) => Boolean(item.value && String(item.value).trim()));
 
-const remainingImages = galleryImages.slice(uniqueContentBlocks.length);
-const galleryGridImages = remainingImages.slice(1);
-const showGalleryTestDriveCta =
-  hasTestDriveOffer && galleryGridImages.length > 0 && galleryGridImages.length % 2 === 1;
+const remainingImages = [
+  ...blockImages.slice(uniqueContentBlocks.length),
+  ...extraGalleryImages,
+];
+const galleryCount = remainingImages.length;
 
 function sourceScopeLabel(scope?: string) {
   return scope?.toLowerCase() === "internacional" ? "Internacional" : "Nacional";
@@ -759,85 +769,58 @@ const noteCanonical = note ? `${siteUrl}/notas/${note.id}` : undefined;
             remainingImages.length > 0 && (
               <section
                 class="noticia-galeria-complementaria"
-                aria-label={`Galería de ${displayTitle}`}
+                aria-label="Galería"
               >
                 <header class="noticia-galeria-complementaria__header">
-                  <p class="noticia-galeria-complementaria__eyebrow">Galería</p>
-                  <h2 class="noticia-galeria-complementaria__title">
-                    Más imágenes de {displayTitle}
-                  </h2>
-                  <p class="noticia-galeria-complementaria__lead">
-                    Vistas adicionales del modelo para complementar la nota.
-                  </p>
+                  <h2 class="noticia-galeria-complementaria__title">Galería</h2>
                 </header>
 
-                <div class="noticia-galeria-complementaria__grid">
-                  {
-                    remainingImages[0] && (
-                      <figure class="noticia-galeria-complementaria__item is-featured">
-                        {useSmartImageFrame ? (
-                          <div class="noticia-galeria-complementaria__frame">
-                            <img
-                              src={remainingImages[0]}
-                              alt={`${note.title} — imagen 1 de la galería`}
-                              loading="eager"
-                              decoding="async"
-                            />
-                          </div>
-                        ) : (
-                          <img
-                            src={remainingImages[0]}
-                            alt={`${note.title} — imagen 1 de la galería`}
-                            loading="eager"
-                            decoding="async"
-                          />
-                        )}
-                      </figure>
-                    )
-                  }
-
-                  {galleryGridImages.map((imgSrc, index) => (
+                <div
+                  class="noticia-galeria-complementaria__grid"
+                  data-count={String(galleryCount)}
+                >
+                  {remainingImages.map((imgSrc, index) => (
                     <figure class="noticia-galeria-complementaria__item">
                       {useSmartImageFrame ? (
                         <div class="noticia-galeria-complementaria__frame">
                           <img
                             src={imgSrc}
-                            alt={`${note.title} — imagen ${index + 2} de la galería`}
-                            loading="lazy"
+                            alt={`${note.title} — galería ${index + 1}`}
+                            loading={index === 0 ? "eager" : "lazy"}
                             decoding="async"
                           />
                         </div>
                       ) : (
                         <img
                           src={imgSrc}
-                          alt={`${note.title} — imagen ${index + 2} de la galería`}
-                          loading="lazy"
+                          alt={`${note.title} — galería ${index + 1}`}
+                          loading={index === 0 ? "eager" : "lazy"}
                           decoding="async"
                         />
                       )}
                     </figure>
                   ))}
-
-                  {
-                    showGalleryTestDriveCta && (
-                      <a
-                        href="#solicitar-test-drive"
-                        class="noticia-galeria-complementaria__cta"
-                      >
-                        <span class="noticia-galeria-complementaria__cta-eyebrow">
-                          ¿Te gustó?
-                        </span>
-                        <span class="noticia-galeria-complementaria__cta-title">
-                          Solicita el test drive
-                        </span>
-                        <span class="noticia-galeria-complementaria__cta-action">
-                          <i class="fa-solid fa-steering-wheel" aria-hidden="true"></i>
-                          Ir al formulario
-                        </span>
-                      </a>
-                    )
-                  }
                 </div>
+
+                {
+                  hasTestDriveOffer && (
+                    <a
+                      href="#solicitar-test-drive"
+                      class="noticia-galeria-complementaria__cta noticia-galeria-complementaria__cta--below"
+                    >
+                      <span class="noticia-galeria-complementaria__cta-eyebrow">
+                        ¿Te gustó?
+                      </span>
+                      <span class="noticia-galeria-complementaria__cta-title">
+                        Solicita el test drive
+                      </span>
+                      <span class="noticia-galeria-complementaria__cta-action">
+                        <i class="fa-solid fa-steering-wheel" aria-hidden="true"></i>
+                        Ir al formulario
+                      </span>
+                    </a>
+                  )
+                }
               </section>
             )
           }

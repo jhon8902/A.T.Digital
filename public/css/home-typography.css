@@ -351,7 +351,7 @@ body.home-page .pruebas-section--videos .pruebas-inner {
 /* Movilidad split — títulos de columna más presentes */
 body.home-page .home-mobility .electricos-title,
 body.home-page .home-mobility h2.electricos-title {
-  font-size: clamp(2.05rem, 2.7vw, 2.55rem) !important;
+  font-size: clamp(1.55rem, 2.1vw, 1.85rem) !important;
   font-weight: 600 !important;
   font-style: normal !important;
   justify-content: flex-start !important;
@@ -366,7 +366,7 @@ body.home-page .home-mobility h2.electricos-title {
 body.home-page .home-mobility .hibridos-title,
 body.home-page .home-mobility h2.hibridos-title,
 body.home-page .home-mobility #hibridos .hibridos-title {
-  font-size: clamp(2.05rem, 2.7vw, 2.55rem) !important;
+  font-size: clamp(1.55rem, 2.1vw, 1.85rem) !important;
   font-weight: 600 !important;
   font-style: normal !important;
   justify-content: flex-start !important;
@@ -524,7 +524,7 @@ body.home-page h2.hibridos-title {
 body.home-page .home-mobility #hibridos .hibridos-title,
 body.home-page .home-mobility h2.hibridos-title {
   color: #ffffff !important;
-  font-size: clamp(2.05rem, 2.7vw, 2.55rem) !important;
+  font-size: clamp(1.55rem, 2.1vw, 1.85rem) !important;
 }
 
 /* Líneas laterales de títulos de sección */

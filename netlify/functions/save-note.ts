@@ -31,6 +31,9 @@ const KNOWN_NOTES_COLUMNS = new Set([
   "image4",
   "image5",
   "image6",
+  "image7",
+  "image8",
+  "image9",
   "video1",
   "video2",
   "video3",
@@ -227,6 +230,16 @@ function isMissingImage6ColumnError(error: any): boolean {
   );
 }
 
+function isMissingExtraImageColumnError(error: any): boolean {
+  if (!error) return false;
+  return (
+    error.code === "42703" &&
+    /image[789]|column\s+"?image[789]"?\s+does\s+not\s+exist/i.test(
+      String(error.message || "")
+    )
+  );
+}
+
 function isMissingScheduledAtColumnError(error: any): boolean {
   if (!error) return false;
   return (
@@ -281,6 +294,9 @@ async function insertNote(
   image4?: string;
   image5?: string;
   image6?: string;
+  image7?: string;
+  image8?: string;
+  image9?: string;
   video1?: string;
   video2?: string;
   video3?: string;
@@ -311,7 +327,7 @@ async function insertNote(
   spec_precio_cop?: string;
   scheduled_at?: string | null;
 },
-  options: { includeImage6: boolean; includeVideos: boolean; includeSourceScope: boolean; includeEditor: boolean; includeScheduledAt: boolean }
+  options: { includeImage6: boolean; includeExtraImages: boolean; includeVideos: boolean; includeSourceScope: boolean; includeEditor: boolean; includeScheduledAt: boolean }
 ) {
   const columns = [
     "title",
@@ -360,6 +376,11 @@ async function insertNote(
   if (options.includeImage6) {
     columns.push("image6");
     values.push(payload.image6 ?? null);
+  }
+
+  if (options.includeExtraImages) {
+    columns.push("image7", "image8", "image9");
+    values.push(payload.image7 ?? null, payload.image8 ?? null, payload.image9 ?? null);
   }
 
   if (options.includeVideos) {
@@ -475,6 +496,9 @@ export const handler: Handler = async (event) => {
       image4,
       image5,
       image6,
+      image7,
+      image8,
+      image9,
       video1,
       video2,
       video3,
@@ -585,6 +609,9 @@ export const handler: Handler = async (event) => {
       image4: normalizeMediaUrl(image4),
       image5: normalizeMediaUrl(image5),
       image6: normalizeMediaUrl(image6),
+      image7: normalizeMediaUrl(image7),
+      image8: normalizeMediaUrl(image8),
+      image9: normalizeMediaUrl(image9),
       video1: normalizeMediaUrl(video1),
       video2: normalizeMediaUrl(video2),
       video3: normalizeMediaUrl(video3),
@@ -627,6 +654,8 @@ export const handler: Handler = async (event) => {
     const supportsEditor = columns.has("editor");
     const supportsSourceScope = columns.has("source_scope");
     const supportsImage6 = columns.has("image6");
+    const supportsExtraImages =
+      columns.has("image7") && columns.has("image8") && columns.has("image9");
     const supportsScheduledAt = columns.has("scheduled_at");
     const supportsVideos = [
       "video1",
@@ -642,6 +671,7 @@ export const handler: Handler = async (event) => {
     try {
       result = await insertNote(payload, {
         includeImage6: supportsImage6,
+        includeExtraImages: supportsExtraImages,
         includeVideos: supportsVideos,
         includeSourceScope: supportsSourceScope,
         includeEditor: supportsEditor,
@@ -661,6 +691,7 @@ export const handler: Handler = async (event) => {
       } else if (isMissingEditorColumnError(insertError)) {
         result = await insertNote(payload, {
           includeImage6: supportsImage6,
+          includeExtraImages: supportsExtraImages,
           includeVideos: supportsVideos,
           includeSourceScope: supportsSourceScope,
           includeEditor: false,
@@ -669,6 +700,7 @@ export const handler: Handler = async (event) => {
       } else if (isMissingSourceScopeColumnError(insertError)) {
         result = await insertNote(payload, {
           includeImage6: supportsImage6,
+          includeExtraImages: supportsExtraImages,
           includeVideos: supportsVideos,
           includeSourceScope: false,
           includeEditor: supportsEditor,
@@ -677,6 +709,7 @@ export const handler: Handler = async (event) => {
       } else if (isMissingVideoColumnsError(insertError)) {
         result = await insertNote(payload, {
           includeImage6: supportsImage6,
+          includeExtraImages: supportsExtraImages,
           includeVideos: false,
           includeSourceScope: supportsSourceScope,
           includeEditor: supportsEditor,
@@ -685,6 +718,16 @@ export const handler: Handler = async (event) => {
       } else if (isMissingImage6ColumnError(insertError)) {
         result = await insertNote(payload, {
           includeImage6: false,
+          includeExtraImages: false,
+          includeVideos: supportsVideos,
+          includeSourceScope: supportsSourceScope,
+          includeEditor: supportsEditor,
+          includeScheduledAt: supportsScheduledAt,
+        });
+      } else if (isMissingExtraImageColumnError(insertError)) {
+        result = await insertNote(payload, {
+          includeImage6: supportsImage6,
+          includeExtraImages: false,
           includeVideos: supportsVideos,
           includeSourceScope: supportsSourceScope,
           includeEditor: supportsEditor,

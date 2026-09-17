@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import pkg from "pg";
+import { getPool } from "../../lib/db";
 import {
   normalizeScheduledAtInput,
 } from "../../lib/note-scheduling";
@@ -8,48 +8,7 @@ import {
   stripPruebasSoloMeta,
 } from "../../lib/pruebas-solo";
 
-const { Pool } = pkg;
-
-let _pool: InstanceType<typeof Pool> | null = null;
 let _notesColumns: Set<string> | null = null;
-
-const DB_CONNECTION_TIMEOUT_MS = Number(
-  process.env.DB_CONNECTION_TIMEOUT_MS || "5000"
-);
-const DB_QUERY_TIMEOUT_MS = Number(process.env.DB_QUERY_TIMEOUT_MS || "8000");
-
-function getPool() {
-  if (!_pool) {
-    const connStr = process.env.DATABASE_URL;
-    if (!connStr) {
-      throw new Error("DATABASE_URL no esta configurada");
-    }
-
-    _pool = new Pool({
-      connectionString: connStr,
-      ssl: connStr.includes("localhost")
-        ? false
-        : { rejectUnauthorized: false },
-      connectionTimeoutMillis: DB_CONNECTION_TIMEOUT_MS,
-      query_timeout: DB_QUERY_TIMEOUT_MS,
-      statement_timeout: DB_QUERY_TIMEOUT_MS,
-      idleTimeoutMillis: 10000,
-      max: 5,
-    });
-  }
-
-  return _pool;
-}
-
-const poolReady = getPool()
-  .query("SELECT 1")
-  .then(() => undefined)
-  .catch((error) => {
-    console.warn(
-      "[update-note] DB warmup failed:",
-      error instanceof Error ? error.message : error
-    );
-  });
 
 async function getNotesColumns(): Promise<Set<string>> {
   if (_notesColumns) return _notesColumns;
@@ -186,6 +145,9 @@ const updatableColumns = [
   "image4",
   "image5",
   "image6",
+  "image7",
+  "image8",
+  "image9",
   "video1",
   "video2",
   "video3",
@@ -299,7 +261,7 @@ async function handleUpdate(request: Request) {
     ] as const;
 
     const mediaFields = [
-      "image1","image2","image3","image4","image5","image6",
+      "image1","image2","image3","image4","image5","image6","image7","image8","image9",
       "video1","video2","video3","video4","video5","video6","video7"
     ] as const;
 
@@ -345,7 +307,6 @@ async function handleUpdate(request: Request) {
     }
 
     const columns = await getNotesColumns();
-    await poolReady;
 
     const setClauses: string[] = [];
     const values: Array<string | null | number> = [];

@@ -81,7 +81,7 @@
   justify-content: space-between;
   width: 100%;
   box-sizing: border-box;
-  padding: 0.72rem clamp(0.85rem, 3vw, 1.85rem);
+  padding: 0.38rem clamp(0.85rem, 3vw, 1.85rem);
   color: inherit;
   text-decoration: none;
 }
@@ -361,7 +361,11 @@
 
   .home-mobility .electricos-head,
   .home-mobility .hibridos-head {
-    padding: 0.78rem clamp(1.15rem, 2.5vw, 1.85rem);
+    padding: 0;
+  }
+
+  .home-mobility .section-heading-link {
+    padding: 0.4rem clamp(1.15rem, 2.5vw, 1.85rem);
   }
 
   .home-mobility .hibridos-section--compact {

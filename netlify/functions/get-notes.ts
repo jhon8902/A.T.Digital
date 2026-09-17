@@ -199,7 +199,7 @@ export const handler: Handler = async (event) => {
       result = await getPool().query(`
         SELECT
           id, title, subtitle, editor, content,
-          category, source_scope, image1, image2, image3, image4, image5, image6,
+          category, source_scope, image1, image2, image3, image4, image5, image6, image7, image8, image9,
           video1, video2, video3, video4, video5, video6, video7,
           spec_segmento, spec_origen, spec_precio_estimado, spec_versiones,
           spec_motorizacion, spec_potencia_hp, spec_torque_nm,
@@ -218,7 +218,7 @@ export const handler: Handler = async (event) => {
       result = await getPool().query(`
         SELECT
           id, title, subtitle, content,
-          category, image1, image2, image3, image4, image5, image6,
+          category, image1, image2, image3, image4, image5, image6, image7, image8, image9,
           video1, video2, video3, video4, video5, video6, video7,
           spec_segmento, spec_origen, spec_precio_estimado, spec_versiones,
           spec_motorizacion, spec_potencia_hp, spec_torque_nm,

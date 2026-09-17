@@ -81,6 +81,9 @@
     "image4",
     "image5",
     "image6",
+    "image7",
+    "image8",
+    "image9",
     "video1",
     "video2",
     "video3",
@@ -703,7 +706,7 @@
     imagePreviewStrip.innerHTML = "";
     const slots = [];
 
-    for (let i = 1; i <= 6; i += 1) {
+    for (let i = 1; i <= 9; i += 1) {
       const url = getFieldValue("image" + String(i)).trim();
       if (!url) continue;
       slots.push({ index: i, url: url });
@@ -808,7 +811,7 @@
   }
 
   function getImageFields() {
-    return ["image1", "image2", "image3", "image4", "image5", "image6"]
+    return ["image1", "image2", "image3", "image4", "image5", "image6", "image7", "image8", "image9"]
       .map(byName)
       .filter(function (input) {
         return input instanceof HTMLInputElement;
@@ -1930,7 +1933,7 @@ Titulo: Para quién sí y para quién no |
     cloudinaryFilesInput.addEventListener("change", function () {
       const files = Array.from(cloudinaryFilesInput.files || []);
       clearSelectedCloudinaryFiles();
-      selectedCloudinaryFiles = files.slice(0, 6);
+      selectedCloudinaryFiles = files.slice(0, 9);
       renderCloudinaryQueue();
     });
   }
