@@ -12,6 +12,13 @@ const imageCount = imagenes.length;
   data-precio={auto.precio != null ? String(auto.precio) : ""}
   hidden={startHidden}
 >
+  <h3 class="auto-card-title">
+    <a href={auto.href} class="auto-card-heading">
+      <span class="auto-card-kicker">{auto.condicionLabel}</span>
+      <span class="auto-card-heading__name">{auto.nombre}</span>
+    </a>
+  </h3>
+
   <div class="auto-carousel-shell" data-count={String(imageCount)}>
     <a
       href={auto.href}
@@ -59,12 +66,6 @@ const imageCount = imagenes.length;
     </div>
 
     <div class="auto-card-copy">
-      <p class="auto-card-kicker">{auto.condicionLabel}</p>
-      <h3>
-        <a href={auto.href} class="auto-card-heading">
-          {auto.nombre}
-        </a>
-      </h3>
       <p class="auto-card-price">
         {
           auto.precioLabel ? (
@@ -85,13 +86,28 @@ const imageCount = imagenes.length;
 
 <style>
   .auto-card {
-    display: block;
+    display: flex;
+    flex-direction: column;
     background: transparent;
     border: none;
     box-shadow: none;
     padding: 0;
     position: relative;
     isolation: isolate;
+  }
+
+  .auto-card .auto-card-title {
+    margin: 0 0 0.55rem;
+    min-height: 0;
+    display: flex;
+    align-items: flex-start;
+    font-family: var(--font-display, "Newsreader", Georgia, serif);
+    font-size: clamp(1.05rem, 1.45vw, 1.26rem);
+    font-weight: 600;
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    text-transform: none;
+    color: var(--automatch-card-title, #102018);
   }
 
   .auto-card[hidden],
@@ -120,10 +136,10 @@ const imageCount = imagenes.length;
     height: auto;
     background: linear-gradient(
       to top,
-      rgba(6, 16, 12, 0.96) 0%,
-      rgba(6, 16, 12, 0.78) 28%,
-      rgba(6, 16, 12, 0.28) 52%,
-      transparent 74%
+      rgba(6, 16, 12, 0.92) 0%,
+      rgba(6, 16, 12, 0.62) 18%,
+      rgba(6, 16, 12, 0.18) 36%,
+      transparent 52%
     );
     z-index: 2;
     pointer-events: none;
@@ -220,50 +236,41 @@ const imageCount = imagenes.length;
     right: 0;
     bottom: 0;
     z-index: 4;
-    padding: 1.2rem 1.1rem 1.05rem;
+    padding: 0.55rem 1.1rem 0.85rem;
     pointer-events: none;
     text-align: left;
   }
 
-  .auto-card-copy::before {
-    content: "";
-    display: block;
-    width: 2.1rem;
-    height: 1px;
-    background: #e6b410;
-    margin-bottom: 0.7rem;
-  }
-
   .auto-card-kicker {
-    margin: 0 0 0.32rem;
+    display: block;
+    margin: 0 0 0.28rem;
     font-family: var(--font-body, "Source Sans 3", sans-serif);
     font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #f0c14a;
-  }
-
-  .auto-card-copy h3 {
-    margin: 0 0 0.38rem;
-    max-width: none;
-    font-family: var(--font-display, "Newsreader", Georgia, serif);
-    font-size: clamp(1.22rem, 1.9vw, 1.48rem);
-    font-weight: 600;
-    line-height: 1.18;
-    letter-spacing: -0.025em;
-    text-transform: none;
-    color: #fff;
+    color: var(--automatch-card-kicker, #8a6a12);
+    white-space: nowrap;
   }
 
   .auto-card-heading {
     color: inherit;
     text-decoration: none;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
     pointer-events: auto;
+  }
+
+  .auto-card-heading__name {
+    display: block;
+    min-height: 2.44em;
+  }
+
+  .auto-card-heading:hover .auto-card-heading__name {
+    text-decoration: underline;
+    text-underline-offset: 0.14em;
   }
 
   .auto-card-heading:focus-visible {
@@ -276,16 +283,16 @@ const imageCount = imagenes.length;
     flex-direction: row;
     align-items: baseline;
     justify-content: flex-start;
-    gap: 0.4rem;
-    margin: 0 0 0.7rem;
+    gap: 0.45rem;
+    margin: 0 0 0.18rem;
     padding: 0;
-    min-height: 1.15rem;
+    min-height: 0;
     text-align: left;
   }
 
   .auto-card-price__label {
     font-family: var(--font-body, "Source Sans 3", sans-serif);
-    font-size: 0.68rem;
+    font-size: 0.78rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -294,8 +301,8 @@ const imageCount = imagenes.length;
 
   .auto-card-price__value {
     font-family: var(--font-body, "Source Sans 3", sans-serif);
-    font-size: 0.98rem;
-    font-weight: 600;
+    font-size: 1.48rem;
+    font-weight: 700;
     line-height: 1.15;
     color: #fff;
     letter-spacing: 0;
@@ -446,6 +453,12 @@ const imageCount = imagenes.length;
   .auto-carousel-shell[data-count="1"] .carousel-nav,
   .auto-carousel-shell[data-count="1"] .carousel-meta-bar {
     display: none;
+  }
+
+  @media (max-width: 768px) {
+    .auto-card-heading__name {
+      min-height: 0;
+    }
   }
 
   @media (hover: none) {

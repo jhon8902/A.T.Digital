@@ -263,14 +263,9 @@ const searchCtaLabel = "Buscar auto para comprar";
     </div>
   ) : (
     <section class="automatch-section automatch-section--catalog">
-      <h2 class="titulo">
-        <i class="fas fa-car titulo-icon"></i>
-        Catálogo de modelos
-      </h2>
-      <p class="subtitulo">
-        Filtra por condición, categoría y precio para encontrar el modelo que
-        quieres consultar.
-      </p>
+      <header class="catalog-head">
+        <h2 class="catalog-head__title">Catálogo</h2>
+      </header>
 
       <div class="catalog-filters-stack">
         <div class="catalog-filter-group">
@@ -375,6 +370,8 @@ const searchCtaLabel = "Buscar auto para comprar";
   .automatch-home {
     width: 100%;
     background: linear-gradient(165deg, #062818 0%, #08341f 45%, #0a4228 100%);
+    --automatch-card-title: #fff;
+    --automatch-card-kicker: #f0c14a;
   }
 
   .automatch-hero {
@@ -857,6 +854,8 @@ const searchCtaLabel = "Buscar auto para comprar";
     border-radius: 0;
     box-shadow: none;
     padding-top: clamp(2rem, 4vw, 2.75rem);
+    --automatch-card-title: #102018;
+    --automatch-card-kicker: #8a6a12;
   }
 
   .catalog-filters-stack {
@@ -1407,6 +1406,108 @@ const searchCtaLabel = "Buscar auto para comprar";
       margin-top: 0;
     }
 
+  }
+
+  .automatch-section--catalog .catalog-head {
+    max-width: 68rem;
+    margin: 0 auto 1.35rem;
+    text-align: left;
+  }
+
+  .automatch-section--catalog .catalog-head__eyebrow {
+    margin: 0 0 0.28rem;
+    font-family: var(--font-body, "Source Sans 3", sans-serif);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #8a6a12;
+  }
+
+  .automatch-section--catalog .catalog-head__title {
+    margin: 0;
+    font-family: var(--font-display, "Newsreader", Georgia, serif);
+    font-size: clamp(1.85rem, 2.6vw, 2.25rem);
+    font-weight: 560;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: #102018;
+  }
+
+  .automatch-section--catalog .catalog-head__lead {
+    margin: 0.35rem 0 0;
+    max-width: 28rem;
+    font-size: 0.98rem;
+    line-height: 1.4;
+    color: #5c6b62;
+  }
+
+  .automatch-section--cards .catalog-filters-stack,
+  .automatch-section--catalog .catalog-filters-stack {
+    margin-bottom: 2.85rem;
+  }
+
+  .automatch-section--catalog .catalog-filters-stack {
+    gap: 0.7rem;
+  }
+
+  .automatch-section--catalog .catalog-filter-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.55rem 0.9rem;
+  }
+
+  .automatch-section--catalog .catalog-filter-label {
+    width: 5.6rem;
+    flex: none;
+    text-align: left;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.14em;
+  }
+
+  .automatch-section--catalog .catalog-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.35rem;
+    width: auto;
+    margin: 0;
+  }
+
+  .automatch-section--catalog .catalog-filter {
+    width: auto;
+    min-height: 0;
+    padding: 0.28rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .automatch-section--catalog .catalog-head,
+    .automatch-section--catalog .catalog-filters-stack,
+    .automatch-section--catalog .cards,
+    .automatch-section--catalog .catalog-empty,
+    .automatch-section--catalog .automatch-section__footer {
+      max-width: 22.5rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .automatch-section--catalog .catalog-filter-group {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.4rem;
+    }
+
+    .automatch-section--catalog .catalog-filter-label {
+      width: auto;
+    }
+
+    .automatch-section--catalog .catalog-filter {
+      justify-content: center;
+      text-align: center;
+    }
   }
 </style>
 

@@ -34,9 +34,7 @@ const automatchNotes: AutomatchDbNote[] = homeNotes
     image6: note.image6,
   }));
 
-const automatchAutos = buildAutomatchCarousel(automatchNotes, {
-  skipEditorialCover: true,
-});
+const automatchAutos = buildAutomatchCarousel(automatchNotes);
 ---
 
 <Layout

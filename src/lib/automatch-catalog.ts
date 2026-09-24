@@ -494,13 +494,14 @@ function attachMatchInsights(
 
 /**
  * Combina autos.json con notas BD category=automatch.
- * Por defecto omite image1 de la nota en el carrusel para no repetir la portada editorial.
+ * La primera foto del carrusel es la imagen 1 (portada). skipEditorialCover
+ * solo si hay que omitirla a propósito.
  */
 export function buildAutomatchCarousel(
   dbNotes: AutomatchDbNote[] = [],
   options: { skipEditorialCover?: boolean } = {},
 ): AutomatchCarouselItem[] {
-  const skipCover = options.skipEditorialCover !== false;
+  const skipCover = options.skipEditorialCover === true;
   const catalog = catalogData as CatalogAuto[];
   const usedNoteIds = new Set<string>();
   const items: AutomatchCarouselItem[] = [];

@@ -30,13 +30,13 @@ try {
         image6: note.image6,
       }));
 
-    autos = buildAutomatchCarousel(automatchNotes, { skipEditorialCover: true });
+    autos = buildAutomatchCarousel(automatchNotes);
   } else {
-    autos = buildAutomatchCarousel([], { skipEditorialCover: true });
+    autos = buildAutomatchCarousel([]);
   }
 } catch (err) {
   console.error("Error cargando autos en archivo AutoMatch:", err);
-  autos = buildAutomatchCarousel([], { skipEditorialCover: true });
+  autos = buildAutomatchCarousel([]);
 }
 ---
 
