@@ -95,6 +95,10 @@ const priceFilters = [
 ];
 
 const searchCtaLabel = "Buscar auto para comprar";
+const catalogTickerCopy = embedded
+  ? "El catálogo crece con concesionarios. Infórmate antes de comprar."
+  : "Filtra por categoría y precio. Entra a la ficha si ya sabes el modelo.";
+const CatalogKickerTag = embedded ? "h3" : "h2";
 ---
 
 {
@@ -112,7 +116,7 @@ const searchCtaLabel = "Buscar auto para comprar";
           </TitleTag>
           <p class="automatch-hero__lead">
             {embedded
-              ? "Compara modelos, mira fichas y pide test drive. El catálogo sigue creciendo con datos de concesionarios."
+              ? "Compara modelos, mira fichas y pide test drive."
               : "Compara autos nuevos, seminuevos y usados en Colombia. Elige cómo quieres empezar:"}
           </p>
         </div>
@@ -125,7 +129,7 @@ const searchCtaLabel = "Buscar auto para comprar";
             </p>
             <div class="automatch-hero__path-cta">
               <a
-                href="#automatch-destacados"
+                href={embedded ? "/automatch" : "#automatch-destacados"}
                 class="btn-automatch btn-automatch--primary btn-automatch--path"
               >
                 <i class="fa-solid fa-car-side" aria-hidden="true"></i>
@@ -160,79 +164,75 @@ const searchCtaLabel = "Buscar auto para comprar";
         id="automatch-destacados"
         data-filter-limit={String(HOME_VISIBLE_COUNT)}
       >
-        <div class="automatch-cards-intro automatch-cards-intro--ticker">
-          {embedded ? (
-            <h3 class="automatch-cards-kicker">Catálogo</h3>
-          ) : (
-            <h2 class="automatch-cards-kicker">Catálogo</h2>
-          )}
-          <p class="automatch-sr-only">
-            Filtra por categoría y precio. Entra a la ficha si ya sabes el modelo.
-          </p>
+        <div
+          class:list={[
+            "automatch-cards-intro",
+            "automatch-cards-intro--ticker",
+            embedded && "automatch-cards-intro--compact",
+          ]}
+        >
+          <CatalogKickerTag class="automatch-cards-kicker">Catálogo</CatalogKickerTag>
+          <p class="automatch-sr-only">{catalogTickerCopy}</p>
           <div class="automatch-cards-marquee" aria-hidden="true">
             <div class="automatch-cards-marquee__track">
-              <div class="automatch-cards-marquee__group">
-                <span>Filtra por categoría y precio. Entra a la ficha si ya sabes el modelo.</span>
-                <span>Filtra por categoría y precio. Entra a la ficha si ya sabes el modelo.</span>
-                <span>Filtra por categoría y precio. Entra a la ficha si ya sabes el modelo.</span>
-              </div>
-              <div class="automatch-cards-marquee__group">
-                <span>Filtra por categoría y precio. Entra a la ficha si ya sabes el modelo.</span>
-                <span>Filtra por categoría y precio. Entra a la ficha si ya sabes el modelo.</span>
-                <span>Filtra por categoría y precio. Entra a la ficha si ya sabes el modelo.</span>
-              </div>
+              <span>{catalogTickerCopy}</span>
+              <span>{catalogTickerCopy}</span>
             </div>
           </div>
         </div>
 
-        <div class="catalog-filters-stack">
-          <div class="catalog-filter-group">
-            <p class="catalog-filter-label">Categoría</p>
-            <div
-              class="catalog-filters"
-              data-filter-type="carroceria"
-              role="tablist"
-              aria-label="Filtrar por categoría"
-            >
-              {
-                bodyFilters.map((filter, index) => (
-                  <button
-                    type="button"
-                    class={`catalog-filter ${index === 0 ? "is-active" : ""}`}
-                    data-filter={filter.id}
-                    role="tab"
-                    aria-selected={index === 0 ? "true" : "false"}
-                  >
-                    {filter.label}
-                  </button>
-                ))
-              }
+        {
+          !embedded && (
+            <div class="catalog-filters-stack">
+              <div class="catalog-filter-group">
+                <p class="catalog-filter-label">Categoría</p>
+                <div
+                  class="catalog-filters"
+                  data-filter-type="carroceria"
+                  role="tablist"
+                  aria-label="Filtrar por categoría"
+                >
+                  {
+                    bodyFilters.map((filter, index) => (
+                      <button
+                        type="button"
+                        class={`catalog-filter ${index === 0 ? "is-active" : ""}`}
+                        data-filter={filter.id}
+                        role="tab"
+                        aria-selected={index === 0 ? "true" : "false"}
+                      >
+                        {filter.label}
+                      </button>
+                    ))
+                  }
+                </div>
+              </div>
+              <div class="catalog-filter-group">
+                <p class="catalog-filter-label">Precio</p>
+                <div
+                  class="catalog-filters"
+                  data-filter-type="precio"
+                  role="tablist"
+                  aria-label="Filtrar por precio"
+                >
+                  {
+                    priceFilters.map((filter, index) => (
+                      <button
+                        type="button"
+                        class={`catalog-filter ${index === 0 ? "is-active" : ""}`}
+                        data-filter={filter.id}
+                        role="tab"
+                        aria-selected={index === 0 ? "true" : "false"}
+                      >
+                        {filter.label}
+                      </button>
+                    ))
+                  }
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="catalog-filter-group">
-            <p class="catalog-filter-label">Precio</p>
-            <div
-              class="catalog-filters"
-              data-filter-type="precio"
-              role="tablist"
-              aria-label="Filtrar por precio"
-            >
-              {
-                priceFilters.map((filter, index) => (
-                  <button
-                    type="button"
-                    class={`catalog-filter ${index === 0 ? "is-active" : ""}`}
-                    data-filter={filter.id}
-                    role="tab"
-                    aria-selected={index === 0 ? "true" : "false"}
-                  >
-                    {filter.label}
-                  </button>
-                ))
-              }
-            </div>
-          </div>
-        </div>
+          )
+        }
 
         <p class="catalog-empty" hidden>
           No hay modelos en esta combinación por ahora.
@@ -419,9 +419,16 @@ const searchCtaLabel = "Buscar auto para comprar";
     color: #f0c14a !important;
   }
 
+  .automatch-home:not(.automatch-home--embedded) .automatch-hero {
+    padding: clamp(2.6rem, 5vw, 4rem) clamp(1.15rem, 4vw, 2.25rem)
+      clamp(2.85rem, 4.5vw, 3.5rem);
+  }
+
   .automatch-home--embedded .automatch-hero {
     padding-top: clamp(1.75rem, 3.5vw, 2.75rem);
     padding-bottom: clamp(1.35rem, 2.5vw, 1.75rem);
+    padding-left: clamp(1.75rem, 5vw, 3.5rem);
+    padding-right: clamp(1.75rem, 5vw, 3.5rem);
   }
 
   .automatch-home--embedded .automatch-hero__title {
@@ -460,7 +467,7 @@ const searchCtaLabel = "Buscar auto para comprar";
 
   .automatch-hero__path-label {
     margin: 0;
-    font-size: 1.02rem;
+    font-size: clamp(1.2rem, 1.55vw, 1.35rem);
     font-weight: 700;
     color: #f0c14a;
     font-family: var(--font-body, "Source Sans 3", sans-serif);
@@ -609,18 +616,15 @@ const searchCtaLabel = "Buscar auto para comprar";
 
   .automatch-cards-marquee__track {
     display: flex;
+    flex: 0 0 auto;
     width: max-content;
+    will-change: transform;
     animation: automatch-marquee 32s linear infinite;
   }
 
-  .automatch-cards-marquee__group {
-    display: flex;
-    align-items: center;
-    gap: 2.75rem;
-    padding-right: 2.75rem;
-  }
-
-  .automatch-cards-marquee__group span {
+  .automatch-cards-marquee__track span {
+    flex: 0 0 auto;
+    padding-right: 2.5rem;
     font-family: var(--font-body, "Source Sans 3", sans-serif);
     font-size: clamp(0.95rem, 1.2vw, 1.08rem);
     font-weight: 600;
@@ -635,10 +639,10 @@ const searchCtaLabel = "Buscar auto para comprar";
 
   @keyframes automatch-marquee {
     from {
-      transform: translateX(0);
+      transform: translate3d(0, 0, 0);
     }
     to {
-      transform: translateX(-50%);
+      transform: translate3d(-50%, 0, 0);
     }
   }
 
@@ -647,7 +651,7 @@ const searchCtaLabel = "Buscar auto para comprar";
       animation: none;
     }
 
-    .automatch-cards-marquee__group:last-child {
+    .automatch-cards-marquee__track span:last-child {
       display: none;
     }
   }
@@ -684,7 +688,37 @@ const searchCtaLabel = "Buscar auto para comprar";
   }
 
   .automatch-home--embedded .automatch-cards-intro {
-    margin-bottom: 0.9rem;
+    width: calc((100% - 2.4rem) / 3);
+    max-width: none;
+    margin-left: 0;
+    margin-right: auto;
+    margin-bottom: 2.2rem;
+  }
+
+  .automatch-cards-intro--compact {
+    min-height: 1.85rem;
+  }
+
+  .automatch-cards-intro--compact .automatch-cards-kicker {
+    padding: 0.28rem 0.85rem;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  .automatch-cards-intro--compact .automatch-cards-marquee__track {
+    animation: automatch-marquee 18s linear infinite;
+  }
+
+  .automatch-cards-intro--compact .automatch-cards-marquee__track span {
+    padding-right: 2.5rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .automatch-home:not(.automatch-home--embedded) .automatch-cards-intro {
+    margin-bottom: 1.45rem;
   }
 
   /* ========== SECCIÓN AUTOMATCH PRINCIPAL ========== */
@@ -712,8 +746,24 @@ const searchCtaLabel = "Buscar auto para comprar";
     text-align: left;
   }
 
+  .automatch-home:not(.automatch-home--embedded)
+    .automatch-section.automatch-section--cards {
+    padding: clamp(1.7rem, 3.2vw, 2.35rem) 1.15rem clamp(2.5rem, 4.6vw, 3.4rem);
+  }
+
+  .automatch-home:not(.automatch-home--embedded) .cards {
+    gap: 1.55rem 1.4rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .automatch-home:not(.automatch-home--embedded) .automatch-section__footer {
+    margin-top: 2.1rem;
+  }
+
   .automatch-home--embedded .automatch-section.automatch-section--cards {
     padding-top: clamp(1.1rem, 2vw, 1.45rem);
+    padding-left: clamp(1.75rem, 5vw, 3.5rem);
+    padding-right: clamp(1.75rem, 5vw, 3.5rem);
   }
 
   @keyframes slideInSection {
@@ -1410,7 +1460,7 @@ const searchCtaLabel = "Buscar auto para comprar";
 
   .automatch-section--catalog .catalog-head {
     max-width: 68rem;
-    margin: 0 auto 1.35rem;
+    margin: 0 auto 0.7rem;
     text-align: left;
   }
 
@@ -1426,12 +1476,13 @@ const searchCtaLabel = "Buscar auto para comprar";
 
   .automatch-section--catalog .catalog-head__title {
     margin: 0;
-    font-family: var(--font-display, "Newsreader", Georgia, serif);
-    font-size: clamp(1.85rem, 2.6vw, 2.25rem);
-    font-weight: 560;
-    line-height: 1.08;
-    letter-spacing: -0.03em;
-    color: #102018;
+    font-family: var(--font-body, "Source Sans 3", sans-serif);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #e6b410;
   }
 
   .automatch-section--catalog .catalog-head__lead {
@@ -1447,6 +1498,13 @@ const searchCtaLabel = "Buscar auto para comprar";
     margin-bottom: 2.85rem;
   }
 
+  .automatch-home:not(.automatch-home--embedded)
+    .automatch-section--cards
+    .catalog-filters-stack {
+    margin-bottom: 2.15rem;
+    gap: 1.2rem;
+  }
+
   .automatch-section--catalog .catalog-filters-stack {
     gap: 0.7rem;
   }
@@ -1458,28 +1516,28 @@ const searchCtaLabel = "Buscar auto para comprar";
   }
 
   .automatch-section--catalog .catalog-filter-label {
-    width: 5.6rem;
+    width: 7.25rem;
     flex: none;
     text-align: left;
-    font-size: 0.7rem !important;
-    letter-spacing: 0.14em;
+    font-size: 0.84rem !important;
+    letter-spacing: 0.12em;
   }
 
   .automatch-section--catalog .catalog-filters {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    gap: 0.35rem;
+    gap: 0.45rem;
     width: auto;
     margin: 0;
   }
 
   .automatch-section--catalog .catalog-filter {
     width: auto;
-    min-height: 0;
-    padding: 0.28rem 0.7rem;
-    border-radius: 999px;
-    font-size: 0.82rem;
+    min-height: 2.15rem;
+    padding: 0.42rem 0.95rem;
+    border-radius: 0;
+    font-size: 1rem;
     font-weight: 600;
   }
 

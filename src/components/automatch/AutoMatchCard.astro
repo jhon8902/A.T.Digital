@@ -2,6 +2,10 @@
 const { auto, startHidden = false } = Astro.props;
 const imagenes = Array.isArray(auto?.imagenes) ? auto.imagenes : [];
 const imageCount = imagenes.length;
+const fullName = String(auto?.nombre || "AutoMatch");
+const colon = fullName.indexOf(":");
+const headingName =
+  colon > 12 ? fullName.slice(0, colon).trim() : fullName;
 ---
 
 <article
@@ -13,9 +17,9 @@ const imageCount = imagenes.length;
   hidden={startHidden}
 >
   <h3 class="auto-card-title">
-    <a href={auto.href} class="auto-card-heading">
+    <a href={auto.href} class="auto-card-heading" title={fullName}>
       <span class="auto-card-kicker">{auto.condicionLabel}</span>
-      <span class="auto-card-heading__name">{auto.nombre}</span>
+      <span class="auto-card-heading__name">{headingName}</span>
     </a>
   </h3>
 
@@ -32,7 +36,7 @@ const imageCount = imagenes.length;
         imagenes.map((img: string, index: number) => (
           <img
             src={img}
-            alt={`${auto.nombre} — imagen ${index + 1}`}
+            alt={`${headingName} — imagen ${index + 1}`}
             class={`auto-img ${index === 0 ? "visible" : "hidden"}`}
             loading="eager"
             decoding="async"
@@ -102,7 +106,7 @@ const imageCount = imagenes.length;
     display: flex;
     align-items: flex-start;
     font-family: var(--font-display, "Newsreader", Georgia, serif);
-    font-size: clamp(1.05rem, 1.45vw, 1.26rem);
+    font-size: clamp(1.02rem, 1.3vw, 1.18rem);
     font-weight: 600;
     line-height: 1.22;
     letter-spacing: -0.02em;
@@ -264,8 +268,11 @@ const imageCount = imagenes.length;
   }
 
   .auto-card-heading__name {
-    display: block;
-    min-height: 2.44em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    min-height: 0;
   }
 
   .auto-card-heading:hover .auto-card-heading__name {

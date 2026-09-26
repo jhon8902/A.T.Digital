@@ -750,7 +750,24 @@ body.home-page #lanzamientos .lanzamiento-scope--overlay.lanzamiento-scope--inte
 body.home-page #lanzamientos .lanzamiento-tile__title {
   color: #041a10 !important;
   font-family: var(--font-display, "Newsreader", Georgia, serif) !important;
+  font-size: clamp(0.92rem, 0.95vw, 1.02rem) !important;
   font-weight: 600 !important;
+  line-height: 1.28 !important;
+}
+
+body.home-page #lanzamientos .lanzamiento-kicker,
+body.home-page #lanzamientos .lanzamiento-kicker--nacional,
+body.home-page #lanzamientos .lanzamiento-kicker--internacional {
+  color: #e6b410 !important;
+}
+
+body.home-page .home-mobility .scope-tag,
+body.home-page .home-mobility .scope-tag--national,
+body.home-page .home-mobility .scope-tag--international {
+  color: #e6b410 !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
 }
 
 @media (min-width: 1024px) {
@@ -995,24 +1012,55 @@ body.home-page #automatch .automatch-home {
 
 body.home-page #automatch .automatch-hero {
   width: 100%;
+  padding-left: clamp(1.75rem, 5vw, 3.5rem);
+  padding-right: clamp(1.75rem, 5vw, 3.5rem);
 }
 
 body.home-page #automatch .automatch-section.automatch-section--cards {
   width: 100% !important;
   margin: 0 auto !important;
   padding-top: clamp(1.1rem, 2vw, 1.45rem) !important;
+  padding-bottom: clamp(2rem, 4vw, 2.75rem) !important;
+  padding-left: clamp(1.75rem, 5vw, 3.5rem) !important;
+  padding-right: clamp(1.75rem, 5vw, 3.5rem) !important;
   background: transparent !important;
   background-image: none !important;
 }
 
 body.home-page #automatch .automatch-cards-kicker {
   color: #f0c14a !important;
-  font-size: 1.08rem !important;
+  font-size: 0.72rem !important;
+}
+
+body.home-page #automatch .automatch-cards-intro--compact {
+  width: calc((100% - 2.4rem) / 3) !important;
+  max-width: none;
+  margin-left: 0;
+  margin-right: auto;
+  margin-bottom: 2.2rem;
+}
+
+body.home-page #automatch .automatch-cards-intro--compact .automatch-cards-marquee__track span {
+  font-size: 0.82rem !important;
+}
+
+body.home-page #automatch .automatch-hero__path-label {
+  font-size: clamp(1.2rem, 1.55vw, 1.35rem) !important;
+}
+
+@media (max-width: 1024px) {
+  body.home-page #automatch .automatch-cards-intro--compact {
+    width: calc((100% - 1.15rem) / 2) !important;
+  }
 }
 
 @media (max-width: 768px) {
   body.home-page #automatch .automatch-cards-kicker {
-    font-size: 0.95rem !important;
+    font-size: 0.68rem !important;
+  }
+
+  body.home-page #automatch .automatch-cards-intro--compact {
+    width: 100% !important;
   }
 }
 
