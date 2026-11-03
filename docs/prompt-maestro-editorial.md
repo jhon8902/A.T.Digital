@@ -206,7 +206,8 @@ Objetivo: que se note la tijera, no el comunicado «bien escrito».
 
 | Categoría | Cuándo |
 |-----------|--------|
-| `deportes` | Deportivos, supercar, competición |
+| `deportes` | Deportivos, supercar, competición de autos |
+| `motos` | Motocicletas de calle, eventos y novedades de dos ruedas |
 | `electricos` | 100 % eléctricos |
 | `hibridos` | PHEV, MHEV, HEV |
 | `lanzamientos` | Presentación oficial en Colombia o región |

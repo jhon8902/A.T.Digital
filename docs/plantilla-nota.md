@@ -40,6 +40,7 @@ La berlina compacta de CUPRA llega renovada con más autonomía y tecnología de
 | `electricos`   | Autos 100 % eléctricos (BEV)                      |
 | `hibridos`     | Híbridos enchufables (PHEV) o suaves (MHEV/HEV)   |
 | `deportes`     | Autos deportivos, supercar, competición           |
+| `motos`        | Motocicletas: lanzamientos, eventos y novedades   |
 | `noticias`     | Noticias de marca, lanzamientos mundiales, recall |
 | `pruebas`      | Pruebas/tests de manejo propios de A.T. Digital   |
 | `lanzamientos` | Presentaciones oficiales en Colombia o región     |

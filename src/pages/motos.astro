@@ -1,0 +1,16 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CategoryArchive from "../components/archive/CategoryArchive.astro";
+---
+
+<Layout
+  title="Motos | Auto-Tech-Digital"
+  description="Lanzamientos, eventos y novedades de motocicletas. Cobertura de dos ruedas de Auto-Tech-Digital."
+>
+  <CategoryArchive
+    category="motos"
+    title="Motos"
+    description="Lanzamientos, eventos y novedades de motocicletas."
+    itemsPerPage={6}
+  />
+</Layout>

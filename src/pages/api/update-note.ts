@@ -34,6 +34,7 @@ const ALLOWED_CATEGORIES = new Set([
   "electricos",
   "hibridos",
   "deportes",
+  "motos",
   "pruebas",
   "lanzamientos",
   "automatch",
@@ -52,6 +53,10 @@ const CATEGORY_ALIASES: Record<string, string> = {
   lanzamiento: "lanzamientos",
   noticia: "noticias",
   deporte: "deportes",
+  moto: "motos",
+  motos: "motos",
+  motocicleta: "motos",
+  motocicletas: "motos",
 };
 
 function normalizeCategory(category: string): string {

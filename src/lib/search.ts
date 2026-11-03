@@ -65,6 +65,14 @@ export const STATIC_SEARCH_ENTRIES: SearchEntry[] = [
     keywords: ["deportes", "autos deportivos", "supercarro", "gt", "performance"],
   },
   {
+    title: "Motos",
+    description: "Lanzamientos, eventos y novedades de motocicletas.",
+    href: "/motos",
+    category: "motos",
+    type: "seccion",
+    keywords: ["motos", "motocicletas", "dos ruedas", "moto"],
+  },
+  {
     title: "Pruebas",
     description: "Pruebas de manejo y analisis editoriales.",
     href: "/pruebas",

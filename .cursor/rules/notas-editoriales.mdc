@@ -61,11 +61,11 @@ Título: [Encabezado del bloque] |
 
 - Texto plano, sin HTML.
 - Tono: editorial A.T. Digital — preciso, con cifras, fluido entre bloques.
-- Categoría habitual: `deportes`, `electricos`, `hibridos`, `noticias`, `lanzamientos` o `pruebas` según el auto.
+- Categoría habitual: `deportes`, `motos`, `electricos`, `hibridos`, `noticias`, `lanzamientos` o `pruebas` según el vehículo. Motos de calle, eventos y novedades de dos ruedas van en `motos`.
 
 ## Voz editorial — español latinoamericano (referencia: nota GLA 2026)
 
-**Regla global:** aplica a **todas** las notas y **todas** las categorías (`deportes`, `electricos`, `hibridos`, `lanzamientos`, `noticias`, `pruebas`, archivo), con ámbito `nacional` o `internacional`. Un superdeportivo o una nota de archivo se escriben con el mismo criterio de claridad.
+**Regla global:** aplica a **todas** las notas y **todas** las categorías (`deportes`, `motos`, `electricos`, `hibridos`, `lanzamientos`, `noticias`, `pruebas`, archivo), con ámbito `nacional` o `internacional`. Un superdeportivo, una moto o una nota de archivo se escriben con el mismo criterio de claridad.
 
 **Objetivo:** que suene la página como A.T. Digital — claro, vivo, fácil de leer en el celular; no como comunicado de prensa traducido ni como texto de IA. **Audiencia de referencia: lector en Colombia y Latinoamérica**, aunque la nota sea `internacional`.
 

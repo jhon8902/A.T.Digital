@@ -15,6 +15,7 @@ export const STATIC_SITEMAP_PATHS = [
   "/electricos",
   "/hibridos",
   "/deportes",
+  "/motos",
   "/pruebas",
   "/lanzamientos",
   "/contacto",

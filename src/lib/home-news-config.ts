@@ -5,6 +5,7 @@ export const HOME_NEWS_CATEGORIES: Set<string> = new Set([
   "hibridos",
   "electricos",
   "deportes",
+  "motos",
   "pruebas",
 ]);
 
