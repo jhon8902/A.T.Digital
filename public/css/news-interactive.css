@@ -1756,6 +1756,8 @@
 }
 
 .sector-radar-preview--with-visual .sector-radar-preview__foot {
+  position: relative;
+  z-index: 3;
   margin-top: -6.4rem;
   padding-top: 0;
   padding-bottom: 2.4rem;

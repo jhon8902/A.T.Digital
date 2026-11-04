@@ -160,8 +160,8 @@ h4.news-carousel-card__title {
     font-size: var(--text-lg);
   }
 
-  body.home-page h2,
-  body.home-page h3:not(.news-carousel-card__title) {
+  body.home-page h2:not(.site-footer__title),
+  body.home-page h3:not(.news-carousel-card__title):not(.site-footer__nav-title) {
     font-size: clamp(1.65rem, 2.2vw, 2.15rem);
   }
 }

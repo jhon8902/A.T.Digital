@@ -39,89 +39,172 @@ export type SectorRadarEdition = {
  * Al actualizar: mover la edición activa al array `archive` y crear una nueva en `active`.
  */
 const active: SectorRadarEdition = {
-  id: "2026-ago-sep",
-  label: "Septiembre 2026",
-  period: "Enero a agosto 2026",
-  publishedAt: "2026-09-01",
+  id: "2026-oct-nov",
+  label: "Noviembre 2026",
+  period: "Enero a octubre 2026",
+  publishedAt: "2026-11-01",
   preview: {
-    title:
-      "En agosto, más de la mitad de los carros nuevos fueron híbridos o eléctricos",
+    title: "Octubre fue el mejor octubre desde 2014, con 32.175 carros nuevos",
     summary:
-      "213.377 matrículas entre enero y agosto (+42,1%). El Tesla Model Y es el más vendido del país.",
+      "279.387 matrículas entre enero y octubre (+39,5%). El Tesla Model Y sigue siendo el más vendido del año.",
     metrics: [
-      { value: "+42,1%", label: "vs. ene-ago 2025" },
-      { value: "213.377", label: "matrículas" },
-      { value: "50,6%", label: "híbridos + eléctricos en agosto" },
+      { value: "+39,5%", label: "vs. ene-oct 2025" },
+      { value: "279.387", label: "matrículas" },
+      { value: "47,3%", label: "híbridos + eléctricos en octubre" },
     ],
     image: "/img/radar/tesla-model-y.png",
-    imageAlt: "Tesla Model Y, el carro más vendido en Colombia entre enero y agosto de 2026",
+    imageAlt:
+      "Tesla Model Y, el carro más vendido en Colombia entre enero y octubre de 2026",
   },
   hero: {
     description:
-      "Balance Fenalco y ANDI (1 de septiembre de 2026): el mercado sigue al alza, los SUV mandan y en agosto uno de cada dos carros nuevos fue híbrido o eléctrico.",
+      "Balance Fenalco y ANDI (1 de noviembre de 2026): octubre fue el mejor octubre desde 2014 y, entre enero y octubre, el mercado ya superó todas las matrículas de 2025.",
     stats: [
-      { value: "+42,1%", label: "vs. ene-ago 2025" },
-      { value: "213.377", label: "matrículas ene-ago" },
-      { value: "50,6%", label: "híbridos + eléctricos en agosto" },
+      { value: "+39,5%", label: "vs. ene-oct 2025" },
+      { value: "279.387", label: "matrículas ene-oct" },
+      { value: "47,3%", label: "híbridos + eléctricos en octubre" },
     ],
   },
   source: {
     label: "Fuente",
-    text: "Informe conjunto Fenalco y ANDI (1 de septiembre de 2026). Matriculaciones según RUNT.",
+    text: "Informe conjunto Fenalco y ANDI (1 de noviembre de 2026). Matriculaciones según RUNT.",
   },
   trends: [
     {
       tag: "Mercado",
-      title: "El mercado ya superó las 213.000 matrículas",
+      title: "El mercado ya superó todas las matrículas de 2025",
       summary:
-        "213.377 vehículos nuevos entre enero y agosto de 2026, frente a 150.163 un año atrás. Solo en agosto se matricularon 27.124 unidades, 27,4% más que en agosto de 2025. Kia lidera el año, con 28.077 registros.",
-      date: "Sep 2026",
-      metric: "+42,1% vs. 2025",
+        "279.387 vehículos nuevos entre enero y octubre de 2026, un 39,5% más que un año atrás. Solo en octubre se matricularon 32.175 unidades, 27,4% más que en octubre de 2025. Kia lidera el año, con 36.204 registros.",
+      date: "Nov 2026",
+      metric: "+39,5% vs. 2025",
     },
     {
       tag: "Electromovilidad",
       title: "Los eléctricos ya son casi 16 de cada 100 carros nuevos",
       summary:
-        "33.889 eléctricos entre enero y agosto, 222,5% más que un año atrás. En agosto se matricularon 4.542 unidades, 176% más que en el mismo mes de 2025. Híbridos y eléctricos juntos llegaron a 13.737 matrículas en el mes.",
-      date: "Sep 2026",
-      metric: "+222,5% vs. 2025",
+        "44.387 eléctricos entre enero y octubre, 207% más que un año atrás. En octubre se matricularon 4.603 unidades, 120,2% más que en el mismo mes de 2025.",
+      date: "Nov 2026",
+      metric: "+207% vs. 2025",
     },
     {
       tag: "Híbridos",
       title: "Casi 3 de cada 10 carros nuevos son híbridos",
       summary:
-        "63.210 híbridos entre enero y agosto (+61%). Agosto fue el mes más fuerte del año en esa tecnología, con 9.195 unidades. Suzuki sostiene el segmento con Swift, Dzire y Fronx.",
-      date: "Sep 2026",
-      metric: "29,6% de cuota",
+        "85.081 híbridos entre enero y octubre, un 60% más que un año atrás. En octubre fueron 10.610 unidades, 53,7% más que en octubre de 2025.",
+      date: "Nov 2026",
+      metric: "30,5% de cuota",
     },
     {
       tag: "Modelos",
-      title: "El Tesla Model Y es el carro más vendido del país",
+      title: "El Tesla Model Y sigue siendo el más vendido del año",
       summary:
-        "12.161 unidades entre enero y agosto: 5,7% de todo el mercado. En agosto volvió a liderar, con 1.902 matrículas. Tesla ya es la sexta marca del año, con 14.107 registros.",
-      date: "Sep 2026",
-      metric: "12.161 Model Y",
+        "15.265 unidades entre enero y octubre: 5,5% de todo el mercado. En octubre el mes lo lideró el Kia K3, con 1.356 matrículas; el Model Y quedó quinto, con 884. Tesla es la sexta marca del año, con 17.497 registros.",
+      date: "Nov 2026",
+      metric: "15.265 Model Y",
     },
     {
       tag: "SUV",
       title: "Los SUV concentran 6 de cada 10 matrículas",
       summary:
-        "131.119 SUV entre enero y agosto, 53,7% más que un año atrás. En agosto fueron 17.929 unidades. Los comerciales de pasajeros crecieron 52% en el mes; la carga comercial, en cambio, cayó 23,4%.",
-      date: "Sep 2026",
-      metric: "61,5% del mercado",
+        "173.059 SUV entre enero y octubre, 53,5% más que un año atrás. En octubre fueron 19.820 unidades, un 42,1% más que en octubre de 2025. El segmento que más creció en el mes fue el de comerciales de pasajeros, con 54,1%.",
+      date: "Nov 2026",
+      metric: "61,9% del mercado",
     },
     {
       tag: "Regiones",
       title: "Bogotá concentra casi 3 de cada 10 matrículas",
       summary:
-        "La capital acumuló 61.002 vehículos nuevos entre enero y agosto (+88,5%) y 8.070 solo en agosto (+75,4%). Sincelejo, Cúcuta, Montería y Tunja también crecieron fuerte en el mes.",
-      date: "Sep 2026",
-      metric: "61.002 en Bogotá",
+        "La capital acumuló 79.458 vehículos nuevos entre enero y octubre (+85,2%) y 8.511 solo en octubre (+62,7%). En el mes, Sincelejo creció 69,6%, Cali 58,5% y Cúcuta 44,5%.",
+      date: "Nov 2026",
+      metric: "79.458 en Bogotá",
     },
   ],
 };
 
 const archive: SectorRadarEdition[] = [
+  {
+    id: "2026-ago-sep",
+    label: "Septiembre 2026",
+    period: "Enero a agosto 2026",
+    publishedAt: "2026-09-01",
+    preview: {
+      title:
+        "En agosto, más de la mitad de los carros nuevos fueron híbridos o eléctricos",
+      summary:
+        "213.377 matrículas entre enero y agosto (+42,1%). El Tesla Model Y es el más vendido del país.",
+      metrics: [
+        { value: "+42,1%", label: "vs. ene-ago 2025" },
+        { value: "213.377", label: "matrículas" },
+        { value: "50,6%", label: "híbridos + eléctricos en agosto" },
+      ],
+      image: "/img/radar/tesla-model-y.png",
+      imageAlt:
+        "Tesla Model Y, el carro más vendido en Colombia entre enero y agosto de 2026",
+    },
+    hero: {
+      description:
+        "Balance Fenalco y ANDI (1 de septiembre de 2026): el mercado sigue al alza, los SUV mandan y en agosto uno de cada dos carros nuevos fue híbrido o eléctrico.",
+      stats: [
+        { value: "+42,1%", label: "vs. ene-ago 2025" },
+        { value: "213.377", label: "matrículas ene-ago" },
+        { value: "50,6%", label: "híbridos + eléctricos en agosto" },
+      ],
+    },
+    source: {
+      label: "Fuente",
+      text: "Informe conjunto Fenalco y ANDI (1 de septiembre de 2026). Matriculaciones según RUNT.",
+    },
+    trends: [
+      {
+        tag: "Mercado",
+        title: "El mercado ya superó las 213.000 matrículas",
+        summary:
+          "213.377 vehículos nuevos entre enero y agosto de 2026, frente a 150.163 un año atrás. Solo en agosto se matricularon 27.124 unidades, 27,4% más que en agosto de 2025. Kia lidera el año, con 28.077 registros.",
+        date: "Sep 2026",
+        metric: "+42,1% vs. 2025",
+      },
+      {
+        tag: "Electromovilidad",
+        title: "Los eléctricos ya son casi 16 de cada 100 carros nuevos",
+        summary:
+          "33.889 eléctricos entre enero y agosto, 222,5% más que un año atrás. En agosto se matricularon 4.542 unidades, 176% más que en el mismo mes de 2025. Híbridos y eléctricos juntos llegaron a 13.737 matrículas en el mes.",
+        date: "Sep 2026",
+        metric: "+222,5% vs. 2025",
+      },
+      {
+        tag: "Híbridos",
+        title: "Casi 3 de cada 10 carros nuevos son híbridos",
+        summary:
+          "63.210 híbridos entre enero y agosto (+61%). Agosto fue el mes más fuerte del año en esa tecnología, con 9.195 unidades. Suzuki sostiene el segmento con Swift, Dzire y Fronx.",
+        date: "Sep 2026",
+        metric: "29,6% de cuota",
+      },
+      {
+        tag: "Modelos",
+        title: "El Tesla Model Y es el carro más vendido del país",
+        summary:
+          "12.161 unidades entre enero y agosto: 5,7% de todo el mercado. En agosto volvió a liderar, con 1.902 matrículas. Tesla ya es la sexta marca del año, con 14.107 registros.",
+        date: "Sep 2026",
+        metric: "12.161 Model Y",
+      },
+      {
+        tag: "SUV",
+        title: "Los SUV concentran 6 de cada 10 matrículas",
+        summary:
+          "131.119 SUV entre enero y agosto, 53,7% más que un año atrás. En agosto fueron 17.929 unidades. Los comerciales de pasajeros crecieron 52% en el mes; la carga comercial, en cambio, cayó 23,4%.",
+        date: "Sep 2026",
+        metric: "61,5% del mercado",
+      },
+      {
+        tag: "Regiones",
+        title: "Bogotá concentra casi 3 de cada 10 matrículas",
+        summary:
+          "La capital acumuló 61.002 vehículos nuevos entre enero y agosto (+88,5%) y 8.070 solo en agosto (+75,4%). Sincelejo, Cúcuta, Montería y Tunja también crecieron fuerte en el mes.",
+        date: "Sep 2026",
+        metric: "61.002 en Bogotá",
+      },
+    ],
+  },
   {
     id: "2026-s1-jul",
     label: "Julio 2026",

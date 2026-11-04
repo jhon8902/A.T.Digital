@@ -17,9 +17,10 @@
 
 .site-footer__top {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.55fr);
-  gap: clamp(2rem, 4.5vw, 3.5rem);
+  grid-template-columns: minmax(16rem, 1fr) auto;
+  gap: clamp(2rem, 4.5vw, 4rem);
   align-items: start;
+  justify-content: space-between;
   padding-bottom: clamp(1.75rem, 3vw, 2.25rem);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -81,27 +82,35 @@
 }
 
 .site-footer__nav {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem clamp(1.5rem, 3vw, 2.5rem);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 2rem clamp(2.25rem, 4vw, 3.75rem);
   min-width: 0;
 }
 
 .site-footer__nav-col {
-  min-width: 0;
+  flex: 0 0 auto;
+  min-width: max-content;
 }
 
-.site-footer__nav-title {
+.site-footer h3.site-footer__nav-title,
+body.home-page .site-footer h3.site-footer__nav-title {
   font-family: var(--font-display, "Newsreader", Georgia, serif);
-  font-size: 0.72rem;
+  font-size: 0.92rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
+  line-height: 1.15;
   text-transform: uppercase;
-  color: rgba(240, 193, 74, 0.9);
-  margin: 0 0 1rem;
+  color: #f0c14a;
+  margin: 0 0 1.15rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid rgba(240, 193, 74, 0.55);
+  display: inline-block;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible;
+  text-overflow: clip;
 }
 
 .site-footer__nav ul {
@@ -129,8 +138,8 @@
 
 .site-footer__social-icons {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
+  flex-wrap: nowrap;
+  gap: 0.65rem;
 }
 
 .site-footer__social-link {
@@ -223,15 +232,14 @@
   }
 
   .site-footer__nav {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-content: center;
     text-align: left;
-    justify-items: start;
-    max-width: 40rem;
+    max-width: none;
     margin-inline: auto;
   }
 
   .site-footer__nav-col--social {
-    justify-self: start;
+    justify-self: center;
   }
 
   .site-footer__bottom {
@@ -245,17 +253,19 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 760px) {
   .site-footer__nav {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
     text-align: center;
-    justify-items: center;
     max-width: none;
   }
 
+  .site-footer__nav-col,
   .site-footer__nav-col--social {
-    justify-self: center;
+    min-width: max-content;
+    text-align: center;
   }
 
   .site-footer__social-icons {
