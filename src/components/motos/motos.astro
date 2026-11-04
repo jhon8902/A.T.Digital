@@ -12,6 +12,7 @@ type MotoItem = {
   img: string;
   alt: string;
   title: string;
+  description: string;
   fecha?: string;
   source_scope?: string;
   sortDate: number;
@@ -65,6 +66,7 @@ try {
         "/img/default.jpg",
       alt: note.title || "Motos",
       title: note.title || "Sin título",
+      description: (note.subtitle || "").trim(),
       fecha: formatNotePublishedLabel(note),
       source_scope: normalizeSourceScope(note.source_scope),
       sortDate: getNotePublishTimestamp(note),
@@ -75,115 +77,88 @@ try {
   console.error("Error cargando motos:", err);
 }
 
-const featuredNotas = motos.slice(0, 2);
-const rowNotas = motos.slice(2);
+const lead = motos[0];
+const rest = motos.slice(1);
 ---
 
-<link rel="stylesheet" href="/css/deportes-section.css?v=59" />
+<link rel="stylesheet" href="/css/motos-section.css?v=2" />
 
-<section id="motos" class="deportes-section" aria-labelledby="motos-heading">
-  <div class="deportes-inner">
-    <div class="deportes-stack">
-      <header class="deportes-head">
-        <h2 id="motos-heading" class="deportes-title">
-          <a href="/motos" class="section-heading-link">
-            Motos
-            <span class="section-archive-hint" aria-hidden="true">Ver el archivo</span>
+<section id="motos" class="motos-section" aria-labelledby="motos-heading">
+  <div class="motos-panel">
+    <header class="motos-head">
+      <h2 id="motos-heading" class="motos-title">
+        <a href="/motos" class="section-heading-link">
+          Motos
+          <span class="section-archive-hint" aria-hidden="true">Ver el archivo</span>
+        </a>
+      </h2>
+    </header>
+
+    {
+      !lead && (
+        <p class="motos-empty">
+          Lanzamientos, eventos y novedades de motocicletas.
+        </p>
+      )
+    }
+
+    {
+      lead && (
+        <article class="motos-lead">
+          <a href={lead.href} class="motos-lead__media">
+            <img
+              src={lead.img}
+              alt={lead.alt}
+              loading="lazy"
+              decoding="async"
+            />
           </a>
-        </h2>
-      </header>
-
-      {
-        motos.length === 0 && (
-          <p class="motos-empty">
-            Lanzamientos, eventos y novedades de motocicletas.
-          </p>
-        )
-      }
-
-      {
-        featuredNotas.length > 0 && (
-          <div class="deportes-row deportes-row--featured">
-            {featuredNotas.map((nota) => {
-              const scope = normalizeSourceScope(nota.source_scope);
-              const fecha = cleanPublishedDate(nota.fecha);
-
-              return (
-                <article class="deporte-card deporte-card--featured">
-                  <a href={nota.href} class="deporte-card__media">
-                    <img
-                      src={nota.img}
-                      alt={nota.alt}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </a>
-                  <div class="deporte-card__body">
-                    <div class="deporte-card__meta">
-                      <span class={`deporte-scope deporte-scope--${scope}`}>
-                        {sourceScopeLabel(nota.source_scope)}
-                      </span>
-                      {fecha && <span class="deporte-card__date">{fecha}</span>}
-                    </div>
-                    <h3>
-                      <a href={nota.href}>{nota.title}</a>
-                    </h3>
-                  </div>
-                </article>
-              );
-            })}
+          <div class="motos-lead__copy">
+            <p class="motos-kicker">
+              {sourceScopeLabel(lead.source_scope)}
+              {cleanPublishedDate(lead.fecha)
+                ? ` · ${cleanPublishedDate(lead.fecha)}`
+                : ""}
+            </p>
+            <h3>
+              <a href={lead.href}>{lead.title}</a>
+            </h3>
+            {lead.description && <p class="motos-deck">{lead.description}</p>}
           </div>
-        )
-      }
+        </article>
+      )
+    }
 
-      {
-        rowNotas.length > 0 && (
-          <div class="deportes-row">
-            {rowNotas.map((nota) => {
-              const scope = normalizeSourceScope(nota.source_scope);
-              const fecha = cleanPublishedDate(nota.fecha);
+    {
+      rest.length > 0 && (
+        <ul class="motos-list">
+          {rest.map((nota) => (
+            <li>
+              <a href={nota.href}>
+                <img
+                  src={nota.img}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="motos-list__copy">
+                  <span class="motos-kicker">
+                    {sourceScopeLabel(nota.source_scope)}
+                    {cleanPublishedDate(nota.fecha)
+                      ? ` · ${cleanPublishedDate(nota.fecha)}`
+                      : ""}
+                  </span>
+                  <strong>{nota.title}</strong>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
 
-              return (
-                <article class="deporte-card deporte-card--row">
-                  <a href={nota.href} class="deporte-card__media">
-                    <img
-                      src={nota.img}
-                      alt={nota.alt}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </a>
-                  <div class="deporte-card__body">
-                    <div class="deporte-card__meta">
-                      <span class={`deporte-scope deporte-scope--${scope}`}>
-                        {sourceScopeLabel(nota.source_scope)}
-                      </span>
-                      {fecha && <span class="deporte-card__date">{fecha}</span>}
-                    </div>
-                    <h3>
-                      <a href={nota.href}>{nota.title}</a>
-                    </h3>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )
-      }
-
-      <div class="section-more-row">
-        <SectionMoreArrow href="/motos" label="Ver el archivo de Motos" />
-      </div>
+    <div class="section-more-row">
+      <SectionMoreArrow href="/motos" label="Ver el archivo de Motos" />
     </div>
   </div>
 </section>
-
-<style>
-  .motos-empty {
-    margin: 0;
-    max-width: 42rem;
-    color: #3d4a42;
-    font-size: 1.05rem;
-    line-height: 1.5;
-  }
-</style>

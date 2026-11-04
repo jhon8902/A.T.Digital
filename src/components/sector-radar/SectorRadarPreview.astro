@@ -3,9 +3,15 @@ import {
   sectorRadarEditionMeta,
   sectorRadarPreview,
 } from "../../lib/sector-radar";
+
+const summaryParts = sectorRadarPreview.summary.split(". ");
+const radarNote =
+  summaryParts.length > 1
+    ? summaryParts.slice(1).join(". ")
+    : sectorRadarPreview.summary;
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css?v=91" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=106" />
 
 <section
   id="radar"
@@ -19,50 +25,99 @@ import {
         sectorRadarPreview.image && "sector-radar-preview--with-visual",
       ]}
     >
-      <div class="sector-radar-preview__inner">
-        <header class="sector-radar-preview__header">
-          <span class="sector-radar-preview__eyebrow">Radar del sector</span>
-          <p class="sector-radar-preview__edition">
-            {sectorRadarEditionMeta.label} · {sectorRadarEditionMeta.period}
-          </p>
-        </header>
-        <h3 id="sector-radar-heading" class="sector-radar-preview__title">
-          {sectorRadarPreview.title}
-        </h3>
-        <p class="sector-radar-preview__summary">
-          {sectorRadarPreview.summary}
-        </p>
-        <dl class="sector-radar-preview__metrics">
-          {
-            sectorRadarPreview.metrics.map((metric) => (
-              <div class="sector-radar-preview__metric">
-                <dt class="sector-radar-preview__metric-value">
-                  {metric.value}
-                </dt>
-                <dd class="sector-radar-preview__metric-label">
-                  {metric.label}
-                </dd>
+      <div class="sector-radar-preview__stage">
+        {
+          sectorRadarPreview.image && (
+            <figure class="sector-radar-preview__visual">
+              <img
+                src={sectorRadarPreview.image}
+                alt={sectorRadarPreview.imageAlt ?? ""}
+                width="720"
+                height="720"
+              />
+              <span class="sector-radar-preview__radar" aria-hidden="true">
+                <span class="sector-radar-preview__blip"></span>
+              </span>
+            </figure>
+          )
+        }
+        {
+          sectorRadarPreview.image ? (
+            <>
+              <div class="sector-radar-preview__pin sector-radar-preview__pin--mast">
+                <p class="sector-radar-preview__eyebrow">Radar del sector</p>
+                <p class="sector-radar-preview__edition">
+                  {sectorRadarEditionMeta.label} · {sectorRadarEditionMeta.period}
+                </p>
               </div>
-            ))
-          }
-        </dl>
-        <a class="sector-radar-preview__cta" href="/tendencias-del-sector">
-          Explorar tendencias
-        </a>
+              <h3
+                id="sector-radar-heading"
+                class="sector-radar-preview__title sector-radar-preview__pin sector-radar-preview__pin--title"
+              >
+                {sectorRadarPreview.title}
+              </h3>
+              <p class="sector-radar-preview__pin sector-radar-preview__pin--note">
+                {radarNote}
+              </p>
+              {
+                sectorRadarPreview.metrics.map((metric, index) => (
+                  <div
+                    class:list={[
+                      "sector-radar-preview__metric",
+                      "sector-radar-preview__pin",
+                      index === 0 && "sector-radar-preview__pin--left",
+                      index === 1 && "sector-radar-preview__pin--bottom",
+                      index === 2 && "sector-radar-preview__pin--right",
+                    ]}
+                  >
+                    <p class="sector-radar-preview__metric-value">{metric.value}</p>
+                    <p class="sector-radar-preview__metric-label">{metric.label}</p>
+                  </div>
+                ))
+              }
+            </>
+          ) : (
+            <div class="sector-radar-preview__inner">
+              <header class="sector-radar-preview__header">
+                <span class="sector-radar-preview__eyebrow">Radar del sector</span>
+                <p class="sector-radar-preview__edition">
+                  {sectorRadarEditionMeta.label} · {sectorRadarEditionMeta.period}
+                </p>
+              </header>
+              <h3 id="sector-radar-heading" class="sector-radar-preview__title">
+                {sectorRadarPreview.title}
+              </h3>
+              <p class="sector-radar-preview__summary">
+                {sectorRadarPreview.summary}
+              </p>
+              <dl class="sector-radar-preview__metrics">
+                {
+                  sectorRadarPreview.metrics.map((metric) => (
+                    <div class="sector-radar-preview__metric">
+                      <dt class="sector-radar-preview__metric-value">
+                        {metric.value}
+                      </dt>
+                      <dd class="sector-radar-preview__metric-label">
+                        {metric.label}
+                      </dd>
+                    </div>
+                  ))
+                }
+              </dl>
+              <a class="sector-radar-preview__cta" href="/tendencias-del-sector">
+                Explorar tendencias
+              </a>
+            </div>
+          )
+        }
       </div>
       {
         sectorRadarPreview.image && (
-          <figure class="sector-radar-preview__visual">
-            <img
-              src={sectorRadarPreview.image}
-              alt={sectorRadarPreview.imageAlt ?? ""}
-              width="480"
-              height="480"
-            />
-            <span class="sector-radar-preview__radar" aria-hidden="true">
-              <span class="sector-radar-preview__blip"></span>
-            </span>
-          </figure>
+          <div class="sector-radar-preview__foot">
+            <a class="sector-radar-preview__cta" href="/tendencias-del-sector">
+              Explorar tendencias
+            </a>
+          </div>
         )
       }
     </article>

@@ -1355,33 +1355,181 @@
 }
 
 .sector-radar-preview--with-visual {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  background: #f7f4ec;
+  border-color: rgba(8, 52, 31, 0.12);
+  overflow: visible;
 }
 
+.sector-radar-preview--with-visual::before,
 .sector-radar-preview--with-visual::after {
   display: none;
 }
 
-.sector-radar-preview--with-visual .sector-radar-preview__inner {
-  max-width: none;
+.sector-radar-preview__stage {
+  position: relative;
+  width: 100%;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__stage {
+  width: min(100%, 68rem);
+  aspect-ratio: 1.18 / 1;
+  margin: 0.35rem auto 0;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__visual {
+  position: absolute;
+  z-index: 1;
+  width: min(46%, 32rem);
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  margin: 0;
+}
+
+.sector-radar-preview__pin {
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin--mast {
+  top: 5.4rem;
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  width: max-content;
+  max-width: min(32rem, 92%);
+  text-align: center;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin--mast .sector-radar-preview__eyebrow {
+  font-size: clamp(2.45rem, 3.6vw, 3.05rem);
+  padding-bottom: 0;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin--mast .sector-radar-preview__eyebrow::after {
+  width: 4.4rem;
+  margin-inline: auto;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin--mast .sector-radar-preview__edition {
+  text-align: center;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin--title {
+  top: 34%;
+  left: 0;
+  width: 26%;
+  max-width: 18.5rem;
+  text-align: right;
+  font-size: clamp(1.15rem, 1.55vw, 1.4rem) !important;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin.sector-radar-preview__metric {
+  width: 11rem;
+  margin: 0;
+  padding: 0.55rem 0.75rem 0.6rem;
+  text-align: center;
+  border-top: none;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin--left {
+  left: 12%;
+  top: 60%;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin--bottom {
+  right: 11%;
+  left: auto;
+  top: 66%;
+  bottom: auto;
+  translate: none;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin--right {
+  right: 10%;
+  top: 34%;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin--note {
+  left: 50%;
+  top: 81%;
+  translate: -50% 0;
+  width: min(34rem, 56%);
+  text-align: center;
+  font-family: var(--font-display, "Newsreader", Georgia, serif);
+  font-size: clamp(1.15rem, 1.55vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.25;
+  color: #08341f;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin--note::before {
+  content: "";
+  position: absolute;
+  top: -0.9rem;
+  left: 50%;
+  translate: -50% 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #f8ca26;
+  box-shadow:
+    0 0 0 2px rgba(6, 40, 24, 0.28),
+    0 0 10px 2px rgba(248, 202, 38, 0.75);
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin.sector-radar-preview__metric::before {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #f8ca26;
+  box-shadow:
+    0 0 0 2px rgba(6, 40, 24, 0.28),
+    0 0 10px 2px rgba(248, 202, 38, 0.75);
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin--left::before {
+  right: -0.85rem;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin--bottom::before {
+  left: -0.85rem;
+  top: 40%;
+  right: auto;
+  bottom: auto;
+  translate: 0 -50%;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__pin--right::before {
+  left: -0.85rem;
+  top: 50%;
+  translate: 0 -50%;
 }
 
 .sector-radar-preview__visual {
   position: relative;
   z-index: 1;
-  width: clamp(11.25rem, 24vw, 16.75rem);
+  width: 100%;
   aspect-ratio: 1;
-  margin: clamp(0.9rem, 2vw, 1.35rem) clamp(1.15rem, 3.2vw, 2.15rem)
-    clamp(0.9rem, 2vw, 1.35rem) 0.25rem;
+  margin: 0;
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
   box-shadow:
     0 0 0 2px rgba(230, 180, 16, 0.55),
-    0 0 0 7px rgba(8, 52, 31, 0.07),
-    0 14px 28px rgba(8, 52, 31, 0.16);
+    0 0 0 10px rgba(8, 52, 31, 0.06),
+    0 18px 36px rgba(8, 52, 31, 0.16);
 }
 
 .sector-radar-preview__visual img {
@@ -1389,7 +1537,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 54% 46%;
+  object-position: center 38%;
 }
 
 .sector-radar-preview__radar {
@@ -1590,12 +1738,107 @@
   gap: 12px;
 }
 
-@media (max-width: 720px) {
-  .sector-radar-preview--with-visual {
-    grid-template-columns: 1fr;
+.sector-radar-preview--with-visual .sector-radar-preview__pin--title {
+  font-family: var(--font-display, "Newsreader", Georgia, serif) !important;
+  font-weight: 600 !important;
+  line-height: 1.25;
+}
+
+.sector-radar-preview__foot {
+  width: min(100%, 40rem);
+  margin: 0.35rem auto 0;
+  padding: 1rem 1.25rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  text-align: center;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__foot {
+  margin-top: -6.4rem;
+  padding-top: 0;
+  padding-bottom: 2.4rem;
+  gap: 0;
+}
+
+.sector-radar-preview--with-visual .sector-radar-preview__cta {
+  margin-top: 0;
+}
+
+.sector-radar-preview__foot .sector-radar-preview__summary {
+  max-width: 42rem;
+  color: #3d4a42;
+}
+
+@media (max-width: 860px) {
+  .sector-radar-preview--with-visual .sector-radar-preview__stage {
+    width: min(100%, 28rem);
+    aspect-ratio: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.85rem;
   }
 
-  .sector-radar-preview__visual {
+  .sector-radar-preview--with-visual .sector-radar-preview__visual {
+    position: relative;
+    width: min(100%, 20rem);
+    left: auto;
+    top: auto;
+    translate: none;
+    order: 0;
+  }
+
+  .sector-radar-preview--with-visual .sector-radar-preview__pin,
+  .sector-radar-preview--with-visual .sector-radar-preview__pin--name,
+  .sector-radar-preview--with-visual .sector-radar-preview__pin--edition,
+  .sector-radar-preview--with-visual .sector-radar-preview__pin--title,
+  .sector-radar-preview--with-visual .sector-radar-preview__pin--left,
+  .sector-radar-preview--with-visual .sector-radar-preview__pin--bottom,
+  .sector-radar-preview--with-visual .sector-radar-preview__pin--right,
+  .sector-radar-preview--with-visual .sector-radar-preview__pin--note {
+    position: static;
+    translate: none;
+    width: 100%;
+    max-width: 24rem;
+    text-align: center;
+  }
+
+  .sector-radar-preview--with-visual .sector-radar-preview__pin--mast {
+    order: -2;
+    align-items: center;
+    text-align: center;
+  }
+
+  .sector-radar-preview--with-visual .sector-radar-preview__pin--mast .sector-radar-preview__eyebrow::after {
+    margin-inline: auto;
+  }
+
+  .sector-radar-preview--with-visual .sector-radar-preview__foot {
+    margin-top: 0.35rem;
+    padding-bottom: 1.6rem;
+  }
+
+  .sector-radar-preview--with-visual .sector-radar-preview__pin--title {
+    order: 1;
+  }
+
+  .sector-radar-preview--with-visual .sector-radar-preview__pin--note {
+    order: 3;
+  }
+
+  .sector-radar-preview--with-visual .sector-radar-preview__pin--note::before {
+    display: none;
+  }
+
+  .sector-radar-preview--with-visual .sector-radar-preview__pin.sector-radar-preview__metric {
+    order: 2;
+    width: 100%;
+  }
+
+  .sector-radar-preview--with-visual .sector-radar-preview__pin.sector-radar-preview__metric::before {
     display: none;
   }
 }
@@ -1608,12 +1851,16 @@
     right: -2.5rem;
   }
 
-  .sector-radar-preview__metrics {
+  .sector-radar-preview:not(.sector-radar-preview--with-visual) .sector-radar-preview__metrics {
     grid-template-columns: 1fr;
     gap: 0.55rem;
   }
 
-  .sector-radar-preview__metric {
+  .sector-radar-preview--with-visual .sector-radar-preview__metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sector-radar-preview:not(.sector-radar-preview--with-visual) .sector-radar-preview__metric {
     display: flex;
     align-items: baseline;
     gap: 0.65rem;
