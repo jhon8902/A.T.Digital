@@ -18,13 +18,13 @@
 
 .motos-head {
   margin: 0 0 1.15rem;
-  text-align: left;
+  text-align: center;
 }
 
 .motos-title {
   margin: 0;
   font-family: var(--font-display, "Newsreader", Georgia, serif);
-  font-size: clamp(2rem, 2.8vw, 2.7rem);
+  font-size: clamp(2.2rem, 3.15vw, 3.05rem);
   font-weight: 600;
   line-height: 1.08;
   letter-spacing: -0.03em;

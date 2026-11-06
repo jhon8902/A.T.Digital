@@ -369,9 +369,93 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
   /* ========== HERO HOME ========== */
   .automatch-home {
     width: 100%;
-    background: linear-gradient(165deg, #062818 0%, #08341f 45%, #0a4228 100%);
-    --automatch-card-title: #fff;
-    --automatch-card-kicker: #f0c14a;
+    background: #f7f4ec;
+    --automatch-card-title: #08341f;
+    --automatch-card-kicker: #8a6a10;
+  }
+
+  .automatch-home--embedded {
+    background: #f7f4ec;
+  }
+
+  .automatch-home--embedded .automatch-hero {
+    color: #08341f;
+  }
+
+  .automatch-home--embedded .automatch-hero__eyebrow {
+    color: #8a6a10;
+  }
+
+  .automatch-home--embedded .automatch-hero__title {
+    color: #08341f !important;
+  }
+
+  .automatch-home--embedded .automatch-hero__title span {
+    color: #a67c00 !important;
+  }
+
+  .automatch-home--embedded .automatch-hero__lead {
+    color: #3d4a42;
+  }
+
+  .automatch-home--embedded .automatch-cards-intro--ticker {
+    border-color: rgba(8, 52, 31, 0.16);
+  }
+
+  .automatch-home--embedded .automatch-cards-kicker {
+    color: #8a6a10 !important;
+    border-right-color: rgba(8, 52, 31, 0.16);
+    background: rgba(230, 180, 16, 0.14);
+  }
+
+  .automatch-home--embedded .automatch-cards-marquee__track span,
+  .automatch-home--embedded .automatch-cards-intro--compact .automatch-cards-marquee__track span {
+    color: #3d4a42;
+  }
+
+  .automatch-home--embedded .automatch-section--cards .btn-automatch--ver-mas,
+  .automatch-home .automatch-section--cards .btn-automatch--ver-mas {
+    color: #10161f;
+    border-color: #e6b410;
+  }
+
+  .automatch-home--embedded .automatch-section--cards .btn-automatch--ver-mas:hover,
+  .automatch-home .automatch-section--cards .btn-automatch--ver-mas:hover {
+    color: #10161f;
+    background: #f0c14a;
+    border-color: #f0c14a;
+  }
+
+  .automatch-home--embedded .automatch-hero__path-label {
+    color: #08341f;
+  }
+
+  .automatch-home--embedded .automatch-hero__path-desc {
+    color: #3d4a42;
+  }
+
+  .automatch-home--embedded .automatch-hero__path-note {
+    color: #6b6254;
+  }
+
+  .automatch-home--embedded .automatch-hero .btn-automatch.btn-automatch--primary,
+  .automatch-home .automatch-hero .btn-automatch.btn-automatch--primary {
+    background: #f0c14a;
+    border-color: #f0c14a;
+    color: #10161f;
+    box-shadow: none;
+  }
+
+  .automatch-home--embedded .automatch-hero .btn-automatch.btn-automatch--primary:hover,
+  .automatch-home .automatch-hero .btn-automatch.btn-automatch--primary:hover {
+    background: #f6d36a;
+    border-color: #f6d36a;
+    color: #10161f;
+  }
+
+  .automatch-home--embedded .automatch-hero .btn-automatch.btn-automatch--primary i,
+  .automatch-home .automatch-hero .btn-automatch.btn-automatch--primary i {
+    color: #10161f;
   }
 
   .automatch-hero {
@@ -384,7 +468,7 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
     margin-inline: auto;
     padding: clamp(2.25rem, 4.5vw, 3.5rem) clamp(1rem, 4vw, 2rem)
       clamp(2.5rem, 4vw, 3rem);
-    color: #fff;
+    color: #08341f;
     position: relative;
     background: transparent;
     border-bottom: none;
@@ -400,7 +484,7 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #f0c14a;
+    color: #8a6a10;
     margin: 0 0 0.85rem;
   }
 
@@ -412,11 +496,11 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
     margin: 0 0 1rem;
     max-width: 16ch;
     letter-spacing: 0.01em;
-    color: #ffffff !important;
+    color: #08341f !important;
   }
 
   .automatch-hero__title span {
-    color: #f0c14a !important;
+    color: #a67c00 !important;
   }
 
   .automatch-home:not(.automatch-home--embedded) .automatch-hero {
@@ -440,7 +524,7 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
     font-family: var(--font-body, "Source Sans 3", sans-serif);
     font-size: clamp(1.05rem, 1.5vw, 1.2rem);
     line-height: 1.65;
-    color: rgba(255, 255, 255, 0.88);
+    color: #3d4a42;
     max-width: 36rem;
     margin: 0;
   }
@@ -460,16 +544,18 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
     flex-direction: column;
     gap: 0.55rem;
     padding: 1.15rem 1.2rem 1.25rem;
-    border-radius: 0.75rem;
-    border: none;
-    background: #0f4d32;
+    border-radius: 0;
+    border-style: solid;
+    border-width: 3px 1px 1px;
+    border-color: #f0c14a rgba(8, 52, 31, 0.14) rgba(8, 52, 31, 0.14);
+    background: #fffdf8;
   }
 
   .automatch-hero__path-label {
     margin: 0;
     font-size: clamp(1.2rem, 1.55vw, 1.35rem);
     font-weight: 700;
-    color: #f0c14a;
+    color: #08341f;
     font-family: var(--font-body, "Source Sans 3", sans-serif);
   }
 
@@ -477,7 +563,7 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
     margin: 0 0 0.35rem;
     font-size: 0.94rem;
     line-height: 1.55;
-    color: rgba(255, 255, 255, 0.86);
+    color: #3d4a42;
     flex: 1;
   }
 
@@ -492,7 +578,7 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
     min-height: 1.25em;
     font-size: 0.82rem;
     line-height: 1.25;
-    color: rgba(255, 255, 255, 0.65);
+    color: #6b6254;
   }
 
   .btn-automatch--path {
@@ -584,7 +670,7 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
     display: flex;
     align-items: stretch;
     min-height: 2.65rem;
-    border: 1px solid rgba(240, 193, 74, 0.42);
+    border: 1px solid rgba(8, 52, 31, 0.16);
     overflow: hidden;
   }
 
@@ -595,15 +681,15 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
     flex: 0 0 auto;
     margin: 0 !important;
     padding: 0.65rem 1.2rem;
-    border-right: 1px solid rgba(240, 193, 74, 0.42);
+    border-right: 1px solid rgba(8, 52, 31, 0.16);
     font-family: var(--font-body, "Source Sans 3", sans-serif) !important;
     font-size: 1.08rem !important;
     font-weight: 700 !important;
     letter-spacing: 0.14em !important;
     text-transform: uppercase !important;
-    color: #f0c14a !important;
+    color: #8a6a10 !important;
     white-space: nowrap;
-    background: rgba(240, 193, 74, 0.08);
+    background: rgba(166, 124, 0, 0.1);
   }
 
   .automatch-cards-marquee {
@@ -629,7 +715,7 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
     font-size: clamp(0.95rem, 1.2vw, 1.08rem);
     font-weight: 600;
     letter-spacing: 0.02em;
-    color: rgba(255, 255, 255, 0.9);
+    color: #3d4a42;
     white-space: nowrap;
   }
 
@@ -714,7 +800,7 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
     font-size: 0.82rem;
     font-weight: 600;
     letter-spacing: 0.01em;
-    color: rgba(255, 255, 255, 0.82);
+    color: #3d4a42;
   }
 
   .automatch-home:not(.automatch-home--embedded) .automatch-cards-intro {
@@ -872,30 +958,30 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
   }
 
   .automatch-section--cards .btn-automatch--footer {
-    background: #e6b410;
+    background: #f0c14a;
     color: #10161f;
-    border-color: #e6b410;
+    border-color: #f0c14a;
     box-shadow: none;
   }
 
   .automatch-section--cards .btn-automatch--footer:hover {
-    background: #f0c14a;
-    border-color: #f0c14a;
+    background: #f6d36a;
+    border-color: #f6d36a;
     color: #10161f;
   }
 
   .automatch-section--cards .btn-automatch--ver-mas {
-    color: #fff;
+    color: #10161f;
     text-decoration: none;
-    border: 1px solid rgba(255, 255, 255, 0.7);
+    border: 1px solid #e6b410;
     padding: 0.9rem 1.5rem;
     text-underline-offset: 0;
   }
 
   .automatch-section--cards .btn-automatch--ver-mas:hover {
-    color: #08341f;
-    background: #fff;
-    border-color: #fff;
+    color: #10161f;
+    background: #f0c14a;
+    border-color: #f0c14a;
   }
 
   .automatch-section--catalog {
@@ -938,7 +1024,7 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
   }
 
   .automatch-section--cards .catalog-filter-label {
-    color: rgba(240, 193, 74, 0.92) !important;
+    color: #8a6a10 !important;
   }
 
   .automatch-section .catalog-filter-label {
@@ -990,15 +1076,16 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
   }
 
   .catalog-filter.is-active {
-    background: #08341f;
-    border-color: #08341f;
-    color: #fff;
+    background: #f0c14a;
+    border-color: #f0c14a;
+    color: #10161f;
     box-shadow: none;
   }
 
   .catalog-filter.is-active:hover {
-    color: #fff;
-    border-color: #08341f;
+    color: #10161f;
+    background: #f6d36a;
+    border-color: #f6d36a;
   }
 
   .catalog-empty {
@@ -1101,19 +1188,19 @@ const CatalogKickerTag = embedded ? "h3" : "h2";
     margin-top: 0;
     text-transform: none;
     letter-spacing: 0.02em;
-    background: #1b5e3f;
-    color: #ffffff;
-    border-color: #1b5e3f;
+    background: #f0c14a;
+    color: #10161f;
+    border-color: #f0c14a;
   }
 
   .automatch-hero .btn-automatch.btn-automatch--primary:hover {
-    background: #154c33;
-    border-color: #154c33;
-    color: #ffffff;
+    background: #f6d36a;
+    border-color: #f6d36a;
+    color: #10161f;
   }
 
   .automatch-hero .btn-automatch.btn-automatch--primary i {
-    color: #ffffff;
+    color: #10161f;
   }
 
   .btn-automatch i {

@@ -1,9 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import TrendCard from "../components/sector-radar/TrendCard.astro";
 import {
   sectorRadarActive,
   sectorRadarArchive,
-  sectorRadarHero,
   sectorRadarSource,
   sectorRadarTrends,
 } from "../lib/sector-radar";
@@ -15,38 +15,14 @@ const trends = sectorRadarTrends;
   <section class="tendencias-hero">
     <div class="hero-inner">
       <div class="hero-copy">
-        <span class="hero-kicker">Radar del sector</span>
-        <p class="hero-edition">
-          Edición actual — {sectorRadarActive.label} · {sectorRadarActive.period}
-        </p>
-        <h1>Tendencias clave del mercado automotor en Colombia</h1>
-        <p>
-          {sectorRadarHero.description}
-        </p>
-        <div class="hero-actions">
-          <a class="cta-primary" href="/#noticias">Ver noticias</a>
-          <a class="cta-secondary" href="#tendencias-grid">Explorar tendencias</a>
-        </div>
+        <h1 class="hero-kicker">Radar del sector</h1>
+        <p class="hero-edition">{sectorRadarActive.focusLabel ?? sectorRadarActive.label}</p>
       </div>
     </div>
   </section>
 
   <section id="tendencias-grid" class="tendencias-grid">
-    {
-      trends.map((trend) => (
-        <article class="trend-card">
-          <div class="trend-card-top">
-            <span class="trend-tag">{trend.tag}</span>
-            <span class="trend-date">{trend.date}</span>
-          </div>
-          <p class="trend-metric" aria-label="Dato clave">
-            {trend.metric}
-          </p>
-          <h2>{trend.title}</h2>
-          <p class="trend-summary">{trend.summary}</p>
-        </article>
-      ))
-    }
+    {trends.map((trend) => <TrendCard trend={trend} />)}
     <p class="tendencias-source">
       <strong>{sectorRadarSource.label}:</strong> {sectorRadarSource.text}
     </p>
@@ -73,17 +49,7 @@ const trends = sectorRadarTrends;
                 </p>
                 <div class="tendencias-grid tendencias-grid--archive">
                   {edition.trends.map((trend) => (
-                    <article class="trend-card trend-card--archive">
-                      <div class="trend-card-top">
-                        <span class="trend-tag">{trend.tag}</span>
-                        <span class="trend-date">{trend.date}</span>
-                      </div>
-                      <p class="trend-metric" aria-label="Dato clave">
-                        {trend.metric}
-                      </p>
-                      <h3>{trend.title}</h3>
-                      <p class="trend-summary">{trend.summary}</p>
-                    </article>
+                    <TrendCard trend={trend} heading="h3" archive />
                   ))}
                 </div>
               </div>
@@ -96,11 +62,8 @@ const trends = sectorRadarTrends;
 
   <section class="tendencias-cta">
     <div class="cta-content">
-      <h3>Quieres más contexto en tiempo real</h3>
-      <p>
-        Revisa las últimas notas y el balance de enero a agosto para entender
-        cómo se materializan estas tendencias en el mercado local.
-      </p>
+      <h3>Estas cifras tienen modelo</h3>
+      <p>En las notas está el carro detrás de estas matrículas.</p>
       <a class="cta-primary" href="/#noticias">Ir a noticias</a>
     </div>
   </section>
@@ -108,15 +71,9 @@ const trends = sectorRadarTrends;
 
 <style>
   .tendencias-hero {
-    background:
-      radial-gradient(
-        circle at 12% 0%,
-        rgba(248, 202, 38, 0.16),
-        transparent 42%
-      ),
-      linear-gradient(165deg, #0c1612 0%, #143026 55%, #1c2418 100%);
+    background: #08341f;
     color: #f8fafc;
-    padding: clamp(3.2rem, 5vw, 4.5rem) clamp(1.25rem, 3vw, 2.5rem) clamp(2.6rem, 4vw, 3.4rem);
+    padding: clamp(2.2rem, 4vw, 2.8rem) clamp(1.25rem, 3vw, 2.5rem) clamp(1.8rem, 3vw, 2.3rem);
   }
 
   .hero-inner {
@@ -128,51 +85,29 @@ const trends = sectorRadarTrends;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.85rem;
+    gap: 0.4rem;
   }
 
   .hero-kicker {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    margin: 0;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 13px;
+    letter-spacing: 0.14em;
+    font-size: 0.82rem;
     font-weight: 700;
-    color: #f8ca26;
+    line-height: 1.2;
+    color: #f8ca26 !important;
+    font-family: "Source Sans 3", sans-serif;
   }
 
   .hero-edition {
     margin: 0;
-    font-size: 0.95rem;
-    color: rgba(248, 250, 252, 0.72);
-    font-family: "Source Sans 3", sans-serif;
-    letter-spacing: 0.01em;
-  }
-
-  .tendencias-hero h1 {
-    font-size: clamp(2.15rem, 3vw, 3.15rem);
     font-family: var(--font-display, "Newsreader", Georgia, serif);
+    font-size: clamp(1.55rem, 2.2vw, 2rem);
     font-weight: 600;
-    margin: 0.15rem 0 0;
-    line-height: 1.12;
-    max-width: 16em;
-    color: #f8fafc !important;
-  }
-
-  .hero-copy p {
-    font-size: 1.08rem;
-    max-width: 42rem;
-    line-height: 1.6;
-    margin: 0;
-    color: rgba(248, 250, 252, 0.86);
-    font-family: "Source Sans 3", sans-serif;
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
+    line-height: 1.15;
+    color: #f8fafc;
   }
 
   .cta-primary,
@@ -226,103 +161,6 @@ const trends = sectorRadarTrends;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1.25rem 1.15rem;
     }
-  }
-
-  .trend-card {
-    border: 1px solid rgba(8, 52, 31, 0.1);
-    border-top: 3px solid #e6b410;
-    border-radius: 16px;
-    padding: 1.15rem 1.2rem 1.3rem;
-    color: #1a1a1a;
-    background: #fff;
-    box-shadow: 0 10px 24px rgba(8, 52, 31, 0.05);
-    display: flex;
-    flex-direction: column;
-    gap: 0.65rem;
-    position: relative;
-    overflow: hidden;
-    min-height: 0;
-  }
-
-  .trend-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      circle at top right,
-      rgba(248, 202, 38, 0.1),
-      transparent 58%
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-
-  .trend-card:hover::after {
-    opacity: 1;
-  }
-
-  .trend-card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.8125rem;
-    color: rgba(26, 26, 26, 0.85) !important;
-    position: relative;
-    z-index: 1;
-  }
-
-  .trend-tag {
-    background: #f8ca26;
-    color: #1a1a1a;
-    padding: 5px 12px;
-    border-radius: 999px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    flex-shrink: 0;
-  }
-
-  .trend-date {
-    color: rgba(26, 26, 26, 0.65) !important;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-
-  .trend-metric {
-    margin: 0.15rem 0 0;
-    padding: 0;
-    background: none;
-    border: none;
-    font-family: var(--font-display, "Newsreader", Georgia, serif);
-    font-weight: 600;
-    font-size: clamp(1.45rem, 1.8vw, 1.7rem);
-    line-height: 1.15;
-    color: #08341f;
-    letter-spacing: -0.02em;
-    position: relative;
-    z-index: 1;
-  }
-
-  .trend-card h2 {
-    margin: 0;
-    font-size: 1.2rem;
-    font-family: var(--font-display, "Newsreader", Georgia, serif);
-    color: #08341f !important;
-    line-height: 1.28;
-    font-weight: 600;
-    position: relative;
-    z-index: 1;
-  }
-
-  .trend-summary {
-    margin: 0;
-    line-height: 1.55;
-    font-size: 0.98rem;
-    color: #3d4a42 !important;
-    font-family: "Source Sans 3", sans-serif;
-    position: relative;
-    z-index: 1;
   }
 
   .tendencias-source {
@@ -435,21 +273,6 @@ const trends = sectorRadarTrends;
     gap: 20px;
   }
 
-  .trend-card--archive h3 {
-    margin: 0;
-    font-size: clamp(1.15rem, 1.5vw, 1.3rem);
-    font-family: "Georgia", serif;
-    color: #1a1a1a !important;
-    line-height: 1.32;
-    font-weight: 700;
-  }
-
-  .trend-card--archive {
-    box-shadow: none;
-    border-color: rgba(8, 52, 31, 0.06);
-    background: #faf9f7;
-  }
-
   :global(body.tendencias-page) {
     background: #f7f4ec;
   }
@@ -460,23 +283,25 @@ const trends = sectorRadarTrends;
   }
 
   .cta-content {
-    max-width: 900px;
+    max-width: 40rem;
     margin: 0 auto;
-    background: linear-gradient(160deg, #10161f 0%, #18212d 60%, #1f2b3a 100%);
-    border: 1px solid rgba(248, 202, 38, 0.3);
-    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
-    border-radius: 20px;
-    padding: 40px;
+    background: #08341f;
+    border: none;
+    border-top: 3px solid #e6b410;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 2rem 1.75rem 1.85rem;
     color: #f8fafc;
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    align-items: center;
+    gap: 0.75rem;
   }
 
   .cta-content h3 {
     margin: 0;
-    font-size: clamp(1.7rem, 2.4vw, 2.15rem);
+    font-size: clamp(1.45rem, 2vw, 1.75rem);
     font-family: var(--font-display, "Newsreader", Georgia, serif);
     font-weight: 600;
     color: #f8fafc !important;
@@ -500,15 +325,6 @@ const trends = sectorRadarTrends;
       gap: 22px;
     }
 
-    .trend-card {
-      padding: 24px 20px;
-      gap: 12px;
-    }
-
-    .trend-metric {
-      font-size: 1.35rem;
-    }
-
     .cta-content {
       padding: 32px 24px;
     }
@@ -526,17 +342,6 @@ const trends = sectorRadarTrends;
     .hero-copy p {
       font-size: 1.02rem;
       line-height: 1.55;
-    }
-
-    .trend-card h2 {
-      font-size: 1.22rem;
-      line-height: 1.34;
-    }
-
-    .trend-summary {
-      font-size: 0.98rem;
-      line-height: 1.68;
-      max-width: none;
     }
   }
 </style>

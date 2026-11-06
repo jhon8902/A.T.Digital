@@ -350,6 +350,22 @@ export function initPruebasChannel(root) {
 
   probeOrientations();
   void setActive(0, { instant: true });
+
+  root.querySelectorAll(".pruebas-watch__frame video").forEach((frame) => {
+    if (!(frame instanceof HTMLVideoElement)) return;
+    const park = () => {
+      if (!Number.isFinite(frame.duration) || frame.duration <= 0) return;
+      const mark = Math.min(0.8, frame.duration * 0.12);
+      if (Math.abs(frame.currentTime - mark) > 0.15) {
+        try {
+          frame.currentTime = mark;
+        } catch {
+          /* el navegador aún no deja buscar */
+        }
+      }
+    };
+    frame.addEventListener("loadeddata", park, { once: true });
+  });
 }
 
 document.querySelectorAll("[data-pruebas-channel]").forEach((root) => {

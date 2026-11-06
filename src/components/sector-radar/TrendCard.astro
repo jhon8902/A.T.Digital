@@ -1,0 +1,306 @@
+---
+import type { SectorTrend } from "../../lib/sector-radar";
+
+interface Props {
+  trend: SectorTrend;
+  heading?: "h2" | "h3";
+  archive?: boolean;
+}
+
+const { trend, heading = "h2", archive = false } = Astro.props;
+const Heading = heading;
+const chart = trend.chart;
+
+const shareSegments =
+  chart?.kind === "share" && chart.scale === "10"
+    ? Array.from({ length: 10 }, (_, index) => {
+        const start = index * 10;
+        const amount = Math.min(10, Math.max(0, chart.percent - start));
+        return {
+          width: amount * 10,
+          partial: amount > 0 && amount < 10,
+        };
+      })
+    : [];
+---
+
+<article class:list={["trend-card", archive && "trend-card--archive"]}>
+  <div class="trend-card-top">
+    <span class="trend-tag">{trend.tag}</span>
+    <span class="trend-date">{trend.date}</span>
+  </div>
+
+  <Heading>{trend.title}</Heading>
+
+  {
+    chart?.kind === "compare" && (
+      <div
+        class="trend-compare"
+        role="img"
+        aria-label={chart.rows
+          .map((row) => `${row.label}: ${row.value}${row.delta ? `, ${row.delta}` : ""}`)
+          .join(". ")}
+      >
+        {chart.rows.map((row) => (
+          <div class="trend-compare-row">
+            <span class="trend-compare-label">{row.label}</span>
+            <span class="trend-rule">
+              <span
+                class:list={["trend-rule-fill", row.current && "is-now"]}
+                style={`width: ${row.width}%`}
+              />
+            </span>
+            <span class="trend-compare-value">
+              {row.value}
+              {row.delta && <small>{row.delta}</small>}
+            </span>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    chart?.kind === "share" && chart.scale === "10" && (
+      <div
+        class="trend-share"
+        role="img"
+        aria-label={`${chart.exact}. ${chart.scaleNote}.`}
+      >
+        <div class="trend-segs" aria-hidden="true">
+          {shareSegments.map((segment) => (
+            <span class="trend-seg">
+              <span
+                class:list={[segment.partial && "is-partial"]}
+                style={`width: ${segment.width}%`}
+              />
+            </span>
+          ))}
+        </div>
+        <div class="trend-share-meta">
+          <span>{chart.scaleNote}</span>
+          <strong>{chart.exact}</strong>
+        </div>
+      </div>
+    )
+  }
+
+  {
+    chart?.kind === "share" && chart.scale === "100" && (
+      <div
+        class="trend-share"
+        role="img"
+        aria-label={`${chart.exact}. ${chart.scaleNote}.`}
+      >
+        <div class="trend-rule trend-rule--meter" aria-hidden="true">
+          <span class="trend-rule-fill is-now" style={`width: ${chart.percent}%`} />
+        </div>
+        <div class="trend-share-meta">
+          <span>{chart.scaleNote}</span>
+          <strong>{chart.exact}</strong>
+        </div>
+      </div>
+    )
+  }
+
+  {!chart && <p class="trend-metric">{trend.metric}</p>}
+
+  {trend.summary && <p class="trend-summary">{trend.summary}</p>}
+</article>
+
+<style>
+  .trend-card {
+    border: 1px solid rgba(8, 52, 31, 0.12);
+    border-top: 3px solid #e6b410;
+    border-radius: 0;
+    padding: 1.05rem 1.1rem 1.15rem;
+    color: #1a1a1a;
+    background: #fffdf8;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    min-height: 0;
+  }
+
+  .trend-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .trend-tag {
+    font-family: "Source Sans 3", sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8a6a10;
+  }
+
+  .trend-date {
+    font-family: "Source Sans 3", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    white-space: nowrap;
+  }
+
+  .trend-card :global(h2),
+  .trend-card :global(h3) {
+    margin: 0;
+    font-family: var(--font-display, "Newsreader", Georgia, serif);
+    font-size: 1.22rem;
+    font-weight: 600;
+    line-height: 1.28;
+    color: #08341f;
+  }
+
+  .trend-compare {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-top: 0.15rem;
+  }
+
+  .trend-compare-row {
+    display: grid;
+    grid-template-columns: 2.4rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .trend-compare-label,
+  .trend-compare-value,
+  .trend-share-meta {
+    font-family: "Source Sans 3", sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #3d4a42;
+  }
+
+  .trend-compare-value {
+    font-variant-numeric: tabular-nums;
+    color: #08341f;
+  }
+
+  .trend-compare-value small {
+    margin-left: 0.35rem;
+    color: #8a6a10;
+    font-size: 0.75rem;
+  }
+
+  .trend-rule {
+    position: relative;
+    display: block;
+    height: 10px;
+    background: rgba(8, 52, 31, 0.08);
+    border-radius: 99px;
+  }
+
+  .trend-rule-fill {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: 99px;
+    background: #08341f;
+    position: relative;
+  }
+
+  .trend-rule-fill.is-now {
+    background: #e6b410;
+  }
+
+  .trend-rule-fill.is-now::after {
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    translate: 50% -50%;
+    border-radius: 50%;
+    background: #f8ca26;
+    box-shadow:
+      0 0 0 2px #fffdf8,
+      0 0 0 3px rgba(8, 52, 31, 0.28);
+  }
+
+  .trend-segs {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .trend-seg {
+    height: 14px;
+    background: rgba(8, 52, 31, 0.08);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .trend-seg > span {
+    display: block;
+    height: 100%;
+    background: #08341f;
+  }
+
+  .trend-seg > span.is-partial {
+    background: #e6b410;
+  }
+
+  .trend-share {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .trend-share-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-weight: 600;
+  }
+
+  .trend-share-meta strong {
+    font-family: var(--font-display, "Newsreader", Georgia, serif);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #08341f;
+    letter-spacing: -0.02em;
+  }
+
+  .trend-metric {
+    margin: 0;
+    font-family: var(--font-display, "Newsreader", Georgia, serif);
+    font-weight: 600;
+    font-size: 1.45rem;
+    line-height: 1.15;
+    color: #08341f;
+  }
+
+  .trend-summary {
+    margin: auto 0 0;
+    font-family: "Source Sans 3", sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: #3d4a42;
+  }
+
+  .trend-card--archive {
+    background: #faf9f7;
+  }
+
+  .trend-card--archive :global(h3) {
+    font-size: 1.12rem;
+  }
+
+  @media (max-width: 860px) {
+    .trend-card :global(h2),
+    .trend-card :global(h3) {
+      font-size: 1.16rem;
+    }
+  }
+</style>

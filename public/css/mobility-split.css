@@ -38,7 +38,7 @@
 .home-mobility .electricos-section--compact,
 .home-mobility .hibridos-section--compact {
   background: #f3f7f4;
-  border-color: rgba(8, 52, 31, 0.08);
+  border: none;
 }
 
 .home-mobility .electricos-section--compact .electricos-inner,
@@ -61,12 +61,11 @@
 
 .home-mobility .electricos-head,
 .home-mobility .hibridos-head {
-  text-align: left;
+  text-align: center;
   margin: 0;
-  padding: 0;
+  padding: clamp(1.2rem, 2.2vw, 1.6rem) 0 0.15rem;
   flex-shrink: 0;
-  background: #08341f;
-  transition: background 0.18s ease;
+  background: transparent;
 }
 
 .home-mobility .electricos-title,
@@ -78,7 +77,7 @@
 .home-mobility .section-heading-link {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
   box-sizing: border-box;
   padding: 0.38rem clamp(0.85rem, 3vw, 1.85rem);
@@ -364,7 +363,7 @@
 
   .home-mobility .electricos-head,
   .home-mobility .hibridos-head {
-    padding: 0;
+    padding: clamp(1.2rem, 2.2vw, 1.6rem) 0 0.15rem;
   }
 
   .home-mobility .section-heading-link {

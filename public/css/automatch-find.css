@@ -2,7 +2,7 @@
 .automatch-page {
   --am-brand: #08341f;
   --am-brand-hover: #0a4228;
-  --am-accent: #f0c14a;
+  --am-accent: #a67c00;
   --am-surface: #f4f5f7;
   --am-ink: #1a1a1a;
   --am-muted: #5a6470;
@@ -10,18 +10,16 @@
   max-width: min(1200px, 100%);
   margin: 0 auto;
   padding: 0 0 3rem;
-  background: var(--am-surface);
+  background: #f7f4ec;
 }
 
 .automatch-find-hero {
   text-align: center;
   padding: clamp(2.25rem, 5vw, 3.5rem) clamp(1rem, 4vw, 2rem)
     clamp(1.75rem, 3vw, 2.5rem);
-  color: #fff;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(240, 193, 74, 0.16), transparent),
-    linear-gradient(165deg, #062818 0%, var(--am-brand) 48%, var(--am-brand-hover) 100%);
-  border-bottom: 1px solid rgba(240, 193, 74, 0.2);
+  color: #08341f;
+  background: #f7f4ec;
+  border-bottom: none;
 }
 
 .automatch-find-hero__eyebrow {
@@ -30,7 +28,7 @@
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--am-accent);
+  color: #8a6a10;
   margin: 0 0 0.85rem;
 }
 
@@ -41,7 +39,7 @@
   line-height: 1.12;
   margin: 0 auto 1rem;
   max-width: 20ch;
-  color: #ffffff !important;
+  color: #08341f !important;
 }
 
 .automatch-find-hero__title span {
@@ -52,7 +50,7 @@
   font-family: var(--font-body, "Source Sans 3", sans-serif);
   font-size: clamp(1rem, 1.4vw, 1.15rem);
   line-height: 1.65;
-  color: rgba(255, 255, 255, 0.9);
+  color: #3d4a42;
   max-width: 40rem;
   margin: 0 auto 1rem;
 }
@@ -63,9 +61,10 @@
   gap: 0.45rem;
   margin: 0 auto 1rem;
   padding: 0.45rem 0.85rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.92);
+  border-radius: 0;
+  background: #fffdf8;
+  color: #3d4a42;
+  border: 1px solid rgba(8, 52, 31, 0.12);
   font-size: 0.92rem;
   font-weight: 600;
 }
@@ -82,12 +81,12 @@
   margin-top: 0.5rem;
   font-family: var(--font-body, "Source Sans 3", sans-serif);
   font-size: 0.92rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #a67c00;
   text-decoration: none;
 }
 
 .automatch-find-hero__back:hover {
-  color: #fff;
+  color: #8d6900;
   text-decoration: underline;
 }
 
@@ -186,8 +185,8 @@ h1 span {
 }
 
 .form-steps__item--active {
-  background: rgba(8, 52, 31, 0.12);
-  color: var(--am-brand);
+  background: rgba(166, 124, 0, 0.14);
+  color: #8d6900;
 }
 
 .form-steps__item--muted {
@@ -301,12 +300,12 @@ h1 span {
 }
 
 .btn-relax-filters {
-  background: var(--am-brand);
-  color: #fff;
+  background: #f0c14a;
+  color: #10161f;
 }
 
 .btn-relax-filters:hover {
-  background: var(--am-brand-hover);
+  background: #f6d36a;
 }
 
 .btn-edit-search {
@@ -390,9 +389,12 @@ h1 span {
   gap: 1.5rem;
   text-align: left;
   padding: 2rem 2.15rem 2.15rem;
-  background: white;
-  border-radius: 1.2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: #fffdf8;
+  border-radius: 0;
+  box-shadow: none;
+  border-style: solid;
+  border-width: 3px 1px 1px;
+  border-color: #f0c14a rgba(8, 52, 31, 0.14) rgba(8, 52, 31, 0.14);
   animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   max-width: 42rem;
   margin: 0 auto;
@@ -518,25 +520,25 @@ input::placeholder {
 }
 
 .btn-match {
-  background: linear-gradient(135deg, #08341f, #0a4228);
-  color: white;
+  background: #f0c14a;
+  color: #10161f;
   padding: 1rem;
   border: none;
-  border-radius: 0.8rem;
+  border-radius: 0;
   cursor: pointer;
   font-weight: 700;
   font-size: 1rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.2s ease;
   margin-top: 1rem;
-  box-shadow: 0 4px 15px rgba(8, 52, 31, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  box-shadow: none;
+  text-transform: none;
+  letter-spacing: 0.02em;
 }
 
 .btn-match:hover {
-  background: linear-gradient(135deg, #0a4228, #1b5e3f);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(8, 52, 31, 0.4);
+  background: #f6d36a;
+  transform: none;
+  box-shadow: none;
 }
 
 .btn-match:active {
@@ -1182,23 +1184,23 @@ input::placeholder {
 }
 
 .btn-submit {
-  background: var(--color-brand, #08341f);
-  color: white;
+  background: #f0c14a;
+  color: #10161f;
   padding: 0.9rem 1.5rem;
   border: none;
-  border-radius: 999px;
+  border-radius: 0;
   font-weight: 700;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  transition: background 0.2s ease;
+  text-transform: none;
+  letter-spacing: 0.02em;
 }
 
 .btn-submit:hover {
-  background: linear-gradient(135deg, #0a4228, #1b5e3f);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(8, 52, 31, 0.3);
+  background: #f6d36a;
+  transform: none;
+  box-shadow: none;
 }
 
 /* ========== ALTERNATIVAS ========== */
@@ -1375,24 +1377,25 @@ input::placeholder {
 
 /* ========== BOTÓN NUEVA BÚSQUEDA ========== */
 .btn-nueva-busqueda {
-  background: linear-gradient(135deg, #1b5e3f, #155033);
-  color: white;
+  background: #f0c14a;
+  color: #10161f;
   padding: 0.8rem 1.5rem;
   border: none;
-  border-radius: 0.8rem;
+  border-radius: 0;
   cursor: pointer;
   font-weight: 600;
   font-size: 0.9rem;
-  transition: all 0.3s ease;
+  transition: background 0.2s ease;
   margin-top: 1rem;
-  box-shadow: 0 4px 12px rgba(27, 94, 63, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  box-shadow: none;
+  text-transform: none;
+  letter-spacing: 0.02em;
 }
 
 .btn-nueva-busqueda:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(27, 94, 63, 0.4);
+  background: #f6d36a;
+  transform: none;
+  box-shadow: none;
 }
 
 .btn-nueva-busqueda:active {

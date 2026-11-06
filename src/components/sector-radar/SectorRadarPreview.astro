@@ -11,7 +11,7 @@ const radarNote =
     : sectorRadarPreview.summary;
 ---
 
-<link rel="stylesheet" href="/css/news-interactive.css?v=107" />
+<link rel="stylesheet" href="/css/news-interactive.css?v=118" />
 
 <section
   id="radar"
@@ -45,17 +45,15 @@ const radarNote =
           sectorRadarPreview.image ? (
             <>
               <div class="sector-radar-preview__pin sector-radar-preview__pin--mast">
-                <p class="sector-radar-preview__eyebrow">Radar del sector</p>
+                <h3 id="sector-radar-heading" class="sector-radar-preview__eyebrow">
+                  Radar del sector
+                </h3>
                 <p class="sector-radar-preview__edition">
-                  {sectorRadarEditionMeta.label} · {sectorRadarEditionMeta.period}
+                  {sectorRadarEditionMeta.focusLabel ??
+                    `${sectorRadarEditionMeta.label} · ${sectorRadarEditionMeta.period}`}
                 </p>
+                <p class="sector-radar-preview__source">{sectorRadarPreview.title}</p>
               </div>
-              <h3
-                id="sector-radar-heading"
-                class="sector-radar-preview__title sector-radar-preview__pin sector-radar-preview__pin--title"
-              >
-                {sectorRadarPreview.title}
-              </h3>
               <p class="sector-radar-preview__pin sector-radar-preview__pin--note">
                 {radarNote}
               </p>
@@ -79,14 +77,15 @@ const radarNote =
           ) : (
             <div class="sector-radar-preview__inner">
               <header class="sector-radar-preview__header">
-                <span class="sector-radar-preview__eyebrow">Radar del sector</span>
+                <h3 id="sector-radar-heading" class="sector-radar-preview__eyebrow">
+                  Radar del sector
+                </h3>
                 <p class="sector-radar-preview__edition">
-                  {sectorRadarEditionMeta.label} · {sectorRadarEditionMeta.period}
+                  {sectorRadarEditionMeta.focusLabel ??
+                    `${sectorRadarEditionMeta.label} · ${sectorRadarEditionMeta.period}`}
                 </p>
+                <p class="sector-radar-preview__source">{sectorRadarPreview.title}</p>
               </header>
-              <h3 id="sector-radar-heading" class="sector-radar-preview__title">
-                {sectorRadarPreview.title}
-              </h3>
               <p class="sector-radar-preview__summary">
                 {sectorRadarPreview.summary}
               </p>

@@ -1,9 +1,32 @@
+export type SectorTrendChart =
+  | {
+      kind: "compare";
+      rows: ReadonlyArray<{
+        label: string;
+        value: string;
+        /** Ancho de la barra, 0–100, respecto a la fila más alta. */
+        width: number;
+        current?: boolean;
+        delta?: string;
+      }>;
+    }
+  | {
+      kind: "share";
+      /** 0–100. En escala 10 se dibuja como diez tramos. */
+      percent: number;
+      exact: string;
+      /** Qué mide la regla, en una frase corta. */
+      scaleNote: string;
+      scale: "10" | "100";
+    };
+
 export type SectorTrend = {
   tag: string;
   title: string;
   summary: string;
   date: string;
   metric: string;
+  chart?: SectorTrendChart;
 };
 
 export type SectorRadarEdition = {
@@ -15,6 +38,8 @@ export type SectorRadarEdition = {
   period: string;
   /** Fecha de publicación en el sitio (ISO) */
   publishedAt: string;
+  /** Periodo que se muestra en el radar y en tendencias. No es la fecha de publicación. */
+  focusLabel?: string;
   preview: {
     title: string;
     summary: string;
@@ -42,15 +67,17 @@ const active: SectorRadarEdition = {
   id: "2026-oct-nov",
   label: "Noviembre 2026",
   period: "Enero a octubre 2026",
+  focusLabel: "Enero a octubre de 2026",
   publishedAt: "2026-11-01",
   preview: {
-    title: "Octubre fue el mejor octubre desde 2014, con 32.175 carros nuevos",
+    title:
+      "Balance de Fenalco y ANDI",
     summary:
-      "279.387 matrículas entre enero y octubre (+39,5%). El Tesla Model Y sigue siendo el más vendido del año.",
+      "279.387 matrículas en el año, un 39,5% más que en 2025. El Tesla Model Y sigue siendo el más vendido del año.",
     metrics: [
-      { value: "+39,5%", label: "vs. ene-oct 2025" },
-      { value: "279.387", label: "matrículas" },
-      { value: "47,3%", label: "híbridos + eléctricos en octubre" },
+      { value: "+39,5%", label: "crecimiento\nfrente a 2025" },
+      { value: "279.387", label: "matrículas del año\nal alza" },
+      { value: "47,3%", label: "híbridos y eléctricos\ndel mes, al alza" },
     ],
     image: "/img/radar/tesla-model-y.png",
     imageAlt:
@@ -58,65 +85,107 @@ const active: SectorRadarEdition = {
   },
   hero: {
     description:
-      "Balance Fenalco y ANDI (1 de noviembre de 2026): octubre fue el mejor octubre desde 2014 y, entre enero y octubre, el mercado ya superó todas las matrículas de 2025.",
+      "El mes fue el mejor desde 2014, con 32.175 carros nuevos, y el año ya superó todas las matrículas de 2025.",
     stats: [
-      { value: "+39,5%", label: "vs. ene-oct 2025" },
-      { value: "279.387", label: "matrículas ene-oct" },
-      { value: "47,3%", label: "híbridos + eléctricos en octubre" },
+      { value: "+39,5%", label: "crecimiento\nfrente a 2025" },
+      { value: "279.387", label: "matrículas del año\nal alza" },
+      { value: "47,3%", label: "híbridos y eléctricos\ndel mes, al alza" },
     ],
   },
   source: {
     label: "Fuente",
-    text: "Informe conjunto Fenalco y ANDI (1 de noviembre de 2026). Matriculaciones según RUNT.",
+    text: "Informe conjunto Fenalco y ANDI. Matriculaciones según RUNT.",
   },
   trends: [
     {
       tag: "Mercado",
       title: "El mercado ya superó todas las matrículas de 2025",
-      summary:
-        "279.387 vehículos nuevos entre enero y octubre de 2026, un 39,5% más que un año atrás. Solo en octubre se matricularon 32.175 unidades, 27,4% más que en octubre de 2025. Kia lidera el año, con 36.204 registros.",
-      date: "Nov 2026",
+      summary: "Kia lidera el año, con 36.204 registros.",
+      date: "Ene-oct 2026",
       metric: "+39,5% vs. 2025",
+      chart: {
+        kind: "compare",
+        rows: [
+          { label: "2025", value: "200.279", width: 71.7 },
+          {
+            label: "2026",
+            value: "279.387",
+            width: 100,
+            current: true,
+            delta: "+39,5%",
+          },
+        ],
+      },
     },
     {
       tag: "Electromovilidad",
       title: "Los eléctricos ya son casi 16 de cada 100 carros nuevos",
-      summary:
-        "44.387 eléctricos entre enero y octubre, 207% más que un año atrás. En octubre se matricularon 4.603 unidades, 120,2% más que en el mismo mes de 2025.",
-      date: "Nov 2026",
+      summary: "44.387 en el año, un 207% más. En octubre fueron 4.603.",
+      date: "Ene-oct 2026",
       metric: "+207% vs. 2025",
+      chart: {
+        kind: "share",
+        percent: 15.9,
+        exact: "15,9%",
+        scaleNote: "de cada 100",
+        scale: "100",
+      },
     },
     {
       tag: "Híbridos",
       title: "Casi 3 de cada 10 carros nuevos son híbridos",
-      summary:
-        "85.081 híbridos entre enero y octubre, un 60% más que un año atrás. En octubre fueron 10.610 unidades, 53,7% más que en octubre de 2025.",
-      date: "Nov 2026",
+      summary: "85.081 en el año, un 60% más que en 2025.",
+      date: "Ene-oct 2026",
       metric: "30,5% de cuota",
+      chart: {
+        kind: "share",
+        percent: 30.5,
+        exact: "30,5%",
+        scaleNote: "de cada 10",
+        scale: "10",
+      },
     },
     {
       tag: "Modelos",
       title: "El Tesla Model Y sigue siendo el más vendido del año",
-      summary:
-        "15.265 unidades entre enero y octubre: 5,5% de todo el mercado. En octubre el mes lo lideró el Kia K3, con 1.356 matrículas; el Model Y quedó quinto, con 884. Tesla es la sexta marca del año, con 17.497 registros.",
-      date: "Nov 2026",
+      summary: "En octubre lideró el Kia K3, con 1.356. El Model Y quedó quinto, con 884.",
+      date: "Ene-oct 2026",
       metric: "15.265 Model Y",
+      chart: {
+        kind: "share",
+        percent: 5.5,
+        exact: "15.265",
+        scaleNote: "5,5% de todas las matrículas",
+        scale: "100",
+      },
     },
     {
       tag: "SUV",
       title: "Los SUV concentran 6 de cada 10 matrículas",
-      summary:
-        "173.059 SUV entre enero y octubre, 53,5% más que un año atrás. En octubre fueron 19.820 unidades, un 42,1% más que en octubre de 2025. El segmento que más creció en el mes fue el de comerciales de pasajeros, con 54,1%.",
-      date: "Nov 2026",
+      summary: "173.059 en el año, un 53,5% más que en 2025.",
+      date: "Ene-oct 2026",
       metric: "61,9% del mercado",
+      chart: {
+        kind: "share",
+        percent: 61.9,
+        exact: "61,9%",
+        scaleNote: "de cada 10",
+        scale: "10",
+      },
     },
     {
       tag: "Regiones",
       title: "Bogotá concentra casi 3 de cada 10 matrículas",
-      summary:
-        "La capital acumuló 79.458 vehículos nuevos entre enero y octubre (+85,2%) y 8.511 solo en octubre (+62,7%). En el mes, Sincelejo creció 69,6%, Cali 58,5% y Cúcuta 44,5%.",
-      date: "Nov 2026",
+      summary: "79.458 matrículas, un 85,2% más que hace un año.",
+      date: "Ene-oct 2026",
       metric: "79.458 en Bogotá",
+      chart: {
+        kind: "share",
+        percent: 28.4,
+        exact: "28,4%",
+        scaleNote: "de cada 10",
+        scale: "10",
+      },
     },
   ],
 };
@@ -376,4 +445,5 @@ export const sectorRadarSource = active.source;
 export const sectorRadarEditionMeta = {
   label: active.label,
   period: active.period,
+  focusLabel: active.focusLabel,
 };
