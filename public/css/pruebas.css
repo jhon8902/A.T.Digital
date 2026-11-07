@@ -49,10 +49,7 @@
 
 /* Marco editorial — se distingue del resto del home */
 .pruebas-section--videos {
-  background-color: var(--home-section-bg, #f0f3f0);
-  background-image: var(--home-relief-image);
-  background-size: var(--home-relief-size);
-  background-repeat: repeat;
+  background: transparent;
   border: none;
   padding: clamp(1.75rem, 3.5vw, 2.75rem) clamp(1rem, 3vw, 2rem);
 }
@@ -65,9 +62,9 @@
 .pruebas-section--videos .pruebas-inner {
   width: min(96%, 1760px);
   max-width: 1760px;
-  background: #f7f4ec;
-  border: 1.5px solid rgba(8, 52, 31, 0.12);
-  box-shadow: 0 14px 32px rgba(8, 52, 31, 0.06);
+  background: #fff;
+  border: none;
+  box-shadow: none;
   padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 3vw, 2rem);
   box-sizing: border-box;
 }
@@ -862,13 +859,16 @@
 }
 
 .pruebas-section--videos .prueba-play::after {
-  width: 3.35rem;
-  height: 3.35rem;
-  border-radius: 0;
+  width: 3.05rem;
+  height: 3.05rem;
+  border-radius: 50%;
   background-color: #f0c14a;
-  box-shadow: none;
-  background-size: 1.15rem;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310161f'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E");
+  box-shadow:
+    0 0 0 5px rgba(240, 193, 74, 0.32),
+    0 8px 18px rgba(16, 22, 31, 0.22);
+  background-size: 1rem;
+  background-position: 57% center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310161f'%3E%3Cpath d='M9 6.5v11l9-5.5z'/%3E%3C/svg%3E");
 }
 
 .pruebas-section--videos .pruebas-watch .pruebas-spotlight__nav {

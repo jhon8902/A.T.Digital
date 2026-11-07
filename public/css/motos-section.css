@@ -11,9 +11,9 @@
   margin: 0 auto;
   box-sizing: border-box;
   padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 3vw, 2rem);
-  background: #f7f4ec;
-  border: 1.5px solid rgba(8, 52, 31, 0.12);
-  box-shadow: 0 14px 32px rgba(8, 52, 31, 0.06);
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .motos-head {

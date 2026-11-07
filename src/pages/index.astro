@@ -46,9 +46,7 @@ const automatchAutos = buildAutomatchCarousel(automatchNotes);
   <div class="extra-sections" id="extra-sections">
     <SectionInfo notes={homeNotes} />
 
-    <section id="automatch" class="automatch-destacado" aria-label="AutoMatch">
-      <AutoMatch autos={automatchAutos} mode="home" embedded />
-    </section>
+    <SectorRadarPreview />
 
     <Pruebas notes={homeNotes} />
 
@@ -62,15 +60,17 @@ const automatchAutos = buildAutomatchCarousel(automatchNotes);
       </div>
     </section>
 
-    <SectorRadarPreview />
-
-    <link rel="stylesheet" href="/css/mobility-split.css?v=27" />
+    <link rel="stylesheet" href="/css/mobility-split.css?v=28" />
 
     <Deportes notes={homeNotes} />
 
     <Motos notes={homeNotes} />
 
     <Noticias notes={homeNotes} />
+
+    <section id="automatch" class="automatch-destacado" aria-label="AutoMatch">
+      <AutoMatch autos={automatchAutos} mode="home" embedded />
+    </section>
 
     <AutoMatchPromo
       variant="compact"
@@ -83,7 +83,7 @@ const automatchAutos = buildAutomatchCarousel(automatchNotes);
     -->
   </div>
 
-  <link rel="stylesheet" href="/css/home-typography.css?v=172" />
+  <link rel="stylesheet" href="/css/home-typography.css?v=174" />
 </Layout>
 
 <style>

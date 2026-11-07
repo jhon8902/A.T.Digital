@@ -286,12 +286,12 @@ body.home-page .pruebas-section--videos {
 }
 
 body.home-page .pruebas-section--videos .pruebas-inner {
-  background: #f7f4ec !important;
+  background: #fff !important;
   width: min(96%, 1760px) !important;
   max-width: 1760px !important;
   padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 3vw, 2rem) !important;
-  border: 1.5px solid rgba(8, 52, 31, 0.12) !important;
-  box-shadow: 0 14px 32px rgba(8, 52, 31, 0.06) !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 @media (max-width: 860px) {
@@ -303,9 +303,9 @@ body.home-page .pruebas-section--videos .pruebas-inner {
     width: min(96%, 1760px) !important;
     max-width: 1760px !important;
     padding: 1.15rem 0.9rem 1.35rem !important;
-    box-shadow: 0 14px 32px rgba(8, 52, 31, 0.06) !important;
-    border: 1.5px solid rgba(8, 52, 31, 0.12) !important;
-    background: #f7f4ec !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #fff !important;
   }
 
   body.home-page #pruebas .pruebas-spotlight__thumbs {
@@ -408,7 +408,7 @@ body.home-page .home-mobility .hibridos-section {
 
 body.home-page .home-mobility .electricos-section--compact,
 body.home-page .home-mobility .hibridos-section--compact {
-  background: #f3f7f4 !important;
+  background: transparent !important;
   border: none !important;
   box-shadow: none !important;
 }
@@ -1026,7 +1026,7 @@ body.home-page #automatch {
   margin-inline: auto;
   margin-top: clamp(1.5rem, 3vw, 2.5rem);
   overflow: visible;
-  background-color: #f7f4ec;
+  background-color: transparent;
   background-image: none;
   padding-bottom: 0;
 }
