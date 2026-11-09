@@ -306,7 +306,8 @@ const headerSearchData = encodeURIComponent(
     right: 0;
     width: 100%;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-    border-bottom-color: #e6b410;
+    border-top: 0;
+    border-bottom: 2px solid #e6b410;
   }
 
   /* Empuja menú + acciones a la derecha */
@@ -613,7 +614,7 @@ const headerSearchData = encodeURIComponent(
   .boton-hamburguesa {
     color: #10161f;
     font-size: 16px;
-    border: 1.5px solid #e6b410;
+    border: 1px solid rgba(16, 22, 31, 0.22);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -621,18 +622,18 @@ const headerSearchData = encodeURIComponent(
     z-index: 3;
     padding: 0;
     flex-shrink: 0;
-    background: #e6b410;
+    background: transparent;
     border-radius: 0;
     transition: border-color 0.2s ease, background 0.2s ease;
     box-shadow: none;
-    min-width: 44px;
-    min-height: 44px;
+    min-width: 40px;
+    min-height: 40px;
   }
 
   .boton-hamburguesa:hover,
   .boton-hamburguesa:active {
-    background: #c49a12;
-    border-color: #c49a12;
+    background: rgba(230, 180, 16, 0.14);
+    border-color: #e6b410;
     transform: none;
     box-shadow: none;
   }
@@ -641,15 +642,15 @@ const headerSearchData = encodeURIComponent(
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 5px;
-    width: 18px;
+    gap: 4px;
+    width: 16px;
   }
 
   .boton-hamburguesa__bars span {
     display: block;
     height: 1.5px;
     width: 100%;
-    background: #08341f;
+    background: #10161f;
     border-radius: 1px;
   }
 
@@ -957,17 +958,17 @@ const headerSearchData = encodeURIComponent(
     }
 
     .boton-hamburguesa {
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       padding: 0;
       font-size: 16px;
       flex-shrink: 0;
       margin-left: auto;
-      min-width: 44px;
-      min-height: 44px;
+      min-width: 40px;
+      min-height: 40px;
       border-radius: 0;
-      border: 1.5px solid #e6b410;
-      background: #e6b410;
+      border: 1px solid rgba(16, 22, 31, 0.22);
+      background: #fff;
       color: #10161f;
       box-shadow: none;
     }
@@ -1384,7 +1385,8 @@ const headerSearchData = encodeURIComponent(
 
   .brand-copy {
     justify-content: flex-start;
-    padding-left: 0;
+    align-self: stretch;
+    padding-left: 4px;
     padding-right: clamp(10px, 1.4vw, 22px);
     overflow: hidden;
     min-width: 0;
@@ -1396,18 +1398,18 @@ const headerSearchData = encodeURIComponent(
     content: "";
     position: absolute;
     left: 0;
-    top: 50%;
-    width: 1px;
-    height: clamp(44px, 5.2vw, 68px);
+    top: 18%;
+    width: 3px;
+    min-width: 3px;
+    height: 64%;
     background: linear-gradient(
       180deg,
       transparent 0%,
-      rgba(225, 163, 7, 0.35) 18%,
-      rgba(225, 163, 7, 0.95) 50%,
-      rgba(225, 163, 7, 0.35) 82%,
+      #e6b410 14%,
+      #e6b410 86%,
       transparent 100%
     );
-    transform: translateY(-50%);
+    transform: none;
     border-radius: 1px;
     pointer-events: none;
     opacity: 0.9;
@@ -1490,6 +1492,17 @@ const headerSearchData = encodeURIComponent(
     transform: scale(1.65);
     transform-origin: center;
     display: block;
+    animation: brandLogoPulse 3.6s ease-in-out infinite;
+  }
+
+  @keyframes brandLogoPulse {
+    0%,
+    100% {
+      transform: scale(1.65);
+    }
+    50% {
+      transform: scale(1.71);
+    }
   }
 
   @keyframes brandLogoIn {
@@ -1514,6 +1527,7 @@ const headerSearchData = encodeURIComponent(
 
   @media (prefers-reduced-motion: reduce) {
     .brand-logo-frame,
+    .brand-logo,
     .brand-tagline--desktop {
       animation: none;
     }
@@ -1610,6 +1624,23 @@ const headerSearchData = encodeURIComponent(
       object-fit: cover;
       object-position: center 48%;
       transform: none;
+      animation: brandLogoPulseMobile 3.6s ease-in-out infinite;
+    }
+
+    @keyframes brandLogoPulseMobile {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.03);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .brand-logo {
+        animation: none;
+      }
     }
 
     @media (max-width: 380px) {
@@ -1634,9 +1665,9 @@ const headerSearchData = encodeURIComponent(
     }
 
     .top-bar {
-      border-bottom: 0 !important;
-      box-shadow: none !important;
       border-bottom: 2px solid #e6b410 !important;
+      box-shadow: none !important;
+      border-top: 0 !important;
       padding-top: 12px;
     }
   }

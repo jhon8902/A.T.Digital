@@ -155,4 +155,29 @@
   });
 
   applyFilter("all");
+
+  const leadCard = section.querySelector(".en-portada__card--lead");
+  const leadPhoto = leadCard?.querySelector(".en-portada__photo");
+
+  function alignLeadCaption() {
+    if (!leadCard || !leadPhoto) return;
+    const frameWidth = leadCard.clientWidth;
+    const frameHeight = leadCard.clientHeight;
+    const naturalWidth = leadPhoto.naturalWidth;
+    const naturalHeight = leadPhoto.naturalHeight;
+    if (!frameWidth || !frameHeight || !naturalWidth || !naturalHeight) return;
+
+    const frameRatio = frameWidth / frameHeight;
+    const photoRatio = naturalWidth / naturalHeight;
+    const photoShare = Math.min(1, photoRatio / frameRatio);
+    const inset = ((1 - photoShare) / 2) * 100;
+    leadCard.style.setProperty("--lead-inset", inset.toFixed(3) + "%");
+    leadCard.style.setProperty("--lead-photo", (photoShare * 100).toFixed(3) + "%");
+  }
+
+  if (leadPhoto) {
+    if (leadPhoto.complete) alignLeadCaption();
+    leadPhoto.addEventListener("load", alignLeadCaption);
+    window.addEventListener("resize", alignLeadCaption);
+  }
 })();

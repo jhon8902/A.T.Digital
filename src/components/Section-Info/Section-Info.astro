@@ -334,43 +334,43 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
         <span class="section-archive-hint" aria-hidden="true">Ver el archivo</span>
       </a>
     </h2>
+    <div
+      class="news-filters"
+      role="tablist"
+      aria-label="Filtrar noticias por alcance"
+    >
+      <button
+        type="button"
+        class="news-filter-btn is-active"
+        data-filter="all"
+        role="tab"
+        aria-selected="true"
+      >
+        Todas
+      </button>
+      <button
+        type="button"
+        class="news-filter-btn"
+        data-filter="nacional"
+        role="tab"
+        aria-selected="false"
+      >
+        Nacional
+      </button>
+      <button
+        type="button"
+        class="news-filter-btn"
+        data-filter="internacional"
+        role="tab"
+        aria-selected="false"
+      >
+        Internacional
+      </button>
+    </div>
   </header>
 
   <div class="container mx-auto px-2">
     <div class="news-showcase">
-      <div
-        class="news-filters"
-        role="tablist"
-        aria-label="Filtrar noticias por alcance"
-      >
-        <button
-          type="button"
-          class="news-filter-btn is-active"
-          data-filter="all"
-          role="tab"
-          aria-selected="true"
-        >
-          Todas
-        </button>
-        <button
-          type="button"
-          class="news-filter-btn"
-          data-filter="nacional"
-          role="tab"
-          aria-selected="false"
-        >
-          Nacional
-        </button>
-        <button
-          type="button"
-          class="news-filter-btn"
-          data-filter="internacional"
-          role="tab"
-          aria-selected="false"
-        >
-          Internacional
-        </button>
-      </div>
 
       {coverNotes.length > 0 && <EnPortada notes={coverNotes} />}
 
@@ -1745,4 +1745,4 @@ const scopeCarouselNotes = buildScopeCarouselNotes(
   }
 </style>
 
-<script src="/js/news-interactive.js?v=11" defer></script>
+<script src="/js/news-interactive.js?v=12" defer></script>
