@@ -119,10 +119,10 @@
 
 .motos-list a {
   display: grid;
-  grid-template-columns: 7.5rem minmax(0, 1fr);
-  gap: 0.9rem;
+  grid-template-columns: 16rem minmax(0, 1fr);
+  gap: 1.15rem;
   align-items: center;
-  padding: 0.75rem 0;
+  padding: 0.9rem 0;
   color: #08341f;
   text-decoration: none;
 }
@@ -154,6 +154,16 @@
 }
 
 @media (max-width: 800px) {
+  .motos-section {
+    padding: 1.15rem 0 1.5rem;
+  }
+
+  .motos-panel {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.35rem 0.75rem 0.5rem;
+  }
+
   .motos-lead {
     grid-template-columns: 1fr;
     gap: 0.85rem;
@@ -164,6 +174,14 @@
   }
 
   .motos-list a {
-    grid-template-columns: 5.5rem minmax(0, 1fr);
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+    align-items: start;
+    padding: 0.85rem 0 0.35rem;
+  }
+
+  .motos-list img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
   }
 }

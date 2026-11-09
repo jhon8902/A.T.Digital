@@ -8,6 +8,12 @@ const { href, label } = Astro.props;
 ---
 
 <a href={href} class="section-more-arrow" aria-label={label}>
-  <span class="section-more-arrow__mark" aria-hidden="true">→</span>
+  <span class="section-more-arrow__mark" aria-hidden="true">
+    <svg viewBox="0 0 58 16" fill="none">
+      <circle cx="3.4" cy="8" r="2.7" stroke="currentColor" stroke-width="3.1" />
+      <path d="M8.2 8H49" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" />
+      <path d="M43.2 3.2 53.2 8 43.2 12.8" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </span>
   <span class="section-archive-hint" aria-hidden="true">Ver el archivo</span>
 </a>

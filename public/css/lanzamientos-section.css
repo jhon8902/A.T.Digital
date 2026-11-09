@@ -212,7 +212,14 @@
   }
 
   .lanzamiento-tile__media {
-    min-height: 8.75rem;
+    aspect-ratio: 3 / 2;
+    min-height: 0;
+    background: #f4f1e8;
+  }
+
+  .lanzamiento-tile__media img {
+    object-fit: contain;
+    transform: none;
   }
 
   .lanzamiento-tile:hover .lanzamiento-tile__title {
@@ -220,13 +227,60 @@
   }
 }
 
-@media (max-width: 560px) {
-  .lanzamiento-tile__title {
-    font-size: 0.95rem;
+@media (max-width: 1023px) {
+  .lanzamientos-inner {
+    padding-inline: 0.75rem;
   }
 
   .lanzamientos-strip {
-    gap: 1.15rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .lanzamiento-tile {
+    display: grid;
+    grid-template-columns: 9.25rem minmax(0, 1fr);
+    column-gap: 0.9rem;
+    row-gap: 0.2rem;
+    align-items: center;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(8, 52, 31, 0.1);
+  }
+
+  .lanzamiento-tile:last-child {
+    border-bottom: none;
+  }
+
+  .lanzamiento-tile__media {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    aspect-ratio: auto;
+    min-height: 0;
+    height: auto;
+    background: #f4f1e8;
+  }
+
+  .lanzamiento-tile__media img {
+    position: static;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center center;
+    transform: none;
+  }
+
+  .lanzamiento-tile__meta {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: end;
+  }
+
+  .lanzamiento-tile__title {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    font-size: 1.05rem;
   }
 }
 

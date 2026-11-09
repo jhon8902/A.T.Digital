@@ -270,23 +270,22 @@ const allCandidates = [...dynamicNotes, ...deduplicatedStaticNotes].sort(
   (a, b) => b.sortDate - a.sortDate,
 );
 const allNotes = allCandidates.slice(0, HOME_NEWS_POOL_SIZE);
-const HOME_NEWS_MOSAIC_COUNT = 3;
 const homeFeaturedNotes = allNotes.slice(
   0,
   HOME_NEWS_HERO_COUNT + HOME_NEWS_CAROUSEL_LIMIT,
 );
 const mosaicNotes = homeFeaturedNotes
   .filter((note) => note.img && note.img !== "/img/default.jpg")
-  .slice(0, HOME_NEWS_MOSAIC_COUNT);
-const mosaicHrefs = new Set(mosaicNotes.map((note) => note.href));
-const homeCarouselNotes = homeFeaturedNotes.filter(
-  (note) => !mosaicHrefs.has(note.href),
-);
+  .slice(0, 4);
+const homeCarouselNotes: typeof homeFeaturedNotes = [];
 const coverNotes = mosaicNotes.map((note) => ({
   href: note.href,
   img: note.img,
   alt: note.alt || note.caption,
   caption: note.caption,
+  subtitle: note.subtitle,
+  fecha: cleanPublishedDate(note.fecha),
+  scopeLabel: sourceScopeLabel(note.source_scope),
   categoryLabel: categoryLabel(note.category),
 }));
 

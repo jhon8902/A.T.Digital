@@ -154,7 +154,7 @@ body.home-page .home-mobility .section-heading-link {
 
 body.home-page .section-more-row {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   margin-top: 0.85rem;
 }
@@ -162,28 +162,35 @@ body.home-page .section-more-row {
 body.home-page .section-more-arrow {
   position: relative;
   z-index: 6;
-  width: 3.35rem;
-  height: 1.7rem;
-  display: grid;
-  place-items: center;
+  width: auto;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
   flex: 0 0 auto;
-  background: #f6f3ea;
-  color: #08341f;
-  border-top: 2px solid #e6b410;
+  padding: 0.2rem 0;
+  background: transparent;
+  color: #e6b410;
+  border: none;
   text-decoration: none;
-  box-shadow: 0 8px 18px rgba(8, 52, 31, 0.2);
+  box-shadow: none;
 }
 
 body.home-page .section-more-arrow__mark {
-  font-size: 1.35rem;
-  line-height: 1;
-  font-weight: 500;
+  display: flex;
+  line-height: 0;
+}
+
+body.home-page .section-more-arrow__mark svg {
+  width: 3.7rem;
+  height: 1.02rem;
+  display: block;
+  transition: transform 0.2s ease;
 }
 
 body.home-page .section-more-arrow .section-archive-hint {
-  left: auto;
-  right: 0;
-  top: calc(100% + 0.4rem);
+  left: 0;
+  right: auto;
+  top: calc(100% + 0.35rem);
   transform: translateY(-4px);
 }
 
@@ -196,12 +203,19 @@ body.home-page .section-more-arrow:focus-visible .section-archive-hint {
 
 body.home-page .section-more-arrow:hover,
 body.home-page .section-more-arrow:focus-visible {
-  background: #e6b410;
+  background: transparent;
+  color: #f6d36a;
   outline: none;
 }
 
-body.home-page #pruebas .pruebas-spotlight__thumbs .section-more-arrow {
-  align-self: center;
+body.home-page .section-more-arrow:hover .section-more-arrow__mark svg,
+body.home-page .section-more-arrow:focus-visible .section-more-arrow__mark svg {
+  transform: translateX(4px);
+}
+
+body.home-page #pruebas .section-more-arrow {
+  align-self: flex-start;
+  margin-left: 0;
 }
 
 body.home-page #noticias .section-more-row {
@@ -442,26 +456,30 @@ body.home-page .home-mobility__panel {
 
   body.home-page .home-mobility .electricos-inner,
   body.home-page .home-mobility .hibridos-inner {
-    padding-inline: 0 !important;
+    padding-inline: 0.75rem !important;
     background: transparent !important;
   }
 
   body.home-page .home-mobility .mobility-row__media {
     width: 100% !important;
-    aspect-ratio: 16 / 10 !important;
+    height: auto !important;
+    aspect-ratio: auto !important;
   }
 
   body.home-page .home-mobility .mobility-row__media img {
-    min-height: 12rem !important;
-    object-fit: cover !important;
-    object-position: center 42% !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    object-fit: contain !important;
+    object-position: center center !important;
     transform: none !important;
   }
 }
 
 @media (max-width: 480px) {
   body.home-page .home-mobility .mobility-row__media img {
-    min-height: 13rem !important;
+    min-height: 0 !important;
+    height: auto !important;
   }
 }
 
@@ -799,10 +817,14 @@ body.home-page #lanzamientos .lanzamiento-kicker--internacional {
 body.home-page .home-mobility .scope-tag,
 body.home-page .home-mobility .scope-tag--national,
 body.home-page .home-mobility .scope-tag--international {
-  color: #e6b410 !important;
+  color: #6b756f !important;
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em !important;
+  text-transform: none !important;
 }
 
 @media (min-width: 1024px) {
@@ -1305,7 +1327,13 @@ body.home-page #lanzamientos .lanzamiento-hero__media,
 body.home-page #lanzamientos .lanzamiento-tile__media {
   border-radius: 0 !important;
   overflow: hidden;
-  background: #10161f !important;
+  background: #f4f1e8 !important;
+}
+
+body.home-page #lanzamientos .lanzamiento-tile__media img {
+  object-fit: contain !important;
+  object-position: center center !important;
+  transform: none !important;
 }
 
 /* Autos deportivos — 2 destacadas + fila de 3 */
@@ -1431,38 +1459,45 @@ body.home-page #deportes .deporte-card__body h3 a {
   body.home-page .deportes-inner {
     width: 100% !important;
     max-width: 100% !important;
-    padding-inline: 0.7rem !important;
+    padding-inline: 0.75rem !important;
   }
 
   body.home-page #deportes .deporte-card--featured .deporte-card__media,
   body.home-page #deportes .deporte-card--row .deporte-card__media {
-    aspect-ratio: 16 / 10 !important;
+    aspect-ratio: 3 / 2 !important;
     width: 100% !important;
-    min-height: clamp(14rem, 52vw, 22rem) !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  body.home-page #deportes .deporte-card--featured .deporte-card__media img,
+  body.home-page #deportes .deporte-card--row .deporte-card__media img {
+    object-fit: contain !important;
+    object-position: center center !important;
   }
 }
 
 @media (max-width: 640px) {
   body.home-page .deportes-inner {
-    padding-inline: 0.55rem !important;
+    padding-inline: 0.75rem !important;
   }
 
   body.home-page #deportes .deporte-card--featured .deporte-card__media,
   body.home-page #deportes .deporte-card--row .deporte-card__media {
-    aspect-ratio: 4 / 3 !important;
-    min-height: clamp(15rem, 58vw, 22rem) !important;
+    aspect-ratio: 3 / 2 !important;
+    min-height: 0 !important;
   }
 }
 
 @media (max-width: 480px) {
   body.home-page .deportes-inner {
-    padding-inline: 0.4rem !important;
+    padding-inline: 0.75rem !important;
   }
 
   body.home-page #deportes .deporte-card--featured .deporte-card__media,
   body.home-page #deportes .deporte-card--row .deporte-card__media {
-    aspect-ratio: 4 / 3 !important;
-    min-height: clamp(14.5rem, 62vw, 20rem) !important;
+    aspect-ratio: 3 / 2 !important;
+    min-height: 0 !important;
   }
 }
 
@@ -1654,5 +1689,79 @@ body.home-page #pruebas .pruebas-watch__rail .pruebas-spotlight__thumb-label {
   body.home-page #pruebas .pruebas-watch .pruebas-spotlight__stage {
     width: 100% !important;
     max-width: 100% !important;
+  }
+}
+
+/* Mundo automotor — portada ancha y tres fotos, sin tarjetas de texto */
+body.home-page #noticias .en-portada--cover {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0.2rem 0 0.4rem;
+}
+
+body.home-page #noticias .en-portada--cover[hidden],
+body.home-page #noticias .news-showcase--scope-filter [data-news-mosaic] {
+  display: none !important;
+}
+
+body.home-page #noticias .en-portada--cover .en-portada__card--lead {
+  width: 100%;
+  aspect-ratio: 2.15 / 1;
+  height: auto;
+  min-height: 0;
+  background: #10161f;
+}
+
+body.home-page #noticias .en-portada--cover .en-portada__photo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  transform: none;
+}
+
+body.home-page #noticias .en-portada--cover .en-portada__card--lead:hover .en-portada__photo {
+  transform: none;
+}
+
+body.home-page #noticias .en-portada--cover .en-portada__card--lead .en-portada__caption {
+  z-index: 2;
+}
+
+body.home-page #noticias .en-portada--cover .en-portada__row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+body.home-page #noticias .en-portada--cover .en-portada__card--side {
+  aspect-ratio: 16 / 10;
+  height: auto;
+  min-height: 11.5rem;
+}
+
+body.home-page #noticias .en-portada--cover .en-portada__headline {
+  font-size: clamp(1.7rem, 2.5vw, 2.45rem) !important;
+}
+
+body.home-page #noticias .en-portada--cover .en-portada__card--side .en-portada__headline {
+  font-size: clamp(1.05rem, 1.25vw, 1.28rem) !important;
+}
+
+@media (max-width: 800px) {
+  body.home-page #noticias .en-portada--cover .en-portada__card--lead {
+    aspect-ratio: 16 / 10;
+  }
+
+  body.home-page #noticias .en-portada--cover .en-portada__row {
+    grid-template-columns: 1fr;
+  }
+
+  body.home-page #noticias .en-portada--cover .en-portada__card--side {
+    min-height: 12.5rem;
   }
 }

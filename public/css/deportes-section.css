@@ -542,22 +542,33 @@
     margin-top: 0.15rem;
   }
 
-  .deportes-row {
-    grid-template-columns: 1fr;
+  .deportes-row,
+  .deportes-row--featured {
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.25rem;
+    min-width: 0;
   }
 
-  @media (min-width: 641px) {
-    .deportes-row {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .deporte-card,
+  .deporte-card__media,
+  .deporte-card__body {
+    min-width: 0;
+    max-width: 100%;
   }
 
   .deporte-card--featured .deporte-card__media,
   .deporte-card--row .deporte-card__media {
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 3 / 2;
     width: 100%;
-    min-height: clamp(14rem, 52vw, 22rem);
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+  }
+
+  .deporte-card__media img {
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center center;
   }
 
   .deporte-card--featured .deporte-card__body h3,
@@ -572,13 +583,13 @@
 
 @media (max-width: 640px) {
   .deportes-inner {
-    padding: 1.15rem 0.55rem 1.35rem;
+    padding: 1.15rem 0.75rem 1.35rem;
   }
 
   .deporte-card--featured .deporte-card__media,
   .deporte-card--row .deporte-card__media {
-    aspect-ratio: 4 / 3;
-    min-height: clamp(15rem, 58vw, 22rem);
+    aspect-ratio: 3 / 2;
+    min-height: 0;
   }
 }
 
@@ -588,13 +599,13 @@
   }
 
   .deportes-inner {
-    padding: 1.05rem 0.4rem 1.25rem;
+    padding: 1.05rem 0.75rem 1.25rem;
   }
 
   .deporte-card--featured .deporte-card__media,
   .deporte-card--row .deporte-card__media {
-    aspect-ratio: 4 / 3;
-    min-height: clamp(14.5rem, 62vw, 20rem);
+    aspect-ratio: 3 / 2;
+    min-height: 0;
   }
 }
 
