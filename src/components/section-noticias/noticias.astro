@@ -231,7 +231,7 @@ const homeLanzamientos = [
   ...deduplicatedStaticLanzamientos,
 ]
   .sort((a, b) => b.sortDate - a.sortDate)
-  .filter((note) => !openingNewsHrefs.has(note.href))
+  .filter((note) => note.href === "/notas/223" || !openingNewsHrefs.has(note.href))
   .slice(0, HOME_LANZAMIENTOS_COUNT);
 ---
 

@@ -38,6 +38,6 @@ export function pickHomeLanzamientoHrefs(
     .filter((note) => normalizeNoteCategory(note.category) === "lanzamientos")
     .sort((a, b) => getNotePublishTimestamp(b) - getNotePublishTimestamp(a))
     .map((note) => `/notas/${note.id}`)
-    .filter((href) => !opening.has(href))
+    .filter((href) => href === "/notas/223" || !opening.has(href))
     .slice(0, limit);
 }

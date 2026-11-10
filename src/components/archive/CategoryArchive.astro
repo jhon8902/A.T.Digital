@@ -221,12 +221,8 @@ const allNotes = [...dynamicNotes, ...deduplicatedStatic].sort(
 );
 
 const skipHrefSet = new Set(skipHrefs.filter(Boolean));
-let archiveNotes =
-  skipHrefSet.size > 0
-    ? allNotes.filter((note) => !skipHrefSet.has(note.href))
-    : skipFirst > 0
-      ? allNotes.slice(skipFirst)
-      : allNotes;
+let archiveNotes = allNotes.filter((note) => !skipHrefSet.has(note.href));
+if (skipFirst > 0) archiveNotes = archiveNotes.slice(skipFirst);
 
 // Si no cargaron dinámicas, no ocultar todo el archivo con skipFirst
 if (
