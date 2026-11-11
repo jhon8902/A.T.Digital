@@ -161,18 +161,15 @@
 
   function alignLeadCaption() {
     if (!leadCard || !leadPhoto) return;
-    const frameWidth = leadCard.clientWidth;
-    const frameHeight = leadCard.clientHeight;
     const naturalWidth = leadPhoto.naturalWidth;
     const naturalHeight = leadPhoto.naturalHeight;
-    if (!frameWidth || !frameHeight || !naturalWidth || !naturalHeight) return;
+    if (!naturalWidth || !naturalHeight) return;
 
-    const frameRatio = frameWidth / frameHeight;
     const photoRatio = naturalWidth / naturalHeight;
-    const photoShare = Math.min(1, photoRatio / frameRatio);
-    const inset = ((1 - photoShare) / 2) * 100;
-    leadCard.style.setProperty("--lead-inset", inset.toFixed(3) + "%");
-    leadCard.style.setProperty("--lead-photo", (photoShare * 100).toFixed(3) + "%");
+    const desktop = window.matchMedia("(min-width: 801px)").matches;
+    const ratio = desktop ? Math.max(photoRatio, 1.65) : photoRatio;
+    leadCard.style.setProperty("--lead-ratio", String(Math.round(ratio * 1000) / 1000));
+    leadCard.style.setProperty("--lead-inset", "0%");
   }
 
   if (leadPhoto) {
